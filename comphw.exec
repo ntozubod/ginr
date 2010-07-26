@@ -1,0 +1,52 @@
+setc jhjohnson/rata
+copy /localh.h /local.h
+echo Abasic.c
+c +c u=/lib /Abasic.c
+echo Aclos.c
+c u=/lib /Aclos.c
+echo Aclsseq.c
+c u=/lib /Aclsseq.c
+echo Acompose.c
+c u=/lib /Acompose.c
+echo Acrea.c
+c u=/lib /Acrea.c
+echo Aenum.c
+c u=/lib /Aenum.c
+echo Ajoin.c
+c u=/lib /Ajoin.c
+echo Alamcm.c
+c u=/lib /Alamcm.c
+echo Alameq.c
+c u=/lib /Alameq.c
+echo Alenmin.c
+c u=/lib /Alenmin.c
+echo Aload.c
+c u=/lib /Aload.c
+echo Amin.c
+c u=/lib /Amin.c
+echo Aopen.c
+c u=/lib /Aopen.c
+echo Apowers.c
+c u=/lib /Apowers.c
+echo Aretape.c
+c u=/lib /Aretape.c
+echo Asseq.c
+c u=/lib /Asseq.c
+echo Astems.c
+c u=/lib /Asstems.c
+echo Asubs.c
+c u=/lib /Asubs.c
+echo Atrim.c
+c u=/lib /Atrim.c
+echo R.c
+c u=/lib /R.c
+echo T.c
+c u=/lib /T.c
+echo U.c
+c u=/lib /U.c
+echo V.c
+c u=/lib /V.c
+echo util.c
+c u=/lib /util.c
+echo y.tab.c
+c l=/lib /y.tab.c
