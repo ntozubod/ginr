@@ -1,0 +1,10 @@
+wh = ' \t\n'				:alph;
+s1 = '!"#$%&\'()*+,-./'			:alph;
+nm = '0123456789'			:alph;
+s2 = ':;<=>?@' 				:alph;
+AL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'	:alph;
+s3 = '[\\]^_`'				:alph;
+al = 'abcdefghijklmnopqrstuvwxyz'	:alph;
+s4 = '{|}~' 				:alph;
+
+.. = wh | s1 | nm | s2 | AL | s3 | al | s4;

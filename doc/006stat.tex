@@ -1,0 +1,50 @@
+\section{Statement Forms}
+\subsection{Evaluate Statement}
+An expression of the form
+\verb#<expression>;#
+requests the evaluation of the expression and the displaying of the
+resulting automaton.
+The variable \verb#_Last_# is updated by this statement.
+If the last operation performed is a coercing operation, then the automaton
+is printed.
+If the last operation performed is not a coercing operation or a printing
+operation, then the automaton is automatically coerced to \verb#:min# and
+printed.
+Thus the default is that a minimized deterministic automaton is printed.
+
+\subsection{Enumerate Statement}
+An expression of the form
+\verb#<expression>:;#
+requests the evaluation of the expression and the enumeration of the words
+recognized by the resulting automaton.
+The variable \verb#_Last_# is also updated by this statement.
+
+\subsection{Assignment Statement}
+Variables are simply symbols for which a value has been assigned.
+Thus form of the assignment is:
+\verb#<symbol> = <expression>;#
+Any later references to the symbol will refer to the set assigned to it.
+This is particularly useful for large expressions since often repeated
+computations can be eliminated.
+
+There is a built-in variable \verb#_Last_# which is assigned to the
+last evaluated expression that was not directly assigned.
+At any time a report on the assigned variables may be requested by the
+command \verb#:list#.
+
+\subsection{Command Statement}
+A number of commands that cause certain actions to be performed are
+provided.
+\begin{quote}
+\begin{describe}{XXXXXXXX}
+\item[:alph;] Display token symbol table.
+\item[:free;] Display status of free lists.
+\item[:list;] Display variable symbol table.
+\item[:noreport;] Turn off (verbose) debug tracing.
+\item[:pr;] Save all variables in files with the same names.
+\item[:quit;] Terminate session.
+\item[:report;] Turn on (verbose) debug tracing.
+\item[:save;] Save all variables in files (condensed) with the same names.
+\item[:time;] Display time since last :time call (VAX only).
+\end{describe}
+\end{quote}

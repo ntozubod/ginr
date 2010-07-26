@@ -1,0 +1,510 @@
+\section{Generalized Regular Expressions}
+This section outlines the method for building expressions which define
+regular languages.
+This corresponds to the one-tape automaton case for INR.
+In these situations, INR will compute a minimized deterministic finite
+automaton (DFA MIN) and display the result.
+More mathematically inclined readers will notice an anomolous use of set
+notation that is common in the formal language theory literature and
+continued here to avoid pedantry and cumbersome notational problems.
+A string containing one letter is ambiguously written as the letter and a
+set containing one element is ambiguously written as its element.
+With this understanding \verb#a# $\equiv$ \verb#{a}# $\equiv$ \verb#{'a'}#.
+
+\subsection{Token}
+A token is a primitive element.
+It is represented by a symbol that has not been assigned a value as a
+variable and denotes the automaton that accepts that token and then quits.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#abc;#\\
+or \> \verb#`abc`;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) abc 2
+2 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Variable}
+A variable is a symbol that has been previously been assigned a value using
+an assignment statement.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#var = abc; var;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) abc 2
+2 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+Variables should use names that are clearly distinguishable from tokens.
+For example, they should be at least two letters in length to avoid
+conflict with token names.
+
+\subsection{String}
+A string is a possibly empty sequence of tokens and denotes the automaton
+that recognizes only that sequence.
+Strings are indicated by writing the tokens in the sequence in which they
+occur.
+They normally require spaces between adjacent tokens because of the
+lexical rules for distinguishing symbols.
+Thus \verb#a b c# indicates a string with three one-letter tokens whereas
+\verb#abc# indicates a single token.
+
+Since one-letter tokens are very useful to denote the printable characters
+of the ASCII (or EBCDIC) character set an alternative notation is provided
+to indicate strings of one-letter tokens.
+Any such string can be written without blanks but preceded and followed
+by single forward quotes ('):
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#a b c;#\\
+or \> \verb#'abc';#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 b 3
+3 c 4
+4 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+Any sequence of characters including operators may be used within a string 
+with the following exceptions: \verb#\'# indicates a single forward
+quote character, \verb#\\# indicates a single backslash character,
+\verb#\n# indicates a newline character, and \verb#\t# indicates a tab
+character.
+Note that strings of one character are a good way of entering single letter
+tokens that are otherwise treated as operators or white space by the
+lexical scanner.
+Thus the token containing exactly one blank can be specified using the
+notation \verb#' '#, newline can be specified by \verb#'\n'#, and the plus
+character by \verb#'+'#.
+Although backquotes also work in these cases, a greater uniformity of
+notation can be achieved if many strings also occur.
+
+\subsection{Empty String}
+The empty string is indicated by \verb#^#.
+This symbol is used because of its vague similariy to the Greek letter
+$\Lambda$ that is often used for this purpose.
+Note that in EBCDIC this character has a graphic representation of
+$\not c$.
+Alternative representations is \verb#()# (empty parentheses)
+or \verb#''# (empty forward quotes).
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#^;#\\
+or \> \verb#();#\\
+or \> \verb#'';#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Finite Set of Strings}
+Finite sets of strings are indicated using the standard brace/comma notation.
+Thus \verb#{'ab','aa','a'}# denotes an automaton recognizing a three
+strings \verb#'ab'#, \verb#'aa'# and \verb#'a'#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{'ab','aa','a'};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 -| (FINAL)
+2 a 3
+2 b 3
+3 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Empty Set}
+The empty set is indicated by \verb#{}#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+Empty Automaton
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Alternation (Set Union)}
+The operator for alternation (OR) is expressed using the vertical bar
+\verb#|#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{'abc'}|{'def'};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+(START) d 3
+2 b 4
+3 e 5
+4 c 6
+5 f 6
+6 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+Note that the concatenations are done before the alternation since
+concatenation has a higher priority than alternation.
+Parentheses may be used to enforce a different order of evaluation:
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#a b (c | d) e f;#\\
+or \> \verb#a b c e f | a b d e f;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 b 3
+3 c 4
+3 d 4
+4 e 5
+5 f 6
+6 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+Note also that the brace-comma set notation is always equivalent to
+parentheses with \verb#|#.
+This departs slightly from standard set theory but is a natural
+generalization in this situation.
+Thus the above automata can also be denoted by
+\verb#a b { c, d } e f#.
+
+\subsection{Concatenation}
+Concatenation is represented by adjacency.
+That is, there is no explicit concatenation operator although \verb#^# can
+be used if desired.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{ a, b } { c, d e };#\\
+or \> \verb#{ a, b }^{ c, d e };#\\
+or \> \verb#{'ac','ade','bc','bde'};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+(START) b 2
+2 c 3
+2 d 4
+3 -| (FINAL)
+4 e 3
+\end{verbatim}\end{minipage}\end{center}
+Note that strings, as discussed before, are just the concatenation of their
+constituent tokens.
+
+\subsection{Kleene Plus and Star}
+The concatenation closure operators (Kleene $+$ and Kleene $*$) are represented
+by the corresponding unary postfix operator.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a b)+;#\\
+or \> \verb#'ab'+;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 b 3
+3 -| (FINAL)
+3 a 2
+\end{verbatim}\end{minipage}\end{center}
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a b)*;#\\
+or \> \verb#'ab'*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) a 2
+2 b (START)
+\end{verbatim}\end{minipage}\end{center}
+The difference is that the second form includes the empty word.
+Note that parentheses are used to group together the argument to + and *.
+This is because these two operators are considered to have higher priority
+than any of the others.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#a b*;#\\
+or \> \verb#a (b*);#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 -| (FINAL)
+2 b 2
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Optional}
+The operator indicating zero or one occurrences of a set is denoted by
+\verb#?#.
+This can be used to identify optional components.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#a b?;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 -| (FINAL)
+2 b 3
+3 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+The operators \verb#+#, \verb#*#, and \verb#?# are computed from left to
+right.
+
+\subsection{Concatenation Power}
+To express the concatenation of a set with itself exactly $k$ times the
+expression may be followed by a \verb#:# and the value $k$.
+Thus \verb#R1 :2# is the same as \verb#R1 R1# and \verb#R1 :3# the same as
+\verb#R1 R1 R1#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{a,b} :2;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+(START) b 2
+2 a 3
+2 b 3
+3 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+To express the concatenation of a set with itself $k$ or fewer times the
+notation \verb#R1? :#$k$ can be used.
+To express the concatenation of a set with itself more than $k$ times the
+set difference can be used: \verb#R1* - (R1? :#$k$\verb#)#.
+
+\subsection{Concatenation Quotient}
+If concatenation is interpreted as a multiplication of strings so that
+\verb#'abc'# $\cdot$ \verb#'def'# $=$ \verb#'abcdef'# we can define a right
+quotient operator $/$ as \verb#'abcdef'# / \verb#'def'# $=$ \verb#'abc'#
+and a left quotient operator $\backslash$ as \verb#'abc'# $\backslash$
+\verb#'abcdef'# $=$ \verb#'def'#.
+The (left or right) quotient of sets is defined as the union of their
+elementwise quotients.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#'ab' \ 'abcdef' / 'ef';#\\
+or \> \verb#'cd';#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) c 2
+2 d 3
+3 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Set Intersection}
+The automaton recognizing the intersection of two regular languages is
+indicated by the \verb#&# operator.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{a,b}* & b {a,c}*;#\\
+or \> \verb#b a*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) b 2
+2 -| (FINAL)
+2 a 2
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Set Difference}
+The operator \verb#-# indicates the difference of two two regular
+languages.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{a,b}* - b a*;#\\
+or \> \verb#(^ | a | b a* b) {a,b}*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) a 2
+(START) b 3
+2 -| (FINAL)
+2 a 2
+2 b 2
+3 a 3
+3 b 2
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Symmetric Difference (Exclusive Or)}
+The symmetric difference of two languages is the set of words that are in
+one of the languages but not the other and will be indicated by the
+\verb#!# operator.
+Thus $R_1 ! R_2 \equiv (R_1-R_2) \cup (R_2-R_1)$.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{a,b}* ! {a,c}*;#\\
+or \> \verb#a* ( b {a,b}* | c {a,c}* );#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a (START)
+(START) b 2
+(START) c 3
+2 -| (FINAL)
+2 a 2
+2 b 2
+3 -| (FINAL)
+3 a 3
+3 c 3
+\end{verbatim}\end{minipage}\end{center}
+Note that the symmetric difference of a language with itself is the empty
+set.
+Thus this operation can be used to check the equivalence of two regular
+languages.
+
+\subsection{Shuffle}
+The shuffle of two words is the set of words formed by alternatively taking
+some letters from each of the words.
+Thus the shuffle of the words \verb#'ab'# and \verb#'cd'# is the set
+\verb#{'abcd','acbd','acdb','cabd','cadb','cdab'}#.
+The shuffle of two sets of words is the union of the shuffles of all pairs
+of words such that one word is taken from each set.
+The shuffle operator is indicated by the symbol \verb#!!# which mildly
+suggests the symbol $\amalg$ that is often used for this purpose.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#'ab' !! 'cd';#\\
+or \> \verb#{'abcd','acbd','acdb',#\\
+\> \verb#  'cabd','cadb','cdab'};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+(START) c 3
+2 b 4
+2 c 5
+3 a 5
+3 d 6
+4 c 7
+5 b 7
+5 d 8
+6 a 8
+7 d 9
+8 b 9
+9 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Active Alphabet}
+The active alphabet of an automation is the set tokens that can actually
+occur in a word in the language.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#'abcd' / 'd' :alph;#\\
+or \> \verb#{a,b,c};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+(START) b 2
+(START) c 2
+2 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Reverse}
+The reverse of a string \verb#'abcd'# is the string \verb#'dcba'#.
+The reverse of a set of strings is the set of their reverses.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{'abc','abd'} :rev;#\\
+or \> \verb#{'dba','cba'};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) c 2
+(START) d 2
+2 b 3
+3 a 4
+4 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Prefixes}
+The prefixes of \verb#'abcd'# is the set
+\verb#{ ^, 'a', 'ab', 'abc', 'abcd' }#.
+The prefixes of a set of strings is the union of the prefix sets for each
+word.
+Note that \verb#R1 :pref# is an alternate (more efficient) way of indicating
+the set \verb#R1 / (R1 :alph)*#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{'abc','abd'} :pref;#\\
+or \> \verb#{'abc','abd'} / {a,b,c,d}*;#\\
+or \> \verb#{^,'a','ab','abc','abd'};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) a 2
+2 -| (FINAL)
+2 b 3
+3 -| (FINAL)
+3 c 4
+3 d 4
+4 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Suffixes}
+The suffixes of \verb#'abcd'# is the set
+\verb#{ ^, 'd', 'cd', 'bcd', 'abcd' }#.
+The suffixes of a set of strings is the union of the suffix sets for each
+word.
+Note that \verb#R1 :suff# is an alternate way of indicating
+the set \verb#(R1 :alph)* \ R1#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#{'abc','abd'} :suff;#\\
+or \> \verb#{a,b,c,d}* \ {'abc','abd'};#\\
+or \> \verb#{^,'c','d','bc','bd',#\\
+\> \verb#  'abc','abd'};#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) a 2
+(START) b 3
+(START) c 4
+(START) d 4
+2 b 3
+3 c 4
+3 d 4
+4 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+The factors (subwords) of a language can be obtained by using finding the
+prefixes of the suffixes: \verb#R1 :suff :pref#.
+For large sets this is preferable to the equivalent but much more expensive
+\verb#R1 :pref :suff#.
+
+\subsection{Complement}
+Since the alphabet of interest is inferred from the context, the complement
+must be defined with respect to a specific universe.
+Thus there are two basic forms \verb#R1 :acomp# and \verb#R1 :comp#.
+The first of these is equivalent to \verb#(R1 :alph)* - R1# and the second
+is equivalent to \verb#(SIGMA :alph)* - R1# where \verb#SIGMA# contains the
+reference alphabet.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#b a* :acomp;#\\
+or \> \verb#SIGMA = {a,b}; b a* :comp;#\\
+or \> \verb#{a,b}* - b a*;#\\
+or \> \verb#(^ | a | b a* b) {a,b}*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) a 2
+(START) b 3
+2 -| (FINAL)
+2 a 2
+2 b 2
+3 a 3
+3 b 2
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Stretching}
+An operation that is sometimes useful involves replacing each letter in the
+word by a sequence of $k$ of that letter.
+This can be done using the \verb#$# operator followed by a string of $k$
+zeros.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#'abc' $ 0 0;#\\
+or \> \verb#'aabbcc';#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 a 3
+3 b 4
+4 b 5
+5 c 6
+6 c 7
+7 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Priorities of Operators}
+Within a pair of matching parentheses or braces the expression is computed in
+the following order:
+\begin{enumerate}
+\item Kleene $+$, Kleene $*$ and Optional operators are evaluated from left
+to right on their single argument.
+\item Concatenations
+\item One pair of matching left and right quotients are performed if they
+exist.
+\item Set intersection and set difference operations are performed from
+left to right.
+\item Alternation (set union), symmetric difference, and shuffle operations
+are performed from left to right.
+\item One stretch operation
+\item The colon unary operations concatenation power, :alph, :rev, :pref, and
+:suff are performed left to right.
+\item The alternation implied by commas within braces is performed last.
+\end{enumerate}
+Note that the colon unary operations will often require surrounding
+parentheses in a larger expression.
+
+Note that parentheses or braces can be used to perform grouping when the
+priorities of operators would imply an incorrect interpretation.
+Use of parentheses is usually recommended unless a set constructor is
+needed for clarity.
+However, note that commas within parentheses have another meaning to be
+discussed in a later section.
+Another form of grouping is performed by string quotes.
+Thus \verb#'ab'*# is equivalent to \verb#(a b)*# and not to
+\verb#a b*#.

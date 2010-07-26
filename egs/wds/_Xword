@@ -1,0 +1,3 @@
+nl = '
+';
+( (<SIGMA* x <SIGMA* nl $ (0,0)) |! <SIGMA* nl )* :save xrat;

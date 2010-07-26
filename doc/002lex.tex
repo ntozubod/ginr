@@ -1,0 +1,68 @@
+\section{Lexical Conventions}
+\subsection{Symbols}
+At the lowest level, the input is composed of symbols, delimiters and
+comments.
+
+{\em Symbols} are made up of any non-empty sequence of
+characters from the set of upper and lower case letters,
+digits, and the following special characters \verb#.# and \verb#_#.
+To specify a symbol not satisfying this restriction, simply put back-quote
+(grave accent) characters (`) before and after it.
+The string that results after the back-quotes are stripped off then
+constitute the symbol.
+If the desired symbol contains back-quotes they can be escaped with a
+preceding backslash.
+
+The following characters are recognized as delimiters:
+\begin{quote}
+\begin{verbatim}
+! " $ % & ( ) * + , - / : ; < = > ? @ [ \ ] ^ { | } ~
+\end{verbatim}
+\end{quote}
+All of these characters except \verb#" % < > ~# indicate operations or are
+used in the specification of operations on automata.
+
+Comments are indicated by a \verb$#$.
+All text from this character to the next newline is treated as a comment
+and ignored by the parser.
+
+Within expressions, symbols are interpreted as variables, as
+primitive tokens (elements of the underlying alphabet), or as filenames.
+Two symbol tables are maintained to keep track of variable/token usage.
+The variable symbol table contains all symbols that have been assigned
+values in assignment statements.
+The token symbol table contains all symbols that have been previously used
+as tokens.
+The printable characters along with the horizontal tab and newline
+characters are loaded into this table since they are usually used as tokens.
+When a symbol is recognized by the scanner, it is identified as a variable
+if it does not occur in the token symbol table.
+If the symbol occurs in the variable symbol table, that value is used.
+Otherwise the indicated file is read.
+The value is the automaton so obtained.
+
+Any symbol beginning with a digit followed by a dot is immediately
+identified as a token.
+The digit identifies which tape to which the token is assigned.
+In the one-tape case, the number is ``0''.
+Thus any symbol can be identified as being a token by preceeding it with
+the appropriate digit (usually ``0'') and a dot.
+The value of the expression indicated by the symbol is an automaton that
+recognizes that single token.
+
+If neither of these two cases occurs, the symbol is looked up in the two
+symbol tables to determine its past usage.
+If it occurs in only one of the symbol tables that determines whether it is
+a variable or a token.
+If it occurs in neither or both then it is assumed to be a token.
+If in both, a warning diagnostic is given.
+A warning diagnostic is also provided when an assignment is made to a
+symbol in the token table.
+
+In order to display the symbol tables there are user level commands.
+The command ``:list'' displays the variable symbol table and ``:alph''
+displays the token symbol table.
+One will immediately notice that the variable symbol table contains the
+symbol \verb#_Last_#.
+This refers to the last expression requested that was not assigned to a
+variable.
