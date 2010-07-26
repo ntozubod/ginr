@@ -30,11 +30,7 @@ char *		t;
 
 extern char * pad20();
 	
-#ifdef UNIX
 #define PROMT	if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
-#else
-#define PROMT	
-#endif
 
 %}
 
@@ -194,7 +190,7 @@ reg_2	: reg_2 DOLLAR reg_3
 	}
 	| reg_2 PERCENT reg_3
 	{
-		if ( A_report ) fprintf( fpout, "(%)\n" );
+		if ( A_report ) fprintf( fpout, "(%%)\n" );
 		$$ = A_percent( $1, $3 );
 	}
 	| reg_3
