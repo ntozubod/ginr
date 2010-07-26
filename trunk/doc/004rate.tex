@@ -1,0 +1,482 @@
+\section{Generalized Rational Expressions}
+A binary relation is a set of ordered pairs of elements.
+Thus just as a language can be regarded as a set of words, we can define a
+binary language relation as a set of pairs of words.
+Binary language relations are often called transductions since they
+indicate a transformation or translation process.
+Of particular interest are transductions which can be performed by a finite
+state machine.
+These are called finite state transductions or simply finite transductions.
+A two-tape finite automaton or finite transducer determines whether a pair
+of words is in the transduction in the following way:
+The two words under consideration are placed on two input tapes followed by
+special end-marker characters and the machine is put into its start state.
+The machine then picks an operation (non-deterministically) which may
+involve reading some number of characters from either (or both or neither)
+of the two input tapes, advancing the read heads of the two tapes and
+making a transition to a new state.
+The pair of words is accepted if there exists such a sequence of steps such
+that all of both input tapes are read and the transducer is left in a final
+state.
+
+As described above the machine is considered to have two input tapes.
+However, one of the input tapes can be made into an output tape.
+In this case the transducer is viewed as reading an input word and writing
+an output word that is non-deterministically chosen from the set of words
+related to the input word.
+Still another interpretation is to consider the input word as determining a
+set of output words that are related to it.
+
+The above description of finite transducers implies a non-deterministic choice
+of the next transition to make.
+The class of relations that result when the transducer is made
+deterministic, either with two input tapes or with an input tape and an
+output tape are proper subclasses of finite transductions.
+However, it is possible to remove much of the non-determinism using the
+idea of a characterizing language.
+
+Before defining a characterizing language we will mark the alphabets with
+either a 0 or a 1 to indicate whether they are to be read from tape 0 or
+tape 1.
+Thus $a$ will occur in the forms $a_0$ and $a_1$.
+We can then define languages over this extended alphabet.
+From each language we can then obtain a relation by projecting out the
+tape~0 letters and the tape~1 letters as the two components of the ordered
+pair.
+A language then (strongly) characterizes a relation if this projection
+process on the language yields exactly the given relation.
+Note that each word in the characterizing language is a shuffle of related
+marked words.
+
+It is always possible to find a regular characterizing language for any
+finite transduction although the choice is not unique and cannot be made
+canonical without restricting the class of languages or being
+uncomputable.
+Thus a convenient way of describing finite transductions is by means of
+some regular characterizing language.
+Then the usual optimizations and transformations which apply to regular
+languages can then be applied without changing the implied transduction.
+This is exactly what INR does.
+Instead of $a_0$ and $a_1$, INR uses the notation \verb#0.a# and \verb#1.a#.
+
+Regular languages are defined in other ways than by their automata however.
+For example regular expressions, especially when extended to include the
+Boolean operations are a very expressive way to present regular languages.
+In the case of the union operation, this behaviour carries over to
+relations since the relation defined as the union of two characterizing
+languages is always the union of the relations defined by the two
+characterizing languages.
+However, there is a slight problem with the other Boolean operations when they
+are applied to relations though their characterizing languages.
+The result is not usually the same as applying the Boolean operation to the
+relation itself.
+In fact, the operations intersection, set difference, symmetric difference,
+and complement can yield transductions that are not finite state.
+
+Note that we could also define ternary relations as sets of ordered triples
+of elements and introduce ternary finite transductions.
+We can define characterizing languages by using marking the letters with
+numbers 0, 1, or 2.
+Again there will always be a regular characterizing language, and similar
+closure properties.
+The process can, of course, be continued to relations of any degree.
+INR currently restricts the degree to 10: \verb#0.a#, \verb#1.a#, $\ldots$,
+\verb#9.a#.
+
+Finite transductions are also called rational relations or rational
+transductions since they are closed under the rational operations:
+concatenation, union, and concatenation closure (Kleene plus).
+They are also closed a number of other useful operations which will be
+described.
+This section outlines the additional operators provided with INR which
+allow the definition of rational relations.
+
+\subsection{Token}
+To indicate that a token is associated with a particular tape, precede it
+by the tape number and a period.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#1.abc;#\\
+or \> \verb#`1.abc`;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) 1.abc 2
+2 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+Note that \verb#1.`abc`# will not work because the lexical scanner parses
+this as \verb#1.`# followed by \verb#abc# followed by an unmatched
+\verb#`#.
+
+\subsection{Variable}
+A variable may be assigned a rational relation in the same way that it can
+be assigned a regular set.
+
+\subsection{String}
+Strings are as for regular languages except for the need to shift them from
+tape zero to some other tape.
+To define a string on tape 1, there are four basic techniques depending on
+the situation.
+\begin{enumerate}
+\item Build the string from tokens which specify the tape.
+Then \verb#'abc'# on tape 1 becomes \verb#1.a 1.b 1.c#.
+
+\item Use (parenthesis/comma) tuple notation.
+Then \verb#'abc'# on tape 1 becomes \verb#( ^, 'abc' )# or simply
+\verb#(,'abc')#.
+
+\item Use the tape shifting operator \verb#[]#.
+Then \verb#'abc'# on tape 1 becomes \verb#['abc']#.
+
+\item Use the tape renumbering operator \verb#$#.
+Then \verb#'abc'# on tape 1 is \verb#( 'abc' $ 1 )#.
+\end{enumerate}
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#1.a 1.b 1.c;#\\
+or \> \verb#(,'abc');#\\
+or \> \verb#['abc'];#\\
+or \> \verb#('abc' $1);#\\
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) 1.a 2
+2 1.b 3
+3 1.c 4
+4 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+To indicate a string on tape 2 a similar technique can be used:
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#2.a 2.b 2.c;#\\
+or \> \verb#(,,'abc');#\\
+or \> \verb#[['abc']];#\\
+or \> \verb#('abc' $2);#\\
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) 2.a 2
+2 2.b 3
+3 2.c 4
+4 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+The empty string is indicated as in the regular case by \verb#^#,
+\verb#()#, or \verb#''# and is not associated with any tape.
+
+\subsection{Set Operations}
+Rational relations are closed under union and the syntax and behaviour is
+as for regular languages.
+However, they are not closed under intersection, difference,
+symmetric difference or complement so INR interprets these four operations
+as applying to the characterizing languages that represent the rational
+relations and a warning is printed.
+Some advanced uses of INR involving a careful use of this feature will be
+discussed in a later section.
+
+\subsection{Concatenation Operations}
+The operations concatenation, Kleene plus and star, optional and concatenation
+power are as in the regular case.
+Concatenation quotient is not defined.
+On the other hand, \verb#:alph#, \verb#:rev#, \verb#:pref#, and
+\verb#:suff# are available and apply to the characterizing language.
+
+\subsection{Tuple Formation (Cartesian Product)}
+The tuple notation consisting of parentheses and commas can be used for
+more than just strings.
+It computes the number of tapes used by the left operand, adds that number
+to each tape number of the right operand and finaly concatenates the two
+machines together in the indicated order.
+Thus, as far as the characterizing languages are concerned, the comma
+operator functions as a concatenation following a tape shift.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#( a*, b* );#\\
+or \> \verb#0.a* 1.b*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 0.a (START)
+(START) 1.b 2
+2 -| (FINAL)
+2 1.b 2
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Tape Shifting}
+The operator \verb#[]# can be used to cause all of the tapes to be
+incremented by one.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#a* [b*];#\\
+or \> \verb#( a*, b* );#\\
+or \> \verb#0.a* 1.b*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 0.a (START)
+(START) 1.b 2
+2 -| (FINAL)
+2 1.b 2
+\end{verbatim}\end{minipage}\end{center}
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#[b*] a*;#\\
+or \> \verb#(, b* ) a*;#\\
+or \> \verb#1.b* 0.a*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 1.b (START)
+(START) 0.a 2
+2 -| (FINAL)
+2 0.a 2
+\end{verbatim}\end{minipage}\end{center}
+These two automata describe the same rational relation although, of course,
+the characterizing languages are different.
+
+\subsection{Tape Projection}
+The \verb#$# operator can be used to reorganize the tape structure of a
+transducer.
+One such operation is the selection (projection) of some of the tapes with
+the implied removal of the others.
+Rational relations are closed under all such projections.
+For example, for a binary transduction \verb#R1#, it is often useful to
+construct an automaton which recognizes the domain of the transduction or
+the range.
+The domain is projected by INR using the notation \verb#R1 $ 0# and the
+range by the notation \verb#R1 $ 1#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b)* $ 0;#\\
+or \> \verb#a*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) a (START)
+\end{verbatim}\end{minipage}\end{center}
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b)* $ 1;#\\
+or \> \verb#b*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) b (START)
+\end{verbatim}\end{minipage}\end{center}
+Projections of ternary relations can also be done.
+Thus if \verb#R2# is a ternary transduction \verb#R2 $ (0,2)# will select
+tapes 0 and 2 renumbering them as 0 and 1.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b,c)* $ (0,2);#\\
+or \> \verb#(a,c)*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 0.a 2
+2 1.c (START)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Tape Renumber}
+The \verb#$# operator can also be used to cause a renumbering of the tapes.
+For example, the inverse of a binary relation can be formed by applying the
+operator \verb#$ (1,0)#.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b)* $ (1,0);#\\
+or \> \verb#([a] b)*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 1.a 2
+2 0.b (START)
+\end{verbatim}\end{minipage}\end{center}
+Projection and renumbering can be done together by a natural extension of
+the basic idea.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b,c)* $ (2,0);#\\
+or \> \verb#(a,c)*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 1.a 2
+2 0.c (START)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Stretching}
+A third use the \verb#$# operator is stretching.
+A simple example of this was demonstrated in the last section and the idea
+can be generalized to any tape.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b)* $ (0 0,1 1 1);#\\
+or \> \verb#(a a,b b b)*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 0.a 2
+2 0.a 3
+3 1.b 4
+4 1.b 5
+5 1.b (START)
+\end{verbatim}\end{minipage}\end{center}
+A more useful type of stretching involves the conversion of an automaton
+that accepts a regular language to one that accepts a word in that language
+and copies it to the output tape.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#a b* $ (0,0);#\\
+or \> \verb#(a, a) (b, b)*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) 0.a 2
+2 1.a 3
+3 -| (FINAL)
+3 0.b 4
+4 1.b 3
+\end{verbatim}\end{minipage}\end{center}
+Note that the right argument is an automaton that recognizes a string of
+tokens of the form {\em digit}.{\em digit} and this may be created in any
+way.
+For example, if \verb#$ (0,0)# is used often, a variable containing the
+value \verb#(0,0)# could be defined to provide an improved readability in
+this case.
+Note also that how the stretching is done in the multitape case.
+The tape numbers are assigned in the order that they occur in the right
+argument.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#a b* $ [0] 0;#\\
+or \> \verb#([a] a) ([b] b)*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) 1.a 2
+2 0.a 3
+3 -| (FINAL)
+3 1.b 4
+4 0.b 3
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Composition}
+The composition operator is denoted by \verb#@#.
+The last tape of the left operand is joined with the first tape of the
+right operand.
+This yield the usual composition of relations when applied to binary
+relations and the usual ``apply'' when the left operand is over one tape
+and the right operand is a binary relation.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b)* @ (b,c)*;#\\
+or \> \verb#(a,c)*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 0.a 2
+2 1.c (START)
+\end{verbatim}\end{minipage}\end{center}
+If the left argument is a regular language then the compose operator
+computes the subset of the range that is the image of this set.
+This is a generalization of the application of functions to domain values.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#'aa' @ (a,b)*;#\\
+or \> \verb#'bb';#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) b 2
+2 b 3
+3 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+The compose operator can also be used to compute the subset of the domain
+that maps to a subset of the range.
+This is really an apply of the inverse relation.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,b)* @ 'bb';#\\
+or \> \verb#'bb' @ ((a,b)* $ (1,0));#\\
+or \> \verb#'aa';#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) a 2
+2 a 3
+3 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Join}
+The join operator is denoted by \verb#@@#.
+It has the same effect as composition except that the last tape of the left
+operand is represented in the output.
+Thus the composition operator is equivalent to a join followed by a
+projection that removes the tape over which the join was done.
+The join operator can be used to restrict the domain or range of a
+transduction.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#'aa' @@ (a,b)*;#\\
+or \> \verb#(a,b)* @@ 'bb';#\\
+or \> \verb#(a,b) :2;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) 0.a 2
+2 1.b 3
+3 0.a 4
+4 1.b 5
+5 -| (FINAL)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Composition Power}
+The $k$-fold composition of a binary rational relation is denoted by
+\verb#:(#$k$\verb#)#.
+That is, the number is written in parentheses.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,'aa')* :(2);#\\
+or \> \verb#(a,'aa')* @ (a,'aa')*;#\\
+or \> \verb#(a,'aaaa')*;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 0.a 2
+2 1.a 3
+3 1.a 4
+4 1.a 5
+5 1.a (START)
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Extending Or (ElseOR)}
+Often it is desirable to extend one function by a second function, that is,
+extend the domain to include that covered by the second function without
+disturbing the values assigned by the first function within its domain.
+This operator is denoted by the symbol \verb#||#.
+Thus if $f$ and $g$ are functions then $f$ \verb#||# $g$ will agree with $f$
+whenever the argument is in $dom f$.
+Otherwise it will agree with $g$.
+Note that \verb#R || S# is simply a shorter form of
+\verb#R | ( (S$0)-(R$0) @@ S )#
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,c) || (a,b)*;#\\
+or \> \verb#^ | (a,c) | (a,b)(a,b)+;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) -| (FINAL)
+(START) 0.a 2
+2 1.c 3
+2 1.b 4
+3 -| (FINAL)
+4 0.a 5
+5 1.b 6
+6 -| (FINAL)
+6 0.a 5
+\end{verbatim}\end{minipage}\end{center}
+
+\subsection{Compute Subsequential}
+One interesting subcase of finite transductions is the deterministic
+transductions, that is, the transductions that can be performed in one left
+to right pass without backtracking or non-deterministic choices with only a
+finite number of possible states.
+Thus it is desirable to identify when this can be done and construct a
+deterministic transducer when it does.
+This is performed by the \verb#:sseq# operator.
+\begin{center}\begin{minipage}[t]{3in}\begin{minipage}[t]{3in}\begin{tabbing}
+\qquad \= \verb#(a,c) || (a,b)* :sseq;#
+\end{tabbing}\end{minipage}\end{minipage}
+\begin{minipage}[t]{1.6in}\begin{verbatim}
+(START) 0.-| 2
+(START) 0.a 3
+2 1.-| 4
+3 0.-| 5
+3 0.a 6
+4 -| (FINAL)
+5 1.c 2
+6 1.b 7
+7 1.b 8
+8 0.-| 2
+8 0.a 7
+\end{verbatim}\end{minipage}\end{center}
+Note that \verb#(START)#, \verb#3# and \verb#8# are read states since they
+must read exactly one character (or end-marker) from tape zero.
+States \verb#2#, \verb#5#, \verb#6# and \verb#7# are write states.
+They can only write and the choice is determined.
+Note also that explicit end-markers are introduced.
+The existence of explicit end-markers can confuse some of the operations
+that use the characterizing language idea.
+End-markers can be deleted by using the \verb#$# operator.
+It removes explicit end-markers from any tape.

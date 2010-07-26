@@ -1,0 +1,4 @@
+nl = '
+';
+Lookup_code = 'Johnson' @ <Soundex;
+( ( (<Soundex @ Lookup_code) nl $ (0,0) ) |! ( <Soundex :alph )* nl )* :save xx;

@@ -1,0 +1,10 @@
+SIGMA      = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p};
+Delete     = ( SIGMA, ^ );
+Insert     = ( ^, SIGMA );
+Substitute = ( SIGMA, SIGMA );
+Equal      = SIGMA $ (0,0);
+Levenshtein1 = Equal*  | Equal* ( Delete | Insert | Substitute ) Equal*;
+Levk       = Levenshtein1 :4;
+Scan       = Insert* Levk;
+:save Scan;
+t15 = SIGMA* ('abcdefghijklmno' @ Levk);

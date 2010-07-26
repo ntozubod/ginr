@@ -1,0 +1,11 @@
+SIGMA      = {f,r,e,d,x};
+Delete     = ( SIGMA, ^ );
+Insert     = ( ^, SIGMA );
+Substitute = ( SIGMA, SIGMA );
+Equal      = SIGMA $ (0,0);
+Transpose  =
+	( ( (Equal (SIGMA $ 0 0) Equal) @ (SIGMA $ 0 0)) - (SIGMA $ 0 0 0 0) )
+	  @ ( (SIGMA $ (0,0) :2) (SIGMA $ (0,,0) :2) );
+Levenshtein1 = Equal*  | Equal* ( Delete | Insert | Substitute ) Equal*;
+Damerau = Levenshtein1 | Equal* Transpose Equal*;
+:save;

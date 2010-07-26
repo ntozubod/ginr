@@ -1,0 +1,26 @@
+II  N     N  RRRRRR
+II  N N   N  R    RR    I N R   Version 1.1
+II  N  N  N  RRRRRR
+II  N   N N  R    R         Oct 18 85
+II  N    NN  R     R                                 (For help type   :help;)
+
+SIGMA  DFA MIN States:     3 Transitions:    27 Storage:    1K
+Delete  DFA MIN States:     3 Transitions:    27 Tapes: 2 Storage:    1K
+Insert  DFA MIN States:     3 Transitions:    27 Tapes: 2 Storage:    1K
+Substitute  DFA MIN States:     4 Transitions:    53 Tapes: 2 Storage:    2K
+Equal  DFA MIN States:    29 Transitions:    53 Tapes: 2 Storage:    2K
+Levenshtein1  DFA MIN States:    55 Transitions:  1484 Tapes: 2 Storage:   33K
+Levk  DFA MIN States:   109 Transitions:  4346 Tapes: 2 Storage:   65K
+Scan  DFA MIN States:   110 Transitions:  4399 Tapes: 2 Storage:  129K
+t1  DFA MIN States:     2 Transitions:    27 Storage:    3K
+t2  DFA MIN States:     2 Transitions:    27 Storage:    9K
+t3  DFA MIN States:     2 Transitions:    27 Storage:    9K
+t4  DFA MIN States:    13 Transitions:   323 Storage:   17K
+t5  DFA MIN States:    36 Transitions:   940 Storage:   33K
+t6  DFA MIN States:    83 Transitions:  2196 Storage:   65K
+t7  DFA MIN States:   175 Transitions:  4647 Storage:  130K
+t8  DFA MIN States:   334 Transitions:  8873 Storage:  131K
+t9  DFA MIN States:   554 Transitions: 14692 Storage:  261K
+t10  DFA MIN States:   832 Transitions: 22014 Storage:  261K
+t11  DFA MIN States:  1127 Transitions: 29718 Storage:  521K
+t12  DFA MIN States:  1421 Transitions: 37364 Storage:  521K

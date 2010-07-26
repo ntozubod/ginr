@@ -1,0 +1,97 @@
+:time;
+Al =	{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z};
+Vo =	{a,e,i,o,u};
+Co =	Al - Vo;
+CAl =	Al $ (0,0);
+
+
+Ny01 =	   ('mac', 'mcc')	CAl*
+	|| ('kn',  'nn')	CAl*
+	|| ('k',   'c')		CAl*
+	|| ('ph',  'ff')	CAl*
+	|| ('pf',  'ff')	CAl*
+	|| ('sch', 'sss')	CAl*
+	||			CAl*;
+
+
+Ny02 =	   CAl*		('ee', 'y')
+	|| CAl*		('ie', 'y')
+	|| CAl*		('dt', 'd')
+	|| CAl*		('rt', 'd')
+	|| CAl*		('rd', 'd')
+	|| CAl*		('nt', 'd')
+	|| CAl*		('nd', 'd')
+	|| CAl*;
+
+
+Ny05 =	(^,^) | CAl [_] CAl* @ ( CAl*
+
+# Step 5a:
+
+	|| CAl* ('_',^)
+	|| CAl* ('_ev','a_f')					CAl*
+	|| CAl* ('_' Vo,'a_')					CAl*
+
+# Step 5b:
+
+	|| CAl* ('_q','g_')					CAl*
+	|| CAl* ('_z','s_')					CAl*
+	|| CAl* ('_m','n_')					CAl*
+
+# Step 5c:
+
+	|| CAl* ('_kn','n_n')					CAl*
+	|| CAl* ('_k','c_')					CAl*
+
+# Step 5d:
+
+	|| CAl* ('_sch','s_ss')					CAl*
+	|| CAl* ('_ph','f_f')					CAl*
+
+# Step 5e:
+
+	|| CAl* (Co $ (0,0 0)) ('_h','_')			CAl*
+	|| CAl* (Al $ (0,0 0)) ('_h','_') (Co $ (0,0))		CAl*
+
+# Step 5f:
+
+	|| CAl* (Vo $ (0,0 0)) ('_w','_')			CAl*
+
+	|| CAl* ('_',^) (Al $ (0,0)) (^,'_')			CAl*
+						:clsseq );
+
+
+Ny06 =	{ (a+,a), (b+,b), (c+,c), (d+,d), (e+,e),
+	  (f+,f), (g+,g), (h+,h), (i+,i), (j+,j),
+	  (k+,k), (l+,l), (m+,m), (n+,n), (o+,o),
+	  (p+,p), (q+,q), (r+,r), (s+,s), (t+,t),
+	  (u+,u), (v+,v), (w+,w), (x+,x), (y+,y), (z+,z) }*
+	@@ ( Al* (Al $ 0 0) Al* :acomp );
+
+
+Ny07 =	   CAl*		('s', ^)
+	|| CAl*;
+
+
+Ny08 =	   CAl*		('ay', 'y')
+	|| CAl*;
+
+
+Ny09 =	   CAl*		('a', ^)
+	|| CAl*;
+
+
+Nysiis = Ny01 @ Ny02 @ Ny05 @ Ny06 @ Ny07 @ Ny08 @ Ny09;
+:save Nysiis;
+
+Ny01   :prsseq Ny01.ps;
+Ny02   :prsseq Ny02.ps;
+Ny05   :prsseq Ny05.ps;
+Ny06   :prsseq Ny06.ps;
+Ny07   :prsseq Ny07.ps;
+Ny08   :prsseq Ny08.ps;
+Ny09   :prsseq Ny09.ps;
+Nysiis :prsseq Nysiis.ps;
+
+:free;
+:time;
