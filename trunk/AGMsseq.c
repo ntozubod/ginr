@@ -444,7 +444,8 @@ done:
     V_destroy( Vs );
     A = A_rename( A, 0 );
     A = A_close( A );
-    A-> A_mode = DFA;
+    A-> A_mode = SSEQ;
+    A-> A_ems = 1;
     if ( A_report ) {
 	fprintf( fpout, "<-- A_sseq  " );
 	(void) A_rept( A );

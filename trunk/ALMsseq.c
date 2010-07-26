@@ -18,6 +18,7 @@ register A_OBJECT A;
 {
 	register int i, j, tmp;
 	register A_row *p, *pz;
+int tt;
 	int n, hsize, base, head, current, father, son, gap, vlen;
 	int k, sig_lim;
 	int aa, bb, cc, nq, len, from, to, label, hi_next, try;
@@ -189,6 +190,17 @@ idone:
 		heap[ ++hsize ] = A-> A_p[ j ];
 	    fr_coeff[ j ] = V_vec( Vs, fvec[ len + i ] );
 	}
+/*
+printf( "Processing state %d\n", current );
+printf( "state coeff\n" );
+for( i = 0; i < len; i++ ) {
+j = fvec[ i ];
+printf( "%5d ", j );
+for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
+printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
+printf( "\n" );
+}
+*/
 	if ( hsize == 0 ) continue;
 	for( base = hsize / 2; base > 0; --base ) {
 	    insert = heap[ base ];
@@ -252,6 +264,17 @@ idone:
 		label = last-> A_b;
 		if ( label == 1 ) label = 2;
 		to = hi_next;
+/*
+printf( "Destination state\n" );
+printf( "state coeff\n" );
+for( i = 0; i < vlen; i++ ) {
+j = vec[ i ];
+printf( "%5d ", j );
+for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
+printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
+printf( "\n" );
+}
+*/
 		for( j = 0; ; j++ ) {
 		    try = to_coeff[vec[0]][j];
 		    if ( try == MAXSHORT ) goto done;
@@ -359,14 +382,15 @@ done:
 			        to_coeff[ p-> A_c ] = s_alloc( len + 1 );
 			        veccpy( to_coeff[ p-> A_c ],
 				        to_coeff[ p-> A_a ] );
-			        if ( st_len[ p-> A_a ] == 0 ) {
-		    		    to_coeff[ p-> A_c ]
-		        	        [ len - st_len[ p-> A_c ] - 1 ]
-				        = p-> A_b / 2;
-				    veccpy( to_coeff[ p-> A_c ]
-				        + ( len - st_len[ p-> A_c ] ),
-		        	        st_ptr[ p-> A_c ] );
-			        }
+				tt = len - st_len[ p-> A_c ] - 1;
+				if ( tt >= 0 && tt < len )
+		    		    to_coeff[ p-> A_c ][ tt ] = p-> A_b / 2;
+				tt = len - st_len[ p-> A_c ];
+				if ( tt < 0 ) tt = 0;
+				if ( tt <= len )
+				    veccpy( to_coeff[ p-> A_c ] + tt,
+		        	        st_ptr[ p-> A_c ]
+					+ tt - ( len - st_len[ p-> A_c ] ) );
 			        if ( save_coeff ) {
 		    		    if ( veccmp( save_coeff,
 				            to_coeff[ p-> A_c ] )
@@ -429,7 +453,8 @@ done:
     V_destroy( Vs );
     A = A_rename( A, 0 );
     A = A_close( A );
-    A-> A_mode = DFA;
+    A-> A_mode = SSEQ;
+    A-> A_ems = 1;
     if ( A_report ) {
 	fprintf( fpout, "<-- A_sseq  " );
 	(void) A_rept( A );

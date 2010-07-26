@@ -66,6 +66,7 @@ register A_OBJECT A;
 
 	if ( A-> A_nrows == 0 ) {
 		A-> A_mode = NFA;
+		A-> A_ems = 0;
 		A-> A_nT = 1;
 		A-> A_nQ = 2;
 		A-> A_nS = 2;

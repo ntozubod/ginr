@@ -26,7 +26,6 @@ char *s;
 {
 	fprintf( fpout, "*** %s ***\n", s );
 	fflush( fpout );
-	abort();
 	exit( 1 );
 }
 

@@ -19,6 +19,7 @@ A_OBJECT A_create()
 	A = (A_OBJECT) Salloc( sizeof(struct A_desc) );
 	A-> Type =	A_Object;
 	A-> A_mode =	OPEN;
+	A-> A_ems =	0;
 	A-> A_nT =	1;
 	A-> A_nQ =	2;
 	A-> A_nS =	2;
@@ -50,6 +51,8 @@ register A_OBJECT A;
 		fprintf( fpout, "  Empty Automaton\n" );
 		return( A );
 	}
+	if ( A-> A_ems )	fprintf( fpout, "*" );
+	else			fprintf( fpout, " " );
 	switch ( A-> A_mode ) {
 		case OPEN:	fprintf( fpout, "UPDATE  " ); break;
 		case NFA:	fprintf( fpout, "NFA     " ); break;
@@ -59,6 +62,8 @@ register A_OBJECT A;
 		case NFA_CLOSED:fprintf( fpout, "CLOSED  " ); break;
 		case DFA:	fprintf( fpout, "DFA     " ); break;
 		case DFA_MIN:	fprintf( fpout, "DFA MIN " ); break;
+		case SSEQ:	fprintf( fpout, "SSEQ    " ); break;
+		case SSEQ_MIN:	fprintf( fpout, "SSEQMIN "  ); break;
 	}
 	fprintf( fpout, "States: %-6d Trans: %-6d", A-> A_nQ, A-> A_nrows );
 	fprintf( fpout, " Tapes: %-2d", A-> A_nT );
@@ -88,6 +93,8 @@ register A_OBJECT A1, A2;
 	}
 					t_int = A2-> A_mode;
 	A2-> A_mode = A1-> A_mode;	A1-> A_mode = t_int;
+					t_int = A2-> A_ems;
+	A2-> A_ems = A1-> A_ems;	A1-> A_ems = t_int;
 					t_int = A2-> A_nT;
 	A2-> A_nT = A1-> A_nT;		A1-> A_nT = t_int;
 					t_int = A2-> A_nQ;
@@ -121,4 +128,56 @@ register A_OBJECT A;
 			newA-> A_p[i] = newA-> A_t + (A-> A_p[i] - A-> A_t);
 	}
 	return( newA );
+}
+
+A_OBJECT A_deems( A )
+register A_OBJECT A;
+{
+	int new_mode;
+	int lst_em;
+	register A_row *p;
+
+	if ( !( A-> A_ems ) ) return A;
+	lst_em = 2 * A-> A_nT - 1;
+	if ( A-> A_mode < NFA_EQLAM )	new_mode = A-> A_mode;
+	else				new_mode = NFA_EQLAM;
+	A = A_open( A );
+	for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
+		if ( p-> A_b > 1 && p-> A_b <= lst_em ) p-> A_b = 0;
+	A = A_close( A );
+	A-> A_mode = new_mode;
+	A-> A_ems = 0;
+	return A;
+}
+
+A_OBJECT A_adems( A )
+register A_OBJECT A;
+{
+	int new_mode;
+	int fst_em, lst_em;
+	register int i;
+	register int base;
+	register A_row *p;
+
+	if ( A-> A_ems ) return A;
+	if ( A-> A_nT == 1 )
+		Error( "Can't add endmarkers to one tape automaton" );
+	fst_em = A-> A_nT;
+	lst_em = 2 * A-> A_nT - 1;
+	if ( A-> A_mode < DFA_MIN )	new_mode = A-> A_mode;
+	else				new_mode = DFA_MIN;
+	A = A_open( A );
+	base = A-> A_nQ;
+	for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
+		if ( p-> A_b == 1 ) {
+			p-> A_b = fst_em;
+			p-> A_c = base;
+		}
+	for ( i = fst_em + 1; i <= lst_em; i++ )
+		A = A_add( A, base + i - fst_em - 1, i, base + i - fst_em );
+	A = A_add( A, base + lst_em - fst_em, 1, FINAL );
+	A = A_close( A );
+	A-> A_mode = new_mode;
+	A-> A_ems = 1;
+	return A;
 }

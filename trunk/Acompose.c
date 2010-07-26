@@ -11,11 +11,15 @@ A_OBJECT A_compose( A1, A2 )
 register A_OBJECT A1, A2;
 {
 	register A_OBJECT A;
-	int current, s1, s2, t1, t2, cur_a, cur_b, flag;
+	int current, s1, s2, t1, t2, cur_a, cur_b, flag, flag2;
 	A_row *p1, *p1z, *p2, *p2z;
 	U_OBJECT U;
 	A_row *cur_st;
 
+	if ( ! ( A1-> A_ems && A2-> A_ems ) ) {
+		if ( A1-> A_ems ) A1 = A_deems( A1 );
+		if ( A2-> A_ems ) A2 = A_deems( A2 );
+	}
 	if ( A1-> A_nT == 1 && A2-> A_nT == 1 ) {
 		A_destroy( A1 );
 		A_destroy( A2 );
@@ -37,6 +41,23 @@ register A_OBJECT A1, A2;
 		cur_a = cur_st-> A_a;
 		cur_b = cur_st-> A_b;
 		flag  = cur_st-> A_c;
+		flag2 = 0;
+		if ( flag || A2-> A_nT > 1 ) {
+			p2  = A2-> A_p[ cur_b ];
+			p2z = A2-> A_p[ cur_b + 1 ];
+			t2 = (-1);
+			while ( p2 < p2z ) {
+				if ( A2-> A_nT == 2 ) {
+					t2 = (p2-> A_b) & 1;
+				} else {
+					t2 = (p2-> A_b) % (A2-> A_nT);
+				}
+				if ( p2-> A_b == 1 ) t2 = 0;
+				if ( t2 == 0 ) break;
+				++p2;
+			}
+			if ( t2 != 0 ) flag2 = 1;
+		}
 		p1  = A1-> A_p[ cur_a ];
 		p1z = A1-> A_p[ cur_a + 1 ];
 		p2  = A2-> A_p[ cur_b ];
@@ -83,7 +104,7 @@ register A_OBJECT A1, A2;
 					s2 = (-1);
 				}
 			} else if ( s1 <= s2 && t1 < A1-> A_nT - 1 ) {
-				if ( s1 > 0 )
+				if ( !flag2 && s1 > 0 )
 				A = A_add( A, current,
 					( A-> A_nT == 1 ? s1 :
 					( A-> A_nT == 2 ? (s1 << 1) + t1 :

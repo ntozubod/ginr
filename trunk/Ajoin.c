@@ -16,6 +16,10 @@ register A_OBJECT A1, A2;
 	U_OBJECT U;
 	A_row *cur_st;
 
+	if ( !( A1-> A_ems && A2-> A_ems ) ) {
+		if ( A1-> A_ems ) A1 = A_deems( A1 );
+		if ( A2-> A_ems ) A2 = A_deems( A2 );
+	}
 	if ( A1-> A_nT == 1 && A2-> A_nT == 1 ) {
 		return( A_intersect( A1, A2 ) );
 	}

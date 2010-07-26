@@ -118,5 +118,7 @@ register A_OBJECT A1;
     V_destroy( V );
     Sfree( (char *) vec );
     A1 = A_min( A_rename( A1, 0 ) );
+    A1-> A_mode = SSEQ_MIN;
+    A1-> A_ems = 1;
     return( A1 );
 }
