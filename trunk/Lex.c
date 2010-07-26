@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "O.h"
 #include "y.tab.h"
@@ -30,11 +32,7 @@ char * s;
     }
 }
 
-#ifdef UNIX
 #define PROMT	if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
-#else
-#define PROMT	
-#endif
 
 int ch = ' ';
 char	token[512];
@@ -137,10 +135,6 @@ yylex()
     case '}':	return( RBRACE );
 /*  case '~':	not used    */
 
-#ifdef CMS
-    case 0300:	return( LBRACE );
-    case 0320:	return( RBRACE );
-#endif
     case '"': case '<': case '>': case '~':
 	fprintf( fpout, "Reserved character: %c\n", d );
 	return( d );
@@ -259,12 +253,7 @@ char *argv[];
 	exit (1) ;
     }
 
-#ifdef CMS
-    if ( isatty(fpout) ) {
-#endif
-#ifdef UNIX
     if ( isatty(fileno(fpout)) ) {
-#endif
 
 fprintf( fpout, "\n" );
 fprintf( fpout, "II  N     N  RRRRRR\n" );
@@ -275,22 +264,12 @@ fprintf( fpout, "II  N    NN  R     R" );
 fprintf( fpout, "                                 (For help type   :help;)\n" );
 fprintf( fpout, "\n" );
 
-#ifdef CMS
     } else {
 	fprintf( fpout, "I N R -- V %s, %s", Version, Date );
 	if ( fpin != stdin )
 	    fprintf( fpout, "  (Source file: %s)", file_in ) ;
 	fprintf( fpout, "\n\n\n" );
     }
-#endif
-#ifdef UNIX
-    } else {
-	fprintf( fpout, "I N R -- V %s, %s", Version, Date );
-	if ( fpin != stdin )
-	    fprintf( fpout, "  (Source file: %s)", file_in ) ;
-	fprintf( fpout, "\n\n\n" );
-    }
-#endif
 
     TT = T_create();
     if ( T_insert( TT, "^^" ) != 0

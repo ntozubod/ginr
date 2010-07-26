@@ -9,15 +9,12 @@ Alenmin.o Astems.o Asseq.o Aclsseq.o ALMsseq.o AGMsseq.o T.o V.o R.o U.o S.o \
 util.o Lex.o Colon.o y.tab.o
 SOURCE 	= Makefile $(HFILES) localc.h localh.h locals.h $(CFILES) Parse.y \
 compcms.exec cwinr.exec comphw.exec
-SUNFILES = Makefile O.h locals.h $(CFILES) Parse.y
-CMSFILES = O.h localc.h y.tab.h $(CFILES) y.tab.c compcms.exec cwinr.exec
-HWFILES  = O.h localh.h $(CFILES) y.tab.c comphw.exec
 
 .c.o:
 	cc -O -c $*.c
 
-tinr:	$(OFILES)
-	cc -O $(OFILES) -o tinr
+ginr:	$(OFILES)
+	cc -O $(OFILES) -o ginr
 
 inrx.a:
 	echo hi >inrx.a
@@ -25,9 +22,8 @@ inrx.a:
 	ar q inrx.a $(OFILES)
 	ranlib inrx.a
 
-install:	tinr inrx.a
-	mv tinr /u/jhjohnson/bin/inrx
-	mv inrx.a /u/jhjohnson/lib/inrx.a
+install:	ginr
+	cp -p ginr ~/bin
 
 lint:	y.tab.c
 	lint $(CFILES) y.tab.c
@@ -39,33 +35,5 @@ y.tab.c y.tab.h:	Parse.y
 
 Lex.o:	y.tab.h
 
-hpr:
-	pr $(SOURCE) | lpr -Phw
-
-lpr:
-	pr $(SOURCE) | lpr
-
 clean:
-	rm $(OFILES) y.tab.c
-
-installdragon:
-	rcp /u/jhjohnson/bin/inrx watdragon:/u/jhjohnson/bin/inrx
-	rcp /u/jhjohnson/lib/inrx.a watdragon:/u/jhjohnson/lib/inrx.a
-	rsh watdragon "ranlib /u/jhjohnson/lib/inrx.a"
-	
-sol:
-	rcp -p $(SUNFILES) watsol:/u/jhjohnson/INR/src
-	rsh watsol "cd /u/jhjohnson/INR/src; mv locals.h local.h; make"
-
-installsol:	sol
-	rsh watsol "cd /u/jhjohnson/INR/src; make install"
-
-installall:	install installdragon installsol
-
-cms:	$(CMSFILES)
-	Uenc $(CMSFILES) > INR.UENC
-	vmcopy watdcs%jjohnson if=INR.UENC name=INR.UENC width=80
-	rm INR.UENC
-
-hw:
-	hsend -m -u jhjohnson/rata $(HWFILES)
+	rm -f $(OFILES) y.tab.h y.tab.c
