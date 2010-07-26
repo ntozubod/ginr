@@ -1,0 +1,44 @@
+Latest changes for inrx:
+
+for 1.1b Dec 9
+
+!!		New shuffle operator
+[]		Tape shifting operator (add one to each tape)
+:lenmin		Returns a machine recognizing words of minimum length
+:length		Returns length of minimum length word
+:enum  or :;	Much Much more efficient
+
+----------------------------------------------------------------------------
+#		Comment up to end of line
+||		New ELSEOR operator
+:read fn	replaces <fn       NB: might need surrounding parens in expr
+:load fn	Synonym	for :read fn			"
+:get var	replaces <var				"
+:readwords fn	replaces <<fn				"
+_Last_		value of last expression
+\n,\t,\',\\	now denote newline, tab, quote, and backslash in a
+			'' string or `` token (\_ means blank for
+			compatibility)
+:bye		Another way to exit (for Mert)
+			:done, :quit, :stop, or Cntl-D also allowed
+
+''''		Unusual synonym for '\''
+````		Unusual synonym for `\``
+"		must become _Last_
+""		no longer works
+"""		no longer works
+|!		must become || (Grace period)
+%		no longer works
+<		no longer works
+<<		no longer works
+
+var = :read;	statement to read filename var into variable var.
+var = :load;	statement to load filename var into variable var
+			(if you would rather load than read)
+:save var;	statement to save variable var into filename var.
+:pr var;	statement to pr variable var into filename var.
+
+The internal representation of the empty word transition is now ^^ so that
+^ (One letter) can represent the circumflex character.  The problem with
+" and ^ in '' strings is now fixed.  These characters now behave the same
+as other characters.

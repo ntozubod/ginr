@@ -44,6 +44,16 @@ A_OBJECT A_lambda()
 	return( A_add( A_create(), START, 1, FINAL ) );
 }
 
+A_OBJECT A_letter( t, x )
+int t, x;
+{
+	register A_OBJECT A;
+	A = A_create();
+	A-> A_nT = t + 1;
+	if ( x == 1 && t == 0 ) A-> A_nT = 2;
+	return( A_add( A_add( A, START, x * A-> A_nT + t, 2 ), 2, 1, FINAL ) );
+}
+
 A_OBJECT A_deecho( A, ECHO, NOECHO )
 register A_OBJECT A;
 int ECHO, NOECHO;
@@ -81,22 +91,13 @@ A_destroy( A );
 return A1;
 }
 
-A_OBJECT A_letter( t, x )
-int t, x;
-{
-	register A_OBJECT A;
-	A = A_create();
-	A-> A_nT = t + 1;
-	if ( x == 1 && t == 0 ) A-> A_nT = 2;
-	return( A_add( A_add( A, START, x * A-> A_nT + t, 2 ), 2, 1, FINAL ) );
-}
-
 A_OBJECT A_opt( A )
 register A_OBJECT A;
 {
 	register int new_state;
 	register A_row *p;
 
+	if ( A-> A_ems ) A = A_deems( A );
 	A = A_open( A );
 	new_state = A-> A_nQ;
 	for( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
@@ -114,6 +115,7 @@ register A_OBJECT A;
 	register int new_state;
 	register A_row *p;
 
+	if ( A-> A_ems ) A = A_deems( A );
 	A = A_open( A_trim( A ) );
 	new_state = A-> A_nQ;
 	for( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
@@ -138,6 +140,8 @@ register A_OBJECT A1, A2;
 	register int base, a, c;
 	register A_row *p;
 
+	if ( A1-> A_ems && !(A2-> A_ems) ) A1 = A_deems( A1 );
+	if ( A2-> A_ems && !(A1-> A_ems) ) A2 = A_deems( A2 );
 	A_conform( A1, A2 );
 	A1 = A_open( A1 );
 	base = A1-> A_nQ;
@@ -155,12 +159,46 @@ register A_OBJECT A1, A2;
 	return( A1 );
 }
 
+A_OBJECT A_percent( A1, A2 )
+register A_OBJECT A1, A2;
+{
+	register int base, a, b, c;
+	register A_row *p;
+
+	if ( A1-> A_ems ) A1 = A_deems( A1 );
+	if ( A2-> A_ems ) A2 = A_deems( A2 );
+	A_conform( A1, A2 );
+	A1 = A_open( A1 );
+	base = A1-> A_nQ;
+	for( p = A1-> A_t + A1-> A_nrows; --p >= A1-> A_t; ) {
+		if ( p-> A_a <= FINAL ) p-> A_a += base;
+		if ( p-> A_c <= FINAL ) p-> A_c += base;
+		if ( p-> A_b == 1 ) p-> A_b = 0;
+	}
+	for( p = A2-> A_t + A2-> A_nrows; --p >= A2-> A_t; ) {
+		a = p-> A_a + base + 2;
+		b = p-> A_b;
+		c = p-> A_c + base + 2;
+		if ( b == 1 ) b = 0;
+		A1 = A_add( A1, a, b, c );
+	}
+	A1 = A_add( A1, START, 0, base );
+	A1 = A_add( A1, START, 0, base + 2 );
+	A1 = A_add( A1, base + 1, 1, FINAL );
+	A1 = A_add( A1, base + 3, 1, FINAL );
+	A1 = A_add( A1, base + 1, 0, base + 2 );
+	A1 = A_add( A1, base + 3, 0, base );
+	A_destroy( A2 );
+	return( A1 );
+}
+
 A_OBJECT A_concat( A1, A2 )
 register A_OBJECT A1, A2;
 {
 	register int base, a, c;
 	register A_row *p;
 
+	if ( A1-> A_ems ) A1 = A_deems( A1 );
 	A_conform( A1, A2 );
 	A1 = A_open( A1 );
 	base = A1-> A_nQ - 1;
@@ -190,6 +228,8 @@ register A_OBJECT A1, A2;
 	R_OBJECT R;
 	R_row *cur_st;
 
+	if ( A1-> A_ems && !(A2-> A_ems) ) A1 = A_deems( A1 );
+	if ( A2-> A_ems && !(A1-> A_ems) ) A2 = A_deems( A2 );
 	A_conform( A1, A2 );
 	A1 = A_min( A1 );
 	A2 = A_min( A2 );
@@ -240,6 +280,8 @@ register A_OBJECT A1, A2;
 	R_OBJECT R;
 	R_row *cur_st;
 
+	if ( A1-> A_ems && !(A2-> A_ems) ) A1 = A_deems( A1 );
+	if ( A2-> A_ems && !(A1-> A_ems) ) A2 = A_deems( A2 );
 	A_conform( A1, A2 );
 	A1 = A_min( A1 );
 	A2 = A_min( A2 );
@@ -302,6 +344,8 @@ register A_OBJECT A1, A2;
 	R_OBJECT R;
 	R_row *cur_st;
 
+	if ( A1-> A_ems && !(A2-> A_ems) ) A1 = A_deems( A1 );
+	if ( A2-> A_ems && !(A1-> A_ems) ) A2 = A_deems( A2 );
 	A_conform( A1, A2 );
 	A1 = A_min( A1 );
 	A2 = A_min( A2 );
@@ -386,6 +430,7 @@ register A_OBJECT A;
 {
 	register A_row *p;
 
+	if ( A-> A_ems ) A = A_deems( A );
 	A = A_open( A_trim( A ) );
 	for( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
 		if ( p-> A_b == 1 ) {
@@ -412,6 +457,7 @@ register A_OBJECT A;
 	int new_state;
 	int old_mode;
 
+	if ( A-> A_ems ) A = A_deems( A );
 	old_mode = A-> A_mode;
 	A = A_open( A );
 	new_state = A-> A_nQ;
@@ -442,6 +488,8 @@ register A_OBJECT A1, A2;
 	R_OBJECT R;
 	R_row *cur_st;
 
+	if ( A1-> A_ems && !(A2-> A_ems) ) A1 = A_deems( A1 );
+	if ( A2-> A_ems && !(A1-> A_ems) ) A2 = A_deems( A2 );
 	A_conform( A1, A2 );
 	A1 = A_min( A1 );
 	A2 = A_min( A2 );

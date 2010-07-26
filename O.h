@@ -63,7 +63,8 @@ typedef struct U_desc {
 
 typedef struct A_desc {
 	int		Type;
-	int		A_mode;
+	SHORT		A_mode;
+	SHORT		A_ems;
 	int		A_nT;
 	int		A_nQ;
 	int		A_nS;
@@ -81,6 +82,8 @@ typedef struct A_desc {
 #define NFA_CLOSED	5
 #define DFA		6
 #define DFA_MIN		7
+#define SSEQ		8
+#define SSEQ_MIN	9
 
 #define START		0
 #define FINAL		1
@@ -131,6 +134,8 @@ void		A_destroy();
 A_OBJECT	A_rept();
 void		A_exchange();
 A_OBJECT	A_copy();
+A_OBJECT	A_deems();
+A_OBJECT	A_adems();
 A_OBJECT	A_add();
 A_OBJECT	A_open();
 A_OBJECT	A_close();
@@ -154,6 +159,7 @@ A_OBJECT	A_opt();
 A_OBJECT	A_plus();
 A_OBJECT	A_star();
 A_OBJECT	A_union();
+A_OBJECT	A_percent();
 A_OBJECT	A_concat();
 A_OBJECT	A_intersect();
 A_OBJECT	A_differ();

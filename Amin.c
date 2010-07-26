@@ -19,6 +19,7 @@ register A_OBJECT A;
 	register int f, s, j, ns;
 	int x, b;
 	A_row *lo, *hi;
+	int mode;
 
 	int nB, wait_H, JL_H, hsize;
 	SHORT *in_B, *B_card, *B_H, *B_N, *B_L;
@@ -29,9 +30,12 @@ register A_OBJECT A;
 
 	if ( A == NULL ) Error( "A_min: No OBJECT" );
 	if ( A-> A_mode <  DFA ) A = A_subs( A );
-	if ( A-> A_mode >= DFA_MIN ) return( A );
+	mode = A-> A_mode;
+	if ( mode == DFA_MIN || mode == SSEQ_MIN ) return( A );
+	if ( mode == DFA ) mode = DFA_MIN;
+	if ( mode == SSEQ ) mode = SSEQ_MIN;
 	if ( A-> A_nrows == 0 || A-> A_nQ <= 2 ) {
-		A-> A_mode = DFA_MIN;
+		A-> A_mode = mode;
 		return( A );
 	}
 
@@ -242,7 +246,7 @@ heap[ f ] = lo;
 	A = A_rename( A, in_B );
 	Sfree( (char *) in_B );
 
-	A-> A_mode = DFA_MIN;
+	A-> A_mode = mode;
 	if ( A_report ) {
 		fprintf( fpout, "<-- A_min  " );
 		(void) A_rept( A );

@@ -142,9 +142,12 @@ if ( c >= 10 ) {
 				}
 				A-> A_nT = ntapes = tape + 1;
 			}
-			symb = T_insert( T_Sigma, t + 2 ) * ntapes + tape;
+			symb = T_insert( T_Sigma, t + 2 );
+			if ( symb == 1 && ntapes > 1 ) A-> A_ems = 1;
+			symb = symb * ntapes + tape;
 		} else {
 			symb = T_insert( T_Sigma, t );
+			if ( symb == 1 && ntapes > 1 ) A-> A_ems = 1;
 			if ( symb != 1 ) symb *= ntapes;
 		}
 		if ( (t = get_name()) == NULL ) {
@@ -208,9 +211,12 @@ if ( c >= 10 ) {
 				}
 				A-> A_nT = ntapes = tape + 1;
 			}
-			symb = T_insert( T_Sigma, t + 2 ) * ntapes + tape;
+			symb = T_insert( T_Sigma, t + 2 );
+			if ( symb == 1 && ntapes > 1 ) A-> A_ems = 1;
+			symb = symb * ntapes + tape;
 		} else {
 			symb = T_insert( T_Sigma, t );
+			if ( symb == 1 && ntapes > 1 ) A-> A_ems = 1;
 			if ( symb != 1 ) symb *= ntapes;
 		}
 		A = A_add( A, from, symb, to );
@@ -400,7 +406,7 @@ register T_OBJECT T_Sigma;
 
 	if ( A == NULL || T_Sigma == NULL ) return( A );
 	if ( A-> A_nT != 2 ) Error( "A_prsseq: Not two tapes" );
-	A = A_min( A_sseq( A ) );
+	if ( A-> A_mode < SSEQ ) A = A_min( A_sseq( A ) );
 	if ( file != NULL ) {
 		if ( strcmp( file, "devnull" ) == 0 ) return( A );
 		else fp = fopen( cnvrtn(file), "w" );

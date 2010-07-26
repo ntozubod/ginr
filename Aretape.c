@@ -18,6 +18,7 @@ T_OBJECT T;
 	char * chp;
 	int trans[100], tp[100];
 
+	if ( A1-> A_ems ) A1 = A_deems( A1 );
 	if ( A1 == NULL || A2 == NULL )
 			Error( "A_rename: NULL Automaton" );
 	if ( A1-> A_nT > 10 || A2-> A_nT > 10 )
@@ -83,6 +84,8 @@ register A_OBJECT A1, A2;
 	register A_row *p;
 	int sigma, tape, ntapes;
 
+	if ( A1-> A_ems ) A1 = A_deems( A1 );
+	if ( A2-> A_ems ) A2 = A_deems( A2 );
 	if ( A1 == NULL || A2 == NULL )
 			Error( "A_comma: NULL Automaton" );
 	if ( ( ntapes = A1-> A_nT + A2-> A_nT ) > 10 )
