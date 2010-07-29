@@ -1,69 +1,175 @@
-This is TeX, C Version 2.0 for Waterloo UNIX (preloaded format=lplain 88.3.10)  8 JUL 1988 11:27
+This is pdfTeX, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2010.5.3)  29 JUL 2010 10:17
+entering extended mode
 **main
-(main.tex
-LaTeX Version 2.09 - Released 18 December 1985
-(/usr/lib/tex/macros/article.sty
-Document Style 'article'. Released 23 September 1985
-(/usr/lib/tex/macros/art11.sty)
-\c@part=\count78
-\c@section=\count79
-\c@subsection=\count80
-\c@subsubsection=\count81
-\c@paragraph=\count82
-\c@subparagraph=\count83
-\c@figure=\count84
-\c@table=\count85
-) (/usr/lib/tex/macros/clbiba.sty)
-(/u/jhjohnson/texlib/beaver.sty) (/usr/lib/tex/macros/waterloo.sty) (main.aux)
-(001intro.tex [1
+(./main.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, arabic, basque, bulgarian, coptic, welsh, czech, slovak, german, ng
+erman, danish, esperanto, spanish, catalan, galician, estonian, farsi, finnish,
+ french, greek, monogreek, ancientgreek, croatian, hungarian, interlingua, ibyc
+us, indonesian, icelandic, italian, latin, mongolian, dutch, norsk, polish, por
+tuguese, pinyin, romanian, russian, slovenian, uppersorbian, serbian, swedish, 
+turkish, ukenglish, ukrainian, loaded.
+(/usr/share/texmf/tex/latex/base/latex209.def
+File: latex209.def 1998/05/13 v0.52 Standard LaTeX file
 
-] [2] [3]) (002lex.tex [4]) (003expr.tex [5] [6] [7] [8]
-[9] [10] [11] [12]) (004rate.tex [13] [14]
-Underfull \vbox (badness 1655) has occurred while \output is active
-\vbox(576.0+2.12917)x360.0, glue set 2.54974
-.\glue(\topskip) 2.39584
-.\hbox(7.60416+2.12917)x360.0, glue set - 0.67264
-..\elvrm T
-..\elvrm h
-..\kern-0.30417
-..\elvrm u
-..\elvrm s
-..etc.
-.\glue(\baselineskip) 3.86668
-.\hbox(7.60416+2.12917)x360.0, glue set 0.48064
-..\elvrm r
-..\elvrm e
-..\elvrm g
-..\discretionary
-...\elvrm -
-..\elvrm u
-..etc.
-.\penalty 100
-.etc.
 
- [15]
-[16] [17] [18] [19]
-Underfull \vbox (badness 1377) has occurred while \output is active
-\vbox(576.0+0.91249)x360.0, glue set 2.39732
-.\glue(\topskip) 0.48004
-.\hbox(9.51996+31.28004)x360.0, glue set 11.9538fil
-..\glue(\leftskip) 0.0 plus 1.0fil
-..\hbox(0.0+0.0)x0.0
-..\glue 0.0
-..\hbox(0.0+0.0)x0.0
-...\glue 0.0
-...\glue 0.0
-...\glue -5.47499
-...\hbox(0.0+0.0)x0.0
-...\glue 5.47499
-..\penalty 0
-..etc.
-.\penalty -51
-.\glue 9.0 plus 3.0 minus 5.0
-.\glue -9.0 plus -3.0 minus -5.0
-.etc.
+          Entering LaTeX 2.09 COMPATIBILITY MODE
+ *************************************************************
+    !!WARNING!!    !!WARNING!!    !!WARNING!!    !!WARNING!!   
+ 
+ This mode attempts to provide an emulation of the LaTeX 2.09
+ author environment so that OLD documents can be successfully
+ processed. It should NOT be used for NEW documents!
+ 
+ New documents should use Standard LaTeX conventions and start
+ with the \documentclass command.
+ 
+ Compatibility mode is UNLIKELY TO WORK with LaTeX 2.09 style
+ files that change any internal macros, especially not with
+ those that change the FONT SELECTION or OUTPUT ROUTINES.
+ 
+ Therefore such style files MUST BE UPDATED to use
+          Current Standard LaTeX: LaTeX2e.
+ If you suspect that you may be using such a style file, which
+ is probably very, very old by now, then you should attempt to
+ get it updated by sending a copy of this error message to the
+ author of that file.
+ *************************************************************
 
- [20])
-(005coerc.tex [21]) (006stat.tex [22] [23]) (007inte.tex) (main.bbl) [24]
-(main.aux)
-Output written on main.dvi (24 pages, 57108 bytes).
+\footheight=\dimen102
+\@maxsep=\dimen103
+\@dblmaxsep=\dimen104
+\@cla=\count79
+\@clb=\count80
+\mscount=\count81
+(/usr/share/texmf/tex/latex/base/tracefnt.sty
+Package: tracefnt 1997/05/29 v3.0j Standard LaTeX package (font tracing)
+\tracingfonts=\count82
+LaTeX Info: Redefining \selectfont on input line 101.
+)
+\symbold=\mathgroup4
+\symsans=\mathgroup5
+\symtypewriter=\mathgroup6
+\symitalic=\mathgroup7
+\symsmallcaps=\mathgroup8
+\symslanted=\mathgroup9
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 293.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 294.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 295.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 301.
+LaTeX Info: Redefining \em on input line 311.
+
+(/usr/share/texmf/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+LaTeX Font Info:    Redeclaring math delimiter \lgroup on input line 375.
+LaTeX Font Info:    Redeclaring math delimiter \rgroup on input line 377.
+LaTeX Font Info:    Redeclaring math delimiter \bracevert on input line 379.
+)
+(/usr/share/texmf/tex/latex/base/article.cls
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+(/usr/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count83
+\c@section=\count84
+\c@subsection=\count85
+\c@subsubsection=\count86
+\c@paragraph=\count87
+\c@subparagraph=\count88
+\c@figure=\count89
+\c@table=\count90
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+Compatibility mode: definition of \rm ignored.
+Compatibility mode: definition of \sf ignored.
+Compatibility mode: definition of \tt ignored.
+Compatibility mode: definition of \bf ignored.
+Compatibility mode: definition of \it ignored.
+Compatibility mode: definition of \sl ignored.
+Compatibility mode: definition of \sc ignored.
+LaTeX Info: Redefining \cal on input line 506.
+LaTeX Info: Redefining \mit on input line 507.
+\bibindent=\dimen105
+) (./main.aux)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+ (./001intro.tex
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <17.28> on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 1.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 1.
+
+(/usr/share/texmf/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 18.
+ [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]) (./002lex.tex [4]
+) (./003expr.tex [5] [6] [7]
+[8] [9] [10]
+Overfull \hbox (21.99927pt too wide) in paragraph at lines 387--393
+[]\OT1/cmtt/m/n/10 R1 :pref \OT1/cmr/m/n/10 is an al-ter-nate (more ef-fi-cient
+) way of in-di-cat-ing the set []\OT1/cmtt/m/n/10 R1 / (R1 :alph)*\OT1/cmr/m/n/
+10 . 
+ []
+
+[11] [12]) (./004rate.tex [13] [14]
+Overfull \hbox (18.76805pt too wide) in paragraph at lines 129--131
+[]\OT1/cmr/m/n/10 Use the tape renum-ber-ing op-er-a-tor []\OT1/cmtt/m/n/10 $\O
+T1/cmr/m/n/10 . Then []\OT1/cmtt/m/n/10 'abc' \OT1/cmr/m/n/10 on tape 1 is []\O
+T1/cmtt/m/n/10 ( 'abc' $ 1 )\OT1/cmr/m/n/10 . 
+ []
+
+[15] [16] [17] [18] [19]) (./005coerc.tex [20]) (./006stat.tex [21] [22])
+(./007inte.tex) (./main.bbl) [23] (./main.aux) ) 
+Here is how much of TeX's memory you used:
+ 438 strings out of 94070
+ 4909 string characters out of 1165710
+ 52804 words of memory out of 3500000
+ 3737 multiletter control sequences out of 10000+50000
+ 21713 words of font info for 79 fonts, out of 1200000 for 2000
+ 645 hyphenation exceptions out of 8191
+ 27i,6n,21p,189b,291s stack positions out of 5000i,500n,6000p,200000b,5000s
+</usr/share/texmf/fonts/type1/b
+luesky/cm/cmbx10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmbx12.pfb></usr/
+share/texmf/fonts/type1/bluesky/cm/cmbx9.pfb></usr/share/texmf/fonts/type1/blue
+sky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/shar
+e/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/
+cm/cmr17.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr7.pfb></usr/share/texm
+f/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9
+.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/font
+s/type1/bluesky/cm/cmsy6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy7.pfb
+></usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/ty
+pe1/bluesky/cm/cmtt10.pfb>
+Output written on main.pdf (23 pages, 156849 bytes).
+PDF statistics:
+ 136 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 131072)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+
