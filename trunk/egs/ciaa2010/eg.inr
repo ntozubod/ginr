@@ -1,0 +1,24 @@
+
+Upper = { A };          Lower = { a };          PosDigit = { 1 };
+Digit = { 0, 1 };       Punct = { ',', '.' };   Blank = ' ';
+Token = ( Upper | Lower )+;    Number = PosDigit Digit*;
+White = Blank+;                ToLower = { ( A, a ), ( a, a ) }*;
+TCopy = ( Token @@ ToLower )  [[ T ]];
+NCopy = ( Number $ ( 0, 0 ) ) [[ N ]];
+PCopy = ( Punct $ ( 0, 0 ) )  [[ P ]];
+WCopy = ( White, Blank )      [[ W ]];
+Binst = ( , Blank )           [[ B ]];
+Copy = [[ S ]] ( TCopy | NCopy | PCopy | WCopy | Binst )* [[ E ]];
+ZAlph = { T, N, P, W, B, S, E };
+Invalid = { T, N, P } { T, N, P };
+Pretokenize = Copy @ ( ZAlph* Invalid ZAlph* :acomp );
+Tokenize    = Pretokenize :GMsseq;
+Detokenize  = Tokenize $ ( 1, 0 ) :GMsseq;
+
+Pretokenize :pr Pretokenize.pr;
+Tokenize    :pr Tokenize.pr;
+Detokenize  :pr Detokenize.pr;
+
+Tokenize :prsseq;
+Detokenize :prsseq;
+
