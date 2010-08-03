@@ -1,0 +1,146 @@
+
+% (START)  -| [ -| ]  	(FINAL)
+% (START)  \_ [ \_ ]  	5
+% (START)  , [ , ]  	7
+% (START)  . [ . ]  	7
+% (START)  1 [ 1 ]  	10
+% (START)  a [ A ]  	12
+% 5        -| [ -| ]  	(FINAL)
+% 5        , [ , ]  	7
+% 5        . [ . ]  	7
+% 5        1 [ 1 ]  	10
+% 5        a [ A ]  	12
+% 7        -| [ -| ]  	(FINAL)
+% 7        \_ [ ]  	13
+% 10       -| [ -| ]  	(FINAL)
+% 10       \_ [ ]  	14
+% 10       0 [ 0 ]  	10
+% 10       1 [ 1 ]  	10
+% 12       -| [ -| ]  	(FINAL)
+% 12       \_ [ ]  	16
+% 12       a [ A ]  	12
+% 13       -| [ \_ -| ]  	(FINAL)
+% 13       , [ , ]  	7
+% 13       . [ . ]  	7
+% 13       1 [ 1 ]  	10
+% 13       a [ A ]  	12
+% 14       -| [ \_ -| ]  	(FINAL)
+% 14       , [ , ]  	7
+% 14       . [ . ]  	7
+% 14       1 [ \_ 1 ]  	10
+% 14       a [ A ]  	12
+% 16       -| [ \_ -| ]  	(FINAL)
+% 16       , [ , ]  	7
+% 16       . [ . ]  	7
+% 16       1 [ 1 ]  	10
+% 16       a [ \_ A ]  	12
+
+% (START)  -->  (S)
+% 5        -->  (W1)
+% 7        -->  (P)
+% 10       -->  (N)
+% 12       -->  (T)
+% 13       -->  (W2)
+% 14       -->  (W4)
+% 16       -->  (W3)
+
+% (S)    -| [ -| ]  	(FINAL)
+% (S)    \_ [ \_ ]  	(W1)
+% (S)    , [ , ]  	(P)
+% (S)    . [ . ]  	(P)
+% (S)    1 [ 1 ]  	(N)
+% (S)    a [ A ]  	(T)
+
+% (W1)   -| [ -| ]  	(FINAL)
+% (W1)   , [ , ]  	(P)
+% (W1)   . [ . ]  	(P)
+% (W1)   1 [ 1 ]  	(N)
+% (W1)   a [ A ]  	(T)
+
+% (P)    -| [ -| ]  	(FINAL)
+% (P)    \_ [ ]  	(W2)
+
+% (N)    -| [ -| ]  	(FINAL)
+% (N)    \_ [ ]  	(W4)
+% (N)    0 [ 0 ]  	(N)
+% (N)    1 [ 1 ]  	(N)
+
+% (T)    -| [ -| ]  	(FINAL)
+% (T)    \_ [ ]  	(W3)
+% (T)    a [ A ]  	(T)
+
+% (W2)   -| [ \_ -| ]  	(FINAL)
+% (W2)   , [ , ]  	(P)
+% (W2)   . [ . ]  	(P)
+% (W2)   1 [ 1 ]  	(N)
+% (W2)   a [ A ]  	(T)
+
+% (W4)   -| [ \_ -| ]  	(FINAL)
+% (W4)   , [ , ]  	(P)
+% (W4)   . [ . ]  	(P)
+% (W4)   1 [ \_ 1 ]  	(N)
+% (W4)   a [ A ]  	(T)
+
+% (W3)   -| [ \_ -| ]  	(FINAL)
+% (W3)   , [ , ]  	(P)
+% (W3)   . [ . ]  	(P)
+% (W3)   1 [ 1 ]  	(N)
+% (W3)   a [ \_ A ]  	(T)
+
+\begin{frame}{Subsequential de-tokenizer}
+\TinyPicture\VCDraw{%
+\begin{VCPicture}{(0,-2)(25,13)}
+\State[S]{(2,5)}{S}
+\LargeState
+\State[W_1]{(7,5)}{W1}
+\MediumState
+\State[P]{(12,5)}{P}
+\State[N]{(20,0)}{N}
+\State[T]{(20,10)}{T}
+\LargeState
+\State[W_2]{(17,5)}{W2}
+\State[W_4]{(25,2)}{W4}
+\State[W_3]{(25,8)}{W3}
+\MediumState
+
+\Initial[w]{S}
+\Final[s]{S}
+\EdgeL{S}{W1}{\IOL{\mbox{\textvisiblespace}}{\mbox{\textvisiblespace}}}
+\LArcR[0.9]{S}{P}{\StackTwoLabels{\IOL{,}{\ ,}}{\IOL{.}{.}}}
+\LArcR[0.2]{S}{N}{\IOL{1}{1}}
+\LArcL[0.2]{S}{T}{\IOL{a}{A}}
+
+\Final[s]{W1}
+\EdgeL[0.6]{W1}{P}{\StackTwoLabels{\IOL{,}{\ ,}}{\IOL{.}{.}}}
+\LArcR[0.2]{W1}{N}{\IOL{1}{1}}
+\LArcL[0.2]{W1}{T}{\IOL{a}{A}}
+
+\Final[s]{P}
+\EdgeL[0.6]{P}{W2}{\IOL{\mbox{\textvisiblespace}}{}}
+
+\Final[se]{N}
+\EdgeR{N}{W4}{\IOL{\mbox{\textvisiblespace}}{}}
+\LoopS[0.5]{N}{\StackTwoLabels{\IOL{0}{0}}{\IOL{1}{1}}}
+
+\Final[ne]{T}
+\EdgeL{T}{W3}{\IOL{\mbox{\textvisiblespace}}{}}
+\LoopN[0.5]{T}{\IOL{a}{A}}
+
+\FinalL{e}{W2}{\IOL{}{\text{\textvisiblespace}}}
+\LArcL[0.3]{W2}{P}{\StackTwoLabels{\IOL{,}{\ ,}}{\IOL{.}{.}}}
+\EdgeL[0.3]{W2}{N}{\IOL{1}{1}}
+\EdgeR[0.3]{W2}{T}{\IOL{a}{A}}
+
+\FinalL{e}{W4}{\IOL{}{\mbox{\textvisiblespace}}}
+\ArcL[0.9]{W4}{P}{\StackTwoLabels{\IOL{,}{\ ,}}{\IOL{.}{.}}}
+\LArcL[0.15]{W4}{N}{\IOL{1}{\mbox{\textvisiblespace}1}}
+\EdgeL[0.6]{W4}{T}{\IOL{a}{A}}
+
+\FinalR{e}{W3}{\IOL{}{\mbox{\textvisiblespace}}}
+\ArcR[0.9]{W3}{P}{\StackTwoLabels{\IOL{,}{\ ,}}{\IOL{.}{.}}}
+\EdgeR[0.6]{W3}{N}{\IOL{1}{1}}
+\LArcR[0.15]{W3}{T}{\IOL{a}{\mbox{\textvisiblespace}A}}
+
+\end{VCPicture}}
+\end{frame}
+
