@@ -1,0 +1,4 @@
+2.0.3
+
+changed SHORT to be unsigned int (instead of unsigned short)
+changed MAXSHORT to be 037777777777 (32 ones)
