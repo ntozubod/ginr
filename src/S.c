@@ -342,8 +342,7 @@ register char *p;
         return( (char *)S_copy( (S_ft *)p, (int)p[1] ) + 4 );
 }
 
-int Ssize( p )
-char *p;
+int Ssize( char *p )
 {
         return( ( sizeof(S_ft) << p[-3] ) - 4 );
 }

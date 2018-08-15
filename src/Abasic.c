@@ -390,7 +390,7 @@ register A_OBJECT A1, A2;
 				p2z = A2-> A_p[ cur_st-> R_b + 1 ];
 				while( p1 < p1z || p2 < p2z ) {
 					if ( p2 == p2z
-					|| p1 < p1z && p1-> A_b < p2-> A_b ) {
+					|| ( p1 < p1z && p1-> A_b < p2-> A_b ) ) {
 						A = A_add( A, current,
 							(int)p1-> A_b,
 							R_insert( R,
@@ -399,7 +399,7 @@ register A_OBJECT A1, A2;
 							dead ) );
 						++p1;
 					} else if ( p1 == p1z
-					|| p2 < p2z && p2-> A_b < p1-> A_b ) {
+					|| ( p2 < p2z && p2-> A_b < p1-> A_b ) ) {
 						A = A_add( A, current,
 							(int)p2-> A_b,
 							R_insert( R, dead,

@@ -140,8 +140,7 @@ SHORT state;
 	return( c_vec[ state ] = count );
 }
 
-int A_card( A )
-A_OBJECT A;
+int A_card( A_OBJECT A )
 {
 	int i;
 	if ( A == NULL ) Error( "A_card: No OBJECT" );
