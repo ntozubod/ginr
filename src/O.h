@@ -155,13 +155,15 @@ int		U_insert();
 A_row *		U_rec();
 void		U_stats();
 
-A_OBJECT	A_create();
-void		A_destroy();
-A_OBJECT	A_rept();
-void		A_exchange();
-A_OBJECT	A_copy();
-A_OBJECT	A_deems();
-A_OBJECT	A_adems();
+// Acrea.c
+A_OBJECT    A_create();
+void        A_destroy( register A_OBJECT );
+A_OBJECT    A_rept( register A_OBJECT );
+void        A_exchange( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_copy( register A_OBJECT );
+A_OBJECT    A_deems( register A_OBJECT );
+A_OBJECT    A_adems( register A_OBJECT );
+
 A_OBJECT	A_add();
 A_OBJECT	A_open();
 A_OBJECT	A_close();
