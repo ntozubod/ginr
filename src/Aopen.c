@@ -34,8 +34,7 @@ SHORT *s_rena = 0;
 int f_rena = 0;
 
 A_OBJECT A_add( register A_OBJECT A,
-    register int a, register int b, register int c )
-{
+    register int a, register int b, register int c ) {
     register A_row *p;
 
     if ( A == NULL ) {
@@ -69,11 +68,9 @@ A_OBJECT A_add( register A_OBJECT A,
     if ( c >= A-> A_nQ ) {
         A-> A_nQ = c + 1; }
 
-    return( A );
-}
+    return( A ); }
 
-A_OBJECT A_open( register A_OBJECT A )
-{
+A_OBJECT A_open( register A_OBJECT A ) {
     if ( A == NULL ) {
         Error( "A_open: No OBJECT" ); }
 
@@ -81,11 +78,9 @@ A_OBJECT A_open( register A_OBJECT A )
     Sfree( (char *) A-> A_p );
     A-> A_p = NULL;
 
-    return( A );
-}
+    return( A ); }
 
-A_OBJECT A_close( register A_OBJECT A )
-{
+A_OBJECT A_close( register A_OBJECT A ) {
     register int i;
     register A_row *p, *q, *t1, *t2;
 
@@ -111,8 +106,7 @@ A_OBJECT A_close( register A_OBJECT A )
             = A-> A_p[ FINAL ]
             = A-> A_p[ 2 ]
             = A-> A_t;
-        return( A );
-    }
+        return( A ); }
 
     if ( A_report ) {
         fprintf( fpout, "--> A_close\n" ); }
@@ -220,11 +214,9 @@ A_OBJECT A_close( register A_OBJECT A )
     if ( A_report ) {
         fprintf( fpout, "<-- A_close\n" ); }
 
-    return( A );
-}
+    return( A ); }
 
-A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena )
-{
+A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena ) {
     register A_row  *p, *pz;
     register SHORT  *trena, *sp;
     int             nrena, i;
@@ -295,11 +287,9 @@ A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena )
 
     A-> A_nrows = pz - A-> A_t;
     A-> A_nQ = nrena;
-    return( A_close( A_open( A ) ) );
-}
+    return( A_close( A_open( A ) ) ); }
 
-A_OBJECT A_mkdense( register A_OBJECT A )
-{
+A_OBJECT A_mkdense( register A_OBJECT A ) {
     register A_row *p, *pz;
     register R_OBJECT R;
 
@@ -318,5 +308,4 @@ A_OBJECT A_mkdense( register A_OBJECT A )
     A-> A_nQ = R-> R_n;
 
     R_destroy( R );
-    return( A_close( A_open( A ) ) );
-}
+    return( A_close( A_open( A ) ) ); }

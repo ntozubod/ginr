@@ -172,10 +172,16 @@ A_OBJECT    A_close( register A_OBJECT );
 A_OBJECT    A_rename( register A_OBJECT, register SHORT * );
 A_OBJECT    A_mkdense( register A_OBJECT );
 
-A_OBJECT        A_load();
-A_OBJECT        A_lwds();
-A_OBJECT        A_store();
-A_OBJECT        A_save();
+// Aload.c
+char *      get_name();
+void        put_name( register char * );
+int         get_nl();
+A_OBJECT    A_load( char *, T_OBJECT );
+A_OBJECT    A_store( register A_OBJECT, char *, register T_OBJECT );
+A_OBJECT    A_save( register A_OBJECT, char *, register T_OBJECT );
+A_OBJECT    A_lwds( char *, T_OBJECT );
+A_OBJECT    A_prsseq( register A_OBJECT, char *, register T_OBJECT );
+
 A_OBJECT        A_trim();
 A_OBJECT        A_lameq();
 A_OBJECT        A_lamcm();
@@ -215,7 +221,6 @@ int             A_minlen( A_OBJECT );
 A_OBJECT        A_sseq();
 A_OBJECT        A_LMsseq();
 A_OBJECT        A_GMsseq();
-A_OBJECT        A_prsseq();
 A_OBJECT        A_clsseq();
 
 void            A_st_free();
