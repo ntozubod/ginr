@@ -164,11 +164,14 @@ A_OBJECT    A_copy( register A_OBJECT );
 A_OBJECT    A_deems( register A_OBJECT );
 A_OBJECT    A_adems( register A_OBJECT );
 
-A_OBJECT        A_add();
-A_OBJECT        A_open();
-A_OBJECT        A_close();
-A_OBJECT        A_rename();
-A_OBJECT        A_mkdense();
+// Aopen.c
+A_OBJECT    A_add( register A_OBJECT,
+                register int, register int, register int );
+A_OBJECT    A_open( register A_OBJECT );
+A_OBJECT    A_close( register A_OBJECT );
+A_OBJECT    A_rename( register A_OBJECT, register SHORT * );
+A_OBJECT    A_mkdense( register A_OBJECT );
+
 A_OBJECT        A_load();
 A_OBJECT        A_lwds();
 A_OBJECT        A_store();
