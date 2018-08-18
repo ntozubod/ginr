@@ -186,8 +186,11 @@ A_OBJECT    A_prsseq( register A_OBJECT, char *, register T_OBJECT );
 SHORT       A_tr_DFS( SHORT );
 A_OBJECT    A_trim( register A_OBJECT );
 
+// Alameq.c
+int         A_la_DFS( int );
+A_OBJECT    A_lameq( register A_OBJECT );
 
-A_OBJECT        A_lameq();
+
 A_OBJECT        A_lamcm();
 A_OBJECT        A_clsure();
 A_OBJECT        A_subs();
