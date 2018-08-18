@@ -35,17 +35,18 @@ extern FILE *fpout;
 A_OBJECT A_create() {
     register A_OBJECT A;
 
-    A = (A_OBJECT) Salloc( sizeof(struct A_desc) );
-    A-> Type =      A_Object;
-    A-> A_mode =    OPEN;
-    A-> A_ems =     0;
-    A-> A_nT =      1;
-    A-> A_nQ =      2;
-    A-> A_nS =      2;
-    A-> A_nrows =   0;
-    A-> A_p =       NULL;
-    A-> A_t = (A_row *) Salloc( ( INIT_lrows + 2 ) * sizeof(A_row) );
+    A =           (A_OBJECT) Salloc( sizeof(struct A_desc) );
+    A-> Type =    A_Object;
+    A-> A_mode =  OPEN;
+    A-> A_ems =   0;
+    A-> A_nT =    1;
+    A-> A_nQ =    2;
+    A-> A_nS =    2;
+    A-> A_nrows = 0;
+    A-> A_p =     NULL;
+    A-> A_t =     (A_row *) Salloc( ( INIT_lrows + 2 ) * sizeof(A_row) );
     A-> A_lrows = Ssize( (char *) A-> A_t ) / ( sizeof(A_row) ) - 2;
+
     return( A ); }
 
 void A_destroy( register A_OBJECT A ) {
@@ -73,31 +74,31 @@ A_OBJECT A_rept( register A_OBJECT A ) {
        fprintf( fpout, " " ); }
 
     switch ( A-> A_mode ) {
-        case OPEN:      fprintf( fpout, "UPDATE  " ); break;
-        case NFA:       fprintf( fpout, "NFA     " ); break;
-        case NFA_TRIM:  fprintf( fpout, "TRIM    " ); break;
-        case NFA_EQLAM: fprintf( fpout, "LAM EQ  " ); break;
-        case NFA_CMLAM: fprintf( fpout, "LAM CM  " ); break;
-        case NFA_CLOSED:fprintf( fpout, "CLOSED  " ); break;
-        case DFA:       fprintf( fpout, "DFA     " ); break;
-        case DFA_MIN:   fprintf( fpout, "DFA MIN " ); break;
-        case SSEQ:      fprintf( fpout, "SSEQ    " ); break;
-        case SSEQ_MIN:  fprintf( fpout, "SSEQMIN "  ); break; }
+        case OPEN:       fprintf( fpout, "UPDATE  " ); break;
+        case NFA:        fprintf( fpout, "NFA     " ); break;
+        case NFA_TRIM:   fprintf( fpout, "TRIM    " ); break;
+        case NFA_EQLAM:  fprintf( fpout, "LAM EQ  " ); break;
+        case NFA_CMLAM:  fprintf( fpout, "LAM CM  " ); break;
+        case NFA_CLOSED: fprintf( fpout, "CLOSED  " ); break;
+        case DFA:        fprintf( fpout, "DFA     " ); break;
+        case DFA_MIN:    fprintf( fpout, "DFA MIN " ); break;
+        case SSEQ:       fprintf( fpout, "SSEQ    " ); break;
+        case SSEQ_MIN:   fprintf( fpout, "SSEQMIN " ); break; }
 
     fprintf( fpout, "States: %-6d Trans: %-6d", A-> A_nQ, A-> A_nrows );
     fprintf( fpout, " Tapes: %-2d", A-> A_nT );
     fprintf( fpout, " Strg: %d K",
         ( Ssize( (char *) A )
-        + ( A-> A_mode == OPEN ? 0 : Ssize( (char *) A-> A_p ) )
+            + ( A-> A_mode == OPEN ? 0 : Ssize( (char *) A-> A_p ) )
             + Ssize( (char *) A-> A_t ) + 1023 ) / 1024 );
     fprintf( fpout, "\n" );
     fflush( fpout );
     return( A ); }
 
 void A_exchange( register A_OBJECT A1, register A_OBJECT A2 ) {
-    register int        t_int;
-    register A_row **   t_Arpp;
-    register A_row *    t_Arp;
+    register int      t_int;
+    register A_row ** t_Arpp;
+    register A_row *  t_Arp;
 
     if ( A1 == NULL ) {
         A1 = A_create();
@@ -146,7 +147,9 @@ A_OBJECT A_copy( register A_OBJECT A ) {
     if ( A-> A_mode != OPEN ) {
         newA-> A_p = (A_row **) Salloc( Ssize( (char *) A-> A_p ) );
 
-        for( i = 0; i <= A-> A_nQ; i++ ) {
+        for ( i = 0;
+              i <= A-> A_nQ;
+              i++ ) {
             newA-> A_p[i] = newA-> A_t + (A-> A_p[i] - A-> A_t); } }
 
     return( newA ); }
@@ -169,7 +172,8 @@ A_OBJECT A_deems( register A_OBJECT A ) {
 
     A = A_open( A );
 
-    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
+    for ( p = A-> A_t + A-> A_nrows;
+          --p >= A-> A_t; ) {
 
         if ( p-> A_b > 1 && p-> A_b <= lst_em ) {
             p-> A_b = 0; } }
@@ -204,13 +208,16 @@ A_OBJECT A_adems( register A_OBJECT A ) {
     A = A_open( A );
     base = A-> A_nQ;
 
-    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
+    for ( p = A-> A_t + A-> A_nrows;
+          --p >= A-> A_t; ) {
 
         if ( p-> A_b == 1 ) {
             p-> A_b = fst_em;
             p-> A_c = base; } }
 
-    for ( i = fst_em + 1; i <= lst_em; i++ ) {
+    for ( i = fst_em + 1;
+          i <= lst_em;
+          i++ ) {
         A = A_add( A, base + i - fst_em - 1, i, base + i - fst_em ); }
 
     A = A_add( A, base + lst_em - fst_em, 1, FINAL );

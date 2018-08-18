@@ -182,7 +182,11 @@ A_OBJECT    A_save( register A_OBJECT, char *, register T_OBJECT );
 A_OBJECT    A_lwds( char *, T_OBJECT );
 A_OBJECT    A_prsseq( register A_OBJECT, char *, register T_OBJECT );
 
-A_OBJECT        A_trim();
+// Atrim.c
+SHORT       A_tr_DFS( SHORT );
+A_OBJECT    A_trim( register A_OBJECT );
+
+
 A_OBJECT        A_lameq();
 A_OBJECT        A_lamcm();
 A_OBJECT        A_clsure();

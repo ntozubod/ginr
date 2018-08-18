@@ -149,7 +149,8 @@ A_OBJECT A_load( char *file, T_OBJECT T_Sigma ) {
                 tape = t[0] - '0';
 
                 if ( tape >= ntapes ) {
-                    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
+                    for ( p = A-> A_t + A-> A_nrows;
+                          --p >= A-> A_t; ) {
                         i = p-> A_b;
 
                         if ( i > 1 ) {
@@ -218,7 +219,8 @@ A_OBJECT A_load( char *file, T_OBJECT T_Sigma ) {
 
                 if ( tape >= ntapes ) {
 
-                    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
+                    for ( p = A-> A_t + A-> A_nrows;
+                          --p >= A-> A_t; ) {
                         i = p-> A_b;
 
                         if ( i > 1 ) {
@@ -283,7 +285,9 @@ A_OBJECT A_store( register A_OBJECT A,
 
     pz = A-> A_t + A-> A_nrows;
 
-    for( p = A-> A_t; p < pz; p++ ) {
+    for ( p = A-> A_t;
+          p < pz;
+          p++ ) {
 
         if ( ( t = p-> A_a ) == START ) {
             fprintf( fp, "(START) " ); }
@@ -348,7 +352,9 @@ A_OBJECT A_save( register A_OBJECT A, char *file, register T_OBJECT T_Sigma ) {
     (void) putc( '\n', fp );
     pz = A-> A_t + A-> A_nrows;
 
-    for ( p = A-> A_t; p < pz; p++ ) {
+    for ( p = A-> A_t;
+          p < pz;
+          p++ ) {
         t = ( p-> A_a / 256 ) & 0377;
         (void) putc( (char) ( t ), fp );
         t = p-> A_a % 256;
@@ -422,7 +428,9 @@ A_OBJECT A_lwds( char *file, T_OBJECT T_Sigma ) {
             A_destroy( As );
             return( NULL ); }
 
-        for( i = 0; p[i] != 0; ++i ) {
+        for ( i = 0;
+              p[i] != 0;
+              ++i ) {
             t[ 0 ] = p[ i ];
             A = A_add( A, (i == 0) ? 0 : nQ + i - 1,
                 T_insert( T_Sigma, t ), nQ + i ); }
@@ -477,12 +485,16 @@ A_OBJECT A_prsseq( register A_OBJECT A,
         Warning( "Cannot open file" );
         return( A ); }
 
-    for( i = 0; i < A-> A_nQ; ++i ) {
+    for ( i = 0;
+          i < A-> A_nQ;
+          ++i ) {
         n_read = 0;
         n_write = 0;
         pz = A-> A_p[i+1];
 
-        for( p = A-> A_p[i]; p < pz; p++ ) {
+        for ( p = A-> A_p[i];
+              p < pz;
+              p++ ) {
 
             if ( p-> A_b % 2 == 0 ) {
                 ++n_read; }
@@ -499,7 +511,9 @@ A_OBJECT A_prsseq( register A_OBJECT A,
             ++ss_states;
             pz = A-> A_p[i+1];
 
-            for( p = A-> A_p[i]; p < pz; p++ ) {
+            for ( p = A-> A_p[i];
+                  p < pz;
+                  p++ ) {
 
                 if ( ( t = p-> A_a ) == START ) {
                     fprintf( fp, "(START)  " ); }

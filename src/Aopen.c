@@ -123,20 +123,24 @@ A_OBJECT A_close( register A_OBJECT A ) {
     cnt = (int *) Salloc( N * sizeof(int) );
     ptr = (A_row **) Salloc( ( N + 1 ) * sizeof(A_row *) );
 
-    for( i = N; --i >= 0; ) {
+    for ( i = N;
+          --i >= 0; ) {
         cnt[i] = 0; }
 
-    for( p = t1z; --p >= t1; ) {
+    for ( p = t1z;
+          --p >= t1; ) {
         ++cnt[ p-> A_c ]; }
 
     p = t2z;
 
-    for( i = NQ; --i >= 0; ) {
+    for ( i = NQ;
+          --i >= 0; ) {
         ptr[ i ] = p;
         p -= cnt[ i ];
         cnt[ i ] = 0; }
 
-    for( p = t1z; --p >= t1; ) {
+    for ( p = t1z;
+          --p >= t1; ) {
         q = --ptr[ i = p-> A_c ];
         q-> A_a = p-> A_a;
         ++cnt[ q-> A_b = p-> A_b ];
@@ -144,12 +148,14 @@ A_OBJECT A_close( register A_OBJECT A ) {
 
     p = t1z;
 
-    for( i = NS; --i >= 0; ) {
+    for ( i = NS;
+          --i >= 0; ) {
         ptr[ i ] = p;
         p -= cnt[ i ];
         cnt[ i ] = 0; }
 
-    for( p = t2z; --p >= t2; ) {
+    for ( p = t2z;
+          --p >= t2; ) {
         q = --ptr[ i = p-> A_b ];
         ++cnt[ q-> A_a = p-> A_a ];
         q-> A_b = i;
@@ -157,12 +163,14 @@ A_OBJECT A_close( register A_OBJECT A ) {
 
     p = t2z;
 
-    for( i = NQ; --i >= 0; ) {
+    for ( i = NQ;
+          --i >= 0; ) {
         ptr[ i ] = p;
         p -= cnt[ i ];
         cnt[ i ] = 0; }
 
-    for( p = t1z; --p >= t1; ) {
+    for ( p = t1z;
+          --p >= t1; ) {
         q = --ptr[ i = p-> A_a ];
         q-> A_a = i;
         q-> A_b = p-> A_b;
@@ -204,7 +212,8 @@ A_OBJECT A_close( register A_OBJECT A ) {
 
     ptr[ A-> A_nQ ] = p;
 
-    for( i = A-> A_nQ; --i >= 0; ) {
+    for ( i = A-> A_nQ;
+          --i >= 0; ) {
         ptr[ i ] = ( p -= cnt[ i ] ); }
 
     A-> A_p = ptr;
@@ -226,14 +235,17 @@ A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena ) {
 
     trena = s_alloc( A-> A_nQ );
 
-    for( sp = trena + A-> A_nQ; --sp >= trena; ) {
+    for ( sp = trena + A-> A_nQ;
+          --sp >= trena; ) {
         *sp = MAXSHORT; }
 
     pz = A-> A_t + A-> A_nrows;
 
     if ( rena != NULL ) {
 
-        for( p = A-> A_t; p < pz; ++p ) {
+        for ( p = A-> A_t;
+              p < pz;
+              ++p ) {
             p-> A_a = rena[ p-> A_a ];
             p-> A_c = rena[ p-> A_c ]; }
 
@@ -246,7 +258,9 @@ A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena ) {
 
     nrena = 2;
 
-    for( p = A-> A_t; p < pz; ++p ) {
+    for ( p = A-> A_t;
+          p < pz;
+          ++p ) {
         sp = trena + p-> A_a;
 
         if ( *sp == MAXSHORT ) {
@@ -254,7 +268,8 @@ A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena ) {
 
         p-> A_a = *sp; }
 
-    for( p = pz; --p >= A-> A_t; ) {
+    for ( p = pz;
+          --p >= A-> A_t; ) {
 
         if ( ( p-> A_c = trena[p-> A_c]) == MAXSHORT
           || ( p-> A_a == p-> A_c && p-> A_b == 0 ) ) {
@@ -271,7 +286,8 @@ A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena ) {
         if ( rena != NULL ) {
             s_rena = s_alloc( A-> A_nQ );
 
-            for( i = A-> A_nQ; --i >= 0; ) {
+            for ( i = A-> A_nQ;
+                  --i >= 0; ) {
 
                 if ( rena[i] < A-> A_nQ ) {
                     s_rena[i] = trena[rena[i]]; }
@@ -301,7 +317,9 @@ A_OBJECT A_mkdense( register A_OBJECT A ) {
     R_insert( R, 1, 0 );
     pz = A-> A_t + A-> A_nrows;
 
-    for( p = A-> A_t; p < pz; ++p ) {
+    for ( p = A-> A_t;
+          p < pz;
+          ++p ) {
         p-> A_a = R_insert( R, p-> A_a, 0 );
         p-> A_c = R_insert( R, p-> A_c, 0 ); }
 
