@@ -190,8 +190,11 @@ A_OBJECT    A_trim( register A_OBJECT );
 int         A_la_DFS( int );
 A_OBJECT    A_lameq( register A_OBJECT );
 
+// Alamcm.c
+int         A_cm_DFS( int );
+A_OBJECT    A_lamcm( register A_OBJECT );
 
-A_OBJECT        A_lamcm();
+
 A_OBJECT        A_clsure();
 A_OBJECT        A_subs();
 A_OBJECT        A_min();
