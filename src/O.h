@@ -194,8 +194,11 @@ A_OBJECT    A_lameq( register A_OBJECT );
 int         A_cm_DFS( int );
 A_OBJECT    A_lamcm( register A_OBJECT );
 
+// Aclos.c
+void        A_cl_DFS( int );
+A_OBJECT    A_clsure( register A_OBJECT );
 
-A_OBJECT        A_clsure();
+
 A_OBJECT        A_subs();
 A_OBJECT        A_min();
 void            A_conform();
