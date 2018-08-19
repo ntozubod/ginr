@@ -198,8 +198,10 @@ A_OBJECT    A_lamcm( register A_OBJECT );
 void        A_cl_DFS( int );
 A_OBJECT    A_clsure( register A_OBJECT );
 
+// Asubs.c
+A_OBJECT    A_subs( register A_OBJECT );
 
-A_OBJECT        A_subs();
+
 A_OBJECT        A_min();
 void            A_conform();
 A_OBJECT        A_phi();
