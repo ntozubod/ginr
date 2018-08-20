@@ -204,23 +204,26 @@ A_OBJECT    A_subs( register A_OBJECT );
 // Amin.c
 A_OBJECT    A_min( register A_OBJECT );
 
-void            A_conform();
-A_OBJECT        A_phi();
-A_OBJECT        A_lambda();
-A_OBJECT        A_letter();
-A_OBJECT        A_deecho();
-A_OBJECT        A_opt();
-A_OBJECT        A_plus();
-A_OBJECT        A_star();
-A_OBJECT        A_union();
-A_OBJECT        A_percent();
-A_OBJECT        A_concat();
-A_OBJECT        A_intersect();
-A_OBJECT        A_differ();
-A_OBJECT        A_xor();
-A_OBJECT        A_alph();
-A_OBJECT        A_rev();
-A_OBJECT        A_shuffle();
+// Abasic.c
+void        A_conform( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_phi();
+A_OBJECT    A_lambda();
+A_OBJECT    A_letter( int, int );
+A_OBJECT    A_deecho( register A_OBJECT, int, int );
+A_OBJECT    A_opt( register A_OBJECT );
+A_OBJECT    A_plus( register A_OBJECT );
+A_OBJECT    A_star( A_OBJECT );
+A_OBJECT    A_union( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_percent( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_concat( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_intersect( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_differ( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_xor( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_alph( register A_OBJECT );
+A_OBJECT    A_rev( register A_OBJECT );
+A_OBJECT    A_shuffle( register A_OBJECT, register A_OBJECT );
+
+
 A_OBJECT        A_enum();
 int             A_card();
 A_OBJECT        A_pref();
