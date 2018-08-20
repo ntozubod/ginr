@@ -201,8 +201,9 @@ A_OBJECT    A_clsure( register A_OBJECT );
 // Asubs.c
 A_OBJECT    A_subs( register A_OBJECT );
 
+// Amin.c
+A_OBJECT    A_min( register A_OBJECT );
 
-A_OBJECT        A_min();
 void            A_conform();
 A_OBJECT        A_phi();
 A_OBJECT        A_lambda();

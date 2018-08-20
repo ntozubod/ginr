@@ -64,7 +64,7 @@ register A_OBJECT A;
 
     set = s_alloc( A-> A_nQ );
     vec = s_alloc( A-> A_nQ + 1 );
-    heap = (A_row **) Salloc( (A-> A_nQ + 1) * sizeof(A_row *) );
+    heap = (A_row **) Salloc( ( A-> A_nQ + 1 ) * sizeof(A_row *) );
     pnlam = (A_row **) Salloc( A-> A_nQ * sizeof(A_row *) );
     An = A_create();
     V = V_create();
@@ -87,7 +87,7 @@ register A_OBJECT A;
 
         pnlam[ i ] = p; }
 
-    vec[ i = 0 ] = START;
+    vec[ ( i = 0 ) ] = START;
     pz = pnlam[ START ];
 
     for ( p = A-> A_t;
@@ -113,7 +113,7 @@ register A_OBJECT A;
         fvec = V_vec( V, current );
 
         for ( i = 0;
-              (j = fvec[i]) < MAXSHORT;
+              ( j = fvec[ i ] ) < MAXSHORT;
               i++ ) {
 
             if ( pnlam[ j ] != A-> A_p[ j + 1 ] ) {
@@ -129,24 +129,25 @@ register A_OBJECT A;
             insert = heap[ base ];
 
             for ( father = base;
-                  (son = 2 * father) <= hsize;
+                  ( son = 2 * father ) <= hsize;
                   father = son ) {
 
-                if ( son < hsize && heap[son]-> A_b > heap[son+1]-> A_b ) {
+                if (    son < hsize
+                     && heap[ son ]-> A_b > heap[ son + 1 ]-> A_b ) {
                     son++; }
 
-                if ( insert-> A_b <= heap[son]-> A_b ) {
+                if ( insert-> A_b <= heap[ son ]-> A_b ) {
                     break; }
 
-                heap[father] = heap[son]; }
+                heap[ father ] = heap[ son ]; }
 
-            heap[father] = insert; }
+            heap[ father ] = insert; }
 
-        last = heap[1];
+        last = heap[ 1 ];
 
         for (;;) {
 
-/*3*/       if ( last-> A_b != heap[1]-> A_b || hsize == 0 ) {
+/*3*/       if ( last-> A_b != heap[ 1 ]-> A_b || hsize == 0 ) {
                 n = 0;
 
                 if ( 8 * vlen < A-> A_nQ ) {
@@ -166,11 +167,11 @@ register A_OBJECT A;
                               i++ ) {
 
                             for ( j = i - gap;
-                                  j >= 0 && vec[j] > vec[j+gap];
+                                  j >= 0 && vec[ j ] > vec[ j + gap ];
                                   j -= gap ) {
-                                tmp = vec[j];
-                                vec[j] = vec[j+gap];
-                                vec[j+gap] = tmp; } } } }
+                                tmp = vec[ j ];
+                                vec[ j ] = vec[ j + gap ];
+                                vec[ j + gap ] = tmp; } } } }
 
                 else {
 
@@ -178,18 +179,21 @@ register A_OBJECT A;
                           i < A-> A_nQ;
                           ++i ) {
 
-                        if ( set[i] != UNMARK ) {
-                            set[ vec[n++] = i ] = UNMARK; } } }
+                        if ( set[ i ] != UNMARK ) {
+                            set[ (
+                                vec[ n++ ] = i ) ]
+                                = UNMARK; } } }
 
                 head = LAST;
                 vlen = 0;
                 vec[ n ] = MAXSHORT;
-                An = A_add( An, current, (int)last-> A_b, V_insert( V, vec ) );
+                An = A_add( An, current,
+                            (int) last-> A_b, V_insert( V, vec ) );
 
                 if ( hsize == 0 ) {
                     break; } }
 
-/*3*/       i = heap[1]-> A_c;
+/*3*/       i = heap[ 1 ]-> A_c;
 
             if ( set[ i ] == UNMARK ) {
                 set[ i ] = head;
@@ -207,24 +211,25 @@ register A_OBJECT A;
                         head = j;
                         ++vlen; } } }
 
-            if ( heap[1] + 1 < A-> A_p[ heap[1]-> A_a + 1 ] ) {
-                insert = heap[1] + 1; }
+            if ( heap[ 1 ] + 1 < A-> A_p[ heap[ 1 ]-> A_a + 1 ] ) {
+                insert = heap[ 1 ] + 1; }
             else {
                 insert = heap[ hsize-- ]; }
 
-            last = heap[1];
+            last = heap[ 1 ];
 
 /*3*/       for ( father = 1;
-                  (son = 2 * father) <= hsize;
+                  ( son = 2 * father ) <= hsize;
                   father = son ) {
 
-                if ( son < hsize && heap[son]-> A_b > heap[son+1]-> A_b ) {
+                if (    son < hsize
+                     && heap[ son ]-> A_b > heap[ son + 1 ]-> A_b ) {
                     son++; }
 
-                if ( insert-> A_b <= heap[son]-> A_b ) {
+                if ( insert-> A_b <= heap[ son ]-> A_b ) {
                     break; }
 
-                heap[father] = heap[son]; }
+                heap[ father ] = heap[ son ]; }
 
             heap[ father ] = insert; } }
 
