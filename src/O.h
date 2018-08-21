@@ -156,6 +156,7 @@ A_row *         U_rec();
 void            U_stats();
 
 // Acrea.c
+extern  int A_report;
 A_OBJECT    A_create();
 void        A_destroy( register A_OBJECT );
 A_OBJECT    A_rept( register A_OBJECT );
@@ -223,33 +224,56 @@ A_OBJECT    A_alph( register A_OBJECT );
 A_OBJECT    A_rev( register A_OBJECT );
 A_OBJECT    A_shuffle( register A_OBJECT, register A_OBJECT );
 
+// Aenum.c
+int         A_en_DFS( SHORT );
+A_OBJECT    A_enum( A_OBJECT, T_OBJECT, int );
+int         A_cd_DFS( SHORT );
+int         A_card( A_OBJECT );
+A_OBJECT    A_pref( A_OBJECT );
+A_OBJECT    A_suff( A_OBJECT );
 
-A_OBJECT        A_enum();
-int             A_card();
-A_OBJECT        A_pref();
-A_OBJECT        A_suff();
+// ==========================
+
+// Acompose.c
 A_OBJECT        A_compose();
+
+// Ajoin.c
 A_OBJECT        A_join();
+
+// Aretape.c
 A_OBJECT        A_retape();
 A_OBJECT        A_comma();
+
+// Apowers.c
 A_OBJECT        A_catpow();
 A_OBJECT        A_ident();
 A_OBJECT        A_cmpow();
+
+// Alenmin.c
 A_OBJECT        A_lenmin();
 int             A_minlen( A_OBJECT );
+
+// Asseq.c
 A_OBJECT        A_sseq();
-A_OBJECT        A_LMsseq();
+
+// AGMsseq.c
 A_OBJECT        A_GMsseq();
+
+// ALMsseq.c
+A_OBJECT        A_LMsseq();
+
+// Aclsseq.c
 A_OBJECT        A_clsseq();
 
+// Astems.c
 void            A_st_free();
 SHORT **        A_stems();
 void            A_prstems( A_OBJECT, T_OBJECT, int );
 
-extern  int     A_report;
-
+// util.c
 void Error( char * );
 void Warning( char * );
 void pr_time_diff();
 
+// Lex.c
 int tonum( char * );

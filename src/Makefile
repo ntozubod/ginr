@@ -1,14 +1,13 @@
 HFILES	= O.h local.h
 CFILES 	= stamp.c Acrea.c Aopen.c Aload.c Atrim.c Alameq.c Alamcm.c Aclos.c \
 Asubs.c Amin.c Abasic.c Aenum.c Acompose.c Ajoin.c Apowers.c Aretape.c \
-Alenmin.c Astems.c Asseq.c Aclsseq.c ALMsseq.c AGMsseq.c T.c V.c R.c U.c S.c \
+Alenmin.c Astems.c Asseq.c AGMsseq.c ALMsseq.c Aclsseq.c T.c V.c R.c U.c S.c \
 util.c Lex.c Colon.c
 OFILES 	= stamp.o Acrea.o Aopen.o Aload.o Atrim.o Alameq.o Alamcm.o Aclos.o \
 Asubs.o Amin.o Abasic.o Aenum.o Acompose.o Ajoin.o Apowers.o Aretape.o \
-Alenmin.o Astems.o Asseq.o Aclsseq.o ALMsseq.o AGMsseq.o T.o V.o R.o U.o S.o \
+Alenmin.o Astems.o Asseq.o AGMsseq.o ALMsseq.o Aclsseq.o T.o V.o R.o U.o S.o \
 util.o Lex.o Colon.o y.tab.o
-SOURCE 	= Makefile $(HFILES) localc.h localh.h locals.h $(CFILES) Parse.y \
-compcms.exec cwinr.exec comphw.exec
+SOURCE 	= Makefile $(HFILES) $(CFILES) Parse.y
 
 .c.o:
 	gcc -Wall -O -c $*.c
