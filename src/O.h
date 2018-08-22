@@ -232,10 +232,11 @@ int         A_card( A_OBJECT );
 A_OBJECT    A_pref( A_OBJECT );
 A_OBJECT    A_suff( A_OBJECT );
 
+// Acompose.c
+A_OBJECT        A_compose( register A_OBJECT, register A_OBJECT );
+
 // ==========================
 
-// Acompose.c
-A_OBJECT        A_compose();
 
 // Ajoin.c
 A_OBJECT        A_join();
