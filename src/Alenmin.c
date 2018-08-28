@@ -27,84 +27,98 @@
 
 #include "O.h"
 
-A_OBJECT A_lenmin( A )
-register A_OBJECT A;
-{
-        register A_row *lo, *hi, *p;
-        int i, l, cur, dead;
-        SHORT *bfs, *dis;
+A_OBJECT A_lenmin( register A_OBJECT A ) {
+    register A_row *lo, *hi, *p;
+    int i, l, cur, dead;
+    SHORT *bfs, *dis;
 
-        if ( A-> A_nrows == 0 ) return( A );
+    if ( A-> A_nrows == 0 ) {
+        return ( A ); }
 
-        A = A_subs( A );
+    A = A_subs( A );
 
-        bfs = s_alloc( A-> A_nQ );
-        dis = s_alloc( A-> A_nQ );
+    bfs = s_alloc( A-> A_nQ );
+    dis = s_alloc( A-> A_nQ );
 
-        for ( i = 0; i < A-> A_nQ; i++ ) dis[i] = MAXSHORT;
-        bfs[0] = START;
-        l = 1;
-        dis[START] = 0;
+    for ( i = 0;
+          i < A-> A_nQ;
+          i++ ) {
+        dis[i] = MAXSHORT; }
 
-        for ( i = 0; i < l; i++ ) {
-                cur = bfs[i];
-                lo = A-> A_p[cur];
-                hi = A-> A_p[cur+1];
-                for ( p = lo; p < hi; p++ ) {
-                        if ( dis[p-> A_c] > dis[cur] + 1 ) {
-                                dis[p-> A_c] = dis[cur] + 1;
-                                bfs[l++] = p-> A_c;
-                        }
-                }
-        }
+    bfs[ 0 ] = START;
+    l = 1;
+    dis[ START ] = 0;
 
-        A = A_open( A );
-        lo = A-> A_t;
-        hi = lo + A-> A_nrows;
-        dead = A-> A_nQ++;
-        for ( p = lo; p < hi; p++ )
-                if ( dis[ p-> A_a ] >= dis[ p-> A_c ] ) p-> A_c = dead;
+    for ( i = 0;
+          i < l;
+          i++ ) {
+        cur = bfs[i];
+        lo = A-> A_p[cur];
+        hi = A-> A_p[cur+1];
 
-        Sfree( (char *) bfs );
-        Sfree( (char *) dis );
+        for ( p = lo; p < hi; p++ ) {
 
-        return( A_trim( A ) );
-}
+            if ( dis[ p-> A_c ] > dis[ cur ] + 1 ) {
+                dis[ p-> A_c ] = dis[ cur ] + 1;
+                bfs[ l++ ] = p-> A_c; } } }
 
-int A_minlen( register A_OBJECT A )
-{
-        register A_row *lo, *hi, *p;
-        int i, l, cur;
-        SHORT *bfs, *dis;
+    A = A_open( A );
+    lo = A-> A_t;
+    hi = lo + A-> A_nrows;
+    dead = A-> A_nQ++;
 
-        if ( A-> A_nrows == 0 ) return( -1 );
+    for ( p = lo;
+          p < hi;
+          p++ ) {
 
-        A = A_subs( A );
+        if ( dis[ p-> A_a ] >= dis[ p-> A_c ] ) {
+            p-> A_c = dead; } }
 
-        bfs = s_alloc( A-> A_nQ );
-        dis = s_alloc( A-> A_nQ );
+    Sfree( (char *) bfs );
+    Sfree( (char *) dis );
 
-        for ( i = 0; i < A-> A_nQ; i++ ) dis[i] = MAXSHORT;
-        bfs[0] = START;
-        l = 1;
-        dis[START] = 0;
+    return ( A_trim( A ) ); }
 
-        for ( i = 0; i < l; i++ ) {
-                cur = bfs[i];
-                lo = A-> A_p[cur];
-                hi = A-> A_p[cur+1];
-                for ( p = lo; p < hi; p++ ) {
-                        if ( dis[p-> A_c] == MAXSHORT ) {
-                                dis[p-> A_c] = dis[cur] + 1;
-                                bfs[l++] = p-> A_c;
-                        }
-                }
-        }
+int A_minlen( register A_OBJECT A ) {
+    register A_row *lo, *hi, *p;
+    int i, l, cur;
+    SHORT *bfs, *dis;
 
-        i = dis[FINAL] - 1;
+    if ( A-> A_nrows == 0 ) {
+        return ( -1 ); }
 
-        Sfree( (char *) bfs );
-        Sfree( (char *) dis );
+    A = A_subs( A );
 
-        return( i );
-}
+    bfs = s_alloc( A-> A_nQ );
+    dis = s_alloc( A-> A_nQ );
+
+    for ( i = 0;
+          i < A-> A_nQ;
+          i++ ) {
+        dis[ i ] = MAXSHORT; }
+
+    bfs[ 0 ] = START;
+    l = 1;
+    dis[ START ] = 0;
+
+    for ( i = 0;
+          i < l;
+          i++ ) {
+        cur = bfs[ i ];
+        lo = A-> A_p[ cur ];
+        hi = A-> A_p[ cur + 1 ];
+
+        for ( p = lo;
+              p < hi;
+              p++ ) {
+
+            if ( dis[ p-> A_c ] == MAXSHORT ) {
+                dis[ p-> A_c ] = dis[ cur ] + 1;
+                bfs[ l++ ] = p-> A_c; } } }
+
+    i = dis[ FINAL ] - 1;
+
+    Sfree( (char *) bfs );
+    Sfree( (char *) dis );
+
+    return ( i ); }

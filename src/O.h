@@ -247,11 +247,11 @@ A_OBJECT    A_catpow( register A_OBJECT, register int );
 A_OBJECT    A_ident( register A_OBJECT );
 A_OBJECT    A_cmpow( register A_OBJECT, register int );
 
-// ==========================
-
 // Alenmin.c
-A_OBJECT        A_lenmin();
-int             A_minlen( A_OBJECT );
+A_OBJECT    A_lenmin( register A_OBJECT );
+int         A_minlen( register A_OBJECT );
+
+// ==========================
 
 // Asseq.c
 A_OBJECT        A_sseq();
