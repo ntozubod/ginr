@@ -242,12 +242,12 @@ A_OBJECT    A_join( register A_OBJECT, register A_OBJECT );
 A_OBJECT    A_retape( register A_OBJECT, register A_OBJECT, T_OBJECT );
 A_OBJECT    A_comma( register A_OBJECT, register A_OBJECT );
 
-// ==========================
-
 // Apowers.c
-A_OBJECT        A_catpow();
-A_OBJECT        A_ident();
-A_OBJECT        A_cmpow();
+A_OBJECT    A_catpow( register A_OBJECT, register int );
+A_OBJECT    A_ident( register A_OBJECT );
+A_OBJECT    A_cmpow( register A_OBJECT, register int );
+
+// ==========================
 
 // Alenmin.c
 A_OBJECT        A_lenmin();
