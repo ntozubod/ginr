@@ -233,17 +233,16 @@ A_OBJECT    A_pref( A_OBJECT );
 A_OBJECT    A_suff( A_OBJECT );
 
 // Acompose.c
-A_OBJECT        A_compose( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_compose( register A_OBJECT, register A_OBJECT );
 
 // Ajoin.c
-A_OBJECT        A_join( register A_OBJECT, register A_OBJECT );
-
-// ==========================
-
+A_OBJECT    A_join( register A_OBJECT, register A_OBJECT );
 
 // Aretape.c
-A_OBJECT        A_retape();
-A_OBJECT        A_comma();
+A_OBJECT    A_retape( register A_OBJECT, register A_OBJECT, T_OBJECT );
+A_OBJECT    A_comma( register A_OBJECT, register A_OBJECT );
+
+// ==========================
 
 // Apowers.c
 A_OBJECT        A_catpow();
