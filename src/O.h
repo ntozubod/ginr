@@ -251,10 +251,10 @@ A_OBJECT    A_cmpow( register A_OBJECT, register int );
 A_OBJECT    A_lenmin( register A_OBJECT );
 int         A_minlen( register A_OBJECT );
 
-// ==========================
-
 // Asseq.c
-A_OBJECT        A_sseq();
+A_OBJECT    A_sseq( register A_OBJECT );
+
+// ==========================
 
 // AGMsseq.c
 A_OBJECT        A_GMsseq();
