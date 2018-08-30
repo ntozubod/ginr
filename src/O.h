@@ -254,10 +254,11 @@ int         A_minlen( register A_OBJECT );
 // Asseq.c
 A_OBJECT    A_sseq( register A_OBJECT );
 
-// ==========================
-
 // AGMsseq.c
-A_OBJECT        A_GMsseq();
+int         GMcmp( SHORT *, SHORT * );
+A_OBJECT    A_GMsseq( register A_OBJECT );
+
+// ==========================
 
 // ALMsseq.c
 A_OBJECT        A_LMsseq();
