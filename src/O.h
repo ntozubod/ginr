@@ -258,10 +258,10 @@ A_OBJECT    A_sseq( register A_OBJECT );
 int         GMcmp( SHORT *, SHORT * );
 A_OBJECT    A_GMsseq( register A_OBJECT );
 
-// ==========================
-
 // ALMsseq.c
-A_OBJECT        A_LMsseq();
+A_OBJECT    A_LMsseq( register A_OBJECT );
+
+// ==========================
 
 // Aclsseq.c
 A_OBJECT        A_clsseq();
