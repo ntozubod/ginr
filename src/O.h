@@ -264,12 +264,13 @@ A_OBJECT    A_LMsseq( register A_OBJECT );
 // Aclsseq.c
 A_OBJECT    A_clsseq( register A_OBJECT );
 
-// ==========================
-
 // Astems.c
-void            A_st_free();
-SHORT **        A_stems();
-void            A_prstems( A_OBJECT, T_OBJECT, int );
+void        A_st_free();
+int         A_st_DFS( int, int );
+SHORT **    A_stems( A_OBJECT, int );
+void        A_prstems( A_OBJECT, T_OBJECT, int );
+
+// ==========================
 
 // util.c
 void Error( char * );
