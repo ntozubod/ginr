@@ -261,10 +261,10 @@ A_OBJECT    A_GMsseq( register A_OBJECT );
 // ALMsseq.c
 A_OBJECT    A_LMsseq( register A_OBJECT );
 
-// ==========================
-
 // Aclsseq.c
-A_OBJECT        A_clsseq();
+A_OBJECT    A_clsseq( register A_OBJECT );
+
+// ==========================
 
 // Astems.c
 void            A_st_free();
