@@ -108,53 +108,6 @@ typedef struct A_desc {
 #define START           0
 #define FINAL           1
 
-char    *Salloc();
-SHORT   *s_alloc();
-int     *i_alloc();
-char    *Srealloc();
-char    *Scopy();
-int     Ssize( char * );
-void    Sfree();
-void    Sarena();
-void    copymem();
-char    *strcpy();
-
-T_OBJECT        T_create();
-void            T_destroy();
-int             T_member();
-T_OBJECT        T_grow();
-int             T_insert();
-char *          T_name();
-void            T_stats();
-
-SHORT *         veccpy( SHORT *, SHORT * );
-int             veccmp( SHORT *, SHORT * );
-int             veclen( SHORT * );
-
-V_OBJECT        V_create();
-void            V_destroy();
-int             V_member();
-V_OBJECT        V_grow();
-int             V_insert();
-SHORT *         V_vec();
-void            V_stats();
-
-R_OBJECT        R_create();
-void            R_destroy();
-int             R_member();
-R_OBJECT        R_grow();
-int             R_insert();
-R_row *         R_rec();
-void            R_stats();
-
-U_OBJECT        U_create();
-void            U_destroy();
-int             U_member();
-U_OBJECT        U_grow();
-int             U_insert();
-A_row *         U_rec();
-void            U_stats();
-
 // Acrea.c
 extern  int A_report;
 A_OBJECT    A_create();
@@ -270,7 +223,60 @@ int         A_st_DFS( int, int );
 SHORT **    A_stems( A_OBJECT, int );
 void        A_prstems( A_OBJECT, T_OBJECT, int );
 
+// T.c
+T_OBJECT    T_create();
+void        T_destroy( register T_OBJECT );
+int         T_member( register T_OBJECT, char * );
+T_OBJECT    T_grow( register T_OBJECT, int );
+int         T_insert( register T_OBJECT, register char * );
+char *      T_name( register T_OBJECT, register int );
+void        T_stats();
+
+// V.c
+SHORT *     veccpy( SHORT *, SHORT * );
+int         veccmp( SHORT *, SHORT * );
+int         veclen( register SHORT * );
+V_OBJECT    V_create();
+void        V_destroy( register V_OBJECT );
+int         V_member( register V_OBJECT, SHORT * );
+V_OBJECT    V_grow( register V_OBJECT, int );
+int         V_insert( register V_OBJECT, register SHORT * );
+SHORT *     V_vec( register V_OBJECT, register int );
+void        V_stats();
+
+// R.c
+R_OBJECT    R_create();
+void        R_destroy( register R_OBJECT );
+int         R_member( register R_OBJECT, register int, register int );
+R_OBJECT    R_grow( register R_OBJECT, int );
+int         R_insert( register R_OBJECT, register int, register int );
+R_row *     R_rec( register R_OBJECT, register int );
+void        R_stats();
+
+// U.c
+U_OBJECT    U_create();
+void        U_destroy( register U_OBJECT );
+int         U_member( register U_OBJECT, register int, register int,
+                                         register int );
+U_OBJECT    U_grow( register U_OBJECT, int );
+int         U_insert( register U_OBJECT, register int, register int,
+                                         register int );
+A_row *     U_rec( register U_OBJECT, register int );
+void        U_stats();
+
 // ==========================
+
+// S.c
+char    *Salloc();
+SHORT   *s_alloc();
+int     *i_alloc();
+char    *Srealloc();
+char    *Scopy();
+int     Ssize( char * );
+void    Sfree();
+void    Sarena();
+void    copymem();
+char    *strcpy();
 
 // util.c
 void Error( char * );
@@ -279,3 +285,8 @@ void pr_time_diff();
 
 // Lex.c
 int tonum( char * );
+
+// Colon.c
+
+// Parse.y
+
