@@ -32,9 +32,7 @@
 
 #include "O.h"
 
-int yylex();
 int yyparse( void );
-int yyerror( char * );
 
 FILE    *fopen();
 extern FILE *fpin, *fpout;

@@ -256,37 +256,40 @@ void        R_stats();
 // U.c
 U_OBJECT    U_create();
 void        U_destroy( register U_OBJECT );
-int         U_member( register U_OBJECT, register int, register int,
-                                         register int );
+int     U_member( register U_OBJECT, register int, register int, register int );
 U_OBJECT    U_grow( register U_OBJECT, int );
-int         U_insert( register U_OBJECT, register int, register int,
-                                         register int );
+int     U_insert( register U_OBJECT, register int, register int, register int );
 A_row *     U_rec( register U_OBJECT, register int );
 void        U_stats();
 
-// ==========================
-
 // S.c
-char    *Salloc();
-SHORT   *s_alloc();
-int     *i_alloc();
-char    *Srealloc();
-char    *Scopy();
-int     Ssize( char * );
-void    Sfree();
-void    Sarena();
-void    copymem();
-char    *strcpy();
+void        copymem( register int, register char *, register char * );
+char *      Salloc( register int );
+void        Sfree( register char * );
+char *      Srealloc( register char *, register int );
+char *      Scopy( register char * );
+int         Ssize( char * );
+void        Sarena();
+void        Saudit();
 
 // util.c
-void Error( char * );
-void Warning( char * );
-void pr_time_diff();
+void        Warning( char * );
+void        Error( char * );
+SHORT *     s_alloc( int );
+int *       i_alloc( int );
+void        pr_time_diff();
 
 // Lex.c
-int tonum( char * );
+char *      pad20( char * );
+char *      copyof( char * );
+int         yylex();
+void        yyerror( char * );
+int         tonum( char * );
+
+// ==========================
 
 // Colon.c
 
 // Parse.y
+int         yyparse( void );
 
