@@ -98,7 +98,8 @@ int V_member( register V_OBJECT V, SHORT *vec ) {
     ++V_calls;
     h = 0;
 
-    for ( na = vec; *na < MAXSHORT; ) {
+    for ( na = vec;
+          *na < MAXSHORT; ) {
         h = ( ( h + *na++ ) * 16807 ) & 017777777777; }
 
     p  = V-> V_hash + h % V-> V_lhash;

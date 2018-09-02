@@ -286,10 +286,11 @@ int         yylex();
 void        yyerror( char * );
 int         tonum( char * );
 
-// ==========================
-
 // Colon.c
+int         do_n_i( char * );
+A_OBJECT    do_an_a( A_OBJECT, char * );
+A_OBJECT    do_ann_a( A_OBJECT, char *, char * );
+A_OBJECT    do_nn_a( char *, char * );
 
 // Parse.y
 int         yyparse( void );
-

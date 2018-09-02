@@ -71,7 +71,8 @@ int T_member( register T_OBJECT T, char *name ) {
     ++T_calls;
     h = 0;
 
-    for ( na = name; *na; ) {
+    for ( na = name;
+          *na; ) {
         h = ( ( h + *na++ ) * 16807 ) & 017777777777; }
 
     p  = T-> T_hash + h % T-> T_lhash;
