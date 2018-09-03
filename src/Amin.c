@@ -32,7 +32,8 @@ extern FILE *fpout;
 #define UNMARK MAXSHORT
 #define LAST   (MAXSHORT-1)
 
-A_OBJECT A_min( register A_OBJECT A ) {
+A_OBJECT A_min( register A_OBJECT A )
+{
     register A_row *p;
     register int f, s, j, ns;
     int x, b;
@@ -47,36 +48,44 @@ A_OBJECT A_min( register A_OBJECT A ) {
     A_row **heap;
 
     if ( A == NULL ) {
-        Error( "A_min: No OBJECT" ); }
+        Error( "A_min: No OBJECT" );
+    }
 
     if ( A-> A_mode < DFA ) {
-        A = A_subs( A ); }
+        A = A_subs( A );
+    }
 
     mode = A-> A_mode;
 
     if ( mode == DFA_MIN || mode == SSEQ_MIN ) {
-        return( A ); }
+        return( A );
+    }
 
     if ( mode == DFA ) {
-        mode = DFA_MIN; }
+        mode = DFA_MIN;
+    }
 
     if ( mode == SSEQ ) {
-        mode = SSEQ_MIN; }
+        mode = SSEQ_MIN;
+    }
 
     if ( A-> A_nrows == 0 || A-> A_nQ <= 2 ) {
         A-> A_mode = mode;
-        return( A ); }
+        return( A );
+    }
 
     if ( A_report ) {
-        fprintf( fpout, "--> A_min\n" ); }
+        fprintf( fpout, "--> A_min\n" );
+    }
 
     A = A_open( A );
 
-    for ( p = A-> A_t + A-> A_nrows;
-          --p >= A-> A_t; ) {
+    for (   p = A-> A_t + A-> A_nrows;
+            --p >= A-> A_t; ) {
         s = p-> A_a;
         p-> A_a = p-> A_c;
-        p-> A_c = s; }
+        p-> A_c = s;
+    }
 
     A = A_close( A );
 
@@ -109,17 +118,16 @@ A_OBJECT A_min( register A_OBJECT A ) {
     B_N[ A-> A_nQ - 1 ] = START;
     B_L[ START ] = A-> A_nQ - 1;
 
-    for ( s = A-> A_nQ;
-          --s >= 3; ) {
+    for (   s = A-> A_nQ;
+            --s >= 3; ) {
         in_B[ s ] = 0;
         B_N[ s - 1 ] = s;
-        B_L[ s ] = s - 1; }
+        B_L[ s ] = s - 1;
+    }
 
     in_B[ FINAL ] = 1;
     B_card[ 1 ] = 1;
-    B_H[ 1 ] = (
-        B_N[ FINAL ] = (
-            B_L[ FINAL ] = FINAL ) );
+    B_H[ 1 ] = ( B_N[ FINAL ] = ( B_L[ FINAL ] = FINAL ) );
 
     in_wait[ 0 ] = 0;
     in_wait[ 1 ] = 0;
@@ -130,9 +138,10 @@ A_OBJECT A_min( register A_OBJECT A ) {
     in_JL[ 0 ] = 0;
     in_JL[ 1 ] = 0;
 
-    for ( s = A-> A_nQ;
-          --s >= 0; ) {
-        int_N[ s ] = UNMARK; }
+    for (   s = A-> A_nQ;
+            --s >= 0; ) {
+        int_N[ s ] = UNMARK;
+    }
 
     while ( wait_H < LAST ) {
         b = wait_H;
@@ -140,11 +149,11 @@ A_OBJECT A_min( register A_OBJECT A ) {
         hsize = 0;
         p = NULL;
 
-        for ( s = B_H[b];
-              s != B_H[b] || p == NULL;
-              s = B_N[s] ) {
+        for (   s = B_H[ b ];
+                s != B_H[ b ] || p == NULL;
+                s = B_N[ s ] ) {
             p = (
-                lo = A-> A_p[ s ] );
+                    lo = A-> A_p[ s ] );
             hi = A-> A_p[ s + 1 ] - 1;
 
             if ( lo <= hi && x <= hi-> A_b ) {
@@ -152,39 +161,49 @@ A_OBJECT A_min( register A_OBJECT A ) {
                 while ( lo < hi ) {
 
                     if ( x <= p-> A_b ) {
-                        hi = p; }
+                        hi = p;
+                    }
 
                     else {
-                        lo = p + 1; }
+                        lo = p + 1;
+                    }
 
-                    p = lo + ( hi - lo ) / 2; }
+                    p = lo + ( hi - lo ) / 2;
+                }
 
-                heap[ ++hsize ] = lo; } }
+                heap[ ++hsize ] = lo;
+            }
+        }
 
         if ( hsize == 0 ) {
             in_wait[ b ] = LAST;
             wait_H = wait_N[ wait_H ];
-            continue; }
+            continue;
+        }
 
-        for ( j = hsize / 2;
-              j > 0;
-              --j ) {
+        for (   j = hsize / 2;
+                j > 0;
+                --j ) {
             lo = heap[ j ];
 
-            for ( f = j;
-                  ( s = 2 * f ) <= hsize;
-                  f = s ) {
+            for (   f = j;
+                    ( s = 2 * f ) <= hsize;
+                    f = s ) {
 
                 if (    s < hsize
-                     && heap[ s ]-> A_b > heap[ s + 1 ]-> A_b ) {
-                    ++s; }
+                        && heap[ s ]-> A_b > heap[ s + 1 ]-> A_b ) {
+                    ++s;
+                }
 
                 if ( lo-> A_b <= heap[ s ]-> A_b ) {
-                    break; }
+                    break;
+                }
 
-                heap[ f ] = heap[ s ]; }
+                heap[ f ] = heap[ s ];
+            }
 
-            heap[ f ] = lo; }
+            heap[ f ] = lo;
+        }
 
         x = heap[ 1 ]-> A_b;
         in_wait[ b ] = x + 1;
@@ -192,46 +211,47 @@ A_OBJECT A_min( register A_OBJECT A ) {
 
         for (;;) {
 
-/*3*/       if ( x != heap[ 1 ]-> A_b || hsize == 0 ) {
+            if ( x != heap[ 1 ]-> A_b || hsize == 0 ) {
 
-                for ( j = JL_H;
-                      j < LAST;
-                      j = JL_N[ j ] ) {
+                for (   j = JL_H;
+                        j < LAST;
+                        j = JL_N[ j ] ) {
 
-/*5*/               if ( in_JL[ j ] < B_card[ j ] ) {
+                    if ( in_JL[ j ] < B_card[ j ] ) {
                         B_H[ nB ] = LAST;
                         B_card[ nB ] = 0;
                         in_wait[ nB ] = LAST;
 
-                        for ( s = int_H[ j ];
-                              s < LAST;
-                              s = ns ) {
+                        for (   s = int_H[ j ];
+                                s < LAST;
+                                s = ns ) {
                             in_B[ s ] = nB;
                             --B_card[ j ];
                             ++B_card[ nB ];
-                            B_L[ (
-                                B_H[ j ] = (
-                                    B_N[ B_L[ s ] ] = B_N[ s ] ) ) ]
+                            B_L[ ( B_H[ j ]
+                                   = ( B_N[ B_L[ s ] ] = B_N[ s ] ) ) ]
                                 = B_L[ s ];
                             B_N[ s ] = B_H[ nB ];
                             B_H[ nB ] = s;
                             ns = int_N[ s ];
-                            int_N[ s ] = UNMARK; }
+                            int_N[ s ] = UNMARK;
+                        }
 
-                        for ( s = B_H[ nB ];
-                              ( ns = B_N[ s ] ) < LAST;
-                              s = ns ) {
-                            B_L[ ns ] = s; }
+                        for (   s = B_H[ nB ];
+                                ( ns = B_N[ s ] ) < LAST;
+                                s = ns ) {
+                            B_L[ ns ] = s;
+                        }
 
-                        B_L[ (
-                            B_N[ s ] = B_H[ nB ] ) ] = s;
+                        B_L[ ( B_N[ s ] = B_H[ nB ] ) ] = s;
                         in_JL[ nB ] = 0;
 
                         if (    in_wait[ j ] < LAST
-                             || B_card[ nB ] <= B_card[ j ] ) {
+                                || B_card[ nB ] <= B_card[ j ] ) {
                             in_wait[ nB ] = 0;
                             wait_N[ nB ] = wait_H;
-                            wait_H = nB; }
+                            wait_H = nB;
+                        }
 
                         if ( B_card[ nB ] >  B_card[ j ] ) {
 
@@ -239,33 +259,43 @@ A_OBJECT A_min( register A_OBJECT A ) {
                                 in_wait[ nB ] = in_wait[ j ];
                                 in_wait[ j ] = 0;
                                 if ( j == b ) {
-                                    hsize = 0; } }
+                                    hsize = 0;
+                                }
+                            }
 
                             else {
                                 in_wait[ j ] = 0;
                                 wait_N[ j ] = wait_H;
-                                wait_H = j; } }
+                                wait_H = j;
+                            }
+                        }
 
-                        ++nB; }
+                        ++nB;
+                    }
 
-/*5*/               else {
+                    else {
 
-                        for ( s = int_H[ j ];
-                              s < LAST;
-                              s = ns ) {
+                        for (   s = int_H[ j ];
+                                s < LAST;
+                                s = ns ) {
                             ns = int_N[ s ];
-                            int_N[ s ] = UNMARK; } }
+                            int_N[ s ] = UNMARK;
+                        }
+                    }
 
-                    in_JL[ j ] = 0; }
+                    in_JL[ j ] = 0;
+                }
 
                 if ( hsize == 0 ) {
-                    break; }
+                    break;
+                }
 
                 x = heap[ 1 ]-> A_b;
                 in_wait[ b ] = x + 1;
-                JL_H = LAST; }
+                JL_H = LAST;
+            }
 
-/*3*/       if ( in_B[ heap[ 1 ]-> A_a ] == b ) {
+            if ( in_B[ heap[ 1 ]-> A_a ] == b ) {
                 s = heap[ 1 ]-> A_c;
 
                 if ( int_N[ s ] == UNMARK ) {
@@ -274,34 +304,45 @@ A_OBJECT A_min( register A_OBJECT A ) {
                     if ( in_JL[ j ] == 0 ) {
                         JL_N[ j ] = JL_H;
                         JL_H = j;
-                        int_H[ j ] = LAST; }
+                        int_H[ j ] = LAST;
+                    }
 
                     ++in_JL[ j ];
                     int_N[ s ] = int_H[ j ];
-                    int_H[ j ] = s; }
+                    int_H[ j ] = s;
+                }
 
                 if ( heap[ 1 ] + 1 < A-> A_p[ heap[ 1 ]-> A_a + 1 ] ) {
-                    lo = heap[ 1 ] + 1; }
+                    lo = heap[ 1 ] + 1;
+                }
 
                 else {
-                    lo = heap[ hsize-- ]; } }
+                    lo = heap[ hsize-- ];
+                }
+            }
 
-/*3*/       else {
-                lo = heap[ hsize-- ]; }
+            else {
+                lo = heap[ hsize-- ];
+            }
 
-/*3*/       for ( f = 1;
-                  ( s = 2 * f ) <= hsize;
-                  f = s ) {
+            for (   f = 1;
+                    ( s = 2 * f ) <= hsize;
+                    f = s ) {
 
                 if ( s < hsize && heap[ s ]-> A_b > heap[ s + 1 ]-> A_b ) {
-                    ++s; }
+                    ++s;
+                }
 
                 if ( lo-> A_b <= heap[ s ]-> A_b ) {
-                    break; }
+                    break;
+                }
 
-                heap[ f ] = heap[ s ]; }
+                heap[ f ] = heap[ s ];
+            }
 
-/*3*/       heap[ f ] = lo; } }
+            heap[ f ] = lo;
+        }
+    }
 
     Sfree( (char *) B_card );
     Sfree( (char *) B_H );
@@ -321,11 +362,12 @@ A_OBJECT A_min( register A_OBJECT A ) {
 
     A = A_open( A );
 
-    for ( p = A-> A_t + A-> A_nrows;
-          --p >= A-> A_t; ) {
+    for (   p = A-> A_t + A-> A_nrows;
+            --p >= A-> A_t; ) {
         s = p-> A_a;
         p-> A_a = p-> A_c;
-        p-> A_c = s; }
+        p-> A_c = s;
+    }
 
     A = A_close( A );
     A = A_rename( A, in_B );
@@ -335,6 +377,8 @@ A_OBJECT A_min( register A_OBJECT A ) {
 
     if ( A_report ) {
         fprintf( fpout, "<-- A_min  " );
-        (void) A_rept( A ); }
+        (void) A_rept( A );
+    }
 
-    return( A ); }
+    return( A );
+}

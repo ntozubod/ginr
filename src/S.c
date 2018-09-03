@@ -55,110 +55,134 @@ typedef struct S_f {
 #define U(p)            ((unsigned long)(p))
 
 #define S_m             28
-                /* S_m = 26 allows objects of up to 1 gigabyte */
+// S_m = 26 allows objects of up to 1 gigabyte
 
 static S_ft *S_lo = 0,
-            *S_hi = 0,
-             S_avail[ S_m + 1 ];
+             *S_hi = 0,
+              S_avail[ S_m + 1 ];
 
 static int   S_alld_cnt[ S_m ];
 
 int LINUXmem = 0;
 
-/*
- *     Copy a block of memory
- */
+//     Copy a block of memory
 
-void copymem( register int n, register char *from, register char *to ) {
+void copymem( register int n, register char *from, register char *to )
+{
 
     if ( from + n <= to || to + n <= from ) {
         bcopy( from, to, n );
-        return; }
+        return;
+    }
 
     if ( from >= to ) {
 
         while ( --n >= 0 ) {
-            *to++ = *from++; } }
+            *to++ = *from++;
+        }
+    }
 
     else {
         from += n;
         to += n;
 
         while ( --n >= 0 ) {
-            *--to = *--from; } } }
+            *--to = *--from;
+        }
+    }
+}
 
-void scribble( register char *p, register char *q ) {
+void scribble( register char *p, register char *q )
+{
 
     while ( p < q ) {
-        *p++ = 0x55; } }
+        *p++ = 0x55;
+    }
+}
 
-/*
- *     Binary Buddy system storage allocator as in Knuth vol. 1
- */
+//     Binary Buddy system storage allocator as in Knuth vol. 1
 
-void S_init( ) {
+void S_init( )
+{
     register S_ft *p;
     register int i;
 
     if ( S_lo == 0 ) {
         int mem;
 
-        for ( mem = 512 * 1024 * 1024;
-              S_lo == 0;
-              mem /= 2 ) {
+        for (   mem = 512 * 1024 * 1024;
+                S_lo == 0;
+                mem /= 2 ) {
             LINUXmem = mem;
-            S_lo = S_hi = ( S_ft * ) malloc( mem + 16 ); }
+            S_lo = S_hi = ( S_ft * ) malloc( mem + 16 );
+        }
 
         fflush( fpout );
         set_linkf( p = &S_avail[ S_m ], 0 );
 
         while ( --p >= S_avail ) {
             set_linkf( p, p );
-            set_linkb( p, p ); }
+            set_linkb( p, p );
+        }
 
-        for ( i = 0;
-              i < S_m;
-              ++i ) {
-            S_alld_cnt[ i ] = 0; } } }
+        for (   i = 0;
+                i < S_m;
+                ++i ) {
+            S_alld_cnt[ i ] = 0;
+        }
+    }
+}
 
-void S_free( register S_ft *l, register int k ) {
+void S_free( register S_ft *l, register int k )
+{
     register S_ft *p;
 
     if ( (long) l & 7 ) {
-        Error( "S_free: l not divisible by 8" ); }
+        Error( "S_free: l not divisible by 8" );
+    }
 
     if ( l < S_lo || l + ( 1 << k ) > S_hi ) {
-        Error( "S_free: bounds" ); }
+        Error( "S_free: bounds" );
+    }
 
     if ( ( l - S_lo ) & ( ( 1 << k ) - 1 ) ) {
-        Error( "S_free: l improper" ); }
+        Error( "S_free: l improper" );
+    }
 
     if ( tag( l ) ) {
-        Error( "S_free: attempt to free unallocated block" ); }
+        Error( "S_free: attempt to free unallocated block" );
+    }
 
     --S_alld_cnt[ k ];
 
-    for ( /* null */ ;
-          k < S_m - 1;
-          ++k ) {
+    for (   ; k < S_m - 1;
+            ++k ) {
         p = S_lo + ( ( l - S_lo ) ^ ( 1 << k ) );
-        if ( p >= S_hi || ! tag( p ) || kval( p ) != k ) break;
+        if ( p >= S_hi || ! tag( p ) || kval( p ) != k ) {
+            break;
+        }
         set_linkf( linkb( p ), linkf( p ) );
         set_linkb( linkf( p ), linkb( p ) );
-        if ( p < l ) l = p; }
+        if ( p < l ) {
+            l = p;
+        }
+    }
 
     set_tag( l, 1 );
     set_kval( l, k );
     set_linkf( l, p = linkf( &S_avail[ k ] ) );
     set_linkb( p, l );
     set_linkb( l, p = &S_avail[ k ] );
-    set_linkf( p, l ); }
+    set_linkf( p, l );
+}
 
-void S_morecore( register int k ) {
+void S_morecore( register int k )
+{
     register int a, b;
 
     if ( S_hi != S_lo ) {
-        Error( "S_morecore: Out of Memory" ); }
+        Error( "S_morecore: Out of Memory" );
+    }
 
     a = 0;
     S_hi = S_lo + LINUXmem / sizeof( S_ft );
@@ -166,36 +190,44 @@ void S_morecore( register int k ) {
 
     while ( a < b ) {
 
-        for ( k = 0;
-              ! ( a >> k & 1 ) && ( b - a ) >> ( k + 1 );
-              ++k ) {
-            /* null */ ; }
+        for (   k = 0;
+                ! ( a >> k & 1 ) && ( b - a ) >> ( k + 1 );
+                ++k ) {
+            ;
+        }
 
         ++S_alld_cnt[k];
         set_tag( S_lo + a, 0 );
         S_free( S_lo + a, k );
-        a += 1 << k; } }
+        a += 1 << k;
+    }
+}
 
-S_ft *S_malloc( register int k ) {
+S_ft *S_malloc( register int k )
+{
     register int j;
     register S_ft *p, *l, *q;
 
     if ( k >= S_m ) {
-        Error( "S_malloc: Argument constraint error" ); }
+        Error( "S_malloc: Argument constraint error" );
+    }
 
     ++S_alld_cnt[ k ];
 
     for (;;) {
 
-        for ( j = k;
-              linkf( &S_avail[ j ] ) == &S_avail[ j ];
-              ++j ) {
-            /* null */ ; }
+        for (   j = k;
+                linkf( &S_avail[ j ] ) == &S_avail[ j ];
+                ++j ) {
+            ;
+        }
 
         if ( j < S_m ) {
-            break; }
+            break;
+        }
 
-        S_morecore( k ); }
+        S_morecore( k );
+    }
 
     l = linkf( p = &S_avail[ j ] );
     set_linkf( p, linkf( l ) );
@@ -212,11 +244,14 @@ S_ft *S_malloc( register int k ) {
         set_linkf( p, q = &S_avail[ j ] );
         set_linkb( p, q );
         set_linkf( q, p );
-        set_linkb( q, p ); }
+        set_linkb( q, p );
+    }
 
-    return ( l ); }
+    return ( l );
+}
 
-S_ft *S_realloc( register S_ft *l, register int k1, register int k2 ) {
+S_ft *S_realloc( register S_ft *l, register int k1, register int k2 )
+{
     register int k0;
     register S_ft *p, *q;
     --S_alld_cnt[k1];
@@ -231,28 +266,32 @@ S_ft *S_realloc( register S_ft *l, register int k1, register int k2 ) {
             set_linkb( p, q = linkb( &S_avail[ k1 ] ) );
             set_linkf( q, p );
             set_linkf( p, q = &S_avail[ k1 ] );
-            set_linkb( q, p ); }
+            set_linkb( q, p );
+        }
 
         set_kval( l, k2 );
-        return ( l ); }
+        return ( l );
+    }
 
     else {
         k0 = k1;
 
-        for ( /* null */ ;
-              k1 < k2;
-              ++k1 ) {
+        for (   ; k1 < k2;
+                ++k1 ) {
             p = S_lo + ( ( l - S_lo ) ^ ( 1 << k1 ) );
 
             if ( p < l || p >= S_hi || !tag( p )
-                        || kval( p ) != k1 ) {
-                break; }
+                    || kval( p ) != k1 ) {
+                break;
+            }
             set_linkf( linkb( p ), linkf( p ) );
-            set_linkb( linkf( p ), linkb( p ) ); }
+            set_linkb( linkf( p ), linkb( p ) );
+        }
 
         if ( k1 == k2 ) {
             set_kval( l, k2 );
-            return ( l ); }
+            return ( l );
+        }
 
         --S_alld_cnt[ k2 ];
         p = S_malloc( k2 );
@@ -260,15 +299,20 @@ S_ft *S_realloc( register S_ft *l, register int k1, register int k2 ) {
         ++S_alld_cnt[ k1 ];
         S_free( l, k1 );
         set_kval( p, k2 );
-        return ( p ); } }
+        return ( p );
+    }
+}
 
-S_ft *S_copy( register S_ft *l, register int k ) {
+S_ft *S_copy( register S_ft *l, register int k )
+{
     register S_ft *p;
     p = S_malloc( k );
     copymem( sizeof(S_ft) << k, (char *) l, (char *) p );
-    return ( p ); }
+    return ( p );
+}
 
-void S_arena( ) {
+void S_arena( )
+{
     int grand, gran2, i, size, cnt;
     S_ft *p, *q;
     S_init();
@@ -277,9 +321,9 @@ void S_arena( ) {
     grand = 0;
     gran2 = 0;
 
-    for ( i = 0;
-          i < S_m;
-          ++i ) {
+    for (   i = 0;
+            i < S_m;
+            ++i ) {
         q = &S_avail[ i ];
 
         if ( (p = linkf( q )) != q || S_alld_cnt[ i ] ) {
@@ -287,30 +331,38 @@ void S_arena( ) {
 
             if ( p != q ) {
 
-                for ( cnt = 1;
-                      ( p = linkf( p ) ) != q;
-                      ++cnt ) {
-                    /* null */ }; }
+                for (   cnt = 1;
+                        ( p = linkf( p ) ) != q;
+                        ++cnt ) {
+                    ;
+                };
+            }
 
             else {
-                cnt = 0; }
+                cnt = 0;
+            }
 
             if ( size < 1024 ) {
-                fprintf( fpout, "%4d ", size ); }
+                fprintf( fpout, "%4d ", size );
+            }
 
             else if ( size < 1024 * 1024 ) {
-                fprintf( fpout, "%4dK", size / 1024); }
+                fprintf( fpout, "%4dK", size / 1024);
+            }
 
             else {
-                fprintf( fpout, "%4dM", size / 1024 / 1024); }
+                fprintf( fpout, "%4dM", size / 1024 / 1024);
+            }
 
             fprintf( fpout, "%7d", cnt );
             fprintf( fpout, "%5dM", ( cnt * size + 1023 ) / 1024 / 1024 );
             fprintf( fpout, "%7d", S_alld_cnt[ i ] );
             fprintf( fpout,
-                "%5dM\n", (S_alld_cnt[ i ]*size+1023)/1024/1024);
-                grand += cnt * size;
-                gran2 += S_alld_cnt[ i ] * size; } }
+                     "%5dM\n", (S_alld_cnt[ i ]*size+1023)/1024/1024);
+            grand += cnt * size;
+            gran2 += S_alld_cnt[ i ] * size;
+        }
+    }
 
     fprintf( fpout, "            %5dM", ( grand + 1023 ) / 1024 / 1024 );
     fprintf( fpout, "       %5dM\n", ( gran2 + 1023 ) / 1024 / 1024 );
@@ -318,79 +370,101 @@ void S_arena( ) {
     fprintf( fpout, "Memory Size %5dM\n", size / 1024 / 1024 );
 
     if ( size % 1024 != 0 ) {
-        fprintf ( fpout, "Excess %d bytes\n", size % 1024 ); } }
+        fprintf ( fpout, "Excess %d bytes\n", size % 1024 );
+    }
+}
 
-/*
- *     Interface to provide allocator for INR.
- *     The length code and an audit flag are stored in allocated blocks
- */
+//     Interface to provide allocator for INR.
+//     The length code and an audit flag are stored in allocated blocks
 
-char *Salloc( register int n ) {
+char *Salloc( register int n )
+{
     register char *p;
     register int k;
     S_init();
 
     if ( n < 0 ) {
-        Error( "Salloc: Argument constraint error" ); }
+        Error( "Salloc: Argument constraint error" );
+    }
 
     n = ( n + sizeof(S_ft) + 3 ) / sizeof(S_ft);
 
-    for ( k = 0;
-          n > ( 1 << k );
-          ++k ) {
-        /* null */ ; }
+    for (   k = 0;
+            n > ( 1 << k );
+            ++k ) {
+        ;
+    }
 
     p = (char *) S_malloc( k );
     p[ 0 ] = 0x7f;
     p[ 1 ] = k;
-    return ( p + 4 ); }
+    return ( p + 4 );
+}
 
-void Sfree( register char *p ) {
-    if ( !p ) return;
+void Sfree( register char *p )
+{
+    if ( !p ) {
+        return;
+    }
     p -= 4;
 
     if ( p[0] != 0x7f ) {
-        Error( "Sfree: Invalid free" ); }
+        Error( "Sfree: Invalid free" );
+    }
 
-    S_free( (S_ft *) p, (int) p[ 1 ] ); }
+    S_free( (S_ft *) p, (int) p[ 1 ] );
+}
 
-char *Srealloc( register char *p, register int n ) {
+char *Srealloc( register char *p, register int n )
+{
     register int k;
 
     if ( n < 0 ) {
-        Error( "Srealloc: Argument constraint error" ); }
+        Error( "Srealloc: Argument constraint error" );
+    }
 
     if ( !p ) {
-        return ( Salloc( n ) ); }
+        return ( Salloc( n ) );
+    }
 
     n = ( n + sizeof(S_ft) + 3 ) / sizeof(S_ft);
 
-    for ( k = 0;
-          n > ( 1 << k );
-          ++k ) {
-        /* null */ ; }
+    for (   k = 0;
+            n > ( 1 << k );
+            ++k ) {
+        ;
+    }
 
     p -= 4;
     p = (char *) S_realloc( (S_ft *) p, (int) p[ 1 ], k );
     p[ 0 ] = 0x7f;
     p[ 1 ] = k;
-    return ( p + 4 ); }
+    return ( p + 4 );
+}
 
-char *Scopy( register char *p ) {
+char *Scopy( register char *p )
+{
 
     if ( !p ) {
-        return ( 0 ); }
+        return ( 0 );
+    }
 
     p -= 4;
-    return ( (char *) S_copy( (S_ft *) p, (int) p[ 1 ] ) + 4 ); }
+    return ( (char *) S_copy( (S_ft *) p, (int) p[ 1 ] ) + 4 );
+}
 
-int Ssize( char *p ) {
-    return ( ( sizeof(S_ft) << p[ -3 ] ) - 4 ); }
+int Ssize( char *p )
+{
+    return ( ( sizeof(S_ft) << p[ -3 ] ) - 4 );
+}
 
-void Sarena( ) {
-    S_arena(); }
+void Sarena( )
+{
+    S_arena();
+}
 
-void Saudit( ) {
+void Saudit( )
+{
     S_ft *p, *last_p;
     char *pc;
     int i, k;
@@ -398,8 +472,8 @@ void Saudit( ) {
     printf( "<<< Audit >>>\n" );
     last_p = 0;
 
-    for ( p = S_lo;
-          p < S_hi; ) {
+    for (   p = S_lo;
+            p < S_hi; ) {
         pc = (char *) p;
 
         if ( ( p - S_lo ) & ( ( 1 << kval( p ) ) - 1 ) ) {
@@ -408,9 +482,11 @@ void Saudit( ) {
 
             if ( last_p ) {
                 printf( "Last good block %lx kval %d\n", U( last_p ),
-                    kval( last_p ) ); }
+                        kval( last_p ) );
+            }
 
-            return; }
+            return;
+        }
 
         if ( !tag(p) ) {
 
@@ -418,65 +494,79 @@ void Saudit( ) {
                 printf( "Audit anomoly in busy block at %lx:\n", U( p ) );
                 printf( "Size code %d\n", pc[ 1 ] );
                 printf( "S_lo %lx S_hi %lx S_avail %lx\n",
-                    U( S_lo ), U( S_hi ), U( S_avail ) );
+                        U( S_lo ), U( S_hi ), U( S_avail ) );
 
                 if ( pc[ 0 ] != 0x7f ) {
-                    printf( "Mask is %lx\n", U( pc[ 0 ] & 0xff ) ); }
+                    printf( "Mask is %lx\n", U( pc[ 0 ] & 0xff ) );
+                }
 
                 if ( last_p ) {
                     printf( "Last good block %lx kval %d\n", U( last_p ),
-                        kval( last_p ) ); }
+                            kval( last_p ) );
+                }
 
-                return; } }
+                return;
+            }
+        }
 
         else {
             k = kval( p );
 
             if ( k >= 20
-              || (( linkf( p ) < S_lo || linkf( p ) >= S_hi )
-                 && ( linkf( p ) < S_avail
-                   || linkf( p ) >= S_avail + S_m ))
-              || (( linkb( p ) < S_lo || linkb( p ) >= S_hi )
-                 && ( linkb( p ) < S_avail
-                   || linkb( p ) >= S_avail + S_m ))
-              || linkb( linkf( p ) ) != p
-              || linkf( linkb( p ) ) != p ) {
+                    || (( linkf( p ) < S_lo || linkf( p ) >= S_hi )
+                        && ( linkf( p ) < S_avail
+                             || linkf( p ) >= S_avail + S_m ))
+                    || (( linkb( p ) < S_lo || linkb( p ) >= S_hi )
+                        && ( linkb( p ) < S_avail
+                             || linkb( p ) >= S_avail + S_m ))
+                    || linkb( linkf( p ) ) != p
+                    || linkf( linkb( p ) ) != p ) {
                 printf( "Audit anomoly in free block at %lx:\n", U( p ) );
                 printf( "S_lo %lx S_hi %lx S_avail %lx\n",
-                    U( S_lo ), U( S_hi ), U( S_avail ) );
+                        U( S_lo ), U( S_hi ), U( S_avail ) );
                 printf( "kval %d\n", k );
                 printf( "linkf %lx linkb %lx\n",
-                    U( linkf( p ) ), U( linkb( p ) ) );
+                        U( linkf( p ) ), U( linkb( p ) ) );
 
                 if (( linkf( p ) >= S_lo && linkf( p ) < S_hi )
-                 || ( linkf( p ) >= S_avail
-                   && linkf( p ) < S_avail + S_m )) {
+                        || ( linkf( p ) >= S_avail
+                             && linkf( p ) < S_avail + S_m )) {
                     printf( "linkb(linkf( p )) %lx\n",
-                            U( linkb( linkf( p ) ) ) ); }
+                            U( linkb( linkf( p ) ) ) );
+                }
 
                 if (( linkb( p ) >= S_lo && linkb( p ) < S_hi )
-                 || ( linkb( p ) >= S_avail
-                   && linkb( p ) < S_avail + S_m )) {
+                        || ( linkb( p ) >= S_avail
+                             && linkb( p ) < S_avail + S_m )) {
                     printf( "linkf( linkb( p )) %lx\n",
-                            U( linkf( linkb( p ) ) ) ); }
+                            U( linkf( linkb( p ) ) ) );
+                }
 
-                for ( i = 0;
-                      i < S_m;
-                      i++ ) {
+                for (   i = 0;
+                        i < S_m;
+                        i++ ) {
 
                     if ( linkf( S_avail + i ) == p ) {
                         printf( "linkf( S_avail + i ) %lx\n",
-                                U( linkf( S_avail + i ) ) ); }
+                                U( linkf( S_avail + i ) ) );
+                    }
 
                     if ( linkb(S_avail+i) == p ) {
                         printf( "linkb( S_avail + i ) %lx\n",
-                                U( linkb( S_avail + i ) ) ); } }
+                                U( linkb( S_avail + i ) ) );
+                    }
+                }
 
                 if ( last_p ) {
                     printf( "Last good block %lx kval %d\n", U( last_p ),
-                        kval( last_p ) ); }
+                            kval( last_p ) );
+                }
 
-                return; } }
+                return;
+            }
+        }
 
         last_p = p;
-        p = p + (1 << kval( p )); } }
+        p = p + (1 << kval( p ));
+    }
+}

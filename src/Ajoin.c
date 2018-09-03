@@ -27,11 +27,13 @@
 
 #include "O.h"
 
-A_OBJECT A_join( register A_OBJECT A1, register A_OBJECT A2 ) {
+A_OBJECT A_join( register A_OBJECT A1, register A_OBJECT A2 )
+{
 
     register A_OBJECT A;
     int current, s1, s2, t1, t2, cur_a, cur_b, flag;
-    t1 = 0; t2 = 0; /* Initialiaze to suppress warning JHJ */
+    t1 = 0;
+    t2 = 0;  // Initialiaze to suppress warning JHJ
     A_row *p1, *p1z, *p2, *p2z;
     U_OBJECT U;
     A_row *cur_st;
@@ -39,13 +41,17 @@ A_OBJECT A_join( register A_OBJECT A1, register A_OBJECT A2 ) {
     if ( !( A1-> A_ems && A2-> A_ems ) ) {
 
         if ( A1-> A_ems ) {
-            A1 = A_deems( A1 ); }
+            A1 = A_deems( A1 );
+        }
 
         if ( A2-> A_ems ) {
-            A2 = A_deems( A2 ); } }
+            A2 = A_deems( A2 );
+        }
+    }
 
     if ( A1-> A_nT == 1 && A2-> A_nT == 1 ) {
-        return( A_intersect( A1, A2 ) ); }
+        return( A_intersect( A1, A2 ) );
+    }
 
     A1 = A_min( A1 );
     A2 = A_min( A2 );
@@ -54,14 +60,16 @@ A_OBJECT A_join( register A_OBJECT A1, register A_OBJECT A2 ) {
     U = U_create();
 
     if ( U_insert( U, START, START, 1 ) != START ) {
-        Error( "A_join: BOTCH 1" ); }
+        Error( "A_join: BOTCH 1" );
+    }
 
     if ( U_insert( U, FINAL, FINAL, 1 ) != FINAL ) {
-        Error( "A_join: BOTCH 2" ); }
+        Error( "A_join: BOTCH 2" );
+    }
 
-    for ( current = 0;
-          current < U-> U_n;
-          current++ ) {
+    for (   current = 0;
+            current < U-> U_n;
+            current++ ) {
         cur_st = U_rec( U, current );
         cur_a = cur_st-> A_a;
         cur_b = cur_st-> A_b;
@@ -80,19 +88,25 @@ A_OBJECT A_join( register A_OBJECT A1, register A_OBJECT A2 ) {
 
                     if ( A1-> A_nT == 1 ) {
                         s1 = p1-> A_b;
-                        t1 = 0; }
+                        t1 = 0;
+                    }
 
                     else if ( A1-> A_nT == 2 ) {
                         s1 = p1-> A_b;
                         t1 = s1 & 1;
-                        s1 >>= 1; }
+                        s1 >>= 1;
+                    }
 
                     else {
                         s1 = p1-> A_b / A1-> A_nT;
-                        t1 = p1-> A_b - s1 * A1-> A_nT; } }
+                        t1 = p1-> A_b - s1 * A1-> A_nT;
+                    }
+                }
 
                 else {
-                    s1 = MAXSHORT; } }
+                    s1 = MAXSHORT;
+                }
+            }
 
             if ( s2 < 0 ) {
 
@@ -100,79 +114,99 @@ A_OBJECT A_join( register A_OBJECT A1, register A_OBJECT A2 ) {
 
                     if ( A2-> A_nT == 1 ) {
                         s2 = p2-> A_b;
-                        t2 = 0; }
+                        t2 = 0;
+                    }
 
                     else if ( A2-> A_nT == 2 ) {
                         s2 = p2-> A_b;
                         t2 = s2 & 1;
-                        s2 >>= 1; }
+                        s2 >>= 1;
+                    }
 
                     else {
                         s2 = p2-> A_b / A2-> A_nT;
-                        t2 = p2-> A_b - s2 * A2-> A_nT; } }
+                        t2 = p2-> A_b - s2 * A2-> A_nT;
+                    }
+                }
 
                 else {
-                    s2 = MAXSHORT; } }
+                    s2 = MAXSHORT;
+                }
+            }
 
             if ( p1-> A_b == 1 || p2-> A_b == 1 ) {
 
                 if ( p1-> A_b == 1 && p2-> A_b == 1 ) {
-                    A = A_add( A, current, 1, FINAL ); }
+                    A = A_add( A, current, 1, FINAL );
+                }
 
                 if ( p1-> A_b == 1 ) {
                     ++p1;
-                    s1 = (-1); }
+                    s1 = (-1);
+                }
 
                 if ( p2-> A_b == 1 ) {
                     ++p2;
-                    s2 = (-1); } }
+                    s2 = (-1);
+                }
+            }
 
             else if ( s1 <= s2 && t1 < A1-> A_nT - 1 ) {
 
                 if ( s1 > 0 ) {
                     A = A_add( A,
-                        current,
-                        ( A-> A_nT == 1 ? s1 :
-                            ( A-> A_nT == 2 ? (s1 << 1) + t1 :
-                                s1 * A-> A_nT + t1 ) ),
-                        U_insert( U, (int)p1-> A_c, cur_b, 0 ) ); }
+                               current,
+                               ( A-> A_nT == 1 ? s1 :
+                                 ( A-> A_nT == 2 ? (s1 << 1) + t1 :
+                                   s1 * A-> A_nT + t1 ) ),
+                               U_insert( U, (int) p1-> A_c, cur_b, 0 ) );
+                }
 
                 ++p1;
-                s1 = (-1); }
+                s1 = (-1);
+            }
 
             else if ( s2 < s1 && t2 != 0 ) {
 
                 if ( flag && s2 > 0 ) {
                     A = A_add( A,
-                        current,
-                        ( A-> A_nT == 1 ? s2 :
-                            ( A-> A_nT == 2 ? (s2 << 1) :
-                                s2 * A-> A_nT ) ) + t2 + A1-> A_nT - 1,
-                        U_insert( U, cur_a, (int)p2-> A_c, 1 ) ); }
+                               current,
+                               ( A-> A_nT == 1 ? s2 :
+                                 ( A-> A_nT == 2 ? (s2 << 1) :
+                                   s2 * A-> A_nT ) ) + t2 + A1-> A_nT - 1,
+                               U_insert( U, cur_a, (int)p2-> A_c, 1 ) );
+                }
 
                 ++p2;
-                s2 = (-1); }
+                s2 = (-1);
+            }
 
             else if ( s1 == s2 && t1 == A1-> A_nT-1 && t2 == 0 ) {
                 A = A_add( A,
-                    current,
-                    ( A-> A_nT == 1 ? s1 :
-                        ( A-> A_nT == 2 ? (s1 << 1) + t1 :
-                            s1 * A-> A_nT + t1 ) ),
-                    U_insert( U, (int)p1-> A_c, (int)p2-> A_c, 1 ) );
+                           current,
+                           ( A-> A_nT == 1 ? s1 :
+                             ( A-> A_nT == 2 ? (s1 << 1) + t1 :
+                               s1 * A-> A_nT + t1 ) ),
+                           U_insert( U, (int) p1-> A_c, (int) p2-> A_c, 1 ) );
                 ++p1;
                 ++p2;
-                s1 = s2 = (-1); }
+                s1 = s2 = (-1);
+            }
 
             else if ( s1 <= s2 ) {
                 ++p1;
-                s1 = (-1); }
+                s1 = (-1);
+            }
 
             else {
                 ++p2;
-                s2 = (-1); } } }
+                s2 = (-1);
+            }
+        }
+    }
 
     A_destroy( A1 );
     A_destroy( A2 );
     U_destroy( U );
-    return( A ); }
+    return( A );
+}

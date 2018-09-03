@@ -38,85 +38,108 @@ static int       en_cnt;
 static int       en_max;
 static char *    en_str;
 
-int A_en_DFS( SHORT state ) {
+int A_en_DFS( SHORT state )
+{
     A_row *p;
     static SHORT i;
 
-    for ( p = GAe-> A_p[ state ];
-          p < GAe-> A_p[ state + 1 ];
-          ++p ) {
+    for (   p = GAe-> A_p[ state ];
+            p < GAe-> A_p[ state + 1 ];
+            ++p ) {
 
         if ( p-> A_b == 1 ) {
             fprintf( fpout, "    " );
 
             if ( e_lev == 0 ) {
-                fprintf( fpout, "^ " ); }
+                fprintf( fpout, "^ " );
+            }
 
             else {
 
-                for ( i = 0;
-                      i < e_lev;
-                      i++ ) {
+                for (   i = 0;
+                        i < e_lev;
+                        i++ ) {
                     ++en_cnt;
 
                     if ( GAe-> A_nT == 1 ) {
                         en_str = T_name( GTe, (int) e_vec[ i ] );
 
                         if ( *en_str == '\n' ) {
-                            en_str = "\\n"; }
+                            en_str = "\\n";
+                        }
 
                         else if ( *en_str == '\t' ) {
-                            en_str = "\\t"; }
+                            en_str = "\\t";
+                        }
 
                         else if ( *en_str == ' ' ) {
-                            en_str = "\\_"; }
+                            en_str = "\\_";
+                        }
 
                         else if ( *en_str == '\\' ) {
-                            en_str = "\\\\"; }
+                            en_str = "\\\\";
+                        }
 
-                        fprintf( fpout, "%s ", en_str ); }
+                        fprintf( fpout, "%s ", en_str );
+                    }
 
                     else {
                         en_str = T_name( GTe, (int) e_vec[i] / GAe-> A_nT );
 
                         if ( *en_str == '\n' ) {
-                            en_str = "\\n"; }
+                            en_str = "\\n";
+                        }
 
                         else if ( *en_str == '\t' ) {
-                            en_str = "\\t"; }
+                            en_str = "\\t";
+                        }
 
                         else if ( *en_str == ' ' ) {
-                            en_str = "\\_"; }
+                            en_str = "\\_";
+                        }
 
                         else if ( *en_str == '\\' ) {
-                            en_str = "\\\\"; }
+                            en_str = "\\\\";
+                        }
 
                         fprintf( fpout,
-                            "%1d.%s ", e_vec[i] % GAe-> A_nT, en_str ); } } }
+                                 "%1d.%s ", e_vec[i] % GAe-> A_nT, en_str );
+                    }
+                }
+            }
 
-            fprintf( fpout, "\n" ); }
+            fprintf( fpout, "\n" );
+        }
 
         else {
 
             if ( e_lev == en_max ) {
-                return ( 1 ); }
+                return ( 1 );
+            }
 
             if ( en_cnt > en_max ) {
-                return ( 1 ); }
+                return ( 1 );
+            }
 
             e_vec[ e_lev++ ] = p-> A_b;
 
             if ( A_en_DFS( p-> A_c ) ) {
-                return ( 1 ); }
+                return ( 1 );
+            }
 
-            --e_lev; } }
-    return ( 0 ); }
+            --e_lev;
+        }
+    }
+    return ( 0 );
+}
 
-A_OBJECT A_enum( A_OBJECT A, T_OBJECT T, int max ) {
+A_OBJECT A_enum( A_OBJECT A, T_OBJECT T, int max )
+{
     A_OBJECT Ar, Am;
 
     if ( A == NULL ) {
-        Error( "A_enum: No OBJECT" ); }
+        Error( "A_enum: No OBJECT" );
+    }
 
     Ar = A_copy( A );
 
@@ -133,15 +156,19 @@ A_OBJECT A_enum( A_OBJECT A, T_OBJECT T, int max ) {
         if ( A_en_DFS( START ) ) {
             fprintf( fpout, "Enum terminated\n" );
             A_destroy( Am );
-            break; }
+            break;
+        }
 
-        Ar = A_differ( Ar, Am ); }
+        Ar = A_differ( Ar, Am );
+    }
 
     Sfree( (char *) e_vec );
     A_destroy( Ar );
-    return ( A ); }
+    return ( A );
+}
 
-int A_cd_DFS( SHORT state ) {
+int A_cd_DFS( SHORT state )
+{
     A_row *p;
     static int i;
     int count;
@@ -149,67 +176,84 @@ int A_cd_DFS( SHORT state ) {
     count = c_vec[ state ];
 
     if ( count != 0 ) {
-        return ( count ); }
+        return ( count );
+    }
 
     c_vec[ state ] = (-1);
 
-    for ( p = GAe-> A_p[ state ];
-          p < GAe-> A_p[ state + 1 ];
-          ++p ) {
+    for (   p = GAe-> A_p[ state ];
+            p < GAe-> A_p[ state + 1 ];
+            ++p ) {
 
         if ( p-> A_b == 1 ) {
-            ++count; }
+            ++count;
+        }
 
         else {
             i = A_cd_DFS( p-> A_c );
 
             if ( i < 0 ) {
-                return ( -1 ); }
+                return ( -1 );
+            }
 
-            count += i; } }
+            count += i;
+        }
+    }
 
-    return (
-        c_vec[ state ] = count ); }
+    return ( c_vec[ state ] = count );
+}
 
-int A_card( A_OBJECT A ) {
+int A_card( A_OBJECT A )
+{
     int i;
 
     if ( A == NULL ) {
-        Error( "A_card: No OBJECT" ); }
+        Error( "A_card: No OBJECT" );
+    }
 
     A = A_subs( A );
     c_vec = i_alloc( A-> A_nQ );
 
-    for ( i = 0; i < A-> A_nQ; i++ ) {
-        c_vec[ i ] = 0; }
+    for (   i = 0;
+            i < A-> A_nQ;
+            i++ ) {
+        c_vec[ i ] = 0;
+    }
 
     GAe = A;
     i = A_cd_DFS( START );
     Sfree( (char *) c_vec );
-    return ( i ); }
+    return ( i );
+}
 
-A_OBJECT A_pref( A_OBJECT A ) {
+A_OBJECT A_pref( A_OBJECT A )
+{
     int i;
     A = A_open( A_min( A ) );
 
-    for ( i = A-> A_nQ;
-          --i >= 2; ) {
-        A = A_add( A, i, 1, 1 ); }
+    for (   i = A-> A_nQ;
+            --i >= 2; ) {
+        A = A_add( A, i, 1, 1 );
+    }
 
     A = A_add( A, 0, 1, 1 );
     A = A_close( A );
     A-> A_mode = DFA;
-    return ( A ); }
+    return ( A );
+}
 
-A_OBJECT A_suff( A_OBJECT A ) {
+A_OBJECT A_suff( A_OBJECT A )
+{
     int i;
     A = A_open( A_min( A ) );
 
-    for ( i = A-> A_nQ;
-          --i >= 2; ) {
-        A = A_add( A, 0, 0, i ); }
+    for (   i = A-> A_nQ;
+            --i >= 2; ) {
+        A = A_add( A, 0, 0, i );
+    }
 
     A = A_add( A, 0, 1, 1 );
     A = A_close( A );
     A-> A_mode = NFA_CLOSED;
-    return ( A ); }
+    return ( A );
+}

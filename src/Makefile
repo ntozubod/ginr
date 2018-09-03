@@ -15,6 +15,9 @@ SOURCE 	= Makefile $(HFILES) $(CFILES) Parse.y
 ginr:	$(OFILES)
 	gcc -Wall -O $(OFILES) -o ginr
 
+format:	$(CFILES)
+	astyle --style=1tbs $(CFILES)
+
 inrx.a:
 	echo hi >inrx.a
 	rm inrx.a
