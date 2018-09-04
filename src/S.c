@@ -513,7 +513,7 @@ void Saudit( )
         else {
             k = kval( p );
 
-            if ( k >= 20
+            if ( k >= 30
                     || (( linkf( p ) < S_lo || linkf( p ) >= S_hi )
                         && ( linkf( p ) < S_avail
                              || linkf( p ) >= S_avail + S_m ))
