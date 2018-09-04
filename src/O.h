@@ -33,6 +33,7 @@
 
 typedef unsigned int    SHORT;
 #define MAXSHORT        037777777777
+#define MAXSTATE        017777777777
 
 typedef struct {
     SHORT       R_a;

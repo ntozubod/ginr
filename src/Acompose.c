@@ -138,7 +138,7 @@ A_OBJECT A_compose( register A_OBJECT A1, register A_OBJECT A2 )
                 }
 
                 else {
-                    s1 = MAXSHORT;
+                    s1 = MAXSTATE;
                 }
             }
 
@@ -164,7 +164,7 @@ A_OBJECT A_compose( register A_OBJECT A1, register A_OBJECT A2 )
                 }
 
                 else {
-                    s2 = MAXSHORT;
+                    s2 = MAXSTATE;
                 }
             }
 
