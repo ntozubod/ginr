@@ -60,6 +60,7 @@ int do_n_i( char * op )
     else if ( ! strcmp( "free", op ) ) {
         fprintf( fpout, "\n" );
         (void) Sarena();
+        (void) Saudit();
         fprintf( fpout, "\n" );
     }
 

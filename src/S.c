@@ -38,6 +38,7 @@ typedef struct S_f {
     unsigned char S_kval;
     unsigned char S_tag;
     unsigned      fill_3;
+    struct S_f *fill_4;
     struct S_f *S_linkf;
     struct S_f *S_linkb;
 } S_ft;
@@ -54,14 +55,14 @@ typedef struct S_f {
 
 #define U(p)            ((unsigned long)(p))
 
-#define S_m             28
+#define S_m             26
 // S_m = 26 allows objects of up to 1 gigabyte
 
 static S_ft *S_lo = 0,
              *S_hi = 0,
               S_avail[ S_m + 1 ];
 
-static int   S_alld_cnt[ S_m ];
+static int  S_alld_cnt[ S_m ];
 
 int LINUXmem = 0;
 
@@ -196,7 +197,7 @@ void S_morecore( register int k )
             ;
         }
 
-        ++S_alld_cnt[k];
+        ++S_alld_cnt[ k ];
         set_tag( S_lo + a, 0 );
         S_free( S_lo + a, k );
         a += 1 << k;
@@ -254,8 +255,8 @@ S_ft *S_realloc( register S_ft *l, register int k1, register int k2 )
 {
     register int k0;
     register S_ft *p, *q;
-    --S_alld_cnt[k1];
-    ++S_alld_cnt[k2];
+    --S_alld_cnt[ k1 ];
+    ++S_alld_cnt[ k2 ];
 
     if ( k1 >= k2 ) {
 
@@ -403,12 +404,12 @@ char *Salloc( register int n )
 
 void Sfree( register char *p )
 {
-    if ( !p ) {
+    if ( ! p ) {
         return;
     }
     p -= 4;
 
-    if ( p[0] != 0x7f ) {
+    if ( p[ 0 ] != 0x7f ) {
         Error( "Sfree: Invalid free" );
     }
 
@@ -423,7 +424,7 @@ char *Srealloc( register char *p, register int n )
         Error( "Srealloc: Argument constraint error" );
     }
 
-    if ( !p ) {
+    if ( ! p ) {
         return ( Salloc( n ) );
     }
 
@@ -478,7 +479,7 @@ void Saudit( )
 
         if ( ( p - S_lo ) & ( ( 1 << kval( p ) ) - 1 ) ) {
             printf( "Block alignment error at %lx\n", U( p ) );
-            printf( "Block size %d Offset %lx\n", kval(p), U( p-S_lo ) );
+            printf( "Block size %d Offset %lx\n", kval( p ), U( p-S_lo ) );
 
             if ( last_p ) {
                 printf( "Last good block %lx kval %d\n", U( last_p ),
@@ -488,10 +489,10 @@ void Saudit( )
             return;
         }
 
-        if ( !tag(p) ) {
+        if ( ! tag( p ) ) {
 
             if ( pc[ 0 ] != 0x7f ) {
-                printf( "Audit anomoly in busy block at %lx:\n", U( p ) );
+                printf( "Audit anomaly in busy block at %lx:\n", U( p ) );
                 printf( "Size code %d\n", pc[ 1 ] );
                 printf( "S_lo %lx S_hi %lx S_avail %lx\n",
                         U( S_lo ), U( S_hi ), U( S_avail ) );
@@ -521,7 +522,7 @@ void Saudit( )
                              || linkb( p ) >= S_avail + S_m ))
                     || linkb( linkf( p ) ) != p
                     || linkf( linkb( p ) ) != p ) {
-                printf( "Audit anomoly in free block at %lx:\n", U( p ) );
+                printf( "Audit anomaly in free block at %lx:\n", U( p ) );
                 printf( "S_lo %lx S_hi %lx S_avail %lx\n",
                         U( S_lo ), U( S_hi ), U( S_avail ) );
                 printf( "kval %d\n", k );
@@ -531,14 +532,14 @@ void Saudit( )
                 if (( linkf( p ) >= S_lo && linkf( p ) < S_hi )
                         || ( linkf( p ) >= S_avail
                              && linkf( p ) < S_avail + S_m )) {
-                    printf( "linkb(linkf( p )) %lx\n",
+                    printf( "linkb( linkf( p ) )  %lx\n",
                             U( linkb( linkf( p ) ) ) );
                 }
 
                 if (( linkb( p ) >= S_lo && linkb( p ) < S_hi )
                         || ( linkb( p ) >= S_avail
                              && linkb( p ) < S_avail + S_m )) {
-                    printf( "linkf( linkb( p )) %lx\n",
+                    printf( "linkf( linkb( p ) )  %lx\n",
                             U( linkf( linkb( p ) ) ) );
                 }
 
@@ -551,7 +552,7 @@ void Saudit( )
                                 U( linkf( S_avail + i ) ) );
                     }
 
-                    if ( linkb(S_avail+i) == p ) {
+                    if ( linkb( S_avail + i ) == p ) {
                         printf( "linkb( S_avail + i ) %lx\n",
                                 U( linkb( S_avail + i ) ) );
                     }
