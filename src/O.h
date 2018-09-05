@@ -32,7 +32,13 @@
 #define A_Object        5
 
 typedef unsigned int    SHORT;
-#define MAXSHORT        037777777777
+
+// #define MAXSHORT        037777777777
+// change MAXSHORT to 31 one's to avoid bugs in usage for signed ints
+// left over from change of SHORT to 32 bits.
+// These cases will be reviewed one by one and repaired correctly (JHJ).
+
+#define MAXSHORT        017777777777
 #define MAXSTATE        017777777777
 
 typedef struct {
