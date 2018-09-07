@@ -272,12 +272,13 @@ A_row *     U_rec( register U_OBJECT, register int );
 void        U_stats();
 
 // S.c
-void        copymem( register int, register char *, register char * );
-char *      Salloc( register int );
+void        copymem( register long, register char *, register char * );
+char *      Salloc( register long );
 void        Sfree( register char * );
-char *      Srealloc( register char *, register int );
+char *      Srealloc( register char *, register long );
 char *      Scopy( register char * );
-int         Ssize( char * );
+long        Ssize( char * );
+char *      Sfind( char * );
 void        Sarena();
 void        Saudit();
 
