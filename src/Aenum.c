@@ -29,20 +29,20 @@ extern FILE *fpout;
 
 #include "O.h"
 
-static A_OBJECT		GAe;
-static T_OBJECT		GTe;
-static SHORT		*e_vec;
-static int		*c_vec;
-static int		e_lev;
-static int		en_cnt;
-static int		en_max;
-static char *		en_str;
+static A_OBJECT         GAe;
+static T_OBJECT         GTe;
+static SHORT            *e_vec;
+static int              *c_vec;
+static int              e_lev;
+static int              en_cnt;
+static int              en_max;
+static char *           en_str;
 
 int A_en_DFS( state )
 SHORT state;
 {
-  A_row		*p;
-  static SHORT	i;
+  A_row         *p;
+  static SHORT  i;
 
   for( p = GAe-> A_p[state]; p < GAe-> A_p[state + 1]; ++p )
     if ( p-> A_b == 1 ) {
@@ -158,9 +158,9 @@ int max;
 int A_cd_DFS( state )
 SHORT state;
 {
-  A_row		*p;
-  static int	i;
-  int		count;
+  A_row         *p;
+  static int    i;
+  int           count;
 
   count = c_vec[ state ];
 

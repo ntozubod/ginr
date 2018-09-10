@@ -27,9 +27,9 @@
 
 #include "O.h"
 
-#define INIT_lrows	20
+#define INIT_lrows      20
 
-int	A_report = 0;
+int     A_report = 0;
 extern FILE *fpout;
 
 A_OBJECT A_create()
@@ -37,14 +37,14 @@ A_OBJECT A_create()
   register A_OBJECT A;
 
   A = ( A_OBJECT ) Salloc( sizeof( struct A_desc ) );
-  A-> Type =	A_Object;
-  A-> A_mode =	OPEN;
-  A-> A_ems =	0;
-  A-> A_nT =	1;
-  A-> A_nQ =	2;
-  A-> A_nS =	2;
-  A-> A_nrows =	0;
-  A-> A_p =	NULL;
+  A-> Type =    A_Object;
+  A-> A_mode =  OPEN;
+  A-> A_ems =   0;
+  A-> A_nT =    1;
+  A-> A_nQ =    2;
+  A-> A_nS =    2;
+  A-> A_nrows = 0;
+  A-> A_p =     NULL;
   A-> A_t = ( A_row * ) Salloc( ( INIT_lrows + 2 ) * sizeof( A_row ) );
   A-> A_lrows = Ssize( ( char * ) A-> A_t ) / ( sizeof( A_row ) ) - 2;
   return( A );
@@ -74,7 +74,7 @@ register A_OBJECT A;
     return( A );
   }
 
-  if ( A-> A_ems )	{
+  if ( A-> A_ems )      {
     fprintf( fpout, "*" );
 
   } else {
@@ -137,9 +137,9 @@ register A_OBJECT A;
 void A_exchange( A1, A2 )
 register A_OBJECT A1, A2;
 {
-  register int		t_int;
-  register A_row **	t_Arpp;
-  register A_row *	t_Arp;
+  register int          t_int;
+  register A_row **     t_Arpp;
+  register A_row *      t_Arp;
 
   if ( A1 == NULL ) {
     A1 = A_create();
@@ -226,7 +226,7 @@ register A_OBJECT A;
 
   lst_em = 2 * A-> A_nT - 1;
 
-  if ( A-> A_mode < NFA_EQLAM )	{
+  if ( A-> A_mode < NFA_EQLAM ) {
     new_mode = A-> A_mode;
 
   } else {
@@ -266,7 +266,7 @@ register A_OBJECT A;
   fst_em = A-> A_nT;
   lst_em = 2 * A-> A_nT - 1;
 
-  if ( A-> A_mode < DFA_MIN )	{
+  if ( A-> A_mode < DFA_MIN )   {
     new_mode = A-> A_mode;
 
   } else {

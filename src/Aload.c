@@ -27,7 +27,7 @@
 
 #include "O.h"
 
-#define MAX_TOKEN	1024
+#define MAX_TOKEN       1024
 
 #ifdef CMS
 char new[100];
@@ -168,7 +168,7 @@ T_OBJECT T_Sigma;
   if ( file != NULL ) {
     fp = fopen( cnvrtn( file ), "r" );
 
-  } else if ( fpin != NULL )	{
+  } else if ( fpin != NULL )    {
     fp = fpin;
 
   } else {
@@ -419,7 +419,7 @@ register T_OBJECT T_Sigma;
   pz = A-> A_t + A-> A_nrows;
 
   for( p = A-> A_t; p < pz; p++ ) {
-    if ( ( t = p-> A_a ) == START )	{
+    if ( ( t = p-> A_a ) == START )     {
       fprintf( fp, "(START) " );
 
     } else if ( t == FINAL ) {
@@ -437,7 +437,7 @@ register T_OBJECT T_Sigma;
       put_name( T_name( T_Sigma, t / A-> A_nT ) );
     }
 
-    if ( ( t = p-> A_c ) == START )	{
+    if ( ( t = p-> A_c ) == START )     {
       fprintf( fp, " (START)\n" );
 
     } else if ( t == FINAL ) {
@@ -451,7 +451,7 @@ register T_OBJECT T_Sigma;
   if ( file != NULL ) {
     fclose( fp );
 
-  } else	if ( fflush( stdout ) == EOF ) {
+  } else        if ( fflush( stdout ) == EOF ) {
     Error( "A_store: fflush" );
   }
 
@@ -548,7 +548,7 @@ register T_OBJECT T_Sigma;
   if ( file != NULL ) {
     fclose( fp );
 
-  } else	if ( fflush( stdout ) == EOF ) {
+  } else        if ( fflush( stdout ) == EOF ) {
     Error( "A_save: fflush" );
   }
 
@@ -566,7 +566,7 @@ T_OBJECT T_Sigma;
   if ( file != NULL ) {
     fp = fopen( cnvrtn( file ), "r" );
 
-  } else if ( fpin != NULL )	{
+  } else if ( fpin != NULL )    {
     fp = fpin;
 
   } else {
@@ -706,7 +706,7 @@ register T_OBJECT T_Sigma;
 
       for( p = A-> A_p[i]; p < pz; p++ ) {
 
-        if ( ( t = p-> A_a ) == START )	{
+        if ( ( t = p-> A_a ) == START ) {
           fprintf( fp, "(START)  " );
 
         } else if ( t == FINAL ) {
@@ -765,7 +765,7 @@ register T_OBJECT T_Sigma;
   if ( file != NULL ) {
     fclose( fp );
 
-  } else	if ( fflush( stdout ) == EOF ) {
+  } else        if ( fflush( stdout ) == EOF ) {
     Error( "A_store: fflush" );
   }
 

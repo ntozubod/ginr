@@ -29,8 +29,8 @@ extern FILE *fpout;
 
 #include "O.h"
 
-#define UNMARK		MAXSHORT
-#define LAST		(MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define LAST            (MAXSHORT-1)
 
 A_OBJECT A_subs( A )
 register A_OBJECT A;
@@ -210,7 +210,7 @@ register A_OBJECT A;
       if ( heap[1] + 1 < A-> A_p[ heap[1]-> A_a + 1 ] ) {
         insert = heap[1] + 1;
 
-      } else	{
+      } else    {
         insert = heap[ hsize-- ];
       }
 

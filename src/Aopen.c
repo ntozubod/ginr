@@ -90,7 +90,7 @@ register A_OBJECT A;
 
   A-> A_mode = OPEN;
   Sfree( ( char * ) A-> A_p );
-  A-> A_p =	NULL;
+  A-> A_p =     NULL;
   return( A );
 }
 
@@ -251,9 +251,9 @@ A_OBJECT A_rename( A, rena )
 register A_OBJECT A;
 register SHORT *rena;
 {
-  register A_row	*p, *pz;
-  register SHORT	*trena, *sp;
-  int		nrena, i;
+  register A_row        *p, *pz;
+  register SHORT        *trena, *sp;
+  int           nrena, i;
 
   if ( A == NULL ) {
     Error( "A_rename: No OBJECT" );
@@ -313,7 +313,7 @@ register SHORT *rena;
         if ( rena[i] < A-> A_nQ ) {
           s_rena[i] = trena[rena[i]];
 
-        } else	{
+        } else  {
           s_rena[i] = MAXSHORT;
         }
       }

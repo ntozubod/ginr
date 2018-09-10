@@ -29,8 +29,8 @@ extern FILE *fpout;
 
 #include "O.h"
 
-#define UNMARK		MAXSHORT
-#define DELETED		(MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define DELETED         (MAXSHORT-1)
 
 static A_OBJECT GAl;
 static SHORT *l_stk, *l_low;
@@ -57,7 +57,7 @@ int state;
         l_low[state] = l_low[next];
       }
 
-    } else	if ( l_stk[next] < DELETED
+    } else      if ( l_stk[next] < DELETED
                  &&   l_low[next] <= l_low[state] ) {
       l_low[state] = l_low[next];
       l_reopen = 1;

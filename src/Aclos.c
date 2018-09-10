@@ -29,9 +29,9 @@ extern FILE *fpout;
 
 #include "O.h"
 
-#define UNMARK		0
-#define MARK		1
-#define CONDEMN		2
+#define UNMARK          0
+#define MARK            1
+#define CONDEMN         2
 
 static A_OBJECT GAc;
 static A_OBJECT GAc2;
@@ -63,7 +63,7 @@ int state;
         } else if ( mid-> A_c < next ) {
           lo = mid + 1;
 
-        } else	{
+        } else  {
           break;
         }
       }
@@ -77,7 +77,7 @@ int state;
       A_cl_DFS( next );
       --c_top;
 
-    } else	{
+    } else      {
       A_cl_DFS( next );
     }
   }
@@ -127,7 +127,7 @@ register A_OBJECT A;
       c_mark[i] = CONDEMN;
       ++n_condemned;
 
-    } else	{
+    } else      {
       c_mark[i] = UNMARK;
     }
 

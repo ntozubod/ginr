@@ -173,7 +173,7 @@ register int i;
   if ( i >= 0 && i < U-> U_n ) {
     return( U-> U_rec + i );
 
-  } else	{
+  } else        {
     return( NULL );
   }
 }

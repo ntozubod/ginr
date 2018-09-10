@@ -29,8 +29,8 @@ extern FILE *fpout;
 
 #include "O.h"
 
-#define NONE	MAXSHORT
-#define FAIL	(MAXSHORT-1)
+#define NONE    MAXSHORT
+#define FAIL    (MAXSHORT-1)
 
 static SHORT *c_rena;
 

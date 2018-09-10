@@ -30,10 +30,10 @@
 
 extern FILE *fpout;
 
-extern A_OBJECT	Atemp;
-extern T_OBJECT	TAlist;
-extern A_OBJECT	Alist[100];
-extern T_OBJECT	TT;
+extern A_OBJECT Atemp;
+extern T_OBJECT TAlist;
+extern A_OBJECT Alist[100];
+extern T_OBJECT TT;
 
 extern char * pad20();
 

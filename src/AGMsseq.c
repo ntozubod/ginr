@@ -30,8 +30,8 @@
 extern FILE *fpout;
 extern T_OBJECT TT;
 
-#define UNMARK		MAXSHORT
-#define LAST		(MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define LAST            (MAXSHORT-1)
 
 int GMcmp( u, v )
 SHORT *u, *v;

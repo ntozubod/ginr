@@ -29,8 +29,8 @@ extern FILE *fpout;
 
 #include "O.h"
 
-#define UNMARK	MAXSHORT
-#define LAST	(MAXSHORT-1)
+#define UNMARK  MAXSHORT
+#define LAST    (MAXSHORT-1)
 
 A_OBJECT A_min( A )
 register A_OBJECT A;
@@ -91,22 +91,22 @@ register A_OBJECT A;
 
   nB = A-> A_nQ;
 
-  in_B =		s_alloc( A-> A_nQ );
-  B_card =	s_alloc( nB );
-  B_H =		s_alloc( nB );
-  B_N =		s_alloc( A-> A_nQ );
-  B_L =		s_alloc( A-> A_nQ );
+  in_B =                s_alloc( A-> A_nQ );
+  B_card =      s_alloc( nB );
+  B_H =         s_alloc( nB );
+  B_N =         s_alloc( A-> A_nQ );
+  B_L =         s_alloc( A-> A_nQ );
 
-  in_wait =	s_alloc( nB );
-  wait_N =	s_alloc( nB );
+  in_wait =     s_alloc( nB );
+  wait_N =      s_alloc( nB );
 
-  in_JL =		s_alloc( nB );
-  JL_N =		s_alloc( nB );
+  in_JL =               s_alloc( nB );
+  JL_N =                s_alloc( nB );
 
-  int_H =		s_alloc( nB );
-  int_N =		s_alloc( A-> A_nQ );
+  int_H =               s_alloc( nB );
+  int_N =               s_alloc( A-> A_nQ );
 
-  heap =		( A_row ** ) Salloc( ( A-> A_nQ + 1 ) * sizeof( A_row * ) );
+  heap =                ( A_row ** ) Salloc( ( A-> A_nQ + 1 ) * sizeof( A_row * ) );
 
   nB = 2;
 
@@ -153,7 +153,7 @@ register A_OBJECT A;
 
       if ( lo <= hi && x <= hi-> A_b ) {
         while ( lo < hi ) {
-          if ( x <= p-> A_b )	{
+          if ( x <= p-> A_b )   {
             hi = p;
 
           } else {
@@ -199,7 +199,7 @@ register A_OBJECT A;
     for( ;; ) {
 
       /*-------------------------------------------------------------------------*/
-      /**/									 /**/
+      /**/                                                                       /**/
 
       if ( x != heap[1]-> A_b || hsize == 0 ) {
 
@@ -289,7 +289,7 @@ register A_OBJECT A;
         if ( heap[1] + 1 < A-> A_p[ heap[1]-> A_a + 1 ] ) {
           lo = heap[1] + 1;
 
-        } else	{
+        } else  {
           lo = heap[ hsize-- ];
         }
 
@@ -311,7 +311,7 @@ register A_OBJECT A;
 
       heap[ f ] = lo;
 
-      /**/									 /**/
+      /**/                                                                       /**/
       /*-------------------------------------------------------------------------*/
 
     }

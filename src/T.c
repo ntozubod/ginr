@@ -184,7 +184,7 @@ register int i;
   if ( i >= 0 && i < T-> T_n ) {
     return( T-> T_name[ i ] );
 
-  } else	{
+  } else        {
     return( NULL );
   }
 }

@@ -64,8 +64,8 @@ void A_st_free()
 int A_st_DFS( q, i )
 int q, i;
 {
-  A_row	*p;
-  int	try, newtry;
+  A_row *p;
+  int   try, newtry;
 
   if ( i < st_len[q] ) {
     return( st_work[q][i] );
@@ -81,10 +81,10 @@ int q, i;
   try = WILD;
 
   for( p = GAs-> A_p[q]; p < GAs-> A_p[q + 1]; ++p ) {
-    if ( p-> A_b == 0 )	{
+    if ( p-> A_b == 0 ) {
       newtry = A_st_DFS( p-> A_c, i );
 
-    } else if ( i > 0 )	{
+    } else if ( i > 0 ) {
       newtry = A_st_DFS( p-> A_c, i - 1 );
 
     } else {
@@ -191,7 +191,7 @@ int tape;
       if ( s_rena[i] < MAXSHORT ) {
         st_ptr[i] = st_work[s_rena[i]];
 
-      } else	{
+      } else    {
         st_ptr[i] = st_work[1];
       }
     }
@@ -207,8 +207,8 @@ void A_prstems( A, T, tape )
 A_OBJECT A;
 T_OBJECT T;
 {
-  int	q, i, ch;
-  char *	s;
+  int   q, i, ch;
+  char *        s;
 
   if ( A == NULL ) {
     Error( "A_prstems: No OBJECT" );

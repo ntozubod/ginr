@@ -169,7 +169,7 @@ register int i;
   if ( i >= 0 && i < R-> R_n ) {
     return( R-> R_rec + i );
 
-  } else	{
+  } else        {
     return( NULL );
   }
 }

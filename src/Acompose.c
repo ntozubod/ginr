@@ -125,7 +125,7 @@ register A_OBJECT A1, A2;
             t1 = p1-> A_b - s1 * A1-> A_nT;
           }
 
-        } else	{
+        } else  {
           s1 = MAXSHORT;
         }
 
@@ -145,7 +145,7 @@ register A_OBJECT A1, A2;
             t2 = p2-> A_b - s2 * A2-> A_nT;
           }
 
-        } else	{
+        } else  {
           s2 = MAXSHORT;
         }
 

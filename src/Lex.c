@@ -31,7 +31,7 @@
 #include "O.h"
 #include "y.tab.h"
 
-FILE	*fopen();
+FILE    *fopen();
 extern FILE *fpin, *fpout;
 
 A_OBJECT    A, Atemp;
@@ -55,10 +55,10 @@ char * s;
   }
 }
 
-#define PROMT	if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
+#define PROMT   if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
 
 int ch = ' ';
-char	token[512];
+char    token[512];
 int in_string = 0;
 
 char *copyof( str )
@@ -150,7 +150,7 @@ yylex()
 
   while( ch == ' ' || ch == '\t' || ch == '\n' || ch == '#'
          || in_comment ) {
-    if ( ch == '#'	) {
+    if ( ch == '#'      ) {
       in_comment = 1;
     }
 
@@ -158,7 +158,7 @@ yylex()
       in_comment = 0;
     }
 
-    if ( ch == EOF	) {
+    if ( ch == EOF      ) {
       Error( "End of file in comment" );
     }
 
@@ -177,7 +177,7 @@ yylex()
     return( EXCLAM );
 
   /*  case '"':   not used    */
-  /*  case '#':	COMMENT     */
+  /*  case '#': COMMENT     */
   case '$':
     return( DOLLAR );
 
@@ -209,7 +209,7 @@ yylex()
   case '-':
     return( MINUS );
 
-  /*  case '.':	ALPHANUMERIC	*/
+  /*  case '.': ALPHANUMERIC    */
   case '/':
     return( SLASH );
 
@@ -219,11 +219,11 @@ yylex()
   case ';':
     return( SEMI );
 
-  /*  case '<':	not used    */
+  /*  case '<': not used    */
   case '=':
     return( EQUAL );
 
-  /*  case '>':	not used    */
+  /*  case '>': not used    */
   case '?':
     return( QUESTION );
 
@@ -242,9 +242,9 @@ yylex()
   case '^':
     return( CIRCUMFLEX );
 
-  /*  case '_':	ALPHANUMERIC	*/
+  /*  case '_': ALPHANUMERIC    */
 
-  /*  case '`':	TOKEN QUOTE */
+  /*  case '`': TOKEN QUOTE */
 
   case '{':
     return( LBRACE );
@@ -255,7 +255,7 @@ yylex()
   case '}':
     return( RBRACE );
 
-  /*  case '~':	not used    */
+  /*  case '~': not used    */
 
   case '"':
   case '<':

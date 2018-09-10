@@ -40,19 +40,19 @@ typedef struct S_f {
   struct S_f *S_linkb;
 } S_ft;
 
-#define tag(p)		((p)-> S_tag)
-#define kval(p)		((p)-> S_kval)
-#define linkf(p)	((p)-> S_linkf)
-#define linkb(p)	((p)-> S_linkb)
+#define tag(p)          ((p)-> S_tag)
+#define kval(p)         ((p)-> S_kval)
+#define linkf(p)        ((p)-> S_linkf)
+#define linkb(p)        ((p)-> S_linkb)
 
-#define set_tag(p,t)	(p)-> S_tag = t
-#define set_kval(p,k)	(p)-> S_kval = k
-#define set_linkf(p,q)	(p)-> S_linkf = q
-#define set_linkb(p,q)	(p)-> S_linkb = q
+#define set_tag(p,t)    (p)-> S_tag = t
+#define set_kval(p,k)   (p)-> S_kval = k
+#define set_linkf(p,q)  (p)-> S_linkf = q
+#define set_linkb(p,q)  (p)-> S_linkb = q
 
-#define U(p)		((unsigned long)(p))
+#define U(p)            ((unsigned long)(p))
 
-#define S_m		28
+#define S_m             28
 /* S_m = 26 allows objects of up to 1 gigabyte */
 
 static S_ft *S_lo = 0,
@@ -330,14 +330,14 @@ void S_arena()
         cnt = 0;
       }
 
-      if ( size < 1024 )	{
+      if ( size < 1024 )        {
         fprintf( fpout, "%4d ", size );
 
-      } else if	( size < 1024 * 1024 )
+      } else if ( size < 1024 * 1024 )
         fprintf( fpout,
                  "%4dK", size / 1024 );
 
-      else			fprintf( fpout,
+      else                      fprintf( fpout,
                            "%4dM", size / 1024 / 1024 );
 
       fprintf( fpout, "%7d", cnt );

@@ -37,7 +37,7 @@ register int n;
 
   A = A_min( A );
 
-  if ( n % 2 )	{
+  if ( n % 2 )  {
     Aprod = A_copy( A );
 
   } else {
@@ -93,7 +93,7 @@ register int n;
 
   A = A_min( A );
 
-  if ( n % 2 )	{
+  if ( n % 2 )  {
     Aprod = A_copy( A );
 
   } else {

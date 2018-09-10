@@ -29,19 +29,19 @@ extern FILE *fpout;
 
 #include "O.h"
 
-#define UNMARK		MAXSHORT
-#define DELETED		(MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define DELETED         (MAXSHORT-1)
 
-static A_OBJECT		GAt;
-static SHORT		*t_stk, *t_low;
-static int		t_cnt;
+static A_OBJECT         GAt;
+static SHORT            *t_stk, *t_low;
+static int              t_cnt;
 
 SHORT A_tr_DFS( state )
 SHORT state;
 {
-  SHORT		dfn;
-  A_row	 	*p;
-  static SHORT	next;
+  SHORT         dfn;
+  A_row         *p;
+  static SHORT  next;
 
   t_low[ state ] = dfn = t_cnt++;
   *t_stk++ = state;
@@ -67,9 +67,9 @@ SHORT state;
 A_OBJECT A_trim( A )
 register A_OBJECT A;
 {
-  register A_row	*p, *pz;
-  register int	i, must_reopen;
-  SHORT		*stk_rem;
+  register A_row        *p, *pz;
+  register int  i, must_reopen;
+  SHORT         *stk_rem;
 
   if ( A == NULL ) {
     Error( "A_trim: No OBJECT" );
