@@ -16,7 +16,8 @@ ginr:	$(OFILES)
 	gcc -Wall -O0 -g $(OFILES) -o ginr
 
 format:	$(CFILES)
-	astyle --style=1tbs $(CFILES)
+	astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
+--break-blocks=all $(CFILES)
 
 inrx.a:
 	echo hi >inrx.a
@@ -38,4 +39,4 @@ y.tab.c y.tab.h:	Parse.y
 Lex.o:	y.tab.h
 
 clean:
-	rm -f $(OFILES) y.tab.h y.tab.c
+	rm -f $(OFILES) y.tab.h y.tab.c *.orig
