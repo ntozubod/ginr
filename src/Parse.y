@@ -27,6 +27,8 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <string.h>
 
 #include "O.h"
 
@@ -146,7 +148,7 @@ statement       : reg_0 SEMI
                 {
                         i = do_n_i( $2 );
                         Sfree( $2 );
-                        if ( i ) return;
+                        if ( i ) return ( 0 );
                         if ( A_report ) pr_time_diff();
                         PROMT
                 }

@@ -30,13 +30,13 @@
 
 extern FILE *fpout;
 
-Warning( s )
+void Warning( s )
 char *s;
 {
   fprintf( fpout, "*** %s ***\n", s );
 }
 
-Error( s )
+void Error( s )
 char *s;
 {
   fprintf( fpout, "*** %s ***\n", s );
@@ -56,7 +56,7 @@ int n;
   return( ( int * ) Salloc( n * sizeof( int ) ) );
 }
 
-pr_time_diff()
+void pr_time_diff()
 {
   return;
 }

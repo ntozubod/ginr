@@ -109,7 +109,7 @@ register A_OBJECT A1, A2;
     s1 = s2 = ( -1 );
 
     while( p1 < p1z || p2 < p2z ) {
-      if ( s1 < 0 )
+      if ( s1 < 0 ) {
         if ( p1 < p1z ) {
           if ( A1-> A_nT == 1 ) {
             s1 = p1-> A_b;
@@ -128,8 +128,9 @@ register A_OBJECT A1, A2;
         } else  {
           s1 = MAXSHORT;
         }
+      }
 
-      if ( s2 < 0 )
+      if ( s2 < 0 ) {
         if ( p2 < p2z ) {
           if ( A2-> A_nT == 1 ) {
             s2 = p2-> A_b;
@@ -148,6 +149,7 @@ register A_OBJECT A1, A2;
         } else  {
           s2 = MAXSHORT;
         }
+      }
 
       if ( p1-> A_b == 1 || p2-> A_b == 1 ) {
         if ( p1-> A_b == 1 && p2-> A_b == 1 ) {

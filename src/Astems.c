@@ -206,6 +206,7 @@ int tape;
 void A_prstems( A, T, tape )
 A_OBJECT A;
 T_OBJECT T;
+int tape;
 {
   int   q, i, ch;
   char *        s;
