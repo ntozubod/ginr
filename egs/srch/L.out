@@ -1,0 +1,15 @@
+I N R -- V 2.0.2a, modified Sept 9, 2018
+Copyright (C) 1988 J Howard Johnson
+Distributed under GPLv3 (see COPYING)
+  (Source file: _Lev)
+
+
+SIGMA --------------   DFA MIN States: 3      Trans: 17     Tapes: 1  Strg: 2 K
+Delete -------------   DFA MIN States: 3      Trans: 17     Tapes: 2  Strg: 3 K
+Insert -------------   DFA MIN States: 3      Trans: 17     Tapes: 2  Strg: 3 K
+Substitute ---------   DFA MIN States: 4      Trans: 33     Tapes: 2  Strg: 3 K
+Equal --------------   DFA MIN States: 19     Trans: 33     Tapes: 2  Strg: 5 K
+Levenshtein1 -------   DFA MIN States: 35     Trans: 594    Tapes: 2  Strg: 11 K
+Levk ---------------   DFA MIN States: 86     Trans: 2277   Tapes: 2  Strg: 19 K
+Scan ---------------   DFA MIN States: 87     Trans: 2310   Tapes: 2  Strg: 67 K
+t15 ----------------   DFA MIN States: 10132  Trans: 165194 Tapes: 1  Strg: 2177 K

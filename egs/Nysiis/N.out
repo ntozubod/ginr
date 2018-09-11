@@ -1,18 +1,21 @@
-I N R -- V 2.0e, Mar 25 1988
+I N R -- V 2.0.3a, modified Sept 11, 2018
+Copyright (C) 1988 J Howard Johnson
+Distributed under GPLv3 (see COPYING)
+  (Source file: _Nync)
 
 
 Al -----------------   DFA MIN States: 3      Trans: 27     Tapes: 1  Strg: 2 K
-Vo -----------------   DFA MIN States: 3      Trans: 6      Tapes: 1  Strg: 1 K
-Co -----------------   DFA MIN States: 3      Trans: 22     Tapes: 1  Strg: 1 K
-CAl ----------------   DFA MIN States: 29     Trans: 53     Tapes: 2  Strg: 3 K
-Ny01 ---------------   DFA MIN States: 49     Trans: 256    Tapes: 2  Strg: 6 K
-Ny02 ---------------   DFA MIN States: 40     Trans: 227    Tapes: 2  Strg: 6 K
-Ny05 ---------------   DFA MIN States: 207    Trans: 1168   Tapes: 2  Strg: 10 K
-Ny06 ---------------   DFA MIN States: 54     Trans: 755    Tapes: 2  Strg: 18 K
-Ny07 ---------------   DFA MIN States: 29     Trans: 80     Tapes: 2  Strg: 3 K
-Ny08 ---------------   DFA MIN States: 33     Trans: 110    Tapes: 2  Strg: 3 K
-Ny09 ---------------   DFA MIN States: 29     Trans: 80     Tapes: 2  Strg: 3 K
-Nysiis -------------   DFA MIN States: 276    Trans: 1772   Tapes: 2  Strg: 19 K
+Vo -----------------   DFA MIN States: 3      Trans: 6      Tapes: 1  Strg: 2 K
+Co -----------------   DFA MIN States: 3      Trans: 22     Tapes: 1  Strg: 2 K
+CAl ----------------   DFA MIN States: 29     Trans: 53     Tapes: 2  Strg: 5 K
+Ny01 ---------------   DFA MIN States: 49     Trans: 256    Tapes: 2  Strg: 7 K
+Ny02 ---------------   DFA MIN States: 40     Trans: 227    Tapes: 2  Strg: 7 K
+Ny05 ---------------   DFA MIN States: 207    Trans: 1168   Tapes: 2  Strg: 11 K
+Ny06 ---------------   DFA MIN States: 54     Trans: 755    Tapes: 2  Strg: 19 K
+Ny07 ---------------   DFA MIN States: 29     Trans: 80     Tapes: 2  Strg: 4 K
+Ny08 ---------------   DFA MIN States: 33     Trans: 110    Tapes: 2  Strg: 4 K
+Ny09 ---------------   DFA MIN States: 29     Trans: 80     Tapes: 2  Strg: 4 K
+Nysiis -------------   DFA MIN States: 276    Trans: 1772   Tapes: 2  Strg: 21 K
 9 states in subsequential transducer
 14 states in subsequential transducer
 38 states in subsequential transducer
@@ -24,22 +27,29 @@ Nysiis -------------   DFA MIN States: 276    Trans: 1772   Tapes: 2  Strg: 19 K
 
 Size      Free      Allocated
       Number Total Number Total
-   8      24    1K    134    2K
-  16      98    2K    203    4K
-  32      43    2K     11    1K
-  64      29    2K     25    2K
- 128      11    2K      3    1K
- 256       2    1K      5    2K
- 512       4    2K      9    5K
-   1K      7    7K     10   10K
-   2K      3    6K      2    4K
-   4K      1    4K      3   12K
-   8K      1    8K      1    8K
-  16K      1   16K      4   64K
-  32K      1   32K      0    0K
-  64K      2  128K      1   64K
- 128K      1  128K      0    0K
- 256K      1  256K      0    0K
-              594K         175K
-High Water Mark   913K
+  32     169    0M    337    0M
+  64      27    0M     30    0M
+ 128      13    0M      8    0M
+ 256       6    0M      4    0M
+ 512       3    0M      6    0M
+   1K      7    0M      8    0M
+   2K      5    0M      7    0M
+   4K      5    0M      4    0M
+   8K      1    0M      2    0M
+  16K      2    0M      2    0M
+  64K      0    0M      1    0M
+ 256K      1    0M      0    0M
+ 512K      1    0M      0    0M
+   1M      1    1M      0    0M
+   2M      1    2M      0    0M
+   4M      1    4M      0    0M
+   8M      1    8M      0    0M
+  16M      1   16M      0    0M
+  32M      1   32M      0    0M
+  64M      1   64M      0    0M
+ 128M      1  128M      0    0M
+ 256M      1  256M      0    0M
+              511M           0M
+Memory Size   512M
+<<< Audit >>>
 

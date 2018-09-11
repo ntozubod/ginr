@@ -1,0 +1,3 @@
+#!/bin/bash
+
+../../src/ginr _Nync > N.out

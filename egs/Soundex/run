@@ -1,0 +1,3 @@
+#!/bin/bash
+
+../../src/ginr _Soundex > S.out

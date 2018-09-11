@@ -1,0 +1,15 @@
+I N R -- V 2.0.2a, modified Sept 9, 2018
+Copyright (C) 1988 J Howard Johnson
+Distributed under GPLv3 (see COPYING)
+  (Source file: AllChars.inr)
+
+
+wh -----------------   DFA MIN States: 3      Trans: 4      Tapes: 1  Strg: 1 K
+s1 -----------------   DFA MIN States: 3      Trans: 16     Tapes: 1  Strg: 1 K
+nm -----------------   DFA MIN States: 3      Trans: 11     Tapes: 1  Strg: 1 K
+s2 -----------------   DFA MIN States: 3      Trans: 8      Tapes: 1  Strg: 1 K
+AL -----------------   DFA MIN States: 3      Trans: 27     Tapes: 1  Strg: 2 K
+s3 -----------------   DFA MIN States: 3      Trans: 7      Tapes: 1  Strg: 2 K
+al -----------------   DFA MIN States: 3      Trans: 27     Tapes: 1  Strg: 2 K
+s4 -----------------   DFA MIN States: 3      Trans: 5      Tapes: 1  Strg: 2 K
+.. -----------------   DFA MIN States: 3      Trans: 98     Tapes: 1  Strg: 3 K

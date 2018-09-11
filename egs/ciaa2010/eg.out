@@ -1,29 +1,29 @@
-I N R -- V 2.0.2, modified August 3, 2010
+I N R -- V 2.0.3a, modified Sept 11, 2018
 Copyright (C) 1988 J Howard Johnson
 Distributed under GPLv3 (see COPYING)
 
 
 
 Upper --------------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
-Lower --------------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
+Lower --------------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 2 K
 PosDigit -----------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
 Digit --------------   DFA MIN States: 3      Trans: 3      Tapes: 1  Strg: 1 K
 Punct --------------   DFA MIN States: 3      Trans: 3      Tapes: 1  Strg: 1 K
 Blank --------------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
-Token --------------   DFA MIN States: 3      Trans: 5      Tapes: 1  Strg: 1 K
+Token --------------   DFA MIN States: 3      Trans: 5      Tapes: 1  Strg: 2 K
 Number -------------   DFA MIN States: 3      Trans: 4      Tapes: 1  Strg: 1 K
 White --------------   DFA MIN States: 3      Trans: 3      Tapes: 1  Strg: 1 K
-ToLower ------------   DFA MIN States: 3      Trans: 4      Tapes: 2  Strg: 2 K
-TCopy --------------   DFA MIN States: 5      Trans: 7      Tapes: 3  Strg: 4 K
-NCopy --------------   DFA MIN States: 6      Trans: 7      Tapes: 3  Strg: 2 K
-PCopy --------------   DFA MIN States: 6      Trans: 6      Tapes: 3  Strg: 2 K
-WCopy --------------   DFA MIN States: 5      Trans: 5      Tapes: 3  Strg: 2 K
+ToLower ------------   DFA MIN States: 3      Trans: 4      Tapes: 2  Strg: 3 K
+TCopy --------------   DFA MIN States: 5      Trans: 7      Tapes: 3  Strg: 3 K
+NCopy --------------   DFA MIN States: 6      Trans: 7      Tapes: 3  Strg: 3 K
+PCopy --------------   DFA MIN States: 6      Trans: 6      Tapes: 3  Strg: 3 K
+WCopy --------------   DFA MIN States: 5      Trans: 5      Tapes: 3  Strg: 3 K
 Binst --------------   DFA MIN States: 4      Trans: 3      Tapes: 3  Strg: 2 K
-Copy ---------------   DFA MIN States: 15     Trans: 26     Tapes: 3  Strg: 4 K
-ZAlph --------------   DFA MIN States: 3      Trans: 8      Tapes: 1  Strg: 2 K
+Copy ---------------   DFA MIN States: 15     Trans: 26     Tapes: 3  Strg: 3 K
+ZAlph --------------   DFA MIN States: 3      Trans: 8      Tapes: 1  Strg: 1 K
 Invalid ------------   DFA MIN States: 4      Trans: 7      Tapes: 1  Strg: 1 K
-Pretokenize --------   DFA MIN States: 11     Trans: 28     Tapes: 2  Strg: 2 K
-Tokenize -----------  *SSEQMIN States: 18     Trans: 48     Tapes: 2  Strg: 3 K
+Pretokenize --------   DFA MIN States: 11     Trans: 28     Tapes: 2  Strg: 3 K
+Tokenize -----------  *SSEQMIN States: 18     Trans: 48     Tapes: 2  Strg: 4 K
 Detokenize ---------  *SSEQMIN States: 20     Trans: 46     Tapes: 2  Strg: 3 K
 
 (START)  -| [ -| ]  	(FINAL)
