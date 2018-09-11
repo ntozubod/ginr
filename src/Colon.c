@@ -57,6 +57,7 @@ char * op;
   } else if ( !strcmp( "free", op ) ) {
     fprintf( fpout, "\n" );
     ( void ) Sarena();
+    ( void ) Saudit();
     fprintf( fpout, "\n" );
 
   } else if ( !strcmp( "list", op ) ) {

@@ -36,6 +36,7 @@ typedef struct S_f {
   unsigned char S_kval;
   unsigned char S_tag;
   unsigned      fill_3;
+  struct S_f *fill_4;
   struct S_f *S_linkf;
   struct S_f *S_linkb;
 } S_ft;
@@ -493,7 +494,7 @@ void Saudit()
     } else {
       k = kval( p );
 
-      if ( k >= 20
+      if ( k >= 30
            || ( ( linkf( p ) < S_lo || linkf( p ) >= S_hi )
                 && ( linkf( p ) < S_avail
                      || linkf( p ) >= S_avail + S_m ) )
