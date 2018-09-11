@@ -35,64 +35,64 @@ typedef unsigned short  SHORT;
 #define MAXSHORT        0177777
 
 typedef struct {
-        SHORT           R_a;
-        SHORT           R_b;
-}       R_row;
+  SHORT       R_a;
+  SHORT       R_b;
+}   R_row;
 
 typedef struct {
-        SHORT           A_a;
-        SHORT           A_b;
-        SHORT           A_c;
-}       A_row;
+  SHORT       A_a;
+  SHORT       A_b;
+  SHORT       A_c;
+}   A_row;
 
 typedef struct T_desc {
-        int             Type;
-        int             T_n;
-        int             T_lname;
-        int             T_lhash;
-        char **         T_name;
-        SHORT *         T_hash;
-} *     T_OBJECT;
+  int         Type;
+  int         T_n;
+  int         T_lname;
+  int         T_lhash;
+  char **     T_name;
+  SHORT *     T_hash;
+} * T_OBJECT;
 
 typedef struct V_desc {
-        int             Type;
-        int             V_n;
-        int             V_lvec;
-        int             V_lhash;
-        SHORT **        V_vec;
-        SHORT *         V_hash;
-} *     V_OBJECT;
+  int         Type;
+  int         V_n;
+  int         V_lvec;
+  int         V_lhash;
+  SHORT **    V_vec;
+  SHORT *     V_hash;
+} * V_OBJECT;
 
 typedef struct R_desc {
-        int             Type;
-        int             R_n;
-        int             R_lrec;
-        int             R_lhash;
-        R_row *         R_rec;
-        SHORT *         R_hash;
-} *     R_OBJECT;
+  int         Type;
+  int         R_n;
+  int         R_lrec;
+  int         R_lhash;
+  R_row *     R_rec;
+  SHORT *     R_hash;
+} * R_OBJECT;
 
 typedef struct U_desc {
-        int             Type;
-        int             U_n;
-        int             U_lrec;
-        int             U_lhash;
-        A_row *         U_rec;
-        SHORT *         U_hash;
-} *     U_OBJECT;
+  int         Type;
+  int         U_n;
+  int         U_lrec;
+  int         U_lhash;
+  A_row *     U_rec;
+  SHORT *     U_hash;
+} * U_OBJECT;
 
 typedef struct A_desc {
-        int             Type;
-        SHORT           A_mode;
-        SHORT           A_ems;
-        int             A_nT;
-        int             A_nQ;
-        int             A_nS;
-        int             A_nrows;
-        int             A_lrows;
-        A_row **        A_p;
-        A_row *         A_t;
-} *     A_OBJECT;
+  int         Type;
+  SHORT       A_mode;
+  SHORT       A_ems;
+  int         A_nT;
+  int         A_nQ;
+  int         A_nS;
+  int         A_nrows;
+  int         A_lrows;
+  A_row **    A_p;
+  A_row *     A_t;
+} * A_OBJECT;
 
 #define OPEN            0
 #define NFA             1

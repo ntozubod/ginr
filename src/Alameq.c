@@ -58,7 +58,7 @@ int state;
       }
 
     } else      if ( l_stk[next] < DELETED
-                 &&   l_low[next] <= l_low[state] ) {
+                     &&   l_low[next] <= l_low[state] ) {
       l_low[state] = l_low[next];
       l_reopen = 1;
     }

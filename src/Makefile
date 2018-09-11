@@ -15,9 +15,9 @@ SOURCE 	= Makefile $(HFILES) $(CFILES) Parse.y
 ginr:	$(OFILES)
 	gcc -Wall -O0 -g $(OFILES) -o ginr
 
-format:	$(CFILES)
+format:	$(CFILES) $(HFILES)
 	astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
---break-blocks=all $(CFILES)
+--break-blocks=all $(CFILES) $(HFILES)
 
 inrx.a:
 	echo hi >inrx.a

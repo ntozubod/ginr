@@ -339,7 +339,7 @@ void S_arena()
                  "%4dK", size / 1024 );
 
       else                      fprintf( fpout,
-                           "%4dM", size / 1024 / 1024 );
+                                           "%4dM", size / 1024 / 1024 );
 
       fprintf( fpout, "%7d", cnt );
       fprintf( fpout, "%5dM", ( cnt * size + 1023 ) / 1024 / 1024 );
