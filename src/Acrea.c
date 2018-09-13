@@ -27,9 +27,9 @@
 
 #include "O.h"
 
-#define INIT_lrows      20
+#define INIT_lrows 20
 
-int     A_report = 0;
+int A_report = 0;
 extern FILE *fpout;
 
 A_OBJECT A_create()
@@ -47,11 +47,10 @@ A_OBJECT A_create()
   A-> A_p =     NULL;
   A-> A_t = ( A_row * ) Salloc( ( INIT_lrows + 2 ) * sizeof( A_row ) );
   A-> A_lrows = Ssize( ( char * ) A-> A_t ) / ( sizeof( A_row ) ) - 2;
-  return( A );
+  return ( A );
 }
 
-void A_destroy( A )
-register A_OBJECT A;
+void A_destroy( register A_OBJECT A )
 {
   if ( A != NULL ) {
     Sfree( ( char * ) A-> A_p );
@@ -61,20 +60,19 @@ register A_OBJECT A;
   Sfree( ( char * ) A );
 }
 
-A_OBJECT A_rept( A )
-register A_OBJECT A;
+A_OBJECT A_rept( register A_OBJECT A )
 {
   if ( A == NULL ) {
     fprintf( fpout, "  NULL Automaton\n" );
-    return( A );
+    return ( A );
   }
 
   if ( A-> A_nrows == 0 ) {
     fprintf( fpout, "  Empty Automaton\n" );
-    return( A );
+    return ( A );
   }
 
-  if ( A-> A_ems )      {
+  if ( A-> A_ems ) {
     fprintf( fpout, "*" );
 
   } else {
@@ -131,15 +129,14 @@ register A_OBJECT A;
              + Ssize( ( char * ) A-> A_t ) + 1023 ) / 1024 );
   fprintf( fpout, "\n" );
   fflush( fpout );
-  return( A );
+  return ( A );
 }
 
-void A_exchange( A1, A2 )
-register A_OBJECT A1, A2;
+void A_exchange( register A_OBJECT A1, register A_OBJECT A2 )
 {
-  register int          t_int;
-  register A_row **     t_Arpp;
-  register A_row *      t_Arp;
+  register int t_int;
+  register A_row ** t_Arpp;
+  register A_row * t_Arp;
 
   if ( A1 == NULL ) {
     A1 = A_create();
@@ -188,14 +185,13 @@ register A_OBJECT A1, A2;
   }
 }
 
-A_OBJECT A_copy( A )
-register A_OBJECT A;
+A_OBJECT A_copy( register A_OBJECT A )
 {
   register int i;
   register A_OBJECT newA;
 
   if ( A == NULL ) {
-    return( NULL );
+    return ( NULL );
   }
 
   newA = ( A_OBJECT ) Scopy( ( char * ) A );
@@ -205,22 +201,21 @@ register A_OBJECT A;
   if ( A-> A_mode != OPEN ) {
     newA-> A_p = ( A_row ** ) Salloc( Ssize( ( char * ) A-> A_p ) );
 
-    for( i = 0; i <= A-> A_nQ; i++ ) {
-      newA-> A_p[i] = newA-> A_t + ( A-> A_p[i] - A-> A_t );
+    for ( i = 0; i <= A-> A_nQ; i++ ) {
+      newA-> A_p[ i ] = newA-> A_t + ( A-> A_p[ i ] - A-> A_t );
     }
   }
 
-  return( newA );
+  return ( newA );
 }
 
-A_OBJECT A_deems( A )
-register A_OBJECT A;
+A_OBJECT A_deems( register A_OBJECT A )
 {
   int new_mode;
   int lst_em;
   register A_row *p;
 
-  if ( !( A-> A_ems ) ) {
+  if ( ! ( A-> A_ems ) ) {
     return A;
   }
 
@@ -235,10 +230,11 @@ register A_OBJECT A;
 
   A = A_open( A );
 
-  for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
+  for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
     if ( p-> A_b > 1 && p-> A_b <= lst_em ) {
       p-> A_b = 0;
     }
+  }
 
   A = A_close( A );
   A-> A_mode = new_mode;
@@ -246,8 +242,7 @@ register A_OBJECT A;
   return A;
 }
 
-A_OBJECT A_adems( A )
-register A_OBJECT A;
+A_OBJECT A_adems( register A_OBJECT A )
 {
   int new_mode;
   int fst_em, lst_em;
@@ -276,11 +271,12 @@ register A_OBJECT A;
   A = A_open( A );
   base = A-> A_nQ;
 
-  for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
+  for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
     if ( p-> A_b == 1 ) {
       p-> A_b = fst_em;
       p-> A_c = base;
     }
+  }
 
   for ( i = fst_em + 1; i <= lst_em; i++ ) {
     A = A_add( A, base + i - fst_em - 1, i, base + i - fst_em );
@@ -290,5 +286,5 @@ register A_OBJECT A;
   A = A_close( A );
   A-> A_mode = new_mode;
   A-> A_ems = 1;
-  return A;
+  return ( A );
 }
