@@ -196,7 +196,7 @@ A_OBJECT A_close( register A_OBJECT A )
   t2z-> A_a = ( t2z - 1 )-> A_a;
   t2z-> A_b = ( t2z - 1 )-> A_b;
   t2z-> A_c = ( t2z - 1 )-> A_c;
-  ( t2z + 1 )-> A_a = MAXSHORT;
+  ( t2z + 1 )-> A_c = MAXSHORT;
 
   p = t2;
   t1 = t2 - 1;
