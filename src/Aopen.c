@@ -41,7 +41,7 @@ A_OBJECT A_add( register A_OBJECT A,
   }
 
   assert( A-> A_mode == OPEN );
-  assert( a >= 0 && b >= 0 && c > 0 );
+  assert( a >= 0 && b >= 0 && c >= 0 );
   assert( a < MAXSHORT && b < MAXSHORT && c < MAXSHORT );
 
   if ( A-> A_nrows >= A-> A_lrows ) {
