@@ -1,0 +1,45 @@
+I N R -- V 2.0e, Mar 25 1988
+
+
+Al -----------------   DFA MIN States: 3      Trans: 27     Tapes: 1  Strg: 2 K
+Vo -----------------   DFA MIN States: 3      Trans: 6      Tapes: 1  Strg: 1 K
+Co -----------------   DFA MIN States: 3      Trans: 22     Tapes: 1  Strg: 1 K
+CAl ----------------   DFA MIN States: 29     Trans: 53     Tapes: 2  Strg: 3 K
+Ny01 ---------------   DFA MIN States: 49     Trans: 256    Tapes: 2  Strg: 6 K
+Ny02 ---------------   DFA MIN States: 40     Trans: 227    Tapes: 2  Strg: 6 K
+Ny05 ---------------   DFA MIN States: 207    Trans: 1168   Tapes: 2  Strg: 10 K
+Ny06 ---------------   DFA MIN States: 54     Trans: 755    Tapes: 2  Strg: 18 K
+Ny07 ---------------   DFA MIN States: 29     Trans: 80     Tapes: 2  Strg: 3 K
+Ny08 ---------------   DFA MIN States: 33     Trans: 110    Tapes: 2  Strg: 3 K
+Ny09 ---------------   DFA MIN States: 29     Trans: 80     Tapes: 2  Strg: 3 K
+Nysiis -------------   DFA MIN States: 276    Trans: 1772   Tapes: 2  Strg: 19 K
+9 states in subsequential transducer
+14 states in subsequential transducer
+38 states in subsequential transducer
+28 states in subsequential transducer
+3 states in subsequential transducer
+4 states in subsequential transducer
+3 states in subsequential transducer
+80 states in subsequential transducer
+
+Size      Free      Allocated
+      Number Total Number Total
+   8      24    1K    134    2K
+  16      98    2K    203    4K
+  32      43    2K     11    1K
+  64      29    2K     25    2K
+ 128      11    2K      3    1K
+ 256       2    1K      5    2K
+ 512       4    2K      9    5K
+   1K      7    7K     10   10K
+   2K      3    6K      2    4K
+   4K      1    4K      3   12K
+   8K      1    8K      1    8K
+  16K      1   16K      4   64K
+  32K      1   32K      0    0K
+  64K      2  128K      1   64K
+ 128K      1  128K      0    0K
+ 256K      1  256K      0    0K
+              594K         175K
+High Water Mark   913K
+

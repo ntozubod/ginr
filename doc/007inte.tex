@@ -1,0 +1,27 @@
+\section{Internals}
+The internal workings of {\em INR} is achieved through the use of an
+abstract data type whose values are automata.
+A large number of operations are defined on objects of this type which
+yield other automata.
+Thus, for example, the operation union is implemented internally as a
+function A\_union which accepts two automata as arguments and returns another.
+
+In order to provide better access to the operations, an interface was
+designed and implemented using ``yacc'', a LALR(1) parser generator
+provided with UNIX.
+The result is a user-friendly method of specifying transformations on
+automata.
+However, since the user commands are in the form of generalized rational
+(or regular) expressions, the impression is that of translation from
+expression form to automaton form.
+However, there is no represention of expressions internally and even
+strings and sets are coded as automata.
+
+The form of the data structure is a ternary relation indicating the from
+state, the transition label, and the to state.
+Special states \verb#(START)# and \verb#(FINAL)# and special transitions
+\verb#^^# and \verb#-|# simplify the processing.
+The abstract data type also contains a mode indicator that indicates the
+coercing level.
+This allows the lazy evaluation mechanism to work and avoids a lot of
+redundant computation.
