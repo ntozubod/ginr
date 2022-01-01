@@ -25,7 +25,7 @@ char * name;
 #endif
 
 static FILE *fp;
-       FILE *fpin = stdin, *fpout = stdout;
+       FILE *fpin, *fpout;
 extern FILE *fopen();
 static int c;
 

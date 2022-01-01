@@ -3,5 +3,5 @@
  * Not for sale or distribution without written permission of the author.
  */
 
-#define VAX
+/* #define VAX */
 #define UNIX
