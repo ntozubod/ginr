@@ -8,7 +8,7 @@ my @files = ( split( " ",
   Ajoin.c Alamcm.c Alameq.c Alenmin.c Aload.c Amin.c Aopen.c Apowers.c \
   Aretape.c Asseq.c Astems.c Asubs.c Atrim.c Colon.c Lex.c O.h Parse.y \
   R.c S.c T.c U.c V.c local.h localc.h localh.h locals.h \
-  stamp.c util.c y.tab.h \
+  stamp.c util.c \
 " ) );
 
 foreach my $file ( @files ) {

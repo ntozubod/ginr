@@ -46,7 +46,7 @@ lpr:
 	pr $(SOURCE) | lpr
 
 clean:
-	rm $(OFILES) y.tab.c
+	rm $(OFILES) y.tab.c y.tab.h
 
 installdragon:
 	rcp /u/jhjohnson/bin/inrx watdragon:/u/jhjohnson/bin/inrx

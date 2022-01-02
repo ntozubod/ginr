@@ -10,7 +10,7 @@ result to be reindented by the astyle program to a tab setting of 4.
 
 2. Add GPL version 3 license headers.
 
-3. TBD: Cleanup.
+3. Cleanup.
 Repair bad formatting in Parse.y and update stamp.c.
 
 ## 2.0.0e redux (2022-01-01)
