@@ -1,7 +1,7 @@
 
 typedef union  {
-	char *		up;
-	A_OBJECT	uA;
+    char *          up;
+    A_OBJECT        uA;
 } YYSTYPE;
 extern YYSTYPE yylval;
 # define EXCLAM 257

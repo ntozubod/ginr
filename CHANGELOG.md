@@ -1,5 +1,18 @@
 # INR redux Changelog
 
+## 2.0.0f redux reformat (2022-01-01)
+
+#### 2.0.0f src (2022-01-01)
+
+1. Filter the source through expand and astyle with the default options.
+This will cause tabs (assumed tabs 8) to be replaced by spaces and then the
+result to be reindented by the astyle program to a tab setting of 4.
+
+2. TBD: add GPL version 3 license headers.
+
+3. TBD: Cleanup.
+Repair bad formatting in Parse.y and update stamp.c.
+
 ## 2.0.0e redux (2022-01-01)
 
 #### 2.0.0e src (1988-03-25)
