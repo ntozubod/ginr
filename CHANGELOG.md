@@ -8,7 +8,7 @@
 This will cause tabs (assumed tabs 8) to be replaced by spaces and then the
 result to be reindented by the astyle program to a tab setting of 4.
 
-2. TBD: add GPL version 3 license headers.
+2. Add GPL version 3 license headers.
 
 3. TBD: Cleanup.
 Repair bad formatting in Parse.y and update stamp.c.
