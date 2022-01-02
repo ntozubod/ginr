@@ -18,7 +18,7 @@ deterministic automaton.
 For debugging and education purposes, the coercing operator can be
 explicitly used:
 \begin{quote}
-\begin{describe}{XXXXXX}
+\begin{description}
 \item[:nfa] Sort and unduplicate transitions.
 \item[:trim] Remove states that are unreachable. (Reduce)
 \item[:lameq] Remove lambda equivalent states.
@@ -26,7 +26,7 @@ explicitly used:
 \item[:closed] Form lambda closure.
 \item[:dfa] Form deterministic machine. (Subsets Construction)
 \item[:min] Minimize the DFA.
-\end{describe}
+\end{description}
 \end{quote}
 Thus \verb#<expression> :trim;#
 will print the trim (reduced) automaton corresponding to the expression.
@@ -35,14 +35,14 @@ promoting their results.
 \subsection{Displaying Operators}
 The following operators cause some form of printing:
 \begin{quote}
-\begin{describe}{XXXXXX}
+\begin{description}
 \item[:pr] Print in readable format.
 \item[:save] Save in condensed format.
 \item[:report] Write a one line report.
 \item[:enum] Enumerate words.
 \item[:card] Count number of words and print.
 \item[:length] Print length of shortest word.
-\end{describe}
+\end{description}
 \end{quote}
 The operation \verb#:pr# may be followed by a filename in which case the
 automaton is printed into that file.

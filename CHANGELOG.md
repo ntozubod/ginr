@@ -1,5 +1,13 @@
 # INR redux Changelog
 
+## 2.0.0f redux (2022-01-02)
+
+#### 2.0.0e doc pdf (2010-07-29)
+
+The latex source does work.
+I just need to install latex completely.
+The document is moved back to the doc directory.
+
 ## 2.0.0f redux reformat (2022-01-01)
 
 #### 2.0.0f src (2022-01-01)

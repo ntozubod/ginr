@@ -1,0 +1,16 @@
+#!/bin/bash
+
+rm -f main.aux
+rm -f main.blg
+rm -f main.log
+rm -r main.dvi
+rm -r main.pdf
+
+pdflatex main
+pdflatex main
+
+rm -f main.aux
+rm -f main.blg
+rm -f main.log
+
+mv main.pdf inr_intro.pdf
