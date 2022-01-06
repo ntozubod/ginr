@@ -26,14 +26,9 @@
 #include "O.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 extern FILE *fpout;
-
-#ifdef VAX
-#include <sys/time.h>
-#include <sys/resource.h>
-char *sbrk();
-#endif
 
 Warning( s )
 char *s;
@@ -63,23 +58,5 @@ int n;
 
 pr_time_diff()
 {
-#ifdef VAX
-    static struct rusage *old = NULL, *new, *tmp;
-    if ( old == NULL ) {
-        old = (struct rusage *) Salloc( sizeof( struct rusage ) );
-        new = (struct rusage *) Salloc( sizeof( struct rusage ) );
-        (void) getrusage( 0, old );
-        return;
-    }
-    (void) getrusage( 0, new );
-    fprintf( fpout, "User%6d System%6d Storage%6dK\n",
-             new-> ru_utime.tv_sec - old-> ru_utime.tv_sec,
-             new-> ru_stime.tv_sec - old-> ru_stime.tv_sec,
-             ( (int) sbrk(0) + 1023 ) / 1024 );
-    tmp = old;
-    old = new;
-    new = tmp;
-#else
     return;
-#endif
 }

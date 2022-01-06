@@ -1,0 +1,25 @@
+#!/bin/bash
+
+mkdir -p aa
+rm -rf aa/*
+cp -rp rsrc/* aa
+
+cd aa
+../mkcanon.pl *.c *.h *.y
+astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
+--break-blocks=all *.c *.h *.y
+rm *.orig
+cd ..
+
+mkdir -p bb 
+rm -rf bb/*
+cp -rp ../src/* bb
+
+cd bb
+../mkcanon.pl *.c *.h *.y
+astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
+--break-blocks=all *.c *.h *.y
+rm *.orig
+cd ..
+
+diff -r -w aa bb > diffs

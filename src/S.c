@@ -24,29 +24,36 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "local.h"
 
 extern FILE *fpout;
 
 typedef struct S_f {
-    unsigned    S_linkb : 26;
-    unsigned    S_kval  :  5;
-    unsigned    S_tag   :  1;
+    unsigned char fill_1;
+    unsigned char fill_2;
+    unsigned char S_kval;
+    unsigned char S_tag;
+    unsigned      fill_3;
     struct S_f *S_linkf;
+    struct S_f *S_linkb;
 } S_ft;
 
 #define tag(p)          ((p)-> S_tag)
 #define kval(p)         ((p)-> S_kval)
 #define linkf(p)        ((p)-> S_linkf)
-#define linkb(p)        ((S_ft *)(p)-> S_linkb)
+#define linkb(p)        ((p)-> S_linkb)
 
 #define set_tag(p,t)    (p)-> S_tag = t
 #define set_kval(p,k)   (p)-> S_kval = k
 #define set_linkf(p,q)  (p)-> S_linkf = q
-#define set_linkb(p,q)  (p)-> S_linkb = (unsigned)(q)
+#define set_linkb(p,q)  (p)-> S_linkb = q
 
-#define S_m             20
-/* S_m = 20 allows objects of up to 4 megabytes */
+#define U(p)            ((unsigned long)(p))
+
+#define S_m             28
+/* S_m = 26 allows objects of up to 1 gigabyte */
 
 static S_ft *S_lo = 0,
              *S_hi = 0,
@@ -54,36 +61,12 @@ static S_ft *S_lo = 0,
 
 static int   S_alld_cnt[S_m];
 
-#ifdef UNIX
-extern char *sbrk();
-#endif
-
-#ifdef CMS
-extern char *_getmain();
-int    CMSmem = 0;
-#endif
+int    LINUXmem = 0;
 
 /*
- *     Copy a block of memory (VAX and portable versions
+ *     Copy a block of memory
  */
 
-#ifdef VAX
-void copymem( n, from, to )
-int n;
-register char *from, *to;
-{
-    register i;
-    if ( n > 65535L && from < to && from + n > to )
-        Error( "copymem: Destructive copy" );
-    while ( n > 0 ) {
-        i = n > 65535L ? 65535L : n;
-        asm("   movc3   r9,(r11),(r10)");
-        n -= i;
-        from += i;
-        to += i;
-    }
-}
-#else
 void copymem( n, from, to )
 register int n;
 register char *from, *to;
@@ -100,7 +83,6 @@ register char *from, *to;
         while ( --n >= 0 ) *--to = *--from;
     }
 }
-#endif
 
 void scribble( p, q )
 register char *p, *q;
@@ -117,19 +99,12 @@ void S_init()
     register S_ft *p;
     register int i;
     if ( S_lo == 0 ) {
-#ifdef UNIX
-        (void) sbrk( -(int)sbrk(0) & 0x3ff );
-        S_lo = S_hi = (S_ft *) sbrk(0);
-#endif
-#ifdef CMS
-        for( CMSmem = 16 * 1024 * 1024; S_lo == 0; ) {
-            if ( CMSmem > 4 * 1024 * 1024 )
-                CMSmem -= 512 * 1024;
-            else    CMSmem -= 128 * 1024;
-            S_lo = S_hi = (S_ft *) _getmain( CMSmem );
+        int mem;
+        for( mem = 512 * 1024 * 1024; S_lo == 0; mem /= 2 ) {
+            LINUXmem = mem;
+            S_lo = S_hi = (S_ft *) malloc( mem + 16 );
         }
         fflush( fpout );
-#endif
         set_linkf( p = &S_avail[ S_m ], 0 );
         while( --p >= S_avail ) {
             set_linkf( p, p );
@@ -144,7 +119,7 @@ register S_ft *l;
 register int k;
 {
     register S_ft *p;
-    if ( (int) l & 7 ) Error( "S_free: l not divisible by 8" );
+    if ( (long) l & 7 ) Error( "S_free: l not divisible by 8" );
     if ( l < S_lo || l + (1 << k ) > S_hi ) Error( "S_free: bounds" );
     if ( l-S_lo & (1 << k)-1 ) Error( "S_free: l improper" );
     if ( tag(l) ) Error( "S_free: attempt to free unallocated block" );
@@ -170,21 +145,9 @@ register int k;
 
     register int a, b;
     register S_ft *p;
-#ifdef UNIX
-    if ( k < 7 ) k = 7;
-    a = S_hi - S_lo;
-    p = (S_ft *)sbrk( sizeof(S_ft) * ( ( (a+(2<<k)-1) >> k << k ) - a ) );
-    if ( (int) p == (-1) ) Error( "S_morecore: Out of Memory" );
-    if ( p != S_hi ) Error( "S_morecore: Another allocator active" );
-    a = S_hi - S_lo;
-    S_hi = (S_ft *) sbrk(0);
-    /*      scribble( S_lo + a, S_hi ); */
-#endif
-#ifdef CMS
     if ( S_hi != S_lo ) Error( "S_morecore: Out of Memory" );
     a = 0;
-    S_hi = S_lo + CMSmem / sizeof(S_ft);
-#endif
+    S_hi = S_lo + LINUXmem / sizeof(S_ft);
     b = S_hi - S_lo;
     while ( a < b ) {
         for( k = 0; !(a>>k & 1) && (b-a) >> (k+1); ++k );
@@ -291,31 +254,29 @@ void S_arena()
     for( i = 0; i < S_m; ++i ) {
         q = &S_avail[i];
         if ( (p = linkf(q)) != q || S_alld_cnt[i] ) {
-            size = 8 << i;
+            size = sizeof( S_ft ) << i;
             if ( p != q )
                 for( cnt = 1; ( p = linkf(p) ) != q; ++cnt );
             else cnt = 0;
             if ( size < 1024 )      fprintf( fpout, "%4d ", size );
-            else                    fprintf( fpout,
+            else if ( size < 1024 * 1024 )
+                                    fprintf( fpout,
                                                  "%4dK", size / 1024);
+            else                    fprintf( fpout,
+                                                 "%4dM", size / 1024 / 1024 );
             fprintf( fpout, "%7d", cnt );
-            fprintf( fpout, "%5dK", ( cnt * size + 1023 ) / 1024 );
+            fprintf( fpout, "%5dM", ( cnt * size + 1023 ) / 1024 / 1024 );
             fprintf( fpout, "%7d", S_alld_cnt[i] );
             fprintf( fpout,
-                     "%5dK\n", (S_alld_cnt[i]*size+1023)/1024);
+                     "%5dM\n", (S_alld_cnt[i]*size+1023)/1024/1024);
             grand += cnt * size;
             gran2 += S_alld_cnt[i] * size;
         }
     }
-    fprintf( fpout, "            %5dK", ( grand + 1023 ) / 1024 );
-    fprintf( fpout, "       %5dK\n", ( gran2 + 1023 ) / 1024 );
-#ifdef CMS
-    size = CMSmem;
-    fprintf( fpout, "Memory Size %5dK\n", size / 1024 );
-#else
-    size = (int) sbrk(0);
-    fprintf( fpout, "High Water Mark %5dK\n", size / 1024 );
-#endif
+    fprintf( fpout, "            %5dM", ( grand + 1023 ) / 1024 / 1024 );
+    fprintf( fpout, "       %5dM\n", ( gran2 + 1023 ) / 1024 / 1024 );
+    size = LINUXmem;
+    fprintf( fpout, "Memory Size %5dM\n", size / 1024 / 1024 );
     if ( size % 1024 != 0 )
         fprintf ( fpout, "Excess %d bytes\n", size % 1024 );
 }
@@ -395,23 +356,23 @@ void Saudit()
     for( p = S_lo; p < S_hi; ) {
         pc = (char *) p;
         if ( p-S_lo & (1 << kval(p))-1 ) {
-            printf( "Block alignment error at %x\n", p );
-            printf( "Block size %d Offset %x\n", kval(p), p-S_lo );
+            printf( "Block alignment error at %lx\n", U(p) );
+            printf( "Block size %d Offset %lx\n", kval(p), U(p-S_lo) );
             if ( last_p )
-                printf( "Last good block %x kval %d\n", last_p,
+                printf( "Last good block %lx kval %d\n", U(last_p),
                         kval(last_p) );
             return;
         }
         if ( !tag(p) ) {
             if ( pc[0] != 0x7f ) {
-                printf( "Audit anomoly in busy block at %x:\n", p );
+                printf( "Audit anomoly in busy block at %lx:\n", U(p) );
                 printf( "Size code %d\n", pc[1] );
-                printf( "S_lo %x S_hi %x S_avail %x\n",
-                        S_lo, S_hi, S_avail );
+                printf( "S_lo %lx S_hi %lx S_avail %lx\n",
+                        U(S_lo), U(S_hi), U(S_avail) );
                 if ( pc[0] != 0x7f )
-                    printf( "Mask is %x\n", pc[0] & 0xff );
+                    printf( "Mask is %lx\n", U( pc[0] & 0xff ) );
                 if ( last_p )
-                    printf( "Last good block %x kval %d\n", last_p,
+                    printf( "Last good block %lx kval %d\n", U(last_p),
                             kval(last_p) );
                 return;
             }
@@ -426,29 +387,29 @@ void Saudit()
                              || linkb(p) >= S_avail + S_m ))
                     || linkb(linkf(p)) != p
                     || linkf(linkb(p)) != p ) {
-                printf( "Audit anomoly in free block at %x:\n", p );
-                printf( "S_lo %x S_hi %x S_avail %x\n",
-                        S_lo, S_hi, S_avail );
+                printf( "Audit anomoly in free block at %lx:\n", U(p) );
+                printf( "S_lo %lx S_hi %lx S_avail %lx\n",
+                        U(S_lo), U(S_hi), U(S_avail) );
                 printf( "kval %d\n", k );
-                printf( "linkf %x linkb %x\n", linkf(p), linkb(p) );
+                printf( "linkf %lx linkb %lx\n", U(linkf(p)), U(linkb(p)) );
                 if (( linkf(p) >= S_lo && linkf(p) < S_hi )
                         || ( linkf(p) >= S_avail
                              && linkf(p) < S_avail + S_m ))
-                    printf( "linkb(linkf(p)) %x\n", linkb(linkf(p)) );
+                    printf( "linkb(linkf(p)) %lx\n", U(linkb(linkf(p))) );
                 if (( linkb(p) >= S_lo && linkb(p) < S_hi )
                         || ( linkb(p) >= S_avail
                              && linkb(p) < S_avail + S_m ))
-                    printf( "linkf(linkb(p)) %x\n", linkf(linkb(p)) );
+                    printf( "linkf(linkb(p)) %lx\n", U(linkf(linkb(p))) );
                 for( i = 0; i < S_m; i++ ) {
                     if ( linkf(S_avail+i) == p )
-                        printf( "linkf(S_avail+i) %x\n",
-                                linkf(S_avail+i) );
+                        printf( "linkf(S_avail+i) %lx\n",
+                                U(linkf(S_avail+i)) );
                     if ( linkb(S_avail+i) == p )
-                        printf( "linkb(S_avail+i) %x\n",
-                                linkb(S_avail+i) );
+                        printf( "linkb(S_avail+i) %lx\n",
+                                U(linkb(S_avail+i)) );
                 }
                 if ( last_p )
-                    printf( "Last good block %x kval %d\n", last_p,
+                    printf( "Last good block %lx kval %d\n", U(last_p),
                             kval(last_p) );
                 return;
             }
@@ -457,29 +418,3 @@ void Saudit()
         p = p + (1 << kval(p));
     }
 }
-
-#ifndef CMS
-/*
- *     Hook for malloc.  The above allocator will fail if any other
- *     allocator is active!
- */
-
-char *malloc( n )
-int n;
-{
-    return( Salloc( n ) );
-}
-
-void free( p )
-char *p;
-{
-    Sfree( p );
-}
-
-char *realloc( p, n )
-char *p;
-int n;
-{
-    return( Srealloc( p, n ) );
-}
-#endif

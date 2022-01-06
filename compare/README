@@ -1,0 +1,12 @@
+
+in the ginr repo:
+git checkout c9c1eff
+copy src directory to rsrc here
+
+HEAD is now at c9c1eff
+The March 25 version will no longer compile.
+Here are mods that patch the problems.
+(done June 17, 2010)
+
+char Version[] = "2.0e (patched)";
+char Date[] = "Mar 25 1988 (patched Jun 17 2010)";
