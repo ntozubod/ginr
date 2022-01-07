@@ -1,5 +1,24 @@
 # INR redux Changelog
 
+## 2.0.1a redux (2022-01-07)
+
+#### src (version 2.0.1 July 26, 2010)
+
+Most of the modifications made on July 26, 2010 to add copyright text for
+asserting the GPL version 3 license have been made earlier in the redux
+branch.
+This commit in the redux branch completes the changes made as of
+the '3f2120e' commit of ginr.
+
+These changes reflect GPL text that is compiled into the INR executable and
+is accessible from the INR interface.
+This extent of license notification may seem excessive in 2022; however,
+it agrees with what is recommended on the gnu.org website.
+
+Note that from this point the redux branch will follow the ginr branch closely
+except for any manual and automatic formatting of program text.
+INR version numbers will correspond with an added alpha suffix.
+
 ## 2.0.0g redux (2022-01-06)
 
 #### 2.0.0g src (2022-01-06)

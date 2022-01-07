@@ -1,12 +1,11 @@
 
 in the ginr repo:
-git checkout c9c1eff
+git checkout 3f2120e
 copy src directory to rsrc here
 
-HEAD is now at c9c1eff
-The March 25 version will no longer compile.
-Here are mods that patch the problems.
-(done June 17, 2010)
+HEAD is now at 3f2120e
+Add text needed for GPLv3 to clarify users rights.
+(done July 26, 2010)
 
-char Version[] = "2.0e (patched)";
-char Date[] = "Mar 25 1988 (patched Jun 17 2010)";
+char Version[] = "2.0.1";
+char Date[] = "July 26, 2010";

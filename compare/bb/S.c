@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
+ *
+ * This software was developed while I was a student and, later, professor
+ * at the University of Waterloo.  It has only minimal enhancements and bug
+ * fixes from later than August 1988.  It was released under the GPLv3
+ * licence on July 26, 2010.
+ *                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
+ *
+ * This file is part of INR.
+ *
+ *   INR is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   INR is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
@@ -23,9 +47,13 @@ S_ft ;
 #define set_linkb(p,q)  (p)-> S_linkb = q
 #define U(p)            ((unsigned long)(p))
 #define S_m             28
+/* S_m = 26 allows objects of up to 1 gigabyte */
 static S_ft * S_lo = 0, * S_hi = 0, S_avail [ S_m + 1 ] ;
 static int S_alld_cnt [ S_m ] ;
 int LINUXmem = 0 ;
+/*
+ *     Copy a block of memory
+ */
 void copymem ( n, from, to ) int n ;
 char * from, * to ;
 {
@@ -52,6 +80,9 @@ void scribble ( p, q ) char * p, * q ;
     * p ++ = 0x55 ;
   }
 }
+/*
+ *     Binary Buddy system storage allocator as in Knuth vol. 1
+ */
 void S_init ( )
 {
   S_ft * p ;
@@ -312,6 +343,10 @@ void S_arena ( )
     fprintf ( fpout, "Excess %d bytes\n", size % 1024 ) ;
   }
 }
+/*
+ *     Interface to provide allocator for INR.
+ *     The length code and an audit flag are stored in allocated blocks
+ */
 char * Salloc ( n ) int n ;
 {
   char * p ;

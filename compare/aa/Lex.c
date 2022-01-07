@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
+ *
+ * This software was developed while I was a student and, later, professor
+ * at the University of Waterloo.  It has only minimal enhancements and bug
+ * fixes from later than August 1988.  It was released under the GPLv3
+ * licence on July 26, 2010.
+ *                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
+ *
+ * This file is part of INR.
+ *
+ *   INR is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   INR is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -140,6 +164,8 @@ yylex ( )
   case '!' :
     return ( EXCLAM ) ;
 
+  /*  case '"':   not used    */
+  /*  case '#':	COMMENT     */
   case '$' :
     return ( DOLLAR ) ;
 
@@ -171,6 +197,7 @@ yylex ( )
   case '-' :
     return ( MINUS ) ;
 
+  /*  case '.':	ALPHANUMERIC	*/
   case '/' :
     return ( SLASH ) ;
 
@@ -180,9 +207,11 @@ yylex ( )
   case ';' :
     return ( SEMI ) ;
 
+  /*  case '<':	not used    */
   case '=' :
     return ( EQUAL ) ;
 
+  /*  case '>':	not used    */
   case '?' :
     return ( QUESTION ) ;
 
@@ -201,6 +230,8 @@ yylex ( )
   case '^' :
     return ( CIRCUMFLEX ) ;
 
+  /*  case '_':	ALPHANUMERIC	*/
+  /*  case '`':	TOKEN QUOTE */
   case '{' :
     return ( LBRACE ) ;
 
@@ -210,6 +241,7 @@ yylex ( )
   case '}' :
     return ( RBRACE ) ;
 
+  /*  case '~':	not used    */
   case '"' :
   case '<' :
   case '>' :
@@ -378,7 +410,7 @@ yylex ( )
   yylval . up = copyof ( token ) ;
   return ( NAME ) ;
 }
-char Notice [ ] = "Copyright (c) 1985, J Howard Johnson, University of Waterloo" ;
+char Notice [ ] = "Copyright (c) 1985, 1988, J Howard Johnson, University of Waterloo" ;
 extern char Version [ ] ;
 extern char Date [ ] ;
 main ( argc, argv ) int argc ;
@@ -424,16 +456,25 @@ char * argv [ ] ;
 
   if ( isatty ( fileno ( fpout ) ) ) {
     fprintf ( fpout, "\n" ) ;
-    fprintf ( fpout, "II  N     N  RRRRRR\n" ) ;
-    fprintf ( fpout, "II  N N   N  R    RR    I N R   Version %s\n", Version ) ;
-    fprintf ( fpout, "II  N  N  N  RRRRRR\n" ) ;
-    fprintf ( fpout, "II  N   N N  R    R         %s\n", Date ) ;
+    fprintf ( fpout, "II  N     N  RRRRRR    I N R     " ) ;
+    fprintf ( fpout, "Version %s (Mar 25, 1988)\n", Version ) ;
+    fprintf ( fpout, "II  N N   N  R    RR" ) ;
+    fprintf ( fpout, "             Copyright (C) 1988 J Howard Johnson\n" ) ;
+    fprintf ( fpout, "II  N  N  N  RRRRRR    modified  %s\n", Date ) ;
+    fprintf ( fpout, "II  N   N N  R    R\n" ) ;
     fprintf ( fpout, "II  N    NN  R     R" ) ;
-    fprintf ( fpout, "                                 (For help type   :help;)\n" ) ;
+    fprintf ( fpout, "                              (For help type   `:help;')\n" ) ;
+    fprintf ( fpout, "This program comes with ABSOLUTELY NO WARRANTY; " ) ;
+    fprintf ( fpout, "for details type `:help w;'.\n" ) ;
+    fprintf ( fpout, "This is free software, and you are welcome " ) ;
+    fprintf ( fpout, "to redistribute it under certain\n" ) ;
+    fprintf ( fpout, "conditions; type `:help c;' for details.\n" ) ;
     fprintf ( fpout, "\n" ) ;
 
   } else {
-    fprintf ( fpout, "I N R -- V %s, %s", Version, Date ) ;
+    fprintf ( fpout, "I N R -- V %s, modified %s\n", Version, Date ) ;
+    fprintf ( fpout, "Copyright (C) 1988 J Howard Johnson\n" ) ;
+    fprintf ( fpout, "Distributed under GPLv3 (see COPYING)\n" ) ;
 
     if ( fpin != stdin ) {
       fprintf ( fpout, "  (Source file: %s)", file_in ) ;

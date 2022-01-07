@@ -321,7 +321,8 @@ yylex()
     return( NAME );
 }
 
-char Notice[] = "Copyright (c) 1985, J Howard Johnson, University of Waterloo";
+char Notice[]
+   = "Copyright (c) 1985, 1988, J Howard Johnson, University of Waterloo";
 extern char Version[];
 extern char Date[];
 
@@ -366,16 +367,25 @@ char *argv[];
     if ( isatty(fileno(fpout)) ) {
 
 fprintf( fpout, "\n" );
-fprintf( fpout, "II  N     N  RRRRRR\n" );
-fprintf( fpout, "II  N N   N  R    RR    I N R   Version %s\n", Version );
-fprintf( fpout, "II  N  N  N  RRRRRR\n" );
-fprintf( fpout, "II  N   N N  R    R         %s\n", Date );
+fprintf( fpout, "II  N     N  RRRRRR    I N R     " );
+fprintf( fpout, "Version %s (Mar 25, 1988)\n", Version );
+fprintf( fpout, "II  N N   N  R    RR" );
+fprintf( fpout, "             Copyright (C) 1988 J Howard Johnson\n" );
+fprintf( fpout, "II  N  N  N  RRRRRR    modified  %s\n", Date );
+fprintf( fpout, "II  N   N N  R    R\n" );
 fprintf( fpout, "II  N    NN  R     R" );
-fprintf( fpout, "                                 (For help type   :help;)\n" );
+fprintf( fpout, "                              (For help type   `:help;')\n" );
+fprintf( fpout, "This program comes with ABSOLUTELY NO WARRANTY; " );
+fprintf( fpout, "for details type `:help w;'.\n" );
+fprintf( fpout, "This is free software, and you are welcome " );
+fprintf( fpout, "to redistribute it under certain\n" );
+fprintf( fpout, "conditions; type `:help c;' for details.\n" );
 fprintf( fpout, "\n" );
 
     } else {
-        fprintf( fpout, "I N R -- V %s, %s", Version, Date );
+        fprintf ( fpout, "I N R -- V %s, modified %s\n", Version, Date ) ;
+        fprintf ( fpout, "Copyright (C) 1988 J Howard Johnson\n" ) ;
+        fprintf ( fpout, "Distributed under GPLv3 (see COPYING)\n" ) ;
         if ( fpin != stdin )
             fprintf( fpout, "  (Source file: %s)", file_in ) ;
         fprintf( fpout, "\n\n\n" );

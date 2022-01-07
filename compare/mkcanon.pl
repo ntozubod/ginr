@@ -24,7 +24,7 @@ foreach my $arg ( @ARGV ) {
       $next = "\n" . $1;
       if ( $buf =~ s{(^.*?\*/)[\n]?}{}s ) {
         $next .= $1 . "\n";
-#        push( @toks, $next );
+        push( @toks, $next );
       }
       else {
         print "Illegal block comment\n";

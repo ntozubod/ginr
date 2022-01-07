@@ -384,6 +384,52 @@ Coercing Operator:  display the value using :pr implicitly\n\
 Printing Operator:  do not perform additional display\n\
 Other:              coerce to DFAMIN and display using :pr\n\n" );
 
+        else if ( !strcmp("w", arg) )
+
+fprintf( fpout, "\n\
+(from GPLv3: see COPYING or http://www.gnu.org/licenses/gpl-3.0.html)\n\
+  15. Disclaimer of Warranty.\n\
+\n\
+  THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY\n\
+APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT\n\
+HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM \"AS IS\" WITHOUT WARRANTY\n\
+OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,\n\
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR\n\
+PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM\n\
+IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF\n\
+ALL NECESSARY SERVICING, REPAIR OR CORRECTION.\n\
+\n" ) ;
+
+        else if ( !strcmp( "c", arg) )
+
+fprintf( fpout, "\n\
+(from GPLv3: see COPYING or http://www.gnu.org/licenses/gpl-3.0.html)\n\
+  2. Basic Permissions.\n\
+\n\
+  All rights granted under this License are granted for the term of\n\
+copyright on the Program, and are irrevocable provided the stated\n\
+conditions are met.  This License explicitly affirms your unlimited\n\
+permission to run the unmodified Program.  The output from running a\n\
+covered work is covered by this License only if the output, given its\n\
+content, constitutes a covered work.  This License acknowledges your\n\
+rights of fair use or other equivalent, as provided by copyright law.\n\
+\n\
+  You may make, run and propagate covered works that you do not\n\
+convey, without conditions so long as your license otherwise remains\n\
+in force.  You may convey covered works to others for the sole purpose\n\
+of having them make modifications exclusively for you, or provide you\n\
+with facilities for running those works, provided that you comply with\n\
+the terms of this License in conveying all material for which you do\n\
+not control copyright.  Those thus making or running the covered works\n\
+for you must do so exclusively on your behalf, under your direction\n\
+and control, on terms that prohibit them from making any copies of\n\
+your copyrighted material outside their relationship with you.\n\
+\n\
+  Conveying under any other circumstances is permitted solely under\n\
+the conditions stated below.  Sublicensing is not allowed; section 10\n\
+makes it unnecessary.\n\
+\n" );
+
         else fprintf( fpout, "Unknown help request" );
     } else Warning( "Unknown function" );
     return A;
