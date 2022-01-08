@@ -1,5 +1,21 @@
 # INR redux Changelog
 
+## 2.0.1a redux (2022-01-08)
+
+#### src (version 2.0.1 July 29, 2010)
+
+Unchanged.
+Only update the date in stamp.c.
+
+#### doc (version 2.0.1 July 29, 2010)
+
+Unchanged.
+The changes made in this commit of the ginr branch have been made already
+in the redux branch.
+A file containing some bibtex references was missed and is now restored.
+An preliminary version of the documentation in markdown format is provided
+at [doc/inr_intro.md](doc/inr_intro.md).
+
 ## 2.0.1a redux (2022-01-07)
 
 #### src (version 2.0.1 July 26, 2010)

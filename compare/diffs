@@ -4,4 +4,4 @@ diff -r -w aa/stamp.c bb/stamp.c
 < char Date [ ] = "July 26, 2010" ;
 ---
 > char Version [ ] = "2.0.1a" ;
-> char Date [ ] = "Jan 7 2022" ;
+> char Date [ ] = "Jan 8 2022" ;
