@@ -1,15 +1,13 @@
 
 in the ginr repo:
-git checkout f9434e2
+git checkout c418630
 copy src directory to rsrc here
 
-HEAD is now at f9434e2
-Patched the Latex so that a PDF could be generated using pdflatex.
-(done July 29, 2010)
+HEAD is now at c418630
+Update to fix a bug in GMsseq in computing the epsilon cl osure.
+Addition of example from CIAA 2010 paper: "Uniformizing Rational Relations
+for Natural Language Applications using Weighted Determinization"
+(done August 3, 2010)
 
-char Version[] = "2.0.1";
-char Date[] = "July 26, 2010";
-
-NB: src directory totally unchanged from commit 3f2120e. All changes are to
-the doc directory.
-
+char Version[] = "2.0.2";
+char Date[] = "August 3, 2010";

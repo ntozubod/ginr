@@ -50,7 +50,7 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
   A_row * p, * pz ;
   int tt ;
   int n, hsize, base, head, current, father, son, gap, vlen ;
-  int k, sig_lim ;
+  int k, sig_lim, queue_lim ;
 
   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
 
@@ -106,7 +106,8 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
   heap = ( A_row ** ) Salloc ( ( A -> A_nQ + 1 ) * sizeof ( A_row * ) ) ;
   fr_coeff = ( SHORT ** ) Salloc ( A -> A_nQ * sizeof ( SHORT * ) ) ;
   to_coeff = ( SHORT ** ) Salloc ( A -> A_nQ * sizeof ( SHORT * ) ) ;
-  queue = s_alloc ( A -> A_nQ ) ;
+  queue_lim = 5 * A -> A_nQ ;
+  queue = s_alloc ( queue_lim ) ;
   st_len = s_alloc ( A -> A_nQ ) ;
   sig_lim = 20 ;
   sig = s_alloc ( sig_lim ) ;
@@ -166,6 +167,10 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
           save_coeff = 0 ;
           queue [ nq ++ ] = p -> A_c ;
 
+          if ( nq >= queue_lim ) {
+            Error ( "queue_lim exceeded (1)" ) ;
+          }
+
         } else {
           save_coeff = to_coeff [ p -> A_c ] ;
         }
@@ -182,6 +187,11 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
         if ( save_coeff ) {
           if ( GMcmp ( save_coeff, to_coeff [ p -> A_c ] ) >= 0 ) {
             Sfree ( ( char * ) save_coeff ) ;
+            queue [ nq ++ ] = p -> A_c ;
+
+            if ( nq >= queue_lim ) {
+              Error ( "queue_lim exceeded (2)" ) ;
+            }
 
           } else {
             Sfree ( ( char * ) to_coeff [ p -> A_c ] ) ;
@@ -320,6 +330,7 @@ idone :
     }
 
     /*
+    printf( "\n" );
     printf( "Processing state %d\n", current );
     printf( "state coeff\n" );
     for( i = 0; i < len; i++ ) {
@@ -444,8 +455,15 @@ idone :
         for( i = 0; i < vlen; i++ ) {
         j = vec[ i ];
         printf( "%5d ", j );
-        for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
+        for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ ) {
+        int symb = T_name( TT, to_coeff[j][tt] )[ 0 ] & 0xff;
+        if ( symb <= ' ' || symb > 127 ) {
+        printf( "\\%x ", symb );
+        }
+        else {
         printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
+        }
+        }
         printf( "\n" );
         }
         */
@@ -510,8 +528,21 @@ done :
                 ++ j ;
               }
 
-            if ( j > vlen ) {
+            if ( j > 2 ) {
               Error ( "A_sseq: Not subsequential (?)" ) ;
+// if ( j > vlen )
+              /*
+                            printf( "Destination state\n" );
+                            printf( "state coeff\n" );
+                            int i1;
+                            for( i1 = 0; i1 < vlen; i1++ ) {
+                              int j1 = vec[ i1 ];
+                              printf( "%5d ", j1 );
+                              for( tt = 0; to_coeff[j1][tt] != MAXSHORT; tt++ )
+                              printf( "%s ", T_name( TT, to_coeff[j1][tt] ) );
+                              printf( "\n" );
+                            }
+              */
             }
           }
         }
@@ -584,6 +615,7 @@ done :
           for ( i = 0 ;
                 i < nq ;
                 i ++ ) {
+            /* printf( "--> %d\n", queue[ i ] ); */
             pz = A -> A_p [ queue [ i ] + 1 ] ;
 
             for ( p = A -> A_p [ queue [ i ] ] ;
@@ -601,6 +633,10 @@ done :
                   ++ vlen ;
                   save_coeff = 0 ;
                   queue [ nq ++ ] = p -> A_c ;
+
+                  if ( nq >= queue_lim ) {
+                    Error ( "queue_lim exceeded (3)" ) ;
+                  }
 
                 } else {
                   save_coeff = to_coeff [ p -> A_c ] ;
@@ -628,6 +664,11 @@ done :
                 if ( save_coeff ) {
                   if ( GMcmp ( save_coeff, to_coeff [ p -> A_c ] ) >= 0 ) {
                     Sfree ( ( char * ) save_coeff ) ;
+                    queue [ nq ++ ] = p -> A_c ;
+
+                    if ( nq >= queue_lim ) {
+                      Error ( "queue_lim exceeded (4)" ) ;
+                    }
 
                   } else {
                     Sfree ( ( char * ) to_coeff [ p -> A_c ] ) ;
@@ -681,7 +722,10 @@ done :
   A_destroy ( An ) ;
   V_destroy ( V ) ;
   V_destroy ( Vs ) ;
-  A = A_rename ( A, 0 ) ;
+  /*
+      A = A_rename( A, 0 );
+  */
+  A = A_mkdense ( A ) ;
   A = A_close ( A ) ;
   A -> A_mode = SSEQ ;
   A -> A_ems = 1 ;

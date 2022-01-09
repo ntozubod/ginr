@@ -1,7 +1,7 @@
 diff -r -w aa/stamp.c bb/stamp.c
 28,29c28,29
-< char Version [ ] = "2.0.1" ;
-< char Date [ ] = "July 26, 2010" ;
+< char Version [ ] = "2.0.2" ;
+< char Date [ ] = "August 3, 2010" ;
 ---
-> char Version [ ] = "2.0.1a" ;
-> char Date [ ] = "Jan 8 2022" ;
+> char Version [ ] = "2.0.2a" ;
+> char Date [ ] = "Jan 9 2022" ;

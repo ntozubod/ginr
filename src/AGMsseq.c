@@ -51,7 +51,7 @@ register A_OBJECT A;
     register A_row *p, *pz;
     int tt;
     int n, hsize, base, head, current, father, son, gap, vlen;
-    int k, sig_lim;
+    int k, sig_lim, queue_lim;
     int aa, bb, cc, nq, len, from, to, label, hi_next, try;
     int GMval;
     A_row *insert, *last, **heap;
@@ -83,7 +83,8 @@ register A_OBJECT A;
     heap = (A_row **) Salloc( (A-> A_nQ + 1) * sizeof(A_row *) );
     fr_coeff = (SHORT **) Salloc( A-> A_nQ * sizeof(SHORT *) );
     to_coeff = (SHORT **) Salloc( A-> A_nQ * sizeof(SHORT *) );
-    queue = s_alloc( A-> A_nQ );
+    queue_lim = 5 * A-> A_nQ;
+    queue = s_alloc( queue_lim );
     st_len = s_alloc( A-> A_nQ );
     sig_lim = 20;
     sig = s_alloc( sig_lim );
@@ -124,6 +125,8 @@ register A_OBJECT A;
                     ++vlen;
                     save_coeff = 0;
                     queue[ nq++ ] = p-> A_c;
+                    if ( nq >= queue_lim )
+                        Error( "queue_lim exceeded (1)" );
                 } else {
                     save_coeff = to_coeff[ p-> A_c ];
                 }
@@ -138,9 +141,12 @@ register A_OBJECT A;
                             st_ptr[ p-> A_c ] );
                 }
                 if ( save_coeff ) {
-                    if ( GMcmp( save_coeff, to_coeff[p->A_c] ) >= 0 )
+                    if ( GMcmp( save_coeff, to_coeff[p->A_c] ) >= 0 ) {
                         Sfree( (char *) save_coeff );
-                    else {
+                        queue[ nq ++ ] = p-> A_c;
+                        if ( nq >= queue_lim )
+                            Error( "queue_lim exceeded (2)" );
+                    } else {
                         Sfree( (char *) to_coeff[p->A_c] );
                         to_coeff[p->A_c] = save_coeff;
                     }
@@ -220,6 +226,7 @@ idone:
             fr_coeff[ j ] = V_vec( Vs, fvec[ len + i ] );
         }
         /*
+        printf( "\n" );
         printf( "Processing state %d\n", current );
         printf( "state coeff\n" );
         for( i = 0; i < len; i++ ) {
@@ -293,17 +300,24 @@ idone:
                 label = last-> A_b;
                 if ( label == 1 ) label = 2;
                 to = hi_next;
-                /*
-                printf( "Destination state\n" );
-                printf( "state coeff\n" );
-                for( i = 0; i < vlen; i++ ) {
-                j = vec[ i ];
-                printf( "%5d ", j );
-                for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
-                printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
-                printf( "\n" );
-                }
-                */
+/*
+printf( "Destination state\n" );
+printf( "state coeff\n" );
+for( i = 0; i < vlen; i++ ) {
+j = vec[ i ];
+printf( "%5d ", j );
+for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ ) {
+int symb = T_name( TT, to_coeff[j][tt] )[ 0 ] & 0xff;
+if ( symb <= ' ' || symb > 127 ) {
+printf( "\\%x ", symb );
+}
+else {
+printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
+}
+}
+printf( "\n" );
+}
+*/
                 for( j = 0; ; j++ ) {
                     try = to_coeff[vec[0]][j];
                     if ( try == MAXSHORT ) goto done;
@@ -340,8 +354,22 @@ done:
                         j = 1;
                         for( k = current; k > 0; k = back[ k ] )
                             if  ( sig[k] == i ) ++j;
-                        if ( j > vlen )
+                        if ( j > 2 ) {
                             Error( "A_sseq: Not subsequential (?)" );
+                     // if ( j > vlen )
+/*
+              printf( "Destination state\n" );
+              printf( "state coeff\n" );
+              int i1;
+              for( i1 = 0; i1 < vlen; i1++ ) {
+                int j1 = vec[ i1 ];
+                printf( "%5d ", j1 );
+                for( tt = 0; to_coeff[j1][tt] != MAXSHORT; tt++ )
+                printf( "%s ", T_name( TT, to_coeff[j1][tt] ) );
+                printf( "\n" );
+              }
+*/
+                        }
                     }
                 }
                 vlen = 0;
@@ -391,6 +419,7 @@ done:
                     queue[ 0 ] = cc;
                     nq = 1;
                     for( i = 0; i < nq; i++ ) {
+                     /* printf( "--> %d\n", queue[ i ] ); */
                         pz = A-> A_p[ queue[i] + 1 ];
                         for( p = A-> A_p[ queue[i] ]; p < pz; ++p ) {
                             if ( p-> A_b != 1 && p-> A_b % 2 == 1 ) {
@@ -403,6 +432,8 @@ done:
                                     ++vlen;
                                     save_coeff = 0;
                                     queue[ nq++ ] = p-> A_c;
+                                    if ( nq >= queue_lim )
+                                        Error( "queue_lim exceeded (3)" );
                                 } else {
                                     save_coeff = to_coeff[ p-> A_c ];
                                 }
@@ -422,9 +453,12 @@ done:
                                             + tt - ( len - st_len[ p-> A_c ] ) );
                                 if ( save_coeff ) {
                                     if ( GMcmp( save_coeff,
-                                                to_coeff[ p-> A_c ] ) >= 0 )
+                                                to_coeff[ p-> A_c ] ) >= 0 ) {
                                         Sfree( (char *) save_coeff );
-                                    else {
+                                        queue[ nq ++ ] = p-> A_c;
+                                        if ( nq >= queue_lim )
+                                            Error( "queue_lim exceeded (4)" );
+                                    } else {
                                         Sfree( (char *) to_coeff[ p-> A_c ] );
                                         to_coeff[p-> A_c] = save_coeff;
                                     }
@@ -462,7 +496,10 @@ done:
     A_destroy( An );
     V_destroy( V );
     V_destroy( Vs );
+/*
     A = A_rename( A, 0 );
+*/
+    A = A_mkdense( A );
     A = A_close( A );
     A-> A_mode = SSEQ;
     A-> A_ems = 1;

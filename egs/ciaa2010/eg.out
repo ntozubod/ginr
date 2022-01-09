@@ -1,0 +1,106 @@
+I N R -- V 2.0.2, modified August 3, 2010
+Copyright (C) 1988 J Howard Johnson
+Distributed under GPLv3 (see COPYING)
+
+
+
+Upper --------------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
+Lower --------------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
+PosDigit -----------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
+Digit --------------   DFA MIN States: 3      Trans: 3      Tapes: 1  Strg: 1 K
+Punct --------------   DFA MIN States: 3      Trans: 3      Tapes: 1  Strg: 1 K
+Blank --------------   DFA MIN States: 3      Trans: 2      Tapes: 1  Strg: 1 K
+Token --------------   DFA MIN States: 3      Trans: 5      Tapes: 1  Strg: 1 K
+Number -------------   DFA MIN States: 3      Trans: 4      Tapes: 1  Strg: 1 K
+White --------------   DFA MIN States: 3      Trans: 3      Tapes: 1  Strg: 1 K
+ToLower ------------   DFA MIN States: 3      Trans: 4      Tapes: 2  Strg: 2 K
+TCopy --------------   DFA MIN States: 5      Trans: 7      Tapes: 3  Strg: 4 K
+NCopy --------------   DFA MIN States: 6      Trans: 7      Tapes: 3  Strg: 2 K
+PCopy --------------   DFA MIN States: 6      Trans: 6      Tapes: 3  Strg: 2 K
+WCopy --------------   DFA MIN States: 5      Trans: 5      Tapes: 3  Strg: 2 K
+Binst --------------   DFA MIN States: 4      Trans: 3      Tapes: 3  Strg: 2 K
+Copy ---------------   DFA MIN States: 15     Trans: 26     Tapes: 3  Strg: 4 K
+ZAlph --------------   DFA MIN States: 3      Trans: 8      Tapes: 1  Strg: 2 K
+Invalid ------------   DFA MIN States: 4      Trans: 7      Tapes: 1  Strg: 1 K
+Pretokenize --------   DFA MIN States: 11     Trans: 28     Tapes: 2  Strg: 2 K
+Tokenize -----------  *SSEQMIN States: 18     Trans: 48     Tapes: 2  Strg: 3 K
+Detokenize ---------  *SSEQMIN States: 20     Trans: 46     Tapes: 2  Strg: 3 K
+
+(START)  -| [ -| ]  	(FINAL)
+(START)  \_ [ \_ ]  	5
+(START)  , [ , ]  	7
+(START)  . [ . ]  	7
+(START)  1 [ 1 ]  	10
+(START)  A [ a ]  	12
+(START)  a [ a ]  	12
+5        -| [ -| ]  	(FINAL)
+5        \_ [ ]  	5
+5        , [ , ]  	7
+5        . [ . ]  	7
+5        1 [ 1 ]  	10
+5        A [ a ]  	12
+5        a [ a ]  	12
+7        -| [ -| ]  	(FINAL)
+7        \_ [ \_ ]  	5
+7        , [ \_ , ]  	7
+7        . [ \_ . ]  	7
+7        1 [ \_ 1 ]  	10
+7        A [ \_ a ]  	12
+7        a [ \_ a ]  	12
+10       -| [ -| ]  	(FINAL)
+10       \_ [ \_ ]  	5
+10       , [ \_ , ]  	7
+10       . [ \_ . ]  	7
+10       0 [ 0 ]  	10
+10       1 [ 1 ]  	10
+10       A [ \_ a ]  	12
+10       a [ \_ a ]  	12
+12       -| [ -| ]  	(FINAL)
+12       \_ [ \_ ]  	5
+12       , [ \_ , ]  	7
+12       . [ \_ . ]  	7
+12       1 [ \_ 1 ]  	10
+12       A [ a ]  	12
+12       a [ a ]  	12
+
+6 states in subsequential transducer
+
+
+(START)  -| [ -| ]  	(FINAL)
+(START)  \_ [ \_ ]  	5
+(START)  , [ , ]  	7
+(START)  . [ . ]  	7
+(START)  1 [ 1 ]  	10
+(START)  a [ A ]  	12
+5        -| [ -| ]  	(FINAL)
+5        , [ , ]  	7
+5        . [ . ]  	7
+5        1 [ 1 ]  	10
+5        a [ A ]  	12
+7        -| [ -| ]  	(FINAL)
+7        \_ [ ]  	13
+10       -| [ -| ]  	(FINAL)
+10       \_ [ ]  	14
+10       0 [ 0 ]  	10
+10       1 [ 1 ]  	10
+12       -| [ -| ]  	(FINAL)
+12       \_ [ ]  	16
+12       a [ A ]  	12
+13       -| [ \_ -| ]  	(FINAL)
+13       , [ , ]  	7
+13       . [ . ]  	7
+13       1 [ 1 ]  	10
+13       a [ A ]  	12
+14       -| [ \_ -| ]  	(FINAL)
+14       , [ , ]  	7
+14       . [ . ]  	7
+14       1 [ \_ 1 ]  	10
+14       a [ A ]  	12
+16       -| [ \_ -| ]  	(FINAL)
+16       , [ , ]  	7
+16       . [ . ]  	7
+16       1 [ 1 ]  	10
+16       a [ \_ A ]  	12
+
+9 states in subsequential transducer
+

@@ -25,5 +25,5 @@
 /*
  * Name and modification date of the current version
  */
-char Version [ ] = "2.0.1" ;
-char Date [ ] = "July 26, 2010" ;
+char Version [ ] = "2.0.2" ;
+char Date [ ] = "August 3, 2010" ;

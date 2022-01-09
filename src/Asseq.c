@@ -451,7 +451,10 @@ done:
     A_destroy( An );
     V_destroy( V );
     V_destroy( Vs );
+/*
     A = A_rename( A, 0 );
+*/
+    A = A_mkdense( A );
     A = A_close( A );
     A = A_min( A );
     A-> A_mode = SSEQ_MIN;

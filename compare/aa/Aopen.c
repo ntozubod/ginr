@@ -328,3 +328,28 @@ SHORT * rena ;
   A -> A_nQ = nrena ;
   return ( A_close ( A_open ( A ) ) ) ;
 }
+A_OBJECT A_mkdense ( A ) A_OBJECT A ;
+{
+  A_row * p, * pz ;
+  R_OBJECT R ;
+
+  if ( A == NULL ) {
+    Error ( "A_rename: No OBJECT" ) ;
+  }
+
+  R = R_create ( ) ;
+  R_insert ( R, 0, 0 ) ;
+  R_insert ( R, 1, 0 ) ;
+  pz = A -> A_t + A -> A_nrows ;
+
+  for ( p = A -> A_t ;
+        p < pz ;
+        ++ p ) {
+    p -> A_a = R_insert ( R, p -> A_a, 0 ) ;
+    p -> A_c = R_insert ( R, p -> A_c, 0 ) ;
+  }
+
+  A -> A_nQ = R -> R_n ;
+  R_destroy ( R ) ;
+  return ( A_close ( A_open ( A ) ) ) ;
+}

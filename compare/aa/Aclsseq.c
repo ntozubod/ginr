@@ -192,7 +192,10 @@ A_OBJECT A_clsseq ( A1 ) A_OBJECT A1 ;
   A_destroy ( A ) ;
   V_destroy ( V ) ;
   Sfree ( ( char * ) vec ) ;
-  A1 = A_min ( A_rename ( A1, 0 ) ) ;
+  /*
+      A1 = A_min( A_rename( A1, 0 ) );
+  */
+  A1 = A_min ( A_mkdense ( A1 ) ) ;
   A1 -> A_mode = SSEQ_MIN ;
   A1 -> A_ems = 1 ;
   return ( A1 ) ;

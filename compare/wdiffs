@@ -1,0 +1,20 @@
+128c128,129
+<                     if ( nq >= queue_lim ) Error( "queue_lim exceeded (1)" );
+---
+>                     if ( nq >= queue_lim )
+>                         Error( "queue_lim exceeded (1)" );
+146c147,148
+< 			if ( nq >= queue_lim ) Error( "queue_lim exceeded (2)" );
+---
+>                         if ( nq >= queue_lim )
+>                             Error( "queue_lim exceeded (2)" );
+433c435,436
+< 				    if ( nq >= queue_lim ) Error( "queue_lim exceeded (3)" );
+---
+>                                     if ( nq >= queue_lim )
+>                                         Error( "queue_lim exceeded (3)" );
+456c459,460
+< 					if ( nq >= queue_lim ) Error( "queue_lim exceeded (4)" );
+---
+>                                         if ( nq >= queue_lim )
+>                                             Error( "queue_lim exceeded (4)" );

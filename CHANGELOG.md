@@ -1,5 +1,71 @@
 # INR redux Changelog
 
+## 2.0.2a redux (2022-01-09)
+
+#### Brief comments on subsequential transduction in INR
+
+Towards the end of the time I was at the University of Waterloo, I was
+exploring the implementation and use of Subsequential Transducers.
+
+A *subsequential transducer* is a deterministic finite automaton (DFA)
+with an output capability added in a rather obvious way.
+Every transition and every final state is augmented with an string of
+output symbols.
+This underlying DFA recognizes a regular language as before and in the process
+of accepting an input string traces out a path deterministically in the DFA
+from the start state to a final state.
+The corresponding output is formed by concatenating together all of the
+outputs encountered on the path.
+The output associated with the final state is then added to the end.
+In other words, a subsequential tranducer is a DFA with print statements
+added to transitions and final states.
+
+This concept is very old and occurs in some of the original papers about
+finite automata; however, research interest quickly shifted to
+non-deterministic models and did not have the output-before-exit modification.
+Such an automaton was called a generalized sequential machine (GSM).
+Thus, an alternate name for a subsequential transducer is 'Deterministic
+Generalized Sequential Machine with Endmarkers'.
+
+All of the 'sseq' routines included in INR produce a subsequential transducer
+given some form of a 2-tape transducer as input or give up if it can't be
+done (or there is a bug in conceptualiztion or implementation).
+
+The simplest and most reliable is A_sseq that simply produces such a
+transducer from an input transducer that only requires a change in form.
+The theory here is well developed (for example, see Christian Choffrut's
+2003 paper in TCS 292).
+
+The other 'sseq' routines are more Procrustean in nature, taking a transducer
+that does not represent a subsequential function and finding a subsequential
+transducer that represents some aspect of the input's behaviour.
+
+GMsseq was one of these more general algorithms and was
+the topic of a paper: "Uniformizing Rational Relations
+for Natural Language Applications using Weighted Determinization"
+that I presented at CIAA 2010.
+It the process of preparing this paper, I found a bug in INR's algorithm and
+repaired it.
+I also discovered a theoretical issue that I couldn't resolve at the time.
+There is a particular need for documentation and testing for all of the
+sseq routines.
+
+#### src (version 2.0.2 August 3, 2010)
+
+Updated AGMsseq.c to fix a bug found while preparing paper for CIAA 2010.
+
+Added a new routine 'mkdense' whose function is to reassign state
+numbers to remove gaps.
+( Arrays indexed by the state number work better. )
+
+#### doc (version 2.0.2 August 3, 2010)
+
+Added a more complete bibtex file.
+
+#### egs (version 2.0.2 August 3, 2010)
+
+Added a new example to show GMsseq functionality for the CIAA paper.
+
 ## 2.0.1a redux (2022-01-08)
 
 #### src (version 2.0.1 July 29, 2010)
