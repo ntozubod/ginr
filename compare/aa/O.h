@@ -28,8 +28,8 @@
 #define R_Object	3
 #define U_Object	4
 #define A_Object	5
-typedef unsigned short SHORT ;
-#define MAXSHORT	0177777
+typedef unsigned int SHORT ;
+#define MAXSHORT	037777777777
 typedef struct {
   SHORT R_a ;
   SHORT R_b ;
@@ -195,3 +195,5 @@ A_OBJECT A_prsseq ( ) ;
 A_OBJECT A_clsseq ( ) ;
 SHORT ** A_stems ( ) ;
 extern int A_report ;
+void Error ( ) ;
+void Warning ( ) ;

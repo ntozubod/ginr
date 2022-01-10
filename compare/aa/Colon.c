@@ -24,6 +24,7 @@
  */
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include "O.h"
 extern FILE * fpout ;
 extern A_OBJECT Atemp ;

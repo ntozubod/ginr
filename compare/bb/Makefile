@@ -11,10 +11,10 @@ SOURCE 	= Makefile $(HFILES) localc.h localh.h locals.h $(CFILES) Parse.y \
 compcms.exec cwinr.exec comphw.exec
 
 .c.o:
-	cc -O -c $*.c
+	gcc -Wall -O -c $*.c
 
 ginr:	$(OFILES)
-	cc -O $(OFILES) -o ginr
+	gcc -Wall -O $(OFILES) -o ginr
 
 inrx.a:
 	echo hi >inrx.a
@@ -23,7 +23,7 @@ inrx.a:
 	ranlib inrx.a
 
 install:	ginr
-	cp -p ginr ~/bin
+	cp -p ginr ~/bin/ninr
 
 lint:	y.tab.c
 	lint $(CFILES) y.tab.c

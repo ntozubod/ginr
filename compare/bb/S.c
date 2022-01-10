@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "local.h"
+void Error ( ) ;
 extern FILE * fpout ;
 typedef struct S_f {
   unsigned char fill_1 ;
@@ -62,10 +63,12 @@ char * from, * to ;
     return ;
   }
 
-  if ( from >= to ) while ( -- n >= 0 ) {
+  if ( from >= to ) {
+    while ( -- n >= 0 ) {
       * to ++ = * from ++ ;
+    }
 
-    } else {
+  } else {
     from += n ;
     to += n ;
 
@@ -126,7 +129,7 @@ int k ;
     Error ( "S_free: bounds" ) ;
   }
 
-  if ( l - S_lo & ( 1 << k ) - 1 ) {
+  if ( ( l - S_lo ) & ( ( 1 << k ) - 1 ) ) {
     Error ( "S_free: l improper" ) ;
   }
 
@@ -139,7 +142,7 @@ int k ;
   for ( ;
         k < S_m - 1 ;
         ++ k ) {
-    p = S_lo + ( l - S_lo ^ 1 << k ) ;
+    p = S_lo + ( ( l - S_lo ) ^ ( 1 << k ) ) ;
 
     if ( p >= S_hi || ! tag ( p ) || kval ( p ) != k ) {
       break ;
@@ -163,7 +166,6 @@ int k ;
 void S_morecore ( k ) int k ;
 {
   int a, b ;
-  S_ft * p ;
 
   if ( S_hi != S_lo ) {
     Error ( "S_morecore: Out of Memory" ) ;
@@ -257,7 +259,7 @@ int k1, k2 ;
     for ( ;
           k1 < k2 ;
           ++ k1 ) {
-      p = S_lo + ( l - S_lo ^ 1 << k1 ) ;
+      p = S_lo + ( ( l - S_lo ) ^ ( 1 << k1 ) ) ;
 
       if ( p < l || p >= S_hi || ! tag ( p ) || kval ( p ) != k1 ) {
         break ;
@@ -437,7 +439,7 @@ void Saudit ( )
       ) {
     pc = ( char * ) p ;
 
-    if ( p - S_lo & ( 1 << kval ( p ) ) - 1 ) {
+    if ( ( p - S_lo ) & ( ( 1 << kval ( p ) ) - 1 ) ) {
       printf ( "Block alignment error at %lx\n", U ( p ) ) ;
       printf ( "Block size %d Offset %lx\n", kval ( p ), U ( p - S_lo ) ) ;
 

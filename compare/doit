@@ -23,5 +23,3 @@ rm *.orig
 cd ..
 
 diff -r -w aa bb > diffs
-
-diff -w rsrc/AGMsseq.c ../src/AGMsseq.c > wdiffs

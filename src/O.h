@@ -208,3 +208,6 @@ A_OBJECT        A_clsseq();
 SHORT **	A_stems();
 
 extern  int     A_report;
+
+void            Error();
+void            Warning();

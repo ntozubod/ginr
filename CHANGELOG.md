@@ -1,5 +1,23 @@
 # INR redux Changelog
 
+## 2.0.3b redux (2022-01-10)
+
+Here we are using 'b' suffix since 2.0.3a is already used in the main branch.
+I hadn't noticed that the previous commit reused the version 2.0.2a.
+Fortunately, this should not be too confusing, as neither of the 2.0.2
+versions are important.
+
+#### src (version 2.0.3 August 15, 2010)
+
+The original version of this commit made a number of minor changes that were
+all of the good as well as a major change that was not.
+
+The problematic change was an increase in the size of SHORT from 16 bits to
+32 bits.
+Although this is a desirable change, it uncovers many bugs and should be
+explored in another branch devoted to rooting them out.
+Note that 2.0.3b is essentially identical to 2.0.2a.
+
 ## 2.0.2a redux (2022-01-09)
 
 #### Brief comments on subsequential transduction in INR

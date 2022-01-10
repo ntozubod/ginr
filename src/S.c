@@ -28,6 +28,8 @@
 #include <strings.h>
 #include "local.h"
 
+void Error();
+
 extern FILE *fpout;
 
 typedef struct S_f {
@@ -75,9 +77,11 @@ register char *from, *to;
         bcopy( from, to, n );
         return;
     }
-    if ( from >= to )
-        while ( --n >= 0 ) *to++ = *from++;
-    else {
+    if ( from >= to ) {
+        while ( --n >= 0 ) {
+            *to++ = *from++;
+        }
+    } else {
         from += n;
         to += n;
         while ( --n >= 0 ) *--to = *--from;
@@ -120,12 +124,12 @@ register int k;
 {
     register S_ft *p;
     if ( (long) l & 7 ) Error( "S_free: l not divisible by 8" );
-    if ( l < S_lo || l + (1 << k ) > S_hi ) Error( "S_free: bounds" );
-    if ( l-S_lo & (1 << k)-1 ) Error( "S_free: l improper" );
+    if ( l < S_lo || l + (1 << k) > S_hi ) Error( "S_free: bounds" );
+    if ( ( l-S_lo ) & ((1 << k)-1) ) Error( "S_free: l improper" );
     if ( tag(l) ) Error( "S_free: attempt to free unallocated block" );
     --S_alld_cnt[k];
     for( ; k < S_m - 1; ++k ) {
-        p = S_lo + ( l - S_lo ^ 1 << k );
+        p = S_lo + ( ( l - S_lo ) ^ ( 1 << k ) );
         if ( p >= S_hi || !tag(p) || kval(p) != k ) break;
         set_linkf( linkb(p), linkf(p) );
         set_linkb( linkf(p), linkb(p) );
@@ -144,7 +148,6 @@ register int k;
 {
 
     register int a, b;
-    register S_ft *p;
     if ( S_hi != S_lo ) Error( "S_morecore: Out of Memory" );
     a = 0;
     S_hi = S_lo + LINUXmem / sizeof(S_ft);
@@ -212,7 +215,7 @@ register int k1, k2;
     } else {
         k0 = k1;
         for( ; k1 < k2; ++k1 ) {
-            p = S_lo + ( l - S_lo ^ 1 << k1 );
+            p = S_lo + ( ( l - S_lo ) ^ ( 1 << k1 ) );
             if ( p < l || p >= S_hi || !tag(p)
                     || kval(p) != k1 ) break;
             set_linkf( linkb(p), linkf(p) );
@@ -355,7 +358,7 @@ void Saudit()
     last_p = 0;
     for( p = S_lo; p < S_hi; ) {
         pc = (char *) p;
-        if ( p-S_lo & (1 << kval(p))-1 ) {
+        if ( ( p-S_lo ) & ((1 << kval(p))-1) ) {
             printf( "Block alignment error at %lx\n", U(p) );
             printf( "Block size %d Offset %lx\n", kval(p), U(p-S_lo) );
             if ( last_p )

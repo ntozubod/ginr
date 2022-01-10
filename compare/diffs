@@ -1,7 +1,15 @@
+diff -r -w aa/O.h bb/O.h
+31,32c31,32
+< typedef unsigned int SHORT ;
+< #define MAXSHORT	037777777777
+---
+> typedef unsigned short SHORT ;
+> #define MAXSHORT        0177777
 diff -r -w aa/stamp.c bb/stamp.c
 28,29c28,29
-< char Version [ ] = "2.0.2" ;
-< char Date [ ] = "August 3, 2010" ;
+< char Version [ ] = "2.0.3" ;
+< char Date [ ] = "August 15, 2010" ;
 ---
-> char Version [ ] = "2.0.2a" ;
-> char Date [ ] = "Jan 9 2022" ;
+> char Version [ ] = "2.0.3b" ;
+> char Date [ ] = "Jan 10 2022" ;
+Only in aa: VERSION
