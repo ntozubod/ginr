@@ -1,3 +1,29 @@
+diff -r -w aa/Ajoin.c bb/Ajoin.c
+30a31,33
+>   t1 = 0 ;
+>   t2 = 0 ;
+>   /* Initialiaze to suppress warning JHJ */
+77c80,81
+<       if ( s1 < 0 ) if ( p1 < p1z ) {
+---
+>       if ( s1 < 0 ) {
+>         if ( p1 < p1z ) {
+94a99
+>       }
+96c101,102
+<       if ( s2 < 0 ) if ( p2 < p2z ) {
+---
+>       if ( s2 < 0 ) {
+>         if ( p2 < p2z ) {
+113a120
+>       }
+diff -r -w aa/Aload.c bb/Aload.c
+25a26
+> #include <string.h>
+110c111
+<   while ( i = * str ++ ) {
+---
+>   while ( ( i = * str ++ ) ) {
 diff -r -w aa/O.h bb/O.h
 31,32c31,32
 < typedef unsigned int SHORT ;
@@ -10,6 +36,6 @@ diff -r -w aa/stamp.c bb/stamp.c
 < char Version [ ] = "2.0.3" ;
 < char Date [ ] = "August 15, 2010" ;
 ---
-> char Version [ ] = "2.0.3b" ;
-> char Date [ ] = "Jan 10 2022" ;
+> char Version [ ] = "2.0.3c" ;
+> char Date [ ] = "Jan 11 2022" ;
 Only in aa: VERSION

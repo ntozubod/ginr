@@ -1,4 +1,4 @@
-extern S_flag ;
+extern int S_flag ;
 /*
  * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
  *
@@ -294,7 +294,7 @@ SHORT * rena ;
 
   for ( p = pz ;
         -- p >= A -> A_t ;
-      ) if ( ( p -> A_c = trena [ p -> A_c ] ) == MAXSHORT || p -> A_a == p -> A_c && p -> A_b == 0 ) {
+      ) if ( ( p -> A_c = trena [ p -> A_c ] ) == MAXSHORT || ( p -> A_a == p -> A_c && p -> A_b == 0 ) ) {
       -- pz ;
       p -> A_a = pz -> A_a ;
       p -> A_b = pz -> A_b ;
@@ -304,7 +304,8 @@ SHORT * rena ;
   Sfree ( ( char * ) s_rena ) ;
   s_rena = NULL ;
 
-  if ( f_rena ) if ( rena != NULL ) {
+  if ( f_rena ) {
+    if ( rena != NULL ) {
       s_rena = s_alloc ( A -> A_nQ ) ;
 
       for ( i = A -> A_nQ ;
@@ -322,6 +323,7 @@ SHORT * rena ;
       s_rena = trena ;
       trena = NULL ;
     }
+  }
 
   Sfree ( ( char * ) trena ) ;
   A -> A_nrows = pz - A -> A_t ;

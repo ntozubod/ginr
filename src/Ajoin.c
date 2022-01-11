@@ -32,6 +32,7 @@ register A_OBJECT A1, A2;
 {
     register A_OBJECT A;
     int current, s1, s2, t1, t2, cur_a, cur_b, flag;
+    t1 = 0; t2 = 0; /* Initialiaze to suppress warning JHJ */
     A_row *p1, *p1z, *p2, *p2z;
     U_OBJECT U;
     A_row *cur_st;
@@ -65,7 +66,7 @@ register A_OBJECT A1, A2;
         p2z = A2-> A_p[ cur_b + 1 ];
         s1 = s2 = (-1);
         while( p1 < p1z || p2 < p2z ) {
-            if ( s1 < 0 )
+            if ( s1 < 0 ) {
                 if ( p1 < p1z ) {
                     if ( A1-> A_nT == 1 ) {
                         s1 = p1-> A_b;
@@ -79,7 +80,8 @@ register A_OBJECT A1, A2;
                         t1 = p1-> A_b - s1 * A1-> A_nT;
                     }
                 } else  s1 = MAXSHORT;
-            if ( s2 < 0 )
+            }
+            if ( s2 < 0 ) {
                 if ( p2 < p2z ) {
                     if ( A2-> A_nT == 1 ) {
                         s2 = p2-> A_b;
@@ -93,6 +95,7 @@ register A_OBJECT A1, A2;
                         t2 = p2-> A_b - s2 * A2-> A_nT;
                     }
                 } else  s2 = MAXSHORT;
+            }
             if ( p1-> A_b == 1 || p2-> A_b == 1 ) {
                 if ( p1-> A_b == 1 && p2-> A_b == 1 )
                     A = A_add( A, current, 1, FINAL );

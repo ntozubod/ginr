@@ -42,6 +42,7 @@ int tt;
 	int n, hsize, base, head, current, father, son, gap, vlen;
 	int k, sig_lim;
 	int aa, bb, cc, nq, len, from, to, label, hi_next, try;
+	label = 0; from = 0; /* Initialiaze to suppress warning JHJ */
 	A_row *insert, *last, **heap;
 	SHORT *set, *vec, *fvec, **fr_coeff, **to_coeff, *queue, *st_len;
 	SHORT ** st_ptr, *save_coeff, *sig, *back;

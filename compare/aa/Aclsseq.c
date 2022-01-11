@@ -28,6 +28,8 @@ A_OBJECT A_clsseq ( A1 ) A_OBJECT A1 ;
 {
   A_OBJECT A ;
   int current, end_st, i, bb, last_label, label, hi_next, k ;
+  last_label = 0 ;
+  /* Initialiaze to suppress warning JHJ */
   SHORT * vec, * cur_vec ;
   V_OBJECT V ;
   A_row * p, * pz, * lo, * hi, * mid ;

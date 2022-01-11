@@ -1,12 +1,11 @@
 
 in the ginr repo:
-git checkout 9db0ca5
+git checkout 0cccf65
 copy src directory to rsrc here
 
-HEAD is now at 9db0ca5
-Made some changes on Aug 15, 2010 but they were not uploaded to the
-repository.  Tiny bug fixes + widening of short to 32 bits.
-(done August 15, 2010 uploaded March 10, 2011)
+HEAD is now at 0cccf65
+Modifications to suppress warnings
+(done August 15, 2018)
 
 char Version[] = "2.0.3";
 char Date[] = "August 15, 2010";

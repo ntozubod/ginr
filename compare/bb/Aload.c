@@ -23,6 +23,7 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdio.h>
+#include <string.h>
 #include "O.h"
 #define MAX_TOKEN       1024
 #ifdef CMS
@@ -107,7 +108,7 @@ void put_name ( str ) char * str ;
 {
   int i ;
 
-  while ( i = * str ++ ) {
+  while ( ( i = * str ++ ) ) {
     switch ( i ) {
     case ' ' :
       putc ( '\\', fp ) ;

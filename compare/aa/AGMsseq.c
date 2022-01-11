@@ -54,6 +54,9 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
 
   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
 
+  label = 0 ;
+  from = 0 ;
+  /* Initialiaze to suppress warning JHJ */
   int GMval ;
   A_row * insert, * last, ** heap ;
   SHORT * set, * vec, * fvec, ** fr_coeff, ** to_coeff, * queue, * st_len ;

@@ -25,7 +25,12 @@
 % {
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <unistd.h>
 #include "O.h"
+  int yylex ( ) ;
+  int yyparse ( void ) ;
+  int yyerror ( char * ) ;
   FILE * fopen ( ) ;
   extern FILE * fpin, * fpout ;
   extern A_OBJECT A, Atemp ;
@@ -170,9 +175,10 @@ reg_0 SEMI {
 
   if ( i )
   {
-    return ;
+    return 1 ;
   }
 
+  /* to suppress warning JHJ */
   if ( A_report )
   {
     pr_time_diff ( ) ;

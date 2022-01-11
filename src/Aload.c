@@ -24,6 +24,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "O.h"
 
@@ -94,7 +95,7 @@ void put_name( str )
 register char *str;
 {
     register int i;
-    while ( i = *str++ ) {
+    while ( ( i = *str++ ) ) {
         switch( i ) {
         case ' ':
             putc( '\\', fp );

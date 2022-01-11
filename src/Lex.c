@@ -27,6 +27,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "O.h"
 #include "y.tab.h"
@@ -64,7 +65,7 @@ char *str;
     return( strcpy( Salloc( strlen( str ) + 1 ), str ) );
 }
 
-yylex()
+int yylex()
 {
     int li, d, lflag, in_comment;
     fflush( fpout );
@@ -326,9 +327,7 @@ char Notice[]
 extern char Version[];
 extern char Date[];
 
-main( argc, argv )
-int   argc;
-char *argv[];
+int main( int argc, char *argv[] )
 {
     int ti;
     char tstr[2];
@@ -396,7 +395,7 @@ fprintf( fpout, "\n" );
             || T_insert( TT, "-|" ) != 1 ) Error( "main: Initializing TT" );
     tstr[1] = 0;
     for( ti = 1; ti <= 255; ti++ )
-        if ( isascii(ti) && isprint(ti) || ti == '\t' || ti == '\n' ) {
+        if ( ( isascii(ti) && isprint(ti) ) || ti == '\t' || ti == '\n' ) {
             tstr[0] = ti;
             (void) T_insert( TT, tstr );
         }
@@ -419,18 +418,16 @@ fprintf( fpout, "\n" );
     exit( 0 );
 }
 
-yyerror(str)
-char *str;
+void yyerror( char *str )
 {
     fprintf( fpout, "*** %s ***\n", str );
 }
 
-int tonum( p )
-char *p;
+int tonum( char *p )
 {
     int acum, c;
     acum = 0;
-    while ( c = *p++ ) {
+    while ( ( c = *p++ ) ) {
         if ( c < '0' || c > '9' ) return( -1 );
         acum = acum * 10 + c - '0';
     }

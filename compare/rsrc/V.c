@@ -35,8 +35,7 @@ static int V_calls = 0;
 static int V_probes = 0;
 static int V_fail = 0;
 
-SHORT *veccpy( p, q )
-SHORT *p, *q;
+SHORT *veccpy( SHORT *p, SHORT *q )
 {
 	register SHORT *save = p;
 	while( *q < MAXSHORT ) *p++ = *q++;
@@ -44,8 +43,7 @@ SHORT *p, *q;
 	return( save );
 }
 
-int veccmp( p, q )
-SHORT *p, *q;
+int veccmp( SHORT *p, SHORT *q )
 {
 	--p;
 	--q;
@@ -53,8 +51,7 @@ SHORT *p, *q;
 	return( *p - *q );
 }
 
-int veclen( p )
-register SHORT *p;
+int veclen( register SHORT *p )
 {
 	register int i = 0;
 	while ( *p++ < MAXSHORT ) ++i;

@@ -1,5 +1,12 @@
 # INR redux Changelog
 
+## 2.0.3c redux (2022-01-11)
+
+#### src (version 2.0.3 August 15, 2010 done August 15, 2018)
+
+Made many changes to src files to suppress warnings.
+Reviewed all of these changes and added a few more.
+
 ## 2.0.3b redux (2022-01-10)
 
 Here we are using 'b' suffix since 2.0.3a is already used in the main branch.

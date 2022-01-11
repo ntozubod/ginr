@@ -27,8 +27,14 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <unistd.h>
 
 #include "O.h"
+
+int yylex();
+int yyparse( void );
+int yyerror( char * );
 
 FILE	*fopen();
 extern FILE *fpin, *fpout;
@@ -146,7 +152,7 @@ statement	: reg_0 SEMI
 		{
 			i = do_n_i( $2 );
 			Sfree( $2 );
-			if ( i ) return;
+			if ( i ) return 1; /* to suppress warning JHJ */
 			if ( A_report ) pr_time_diff();
 			PROMT
 		}

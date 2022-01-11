@@ -71,8 +71,7 @@ register A_OBJECT A;
 	return( A_trim( A ) );
 }
 
-int A_minlen( A )
-register A_OBJECT A;
+int A_minlen( register A_OBJECT A )
 {
 	register A_row *lo, *hi, *p;
 	int i, l, cur;

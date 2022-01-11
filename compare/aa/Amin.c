@@ -233,7 +233,8 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
               wait_H = nB ;
             }
 
-            if ( B_card [ nB ] > B_card [ j ] ) if ( in_wait [ j ] < LAST ) {
+            if ( B_card [ nB ] > B_card [ j ] ) {
+              if ( in_wait [ j ] < LAST ) {
                 in_wait [ nB ] = in_wait [ j ] ;
                 in_wait [ j ] = 0 ;
 
@@ -246,6 +247,7 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
                 wait_N [ j ] = wait_H ;
                 wait_H = j ;
               }
+            }
 
             ++ nB ;
 

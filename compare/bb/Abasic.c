@@ -518,11 +518,11 @@ A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
         p2z = A2 -> A_p [ cur_st -> R_b + 1 ] ;
 
         while ( p1 < p1z || p2 < p2z ) {
-          if ( p2 == p2z || p1 < p1z && p1 -> A_b < p2 -> A_b ) {
+          if ( p2 == p2z || ( p1 < p1z && p1 -> A_b < p2 -> A_b ) ) {
             A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c, dead ) ) ;
             ++ p1 ;
 
-          } else if ( p1 == p1z || p2 < p2z && p2 -> A_b < p1 -> A_b ) {
+          } else if ( p1 == p1z || ( p2 < p2z && p2 -> A_b < p1 -> A_b ) ) {
             A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ;
             ++ p2 ;
 

@@ -113,7 +113,9 @@ SHORT   *s_alloc();
 int     *i_alloc();
 char    *Srealloc();
 char    *Scopy();
+int     Ssize( char * );
 void    Sfree();
+void    Sarena();
 void    copymem();
 char    *strcpy();
 
@@ -124,6 +126,10 @@ T_OBJECT        T_grow();
 int             T_insert();
 char *          T_name();
 void            T_stats();
+
+SHORT *         veccpy( SHORT *, SHORT * );
+int             veccmp( SHORT *, SHORT * );
+int             veclen( SHORT * );
 
 V_OBJECT        V_create();
 void            V_destroy();
@@ -189,6 +195,7 @@ A_OBJECT        A_alph();
 A_OBJECT        A_rev();
 A_OBJECT        A_shuffle();
 A_OBJECT        A_enum();
+int             A_card();
 A_OBJECT        A_pref();
 A_OBJECT        A_suff();
 A_OBJECT        A_compose();
@@ -199,15 +206,21 @@ A_OBJECT        A_catpow();
 A_OBJECT        A_ident();
 A_OBJECT        A_cmpow();
 A_OBJECT        A_lenmin();
+int             A_minlen( A_OBJECT );
 A_OBJECT        A_sseq();
 A_OBJECT        A_LMsseq();
 A_OBJECT        A_GMsseq();
 A_OBJECT        A_prsseq();
 A_OBJECT        A_clsseq();
 
-SHORT **	A_stems();
+void            A_st_free();
+SHORT **        A_stems();
+void            A_prstems( A_OBJECT, T_OBJECT, int );
 
 extern  int     A_report;
 
-void            Error();
-void            Warning();
+void            Error( char * );
+void            Warning( char * );
+void            pr_time_diff();
+
+int tonum( char * );
