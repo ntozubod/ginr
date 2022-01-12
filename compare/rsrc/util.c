@@ -30,31 +30,33 @@
 
 extern FILE *fpout;
 
-void Warning( char *s )
+void Warning( s )
+char *s;
 {
-	fprintf( fpout, "*** %s ***\n", s );
+  fprintf( fpout, "*** %s ***\n", s );
 }
 
-void Error( char *s )
+void Error( s )
+char *s;
 {
-	fprintf( fpout, "*** %s ***\n", s );
-	fflush( fpout );
-	exit( 1 );
+  fprintf( fpout, "*** %s ***\n", s );
+  fflush( fpout );
+  exit( 1 );
 }
 
 SHORT *s_alloc( n )
 int n;
 {
-	return( (SHORT *) Salloc( n * sizeof( SHORT ) ) );
+  return( ( SHORT * ) Salloc( n * sizeof( SHORT ) ) );
 }
 
 int *i_alloc( n )
 int n;
 {
-	return( (int *) Salloc( n * sizeof( int ) ) );
+  return( ( int * ) Salloc( n * sizeof( int ) ) );
 }
 
 void pr_time_diff()
 {
-	return;
+  return;
 }

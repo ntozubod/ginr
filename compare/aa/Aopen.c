@@ -1,4 +1,3 @@
-extern int S_flag ;
 /*
  * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
  *

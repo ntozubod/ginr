@@ -25,8 +25,8 @@
 #include <stdio.h>
 extern FILE * fpout ;
 #include "O.h"
-#define UNMARK		MAXSHORT
-#define LAST		(MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define LAST            (MAXSHORT-1)
 A_OBJECT A_subs ( A ) A_OBJECT A ;
 {
   int i, j, tmp ;

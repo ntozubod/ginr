@@ -25,8 +25,8 @@
 #include <stdio.h>
 extern FILE * fpout ;
 #include "O.h"
-#define UNMARK		MAXSHORT
-#define DELETED		(MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define DELETED         (MAXSHORT-1)
 static A_OBJECT GAl ;
 static SHORT * l_stk, * l_low ;
 static int l_cnt, l_top, l_reopen ;

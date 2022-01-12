@@ -405,7 +405,8 @@ fprintf( fpout, "\n" );
     Alist[ 0 ] = A_create();
     pr_time_diff();
     PROMT
-    (void) yyparse();
+    if ( yyparse() != 0 )
+        Error( "yyparse returned unexpectedly" );
     T_destroy( TT );
     T_destroy( TAlist );
     if ( A_report ) {

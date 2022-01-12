@@ -49,7 +49,7 @@ char * pad20 ( s ) char * s ;
     return ( tmp ) ;
   }
 }
-#define PROMT	if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
+#define PROMT   if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
 int ch = ' ' ;
 char token [ 512 ] ;
 int in_string = 0 ;
@@ -166,7 +166,7 @@ int yylex ( )
     return ( EXCLAM ) ;
 
   /*  case '"':   not used    */
-  /*  case '#':	COMMENT     */
+  /*  case '#': COMMENT     */
   case '$' :
     return ( DOLLAR ) ;
 
@@ -198,7 +198,7 @@ int yylex ( )
   case '-' :
     return ( MINUS ) ;
 
-  /*  case '.':	ALPHANUMERIC	*/
+  /*  case '.': ALPHANUMERIC    */
   case '/' :
     return ( SLASH ) ;
 
@@ -208,11 +208,11 @@ int yylex ( )
   case ';' :
     return ( SEMI ) ;
 
-  /*  case '<':	not used    */
+  /*  case '<': not used    */
   case '=' :
     return ( EQUAL ) ;
 
-  /*  case '>':	not used    */
+  /*  case '>': not used    */
   case '?' :
     return ( QUESTION ) ;
 
@@ -231,8 +231,8 @@ int yylex ( )
   case '^' :
     return ( CIRCUMFLEX ) ;
 
-  /*  case '_':	ALPHANUMERIC	*/
-  /*  case '`':	TOKEN QUOTE */
+  /*  case '_': ALPHANUMERIC    */
+  /*  case '`': TOKEN QUOTE */
   case '{' :
     return ( LBRACE ) ;
 
@@ -242,7 +242,7 @@ int yylex ( )
   case '}' :
     return ( RBRACE ) ;
 
-  /*  case '~':	not used    */
+  /*  case '~': not used    */
   case '"' :
   case '<' :
   case '>' :
@@ -414,7 +414,8 @@ int yylex ( )
 char Notice [ ] = "Copyright (c) 1985, 1988, J Howard Johnson, University of Waterloo" ;
 extern char Version [ ] ;
 extern char Date [ ] ;
-int main ( int argc, char * argv [ ] )
+int main ( argc, argv ) int argc ;
+char * argv [ ] ;
 {
   int ti ;
   char tstr [ 2 ] ;
@@ -520,11 +521,11 @@ int main ( int argc, char * argv [ ] )
 
   exit ( 0 ) ;
 }
-void yyerror ( char * str )
+void yyerror ( str ) char * str ;
 {
   fprintf ( fpout, "*** %s ***\n", str ) ;
 }
-int tonum ( char * p )
+int tonum ( p ) char * p ;
 {
   int acum, c ;
   acum = 0 ;

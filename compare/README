@@ -1,11 +1,11 @@
 
 in the ginr repo:
-git checkout 0cccf65
+git checkout 78b6cd5
 copy src directory to rsrc here
 
-HEAD is now at 0cccf65
-Modifications to suppress warnings
-(done August 15, 2018)
+HEAD is now at 78b6cd5
+Update README.md
+(done September 11, 2018)
 
-char Version[] = "2.0.3";
-char Date[] = "August 15, 2010";
+char Version[] = "2.0.3a";
+char Date[] = "Sept 11, 2018";

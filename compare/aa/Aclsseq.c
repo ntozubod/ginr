@@ -28,8 +28,6 @@ A_OBJECT A_clsseq ( A1 ) A_OBJECT A1 ;
 {
   A_OBJECT A ;
   int current, end_st, i, bb, last_label, label, hi_next, k ;
-  last_label = 0 ;
-  /* Initialiaze to suppress warning JHJ */
   SHORT * vec, * cur_vec ;
   V_OBJECT V ;
   A_row * p, * pz, * lo, * hi, * mid ;
@@ -71,10 +69,10 @@ A_OBJECT A_clsseq ( A1 ) A_OBJECT A1 ;
           ++ p ) {
       if ( p -> A_b == 1 ) {
         /*
-        		for( k = 1; vec[k] < MAXSHORT; k++ )
-        		    if ( A1-> A_p[ vec[k] ] == A1-> A_p[ vec[k] + 1 ]
-        		      || A1-> A_p[ vec[k] ]-> A_b != 1 ) break;
-        		if ( vec[k] == MAXSHORT )
+                        for( k = 1; vec[k] < MAXSHORT; k++ )
+                            if ( A1-> A_p[ vec[k] ] == A1-> A_p[ vec[k] + 1 ]
+                              || A1-> A_p[ vec[k] ]-> A_b != 1 ) break;
+                        if ( vec[k] == MAXSHORT )
         */
         A = A_add ( A, current, 1, FINAL ) ;
         continue ;

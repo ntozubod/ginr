@@ -200,7 +200,9 @@ int tape ;
   s_rena = 0 ;
   return ( st_ptr ) ;
 }
-void A_prstems ( A_OBJECT A, T_OBJECT T, int tape )
+void A_prstems ( A, T, tape ) A_OBJECT A ;
+T_OBJECT T ;
+int tape ;
 {
   int q, i, ch ;
   char * s ;

@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "local.h"
-void Error ( ) ;
+#include "O.h"
 extern FILE * fpout ;
 typedef struct S_f {
   unsigned char fill_1 ;
@@ -34,6 +34,7 @@ typedef struct S_f {
   unsigned char S_kval ;
   unsigned char S_tag ;
   unsigned fill_3 ;
+  struct S_f * fill_4 ;
   struct S_f * S_linkf ;
   struct S_f * S_linkb ;
 }
@@ -55,7 +56,7 @@ int LINUXmem = 0 ;
 /*
  *     Copy a block of memory
  */
-void copymem ( n, from, to ) int n ;
+void copymem ( n, from, to ) long n ;
 char * from, * to ;
 {
   if ( from + n <= to || to + n <= from ) {
@@ -63,12 +64,10 @@ char * from, * to ;
     return ;
   }
 
-  if ( from >= to ) {
-    while ( -- n >= 0 ) {
+  if ( from >= to ) while ( -- n >= 0 ) {
       * to ++ = * from ++ ;
-    }
 
-  } else {
+    } else {
     from += n ;
     to += n ;
 
@@ -276,7 +275,7 @@ int k1, k2 ;
 
     -- S_alld_cnt [ k2 ] ;
     p = S_malloc ( k2 ) ;
-    copymem ( sizeof ( S_ft ) << k0, l, p ) ;
+    copymem ( sizeof ( S_ft ) << k0, ( char * ) l, ( char * ) p ) ;
     ++ S_alld_cnt [ k1 ] ;
     S_free ( l, k1 ) ;
     set_kval ( p, k2 ) ;
@@ -288,7 +287,7 @@ int k ;
 {
   S_ft * p ;
   p = S_malloc ( k ) ;
-  copymem ( sizeof ( S_ft ) << k, l, p ) ;
+  copymem ( sizeof ( S_ft ) << k, ( char * ) l, ( char * ) p ) ;
   return ( p ) ;
 }
 void S_arena ( )
@@ -349,7 +348,7 @@ void S_arena ( )
  *     Interface to provide allocator for INR.
  *     The length code and an audit flag are stored in allocated blocks
  */
-char * Salloc ( n ) int n ;
+char * Salloc ( n ) long n ;
 {
   char * p ;
   int k ;
@@ -385,7 +384,7 @@ void Sfree ( p ) char * p ;
   S_free ( ( S_ft * ) p, ( int ) p [ 1 ] ) ;
 }
 char * Srealloc ( p, n ) char * p ;
-int n ;
+long n ;
 {
   int k ;
 
@@ -418,7 +417,7 @@ char * Scopy ( p ) char * p ;
   p -= 4 ;
   return ( ( char * ) S_copy ( ( S_ft * ) p, ( int ) p [ 1 ] ) + 4 ) ;
 }
-int Ssize ( char * p )
+long Ssize ( p ) char * p ;
 {
   return ( ( sizeof ( S_ft ) << p [ - 3 ] ) - 4 ) ;
 }
@@ -470,7 +469,7 @@ void Saudit ( )
     } else {
       k = kval ( p ) ;
 
-      if ( k >= 20 || ( ( linkf ( p ) < S_lo || linkf ( p ) >= S_hi ) && ( linkf ( p ) < S_avail || linkf ( p ) >= S_avail + S_m ) ) || ( ( linkb ( p ) < S_lo || linkb ( p ) >= S_hi ) && ( linkb ( p ) < S_avail || linkb ( p ) >= S_avail + S_m ) ) || linkb ( linkf ( p ) ) != p || linkf ( linkb ( p ) ) != p ) {
+      if ( k >= 30 || ( ( linkf ( p ) < S_lo || linkf ( p ) >= S_hi ) && ( linkf ( p ) < S_avail || linkf ( p ) >= S_avail + S_m ) ) || ( ( linkb ( p ) < S_lo || linkb ( p ) >= S_hi ) && ( linkb ( p ) < S_avail || linkb ( p ) >= S_avail + S_m ) ) || linkb ( linkf ( p ) ) != p || linkf ( linkb ( p ) ) != p ) {
         printf ( "Audit anomoly in free block at %lx:\n", U ( p ) ) ;
         printf ( "S_lo %lx S_hi %lx S_avail %lx\n", U ( S_lo ), U ( S_hi ), U ( S_avail ) ) ;
         printf ( "kval %d\n", k ) ;

@@ -25,14 +25,14 @@
 #include <stdio.h>
 extern FILE * fpout ;
 #include "O.h"
-#define UNMARK		0
-#define MARK		1
-#define CONDEMN		2
+#define UNMARK          0
+#define MARK            1
+#define CONDEMN         2
 static A_OBJECT GAc ;
 static A_OBJECT GAc2 ;
 static SHORT * c_stk, * c_mark ;
 static int c_top ;
-void A_cl_DFS ( int state )
+void A_cl_DFS ( state ) int state ;
 {
   A_row * p, * pz ;
   static int j, next ;

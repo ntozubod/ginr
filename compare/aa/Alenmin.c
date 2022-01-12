@@ -80,7 +80,7 @@ A_OBJECT A_lenmin ( A ) A_OBJECT A ;
   Sfree ( ( char * ) dis ) ;
   return ( A_trim ( A ) ) ;
 }
-int A_minlen ( A_OBJECT A )
+int A_minlen ( A ) A_OBJECT A ;
 {
   A_row * lo, * hi, * p ;
   int i, l, cur ;

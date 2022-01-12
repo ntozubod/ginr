@@ -1,5 +1,37 @@
 # INR redux Changelog
 
+## 2.0.3d redux (2022-01-12)
+
+#### src (from version 2.0.3a September 11, 2018)
+
+This brings the redux branch into line with the current stable branch.
+Differences in compare result from improvements in the redux branch.
+
+Parse.y: The generated routine yyparse returns an int and that value should
+be 0 if the input is valid.
+The explicit return in the case of a :done, :quit, :stop, or :bye should
+be 0 instead of 1.
+
+Lex.c: The return code from yyparse should be checked.
+
+Acrea.c: Changed a fprintf format from %d to %ld because of 64-bit
+architecture.
+
+Makefile: Changed options for compile for gdb.
+
+S.c: Accomodated larger allocations by changing some ints to longs.
+This should be checked more carefully in a S.c cleanup pass.
+
+S.c: Made the minimum block size a power of 2 (32 instead of 24) in case
+this allocator is used in a context where alignment on power of 2 boundaries
+matters.
+It will also cause some multiplies and divides in S.c to be optimized to
+shifts.
+
+O.h: The Sept 11, 2018 version has the same declarations but is better
+organized.
+It was just copied over to the redux branch.
+
 ## 2.0.3c redux (2022-01-11)
 
 #### src (version 2.0.3 August 15, 2010 done August 15, 2018)

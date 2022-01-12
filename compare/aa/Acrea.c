@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-#define INIT_lrows	20
+#define INIT_lrows      20
 int A_report = 0 ;
 extern FILE * fpout ;
 A_OBJECT A_create ( )
@@ -115,7 +115,7 @@ A_OBJECT A_rept ( A ) A_OBJECT A ;
 
   fprintf ( fpout, "States: %-6d Trans: %-6d", A -> A_nQ, A -> A_nrows ) ;
   fprintf ( fpout, " Tapes: %-2d", A -> A_nT ) ;
-  fprintf ( fpout, " Strg: %d K", ( Ssize ( ( char * ) A ) + ( A -> A_mode == OPEN ? 0 : Ssize ( ( char * ) A -> A_p ) ) + Ssize ( ( char * ) A -> A_t ) + 1023 ) / 1024 ) ;
+  fprintf ( fpout, " Strg: %ld K", ( Ssize ( ( char * ) A ) + ( A -> A_mode == OPEN ? 0 : Ssize ( ( char * ) A -> A_p ) ) + Ssize ( ( char * ) A -> A_t ) + 1023 ) / 1024 ) ;
   fprintf ( fpout, "\n" ) ;
   fflush ( fpout ) ;
   return ( A ) ;

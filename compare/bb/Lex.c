@@ -506,7 +506,11 @@ int main ( int argc, char * argv [ ] )
 
   Alist [ 0 ] = A_create ( ) ;
   pr_time_diff ( ) ;
-  PROMT ( void ) yyparse ( ) ;
+
+  PROMT if ( yyparse ( ) != 0 ) {
+    Error ( "yyparse returned unexpectedly" ) ;
+  }
+
   T_destroy ( TT ) ;
   T_destroy ( TAlist ) ;
 

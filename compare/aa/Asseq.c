@@ -26,8 +26,8 @@
 #include "O.h"
 extern FILE * fpout ;
 extern T_OBJECT TT ;
-#define UNMARK		MAXSHORT
-#define LAST		(MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define LAST            (MAXSHORT-1)
 A_OBJECT A_sseq ( A ) A_OBJECT A ;
 {
   int i, j, tmp ;
@@ -37,9 +37,6 @@ A_OBJECT A_sseq ( A ) A_OBJECT A ;
 
   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
 
-  label = 0 ;
-  from = 0 ;
-  /* Initialiaze to suppress warning JHJ */
   A_row * insert, * last, ** heap ;
   SHORT * set, * vec, * fvec, ** fr_coeff, ** to_coeff, * queue, * st_len ;
   SHORT ** st_ptr, * save_coeff, * sig, * back ;

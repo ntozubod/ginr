@@ -27,8 +27,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "local.h"
-
-void Error();
+#include "O.h"
 
 extern FILE *fpout;
 
@@ -38,6 +37,7 @@ typedef struct S_f {
     unsigned char S_kval;
     unsigned char S_tag;
     unsigned      fill_3;
+    struct S_f *fill_4;
     struct S_f *S_linkf;
     struct S_f *S_linkb;
 } S_ft;
@@ -70,7 +70,7 @@ int    LINUXmem = 0;
  */
 
 void copymem( n, from, to )
-register int n;
+register long n;
 register char *from, *to;
 {
     if ( from + n <= to || to + n <= from ) {
@@ -227,7 +227,7 @@ register int k1, k2;
         }
         --S_alld_cnt[k2];
         p = S_malloc( k2 );
-        copymem( sizeof(S_ft) << k0, l, p );
+        copymem( sizeof(S_ft) << k0, ( char * ) l, ( char * ) p );
         ++S_alld_cnt[k1];
         S_free( l, k1 );
         set_kval( p, k2 );
@@ -241,7 +241,7 @@ register int k;
 {
     register S_ft *p;
     p = S_malloc( k );
-    copymem( sizeof(S_ft) << k, l, p );
+    copymem( sizeof(S_ft) << k, ( char * ) l, ( char * ) p );
     return( p );
 }
 
@@ -290,7 +290,7 @@ void S_arena()
  */
 
 char *Salloc( n )
-register int n;
+register long n;
 {
     register char *p;
     register int k;
@@ -315,7 +315,7 @@ register char *p;
 
 char *Srealloc( p, n )
 register char *p;
-register int n;
+register long n;
 {
     register int k;
     if ( n < 0 ) Error( "Srealloc: Argument constraint error" );
@@ -337,7 +337,7 @@ register char *p;
     return( (char *)S_copy( (S_ft *)p, (int)p[1] ) + 4 );
 }
 
-int Ssize( char *p )
+long Ssize( char *p )
 {
     return( ( sizeof(S_ft) << p[-3] ) - 4 );
 }
@@ -380,7 +380,7 @@ void Saudit()
             }
         } else {
             k = kval(p);
-            if ( k >= 20
+            if ( k >= 30
                     || (( linkf(p) < S_lo || linkf(p) >= S_hi )
                         && ( linkf(p) < S_avail
                              || linkf(p) >= S_avail + S_m ))

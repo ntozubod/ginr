@@ -26,11 +26,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 extern FILE * fpout ;
-void Warning ( char * s )
+void Warning ( s ) char * s ;
 {
   fprintf ( fpout, "*** %s ***\n", s ) ;
 }
-void Error ( char * s )
+void Error ( s ) char * s ;
 {
   fprintf ( fpout, "*** %s ***\n", s ) ;
   fflush ( fpout ) ;

@@ -30,7 +30,7 @@ static SHORT * V_hashpos = 0 ;
 static int V_calls = 0 ;
 static int V_probes = 0 ;
 static int V_fail = 0 ;
-SHORT * veccpy ( SHORT * p, SHORT * q )
+SHORT * veccpy ( p, q ) SHORT * p, * q ;
 {
   SHORT * save = p ;
 
@@ -41,7 +41,7 @@ SHORT * veccpy ( SHORT * p, SHORT * q )
   * p = * q ;
   return ( save ) ;
 }
-int veccmp ( SHORT * p, SHORT * q )
+int veccmp ( p, q ) SHORT * p, * q ;
 {
   -- p ;
   -- q ;
@@ -52,7 +52,7 @@ int veccmp ( SHORT * p, SHORT * q )
 
   return ( * p - * q ) ;
 }
-int veclen ( SHORT * p )
+int veclen ( p ) SHORT * p ;
 {
   int i = 0 ;
 
