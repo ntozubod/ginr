@@ -1,4 +1,9 @@
-# INR redux Changelog
+# INR remaster Changelog
+
+## Branch started from redux (2022-01-13)
+
+The mainenance directories (compare and misc) are deleted as this branch
+begins a separate existence.
 
 ## 2.0.3e redux (2022-01-13)
 
