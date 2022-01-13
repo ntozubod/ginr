@@ -1,5 +1,29 @@
 # INR redux Changelog
 
+## 2.0.3e redux (2022-01-13)
+
+At this point, the redux branch agrees with the master except in formatting
+of source text and a few extra fixes on the redux side.
+These fixes are all either updates to function declarations for C89 or
+mods to address warnings from gcc.
+They are all tiny and obvious.
+
+The redux branch and the master branch will now be merged after the
+documentation and README files are brought up to date.
+
+#### src (from version 2.0.3a December 3, 2021)
+
+On December 3, a bug was detected in U.c when compiled at a high level of
+opetimization.
+Using gdb it was localized to a line where arithmetic was done in a
+different order then expected involving signed and unsigned temporary
+variables.
+As I understand it, this is undefined behaviour and therefore a programmer
+error.
+The repair is easily repaired by forcing the temporary to be unsigned.
+
+Since the code in R.c does the same thing, it was repaired at the same time.
+
 ## 2.0.3d redux (2022-01-12)
 
 #### src (from version 2.0.3a September 11, 2018)

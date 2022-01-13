@@ -75,11 +75,18 @@ diff -r -w aa/Lex.c bb/Lex.c
 ---
 > int tonum ( char * p )
 diff -r -w aa/Makefile bb/Makefile
-18,21d17
+13c13
+< 	gcc -Wall -O -g -c $*.c
+---
+> 	gcc -Wall -O0 -g -c $*.c
+16,20c16
+< 	gcc -Wall -O -g $(OFILES) -o ginr
+< 
 < format:	$(CFILES) $(HFILES)
 < 	astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
 < --break-blocks=all $(CFILES) $(HFILES)
-< 
+---
+> 	gcc -Wall -O0 -g $(OFILES) -o ginr
 diff -r -w aa/Parse.y bb/Parse.y
 30a31,33
 >   int yylex ( ) ;
@@ -102,8 +109,8 @@ diff -r -w aa/stamp.c bb/stamp.c
 < char Version [ ] = "2.0.3a" ;
 < char Date [ ] = "Sept 11, 2018" ;
 ---
-> char Version [ ] = "2.0.3d" ;
-> char Date [ ] = "Jan 12 2022" ;
+> char Version [ ] = "2.0.3e" ;
+> char Date [ ] = "Jan 13 2022" ;
 diff -r -w aa/util.c bb/util.c
 29c29
 < void Warning ( s ) char * s ;
