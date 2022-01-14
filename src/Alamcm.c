@@ -34,19 +34,17 @@ extern FILE *fpout;
 
 static SHORT *c_rena;
 
-int A_cm_DFS( state )
-int state;
+int A_cm_DFS( int state )
 {
     if ( c_rena[ state ] == state ) return( state );
     if ( c_rena[ state ] >= FAIL ) return( state );
     return( c_rena[ state ] = A_cm_DFS( (int) c_rena[ state ] ) );
 }
 
-A_OBJECT A_lamcm( A )
-register A_OBJECT A;
+A_OBJECT A_lamcm( A_OBJECT A )
 {
-    register A_row *p, *pz;
-    register int i, j, n_combine;
+    A_row *p, *pz;
+    int i, j, n_combine;
 
     if ( A == NULL ) Error( "A_lamcm: No OBJECT" );
     if ( A-> A_nQ >= FAIL ) Error( "A_lamcm: Too many states" );

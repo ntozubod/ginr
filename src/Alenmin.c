@@ -27,10 +27,9 @@
 
 #include "O.h"
 
-A_OBJECT A_lenmin( A )
-register A_OBJECT A;
+A_OBJECT A_lenmin( A_OBJECT A )
 {
-    register A_row *lo, *hi, *p;
+    A_row *lo, *hi, *p;
     int i, l, cur, dead;
     SHORT *bfs, *dis;
 
@@ -73,7 +72,7 @@ register A_OBJECT A;
 
 int A_minlen( A_OBJECT A )
 {
-    register A_row *lo, *hi, *p;
+    A_row *lo, *hi, *p;
     int i, l, cur;
     SHORT *bfs, *dis;
 

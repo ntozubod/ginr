@@ -28,7 +28,7 @@ extern FILE * fpout ;
 #define NONE    MAXSHORT
 #define FAIL    (MAXSHORT-1)
 static SHORT * c_rena ;
-int A_cm_DFS ( state ) int state ;
+int A_cm_DFS ( int state )
 {
   if ( c_rena [ state ] == state ) {
     return ( state ) ;
@@ -40,7 +40,7 @@ int A_cm_DFS ( state ) int state ;
 
   return ( c_rena [ state ] = A_cm_DFS ( ( int ) c_rena [ state ] ) ) ;
 }
-A_OBJECT A_lamcm ( A ) A_OBJECT A ;
+A_OBJECT A_lamcm ( A_OBJECT A )
 {
   A_row * p, * pz ;
   int i, j, n_combine ;

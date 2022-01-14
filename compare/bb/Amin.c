@@ -27,7 +27,7 @@ extern FILE * fpout ;
 #include "O.h"
 #define UNMARK  MAXSHORT
 #define LAST    (MAXSHORT-1)
-A_OBJECT A_min ( A ) A_OBJECT A ;
+A_OBJECT A_min ( A_OBJECT A )
 {
   A_row * p ;
   int f, s, j, ns ;

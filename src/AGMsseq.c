@@ -33,8 +33,7 @@ extern T_OBJECT TT;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
 
-int GMcmp( u, v )
-SHORT *u, *v;
+int GMcmp( SHORT *u, SHORT *v )
 {
     int ul, vl;
     ul = veclen( u );
@@ -44,11 +43,10 @@ SHORT *u, *v;
     return veccmp( u, v );
 }
 
-A_OBJECT A_GMsseq( A )
-register A_OBJECT A;
+A_OBJECT A_GMsseq( A_OBJECT A )
 {
-    register int i, j, tmp;
-    register A_row *p, *pz;
+    int i, j, tmp;
+    A_row *p, *pz;
     int tt;
     int n, hsize, base, head, current, father, son, gap, vlen;
     int k, sig_lim, queue_lim;

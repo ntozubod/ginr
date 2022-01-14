@@ -36,7 +36,7 @@ static int U_fail = 0;
 
 U_OBJECT U_create( )
 {
-    register U_OBJECT U;
+    U_OBJECT U;
     U = (U_OBJECT) Salloc( sizeof(struct U_desc) );
     U-> Type = U_Object;
     U-> U_n  = 0;
@@ -48,8 +48,7 @@ U_OBJECT U_create( )
     return( U );
 }
 
-void U_destroy( U )
-register U_OBJECT U;
+void U_destroy( U_OBJECT U )
 {
     if ( U == NULL ) return;
     Sfree( (char *) U-> U_rec );
@@ -57,11 +56,9 @@ register U_OBJECT U;
     Sfree( (char *) U );
 }
 
-int U_member( U, reca, recb, recc )
-register U_OBJECT U;
-register int reca, recb, recc;
+int U_member( U_OBJECT U, int reca, int recb, int recc )
 {
-    register SHORT *p;
+    SHORT *p;
     ++U_calls;
     p  = U-> U_hash +
          ((((16807 * ((16807 * (unsigned) reca + recb) & 017777777777) + recc)
@@ -80,13 +77,11 @@ register int reca, recb, recc;
     return( -1 );
 }
 
-U_OBJECT U_grow( U, lrec )
-register U_OBJECT U;
-int lrec;
+U_OBJECT U_grow( U_OBJECT U, int lrec )
 {
-    register SHORT *p, *pl;
-    register A_row *q, *ql;
-    register int i;
+    SHORT *p, *pl;
+    A_row *q, *ql;
+    int i;
     if ( lrec < 15 ) lrec = 15;
     if ( lrec <= U-> U_lrec ) return( U );
     Sfree( (char *) U-> U_hash );
@@ -113,11 +108,9 @@ int lrec;
     return( U );
 }
 
-int U_insert( U, reca, recb, recc )
-register U_OBJECT U;
-register int reca, recb, recc;
+int U_insert( U_OBJECT U, int reca, int recb, int recc )
 {
-    register int i;
+    int i;
     if ( U-> U_n >= U-> U_lrec ) {
         if ( U-> U_n >= MAXSHORT )
             Error( "U_insert: Table FULL" );
@@ -130,9 +123,7 @@ register int reca, recb, recc;
     return( *U_hashpos = U-> U_n++ );
 }
 
-A_row *U_rec( U, i )
-register U_OBJECT U;
-register int i;
+A_row *U_rec( U_OBJECT U, int i )
 {
     if ( i >= 0 && i < U-> U_n ) return( U-> U_rec + i );
     else    return( NULL );

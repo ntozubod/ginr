@@ -30,7 +30,7 @@ extern FILE * fpout ;
 static A_OBJECT GAl ;
 static SHORT * l_stk, * l_low ;
 static int l_cnt, l_top, l_reopen ;
-int A_la_DFS ( state ) int state ;
+int A_la_DFS ( int state )
 {
   static int next ;
   int dfn ;
@@ -68,7 +68,7 @@ int A_la_DFS ( state ) int state ;
 
   return ( state ) ;
 }
-A_OBJECT A_lameq ( A ) A_OBJECT A ;
+A_OBJECT A_lameq ( A_OBJECT A )
 {
   int i ;
 

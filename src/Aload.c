@@ -30,21 +30,6 @@
 
 #define MAX_TOKEN       1024
 
-#ifdef CMS
-char new[100];
-char * cnvrtn( name )
-char * name;
-{
-    char *p;
-    strcpy( new, name );
-    if ( index( new, ' ' ) == 0 ) strcat( new, " file" );
-    for( p = new; *p; p++ ) if ( *p == '_' ) *p = ' ';
-    return( new );
-}
-#else
-#define cnvrtn(name) name
-#endif
-
 static FILE *fp;
 FILE *fpin, *fpout;
 extern FILE *fopen();
@@ -52,7 +37,7 @@ static int c;
 
 char *get_name()
 {
-    register int i;
+    int i;
     static char token[ MAX_TOKEN ];
 
     while ( c == ' ' || c == '\t' ) c = getc( fp );
@@ -91,10 +76,9 @@ char *get_name()
     return( token );
 }
 
-void put_name( str )
-register char *str;
+void put_name( char *str )
 {
-    register int i;
+    int i;
     while ( ( i = *str++ ) ) {
         switch( i ) {
         case ' ':
@@ -128,17 +112,15 @@ int get_nl()
     return( 1 );
 }
 
-A_OBJECT A_load( file, T_Sigma )
-char *file;
-T_OBJECT T_Sigma;
+A_OBJECT A_load( char *file, T_OBJECT T_Sigma )
 {
     int from, symb, to, tape, ntapes, i;
-    register A_OBJECT A;
-    register T_OBJECT TQ;
+    A_OBJECT A;
+    T_OBJECT TQ;
     char *t;
     A_row *p;
 
-    if ( file != NULL )             fp = fopen( cnvrtn(file), "r" );
+    if ( file != NULL )             fp = fopen( file, "r" );
     else if ( fpin != NULL )        fp = fpin;
     else                            fp = stdin;
     if ( fp == NULL ) {
@@ -212,24 +194,12 @@ T_OBJECT T_Sigma;
             return( NULL );
         }
         while ( c != EOF ) {
-#ifdef CMS
-            if ( c == '\\' ) c = getc(fp);
-#endif
             from = (c & 0377) * 256;
             c = getc(fp);
-#ifdef CMS
-            if ( c == '\\' ) c = getc(fp);
-#endif
             from += c & 0377;
             c = getc(fp);
-#ifdef CMS
-            if ( c == '\\' ) c = getc(fp);
-#endif
             to = (c & 0377) * 256;
             c = getc(fp);
-#ifdef CMS
-            if ( c == '\\' ) c = getc(fp);
-#endif
             to += c & 0377;
             c = getc(fp);
             if ( (t = get_name()) == NULL ) {
@@ -270,18 +240,15 @@ T_OBJECT T_Sigma;
     }
 }
 
-A_OBJECT A_store( A, file, T_Sigma )
-register A_OBJECT A;
-char *file;
-register T_OBJECT T_Sigma;
+A_OBJECT A_store( A_OBJECT A, char *file, T_OBJECT T_Sigma )
 {
-    register int t;
-    register A_row *p, *pz;
+    int t;
+    A_row *p, *pz;
 
     if ( A == NULL || T_Sigma == NULL ) return( A );
     if ( file != NULL ) {
         if ( strcmp( file, "devnull" ) == 0 ) return( A );
-        else fp = fopen( cnvrtn(file), "w" );
+        else fp = fopen( file, "w" );
     } else {
         fp = fpout;
         if ( fp == NULL ) fp = stdin;
@@ -311,18 +278,15 @@ register T_OBJECT T_Sigma;
     return( A );
 }
 
-A_OBJECT A_save( A, file, T_Sigma )
-register A_OBJECT A;
-char *file;
-register T_OBJECT T_Sigma;
+A_OBJECT A_save( A_OBJECT A, char *file, T_OBJECT T_Sigma )
 {
-    register int t;
-    register A_row *p, *pz;
+    int t;
+    A_row *p, *pz;
 
     if ( A == NULL || T_Sigma == NULL ) return( A );
     if ( file != NULL ) {
         if ( strcmp( file, "devnull" ) == 0 ) return( A );
-        else fp = fopen( cnvrtn(file), "w" );
+        else fp = fopen( file, "w" );
     } else {
         fp = fpout;
         if ( fp == NULL ) fp = stdin;
@@ -337,24 +301,12 @@ register T_OBJECT T_Sigma;
     pz = A-> A_t + A-> A_nrows;
     for( p = A-> A_t; p < pz; p++ ) {
         t = ( p-> A_a / 256 ) & 0377;
-#ifdef CMS
-        if ( t == '\\' || t == '\n' ) (void) putc( '\\', fp );
-#endif
         (void) putc( (char) ( t ), fp );
         t = p-> A_a % 256;
-#ifdef CMS
-        if ( t == '\\' || t == '\n' ) (void) putc( '\\', fp );
-#endif
         (void) putc( (char) ( t ), fp );
         t = ( p-> A_c / 256 ) & 0377;
-#ifdef CMS
-        if ( t == '\\' || t == '\n' ) (void) putc( '\\', fp );
-#endif
         (void) putc( (char) ( t ), fp );
         t = p-> A_c % 256;
-#ifdef CMS
-        if ( t == '\\' || t == '\n' ) (void) putc( '\\', fp );
-#endif
         (void) putc( (char) ( t ), fp );
         if ( ( t = p-> A_b ) <= 1 || A-> A_nT == 1 )
             put_name( T_name( T_Sigma, t ) );
@@ -370,15 +322,13 @@ register T_OBJECT T_Sigma;
     return( A );
 }
 
-A_OBJECT A_lwds( file, T_Sigma )
-char *file;
-T_OBJECT T_Sigma;
+A_OBJECT A_lwds( char *file, T_OBJECT T_Sigma )
 {
-    register A_OBJECT A, As;
+    A_OBJECT A, As;
     char *p, t[2];
     int i, nQ;
 
-    if ( file != NULL )             fp = fopen( cnvrtn(file), "r" );
+    if ( file != NULL )             fp = fopen( file, "r" );
     else if ( fpin != NULL )        fp = fpin;
     else                            fp = stdin;
     if ( fp == NULL ) {
@@ -432,13 +382,10 @@ T_OBJECT T_Sigma;
     return( As );
 }
 
-A_OBJECT A_prsseq( A, file, T_Sigma )
-register A_OBJECT A;
-char *file;
-register T_OBJECT T_Sigma;
+A_OBJECT A_prsseq( A_OBJECT A, char *file, T_OBJECT T_Sigma )
 {
-    register int t;
-    register A_row *p, *pz;
+    int t;
+    A_row *p, *pz;
     int i, n_read, n_write;
     int ss_states = 0;
 
@@ -447,7 +394,7 @@ register T_OBJECT T_Sigma;
     if ( A-> A_mode < SSEQ ) A = A_min( A_sseq( A ) );
     if ( file != NULL ) {
         if ( strcmp( file, "devnull" ) == 0 ) return( A );
-        else fp = fopen( cnvrtn(file), "w" );
+        else fp = fopen( file, "w" );
     } else {
         fp = fpout;
         if ( fp == NULL ) fp = stdin;
@@ -493,9 +440,6 @@ register T_OBJECT T_Sigma;
                     t = A-> A_p[t]-> A_c;
                 }
                 fprintf( fp, " ]  " );
-#ifndef CMS
-                fprintf( fp, "\t" );
-#endif
                 if ( t == START )               fprintf( fp, "(START)\n" );
                 else if ( t == FINAL )          fprintf( fp, "(FINAL)\n" );
                 else                            fprintf( fp, "%d\n", t );

@@ -458,9 +458,9 @@ char * argv [ ] ;
   if ( isatty ( fileno ( fpout ) ) ) {
     fprintf ( fpout, "\n" ) ;
     fprintf ( fpout, "II  N     N  RRRRRR    I N R     " ) ;
-    fprintf ( fpout, "Version %s (Mar 25, 1988)\n", Version ) ;
+    fprintf ( fpout, "Version %s (Sep 11, 2018)\n", Version ) ;
     fprintf ( fpout, "II  N N   N  R    RR" ) ;
-    fprintf ( fpout, "             Copyright (C) 1988 J Howard Johnson\n" ) ;
+    fprintf ( fpout, "             Copyright (C) 1988-2018 J Howard Johnson\n" ) ;
     fprintf ( fpout, "II  N  N  N  RRRRRR    modified  %s\n", Date ) ;
     fprintf ( fpout, "II  N   N N  R    R\n" ) ;
     fprintf ( fpout, "II  N    NN  R     R" ) ;

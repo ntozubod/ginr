@@ -10,10 +10,10 @@ util.o Lex.o Colon.o y.tab.o
 SOURCE 	= Makefile $(HFILES) $(CFILES) Parse.y
 
 .c.o:
-	gcc -Wall -O -g -c $*.c
+	gcc -Wall -O0 -g -c $*.c
 
 ginr:	$(OFILES)
-	gcc -Wall -O -g $(OFILES) -o ginr
+	gcc -Wall -O0 -g $(OFILES) -o ginr
 
 format:	$(CFILES) $(HFILES)
 	astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \

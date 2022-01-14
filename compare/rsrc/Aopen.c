@@ -1,29 +1,28 @@
-/*
- * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
- *
- * This software was developed while I was a student and, later, professor
- * at the University of Waterloo.  It has only minimal enhancements and bug
- * fixes from later than August 1988.  It was released under the GPLv3
- * licence on July 26, 2010.
- *                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
- *
- * This file is part of INR.
- *
- *   INR is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   INR is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Copyright (c) 1985, J Howard Johnson, University of Waterloo.
+//
+// This software was developed while I was a student and, later, professor
+// at the University of Waterloo.  It has only minimal enhancements and bug
+// fixes from later than August 1988.  It was released under the GPLv3
+// licence on July 26, 2010.
+//                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
+//
+// This file is part of INR.
+//
+//   INR is free software: you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation, either version 3 of the License, or
+//   (at your option) any later version.
+//
+//   INR is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with INR.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdio.h>
+#include <assert.h>
 
 extern FILE *fpout;
 
@@ -32,9 +31,8 @@ extern FILE *fpout;
 SHORT *s_rena = 0;
 int f_rena = 0;
 
-A_OBJECT A_add( A, a, b, c )
-register A_OBJECT A;
-register int a, b, c;
+A_OBJECT A_add( register A_OBJECT A,
+                register int a, register int b, register int c )
 {
   register A_row *p;
 
@@ -42,17 +40,9 @@ register int a, b, c;
     Error( "A_add: No OBJECT" );
   }
 
-  if ( A-> A_mode != OPEN ) {
-    Error( "A_add: Object not OPEN" );
-  }
-
-  if ( a < 0 || b < 0 || c < 0 ) {
-    Error( "A_add: Numbers cannot be negative" );
-  }
-
-  if ( a >= MAXSHORT || b >= MAXSHORT || c >= MAXSHORT ) {
-    Error( "A_add: Numbers are too big" );
-  }
+  assert( A-> A_mode == OPEN );
+  assert( a >= 0 && b >= 0 && c >= 0 );
+  assert( a < MAXSHORT && b < MAXSHORT && c < MAXSHORT );
 
   if ( A-> A_nrows >= A-> A_lrows ) {
     A-> A_t = ( A_row * ) Srealloc( ( char * ) A-> A_t,
@@ -77,11 +67,10 @@ register int a, b, c;
     A-> A_nQ = c + 1;
   }
 
-  return( A );
+  return ( A );
 }
 
-A_OBJECT A_open( A )
-register A_OBJECT A;
+A_OBJECT A_open( register A_OBJECT A )
 {
   if ( A == NULL ) {
     Error( "A_open: No OBJECT" );
@@ -89,12 +78,11 @@ register A_OBJECT A;
 
   A-> A_mode = OPEN;
   Sfree( ( char * ) A-> A_p );
-  A-> A_p =     NULL;
-  return( A );
+  A-> A_p = NULL;
+  return ( A );
 }
 
-A_OBJECT A_close( A )
-register A_OBJECT A;
+A_OBJECT A_close( register A_OBJECT A )
 {
   register int i;
   register A_row *p, *q, *t1, *t2;
@@ -109,7 +97,7 @@ register A_OBJECT A;
   }
 
   if ( A-> A_mode != OPEN ) {
-    return( A );
+    return ( A );
   }
 
   if ( A-> A_nrows == 0 ) {
@@ -121,7 +109,7 @@ register A_OBJECT A;
     A-> A_p = ( A_row ** ) Salloc( 3 * sizeof( A_row * ) );
     A-> A_p[ START ] = A-> A_p[ FINAL ]
                        = A-> A_p[ 2 ] = A-> A_t;
-    return( A );
+    return ( A );
   }
 
   if ( A_report ) {
@@ -131,64 +119,74 @@ register A_OBJECT A;
   NQ = A-> A_nQ;
   NS = A-> A_nS * A-> A_nT;
   N = ( NQ > NS ) ? NQ : NS;
+  assert( N > 0 );
 
-  t1  = A-> A_t;
-  t2  = ( A_row * ) Salloc( ( A-> A_nrows + 2 ) * sizeof( A_row ) );
+  t1 = A-> A_t;
+  t2 = ( A_row * ) Salloc( ( A-> A_nrows + 2 ) * sizeof( A_row ) );
   t1z = t1 + A-> A_nrows;
   t2z = t2 + A-> A_nrows;
 
   cnt = ( int * ) Salloc( N * sizeof( int ) );
   ptr = ( A_row ** ) Salloc( ( N + 1 ) * sizeof( A_row * ) );
 
-  for( i = N; --i >= 0; ) {
-    cnt[i] = 0;
+  for ( i = N; --i >= 0; ) {
+    cnt[ i ] = 0;
   }
 
-  for( p = t1z; --p >= t1; ) {
+  for ( p = t1z; --p >= t1; ) {
+    assert( p-> A_c < N );
     ++cnt[ p-> A_c ];
   }
 
   p = t2z;
 
-  for( i = NQ; --i >= 0; ) {
+  for ( i = NQ; --i >= 0; ) {
     ptr[ i ] = p;
     p -= cnt[ i ];
     cnt[ i ] = 0;
   }
 
-  for( p = t1z; --p >= t1; ) {
-    q = --ptr[ i = p-> A_c ];
+  assert( p == t2 );
+
+  for ( p = t1z; --p >= t1; ) {
+    q = --ptr[ p-> A_c ];
     q-> A_a = p-> A_a;
+    assert( p-> A_b < N );
     ++cnt[ q-> A_b = p-> A_b ];
-    q-> A_c = i;
+    q-> A_c = p-> A_c;
   }
 
   p = t1z;
 
-  for( i = NS; --i >= 0; ) {
+  for ( i = NS; --i >= 0; ) {
     ptr[ i ] = p;
     p -= cnt[ i ];
     cnt[ i ] = 0;
   }
 
-  for( p = t2z; --p >= t2; ) {
-    q = --ptr[ i = p-> A_b ];
+  assert( p == t1 );
+
+  for ( p = t2z; --p >= t2; ) {
+    q = --ptr[ p-> A_b ];
+    assert( p-> A_a < N );
     ++cnt[ q-> A_a = p-> A_a ];
-    q-> A_b = i;
+    q-> A_b = p-> A_b;
     q-> A_c = p-> A_c;
   }
 
   p = t2z;
 
-  for( i = NQ; --i >= 0; ) {
+  for ( i = NQ; --i >= 0; ) {
     ptr[ i ] = p;
     p -= cnt[ i ];
     cnt[ i ] = 0;
   }
 
-  for( p = t1z; --p >= t1; ) {
-    q = --ptr[ i = p-> A_a ];
-    q-> A_a = i;
+  assert( p == t2 );
+
+  for ( p = t1z; --p >= t1; ) {
+    q = --ptr[ p-> A_a ];
+    q-> A_a = p-> A_a;
     q-> A_b = p-> A_b;
     q-> A_c = p-> A_c;
   }
@@ -199,7 +197,7 @@ register A_OBJECT A;
   t2z-> A_a = ( t2z - 1 )-> A_a;
   t2z-> A_b = ( t2z - 1 )-> A_b;
   t2z-> A_c = ( t2z - 1 )-> A_c;
-  ( t2z + 1 )-> A_a = MAXSHORT;
+  ( t2z + 1 )-> A_c = MAXSHORT;
 
   p = t2;
   t1 = t2 - 1;
@@ -209,20 +207,22 @@ register A_OBJECT A;
     ++cnt[ t2-> A_a ];
 
     while ( ( ++t1 )-> A_c != ( ++t2 )-> A_c
-            ||    t1 -> A_b !=    t2 -> A_b
-            ||    t1 -> A_a !=    t2 -> A_a ) {
+            ||  t1  -> A_b !=     t2  -> A_b
+            ||  t1  -> A_a !=     t2  -> A_a ) {
       ++cnt[ t2-> A_a ];
     }
 
-    if ( p < q )
-      copymem( ( t2 - q ) * sizeof( A_row ),
-               ( char * ) q, ( char * ) p );
+    if ( p < q ) {
+      copymem( ( t2 - q ) * sizeof( A_row ), ( char * ) q, ( char * ) p );
+    }
 
     p += t2 - q;
 
     while ( ( ++t1 )-> A_c == ( ++t2 )-> A_c
-            &&    t1 -> A_b ==    t2 -> A_b
-            &&    t1 -> A_a ==    t2 -> A_a );
+            &&  t1  -> A_b ==     t2  -> A_b
+            &&  t1  -> A_a ==     t2  -> A_a ) {
+      ;
+    }
   }
 
   A-> A_mode = NFA;
@@ -231,7 +231,7 @@ register A_OBJECT A;
 
   ptr[ A-> A_nQ ] = p;
 
-  for( i = A-> A_nQ; --i >= 0; ) {
+  for ( i = A-> A_nQ; --i >= 0; ) {
     ptr[ i ] = ( p -= cnt[ i ] );
   }
 
@@ -243,16 +243,14 @@ register A_OBJECT A;
     fprintf( fpout, "<-- A_close\n" );
   }
 
-  return( A );
+  return ( A );
 }
 
-A_OBJECT A_rename( A, rena )
-register A_OBJECT A;
-register SHORT *rena;
+A_OBJECT A_rename( register A_OBJECT A, register SHORT *rena )
 {
-  register A_row        *p, *pz;
-  register SHORT        *trena, *sp;
-  int           nrena, i;
+  register A_row *p, *pz;
+  register SHORT *trena, *sp;
+  int nrena, i;
 
   if ( A == NULL ) {
     Error( "A_rename: No OBJECT" );
@@ -260,14 +258,14 @@ register SHORT *rena;
 
   trena = s_alloc( A-> A_nQ );
 
-  for( sp = trena + A-> A_nQ; --sp >= trena; ) {
+  for ( sp = trena + A-> A_nQ; --sp >= trena; ) {
     *sp = MAXSHORT;
   }
 
   pz = A-> A_t + A-> A_nrows;
 
   if ( rena != NULL ) {
-    for( p = A-> A_t; p < pz; ++p ) {
+    for ( p = A-> A_t; p < pz; ++p ) {
       p-> A_a = rena[ p-> A_a ];
       p-> A_c = rena[ p-> A_c ];
     }
@@ -282,7 +280,7 @@ register SHORT *rena;
 
   nrena = 2;
 
-  for( p = A-> A_t; p < pz; ++p ) {
+  for ( p = A-> A_t; p < pz; ++p ) {
     sp = trena + p-> A_a;
 
     if ( *sp == MAXSHORT ) {
@@ -292,14 +290,15 @@ register SHORT *rena;
     p-> A_a = *sp;
   }
 
-  for( p = pz; --p >= A-> A_t; )
-    if ( ( p-> A_c = trena[p-> A_c] ) == MAXSHORT
+  for ( p = pz; --p >= A-> A_t; ) {
+    if ( ( p-> A_c = trena[ p-> A_c ] ) == MAXSHORT
          ||  ( p-> A_a == p-> A_c && p-> A_b == 0 ) ) {
       --pz;
       p-> A_a = pz-> A_a;
       p-> A_b = pz-> A_b;
       p-> A_c = pz-> A_c;
     }
+  }
 
   Sfree( ( char * ) s_rena );
   s_rena = NULL;
@@ -308,12 +307,12 @@ register SHORT *rena;
     if ( rena != NULL ) {
       s_rena = s_alloc( A-> A_nQ );
 
-      for( i = A-> A_nQ; --i >= 0; ) {
-        if ( rena[i] < A-> A_nQ ) {
-          s_rena[i] = trena[rena[i]];
+      for ( i = A-> A_nQ; --i >= 0; ) {
+        if ( rena[ i ] < A-> A_nQ ) {
+          s_rena[ i ] = trena[ rena[ i ] ];
 
         } else  {
-          s_rena[i] = MAXSHORT;
+          s_rena[ i ] = MAXSHORT;
         }
       }
 
@@ -327,13 +326,12 @@ register SHORT *rena;
 
   A-> A_nrows = pz - A-> A_t;
   A-> A_nQ = nrena;
-  return( A_close( A_open( A ) ) );
+  return ( A_close( A_open( A ) ) );
 }
 
-A_OBJECT A_mkdense( A )
-register A_OBJECT A;
+A_OBJECT A_mkdense( register A_OBJECT A )
 {
-  register A_row        *p, *pz;
+  register A_row *p, *pz;
   register R_OBJECT R;
 
   if ( A == NULL ) {
@@ -345,12 +343,12 @@ register A_OBJECT A;
   R_insert( R, 1, 0 );
   pz = A-> A_t + A-> A_nrows;
 
-  for( p = A-> A_t; p < pz; ++p ) {
+  for ( p = A-> A_t; p < pz; ++p ) {
     p-> A_a = R_insert( R, p-> A_a, 0 );
     p-> A_c = R_insert( R, p-> A_c, 0 );
   }
 
   A-> A_nQ = R-> R_n;
   R_destroy( R );
-  return( A_close( A_open( A ) ) );
+  return ( A_close( A_open( A ) ) );
 }

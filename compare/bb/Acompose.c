@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-A_OBJECT A_compose ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_compose ( A_OBJECT A1, A_OBJECT A2 )
 {
   A_OBJECT A ;
   int current, s1, s2, t1, t2, cur_a, cur_b, flag, flag2 ;

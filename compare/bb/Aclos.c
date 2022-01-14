@@ -83,7 +83,7 @@ void A_cl_DFS ( int state )
     c_mark [ state ] = MARK ;
   }
 }
-A_OBJECT A_clsure ( A ) A_OBJECT A ;
+A_OBJECT A_clsure ( A_OBJECT A )
 {
   A_row * p, * pz ;
   int i, n_condemned ;

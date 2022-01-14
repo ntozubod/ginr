@@ -28,7 +28,7 @@ extern FILE * fpout ;
 extern T_OBJECT TT ;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
-A_OBJECT A_sseq ( A ) A_OBJECT A ;
+A_OBJECT A_sseq ( A_OBJECT A )
 {
   int i, j, tmp ;
   A_row * p, * pz ;

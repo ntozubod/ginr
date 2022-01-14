@@ -1,11 +1,11 @@
 
 in the ginr repo:
-git checkout 588e526
+git checkout 7177a92
 copy src directory to rsrc here
 
-HEAD is now at 588e526
-Signed / Unsigned bug in U.c and R.c repaired
-(done December 3, 2021)
+HEAD is now at 7177a92
+Repair assertion in A_close.
+(done September 21, 2018)
 
-char Version[] = "2.0.3a";
+char Version[] = "2.0.3b";
 char Date[] = "Sept 11, 2018";

@@ -32,11 +32,10 @@ extern FILE *fpout;
 #define UNMARK  MAXSHORT
 #define LAST    (MAXSHORT-1)
 
-A_OBJECT A_min( A )
-register A_OBJECT A;
+A_OBJECT A_min( A_OBJECT A )
 {
-    register A_row *p;
-    register int f, s, j, ns;
+    A_row *p;
+    int f, s, j, ns;
     int x, b;
     A_row *lo, *hi;
     int mode;

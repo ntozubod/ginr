@@ -36,8 +36,7 @@ static A_OBJECT         GAt;
 static SHORT            *t_stk, *t_low;
 static int              t_cnt;
 
-SHORT A_tr_DFS( state )
-SHORT state;
+SHORT A_tr_DFS( SHORT state )
 {
     SHORT           dfn;
     A_row           *p;
@@ -57,12 +56,11 @@ SHORT state;
     return( state );
 }
 
-A_OBJECT A_trim( A )
-register A_OBJECT A;
+A_OBJECT A_trim( A_OBJECT A )
 {
-    register A_row  *p, *pz;
-    register int    i, must_reopen;
-    SHORT           *stk_rem;
+    A_row  *p, *pz;
+    int    i, must_reopen;
+    SHORT  *stk_rem;
 
     if ( A == NULL ) Error( "A_trim: No OBJECT" );
     if ( A-> A_nQ >= DELETED ) Error( "A_trim: Too many states" );

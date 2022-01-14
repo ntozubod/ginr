@@ -1,63 +1,522 @@
+diff -r -w aa/Abasic.c bb/Abasic.c
+28c28
+< void A_conform ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> void A_conform ( A_OBJECT A1, A_OBJECT A2 )
+72c72
+< A_OBJECT A_letter ( t, x ) int t, x ;
+---
+> A_OBJECT A_letter ( int t, int x )
+84,85c84
+< A_OBJECT A_deecho ( A, ECHO, NOECHO ) A_OBJECT A ;
+< int ECHO, NOECHO ;
+---
+> A_OBJECT A_deecho ( A_OBJECT A, int ECHO, int NOECHO )
+125c124
+< A_OBJECT A_opt ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_opt ( A_OBJECT A )
+153c152
+< A_OBJECT A_plus ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_plus ( A_OBJECT A )
+176c175
+< A_OBJECT A_star ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_star ( A_OBJECT A )
+180c179
+< A_OBJECT A_union ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_union ( A_OBJECT A1, A_OBJECT A2 )
+227c226
+< A_OBJECT A_percent ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_percent ( A_OBJECT A1, A_OBJECT A2 )
+283c282
+< A_OBJECT A_concat ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_concat ( A_OBJECT A1, A_OBJECT A2 )
+328c327
+< A_OBJECT A_intersect ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_intersect ( A_OBJECT A1, A_OBJECT A2 )
+395c394
+< A_OBJECT A_differ ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_differ ( A_OBJECT A1, A_OBJECT A2 )
+471c470
+< A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_xor ( A_OBJECT A1, A_OBJECT A2 )
+559c558
+< A_OBJECT A_alph ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_alph ( A_OBJECT A )
+589c588
+< A_OBJECT A_rev ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_rev ( A_OBJECT A )
+641c640
+< A_OBJECT A_shuffle ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_shuffle ( A_OBJECT A1, A_OBJECT A2 )
 diff -r -w aa/Aclos.c bb/Aclos.c
 35c35
 < void A_cl_DFS ( state ) int state ;
 ---
 > void A_cl_DFS ( int state )
+86c86
+< A_OBJECT A_clsure ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_clsure ( A_OBJECT A )
 diff -r -w aa/Aclsseq.c bb/Aclsseq.c
+27c27
+< A_OBJECT A_clsseq ( A1 ) A_OBJECT A1 ;
+---
+> A_OBJECT A_clsseq ( A_OBJECT A1 )
 30a31,32
 >   last_label = 0 ;
 >   /* Initialiaze to suppress warning JHJ */
 diff -r -w aa/Acompose.c bb/Acompose.c
+27c27
+< A_OBJECT A_compose ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_compose ( A_OBJECT A1, A_OBJECT A2 )
 30a31,33
 >   t1 = 0 ;
 >   t2 = 0 ;
 >   /* Initialiaze to suppress warning JHJ */
 diff -r -w aa/Aenum.c bb/Aenum.c
-178c178
+36c36
+< int A_en_DFS ( state ) SHORT state ;
+---
+> int A_en_DFS ( SHORT state )
+114,116c114
+< A_OBJECT A_enum ( A, T, max ) A_OBJECT A ;
+< T_OBJECT T ;
+< int max ;
+---
+> A_OBJECT A_enum ( A_OBJECT A, T_OBJECT T, int max )
+148c146
+< int A_cd_DFS ( state ) SHORT state ;
+---
+> int A_cd_DFS ( SHORT state )
+178c176
 < int A_card ( A ) A_OBJECT A ;
 ---
 > int A_card ( A_OBJECT A )
+200c198
+< A_OBJECT A_pref ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_pref ( A_OBJECT A )
+216c214
+< A_OBJECT A_suff ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_suff ( A_OBJECT A )
 diff -r -w aa/AGMsseq.c bb/AGMsseq.c
+31c31
+< int GMcmp ( u, v ) SHORT * u, * v ;
+---
+> int GMcmp ( SHORT * u, SHORT * v )
+47c47
+< A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_GMsseq ( A_OBJECT A )
 56a57,59
 >   label = 0 ;
 >   from = 0 ;
 >   /* Initialiaze to suppress warning JHJ */
 diff -r -w aa/Ajoin.c bb/Ajoin.c
+27c27
+< A_OBJECT A_join ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_join ( A_OBJECT A1, A_OBJECT A2 )
 30a31,33
 >   t1 = 0 ;
 >   t2 = 0 ;
 >   /* Initialiaze to suppress warning JHJ */
+diff -r -w aa/Alamcm.c bb/Alamcm.c
+31c31
+< int A_cm_DFS ( state ) int state ;
+---
+> int A_cm_DFS ( int state )
+43c43
+< A_OBJECT A_lamcm ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_lamcm ( A_OBJECT A )
+diff -r -w aa/Alameq.c bb/Alameq.c
+33c33
+< int A_la_DFS ( state ) int state ;
+---
+> int A_la_DFS ( int state )
+71c71
+< A_OBJECT A_lameq ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_lameq ( A_OBJECT A )
 diff -r -w aa/Alenmin.c bb/Alenmin.c
+27c27
+< A_OBJECT A_lenmin ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_lenmin ( A_OBJECT A )
 83c83
 < int A_minlen ( A ) A_OBJECT A ;
 ---
 > int A_minlen ( A_OBJECT A )
 diff -r -w aa/ALMsseq.c bb/ALMsseq.c
+31c31
+< A_OBJECT A_LMsseq ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_LMsseq ( A_OBJECT A )
 40a41,43
 >   label = 0 ;
 >   from = 0 ;
 >   /* Initialiaze to suppress warning JHJ */
+diff -r -w aa/Aload.c bb/Aload.c
+29,50d28
+< #ifdef CMS
+< char new [ 100 ] ;
+< char * cnvrtn ( name ) char * name ;
+< {
+<   char * p ;
+<   strcpy ( new, name ) ;
+< 
+<   if ( index ( new, ' ' ) == 0 ) {
+<     strcat ( new, " file" ) ;
+<   }
+< 
+<   for ( p = new ;
+<         * p ;
+<         p ++ ) if ( * p == '_' ) {
+<       * p = ' ' ;
+<     }
+< 
+<   return ( new ) ;
+< }
+< #else
+< #define cnvrtn(name) name
+< #endif
+107c85
+< void put_name ( str ) char * str ;
+---
+> void put_name ( char * str )
+150,151c128
+< A_OBJECT A_load ( file, T_Sigma ) char * file ;
+< T_OBJECT T_Sigma ;
+---
+> A_OBJECT A_load ( char * file, T_OBJECT T_Sigma )
+160c137
+<     fp = fopen ( cnvrtn ( file ), "r" ) ;
+---
+>     fp = fopen ( file, "r" ) ;
+277,283d253
+< #ifdef CMS
+< 
+<       if ( c == '\\' ) {
+<         c = getc ( fp ) ;
+<       }
+< 
+< #endif
+286,292d255
+< #ifdef CMS
+< 
+<       if ( c == '\\' ) {
+<         c = getc ( fp ) ;
+<       }
+< 
+< #endif
+295,301d257
+< #ifdef CMS
+< 
+<       if ( c == '\\' ) {
+<         c = getc ( fp ) ;
+<       }
+< 
+< #endif
+304,310d259
+< #ifdef CMS
+< 
+<       if ( c == '\\' ) {
+<         c = getc ( fp ) ;
+<       }
+< 
+< #endif
+375,377c324
+< A_OBJECT A_store ( A, file, T_Sigma ) A_OBJECT A ;
+< char * file ;
+< T_OBJECT T_Sigma ;
+---
+> A_OBJECT A_store ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
+391c338
+<       fp = fopen ( cnvrtn ( file ), "w" ) ;
+---
+>       fp = fopen ( file, "w" ) ;
+450,452c397
+< A_OBJECT A_save ( A, file, T_Sigma ) A_OBJECT A ;
+< char * file ;
+< T_OBJECT T_Sigma ;
+---
+> A_OBJECT A_save ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
+466c411
+<       fp = fopen ( cnvrtn ( file ), "w" ) ;
+---
+>       fp = fopen ( file, "w" ) ;
+491,497d435
+< #ifdef CMS
+< 
+<     if ( t == '\\' || t == '\n' ) {
+<       ( void ) putc ( '\\', fp ) ;
+<     }
+< 
+< #endif
+500,506d437
+< #ifdef CMS
+< 
+<     if ( t == '\\' || t == '\n' ) {
+<       ( void ) putc ( '\\', fp ) ;
+<     }
+< 
+< #endif
+509,515d439
+< #ifdef CMS
+< 
+<     if ( t == '\\' || t == '\n' ) {
+<       ( void ) putc ( '\\', fp ) ;
+<     }
+< 
+< #endif
+518,524d441
+< #ifdef CMS
+< 
+<     if ( t == '\\' || t == '\n' ) {
+<       ( void ) putc ( '\\', fp ) ;
+<     }
+< 
+< #endif
+547,548c464
+< A_OBJECT A_lwds ( file, T_Sigma ) char * file ;
+< T_OBJECT T_Sigma ;
+---
+> A_OBJECT A_lwds ( char * file, T_OBJECT T_Sigma )
+555c471
+<     fp = fopen ( cnvrtn ( file ), "r" ) ;
+---
+>     fp = fopen ( file, "r" ) ;
+625,627c541
+< A_OBJECT A_prsseq ( A, file, T_Sigma ) A_OBJECT A ;
+< char * file ;
+< T_OBJECT T_Sigma ;
+---
+> A_OBJECT A_prsseq ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
+651c565
+<       fp = fopen ( cnvrtn ( file ), "w" ) ;
+---
+>       fp = fopen ( file, "w" ) ;
+726,728d639
+< #ifndef CMS
+<         fprintf ( fp, "\t" ) ;
+< #endif
+diff -r -w aa/Amin.c bb/Amin.c
+30c30
+< A_OBJECT A_min ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_min ( A_OBJECT A )
 diff -r -w aa/Aopen.c bb/Aopen.c
-0a1
-> extern int S_flag ;
+1,22c1,24
+< // Copyright (c) 1985, J Howard Johnson, University of Waterloo.
+< //
+< // This software was developed while I was a student and, later, professor
+< // at the University of Waterloo.  It has only minimal enhancements and bug
+< // fixes from later than August 1988.  It was released under the GPLv3
+< // licence on July 26, 2010.
+< //                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
+< //
+< // This file is part of INR.
+< //
+< //   INR is free software: you can redistribute it and/or modify
+< //   it under the terms of the GNU General Public License as published by
+< //   the Free Software Foundation, either version 3 of the License, or
+< //   (at your option) any later version.
+< //
+< //   INR is distributed in the hope that it will be useful,
+< //   but WITHOUT ANY WARRANTY; without even the implied warranty of
+< //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+< //   GNU General Public License for more details.
+< //
+< //   You should have received a copy of the GNU General Public License
+< //   along with INR.  If not, see <http://www.gnu.org/licenses/>.
+---
+> /*
+>  * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
+>  *
+>  * This software was developed while I was a student and, later, professor
+>  * at the University of Waterloo.  It has only minimal enhancements and bug
+>  * fixes from later than August 1988.  It was released under the GPLv3
+>  * licence on July 26, 2010.
+>  *                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
+>  *
+>  * This file is part of INR.
+>  *
+>  *   INR is free software: you can redistribute it and/or modify
+>  *   it under the terms of the GNU General Public License as published by
+>  *   the Free Software Foundation, either version 3 of the License, or
+>  *   (at your option) any later version.
+>  *
+>  *   INR is distributed in the hope that it will be useful,
+>  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+>  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>  *   GNU General Public License for more details.
+>  *
+>  *   You should have received a copy of the GNU General Public License
+>  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
+>  */
+32,36c34
+< 
+<   if ( A == NULL ) {
+<     Error ( "A_add: No OBJECT" ) ;
+<   }
+< 
+---
+>   assert ( A != NULL ) ;
+67,70c65
+<   if ( A == NULL ) {
+<     Error ( "A_open: No OBJECT" ) ;
+<   }
+< 
+---
+>   assert ( A != NULL ) ;
+84,87c79
+< 
+<   if ( A == NULL ) {
+<     Error ( "A_close: No OBJECT" ) ;
+<   }
+---
+>   assert ( A != NULL ) ;
+220a213
+>       /* empty */
+250,254c243
+< 
+<   if ( A == NULL ) {
+<     Error ( "A_rename: No OBJECT" ) ;
+<   }
+< 
+---
+>   assert ( A != NULL ) ;
+339,343c328
+< 
+<   if ( A == NULL ) {
+<     Error ( "A_rename: No OBJECT" ) ;
+<   }
+< 
+---
+>   assert ( A != NULL ) ;
+diff -r -w aa/Apowers.c bb/Apowers.c
+26,27c26
+< A_OBJECT A_catpow ( A, n ) A_OBJECT A ;
+< int n ;
+---
+> A_OBJECT A_catpow ( A_OBJECT A, int n )
+59c58
+< A_OBJECT A_ident ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_ident ( A_OBJECT A )
+80,81c79
+< A_OBJECT A_cmpow ( A, n ) A_OBJECT A ;
+< int n ;
+---
+> A_OBJECT A_cmpow ( A_OBJECT A, int n )
+diff -r -w aa/Aretape.c bb/Aretape.c
+27,28c27
+< A_OBJECT A_retape ( A1, A2, T ) A_OBJECT A1, A2 ;
+< T_OBJECT T ;
+---
+> A_OBJECT A_retape ( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
+129c128
+< A_OBJECT A_comma ( A1, A2 ) A_OBJECT A1, A2 ;
+---
+> A_OBJECT A_comma ( A_OBJECT A1, A_OBJECT A2 )
 diff -r -w aa/Asseq.c bb/Asseq.c
+31c31
+< A_OBJECT A_sseq ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_sseq ( A_OBJECT A )
 39a40,42
 >   label = 0 ;
 >   from = 0 ;
 >   /* Initialiaze to suppress warning JHJ */
 diff -r -w aa/Astems.c bb/Astems.c
-203,205c203
+58c58
+< int A_st_DFS ( q, i ) int q, i ;
+---
+> int A_st_DFS ( int q, int i )
+112,113c112
+< SHORT ** A_stems ( A, tape ) A_OBJECT A ;
+< int tape ;
+---
+> SHORT ** A_stems ( A_OBJECT A, int tape )
+203,205c202
 < void A_prstems ( A, T, tape ) A_OBJECT A ;
 < T_OBJECT T ;
 < int tape ;
 ---
 > void A_prstems ( A_OBJECT A, T_OBJECT T, int tape )
+diff -r -w aa/Asubs.c bb/Asubs.c
+30c30
+< A_OBJECT A_subs ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_subs ( A_OBJECT A )
+diff -r -w aa/Atrim.c bb/Atrim.c
+33c33
+< SHORT A_tr_DFS ( state ) SHORT state ;
+---
+> SHORT A_tr_DFS ( SHORT state )
+61c61
+< A_OBJECT A_trim ( A ) A_OBJECT A ;
+---
+> A_OBJECT A_trim ( A_OBJECT A )
+Only in aa: bugs.txt
+diff -r -w aa/Colon.c bb/Colon.c
+36c36
+< int do_n_i ( op ) char * op ;
+---
+> int do_n_i ( char * op )
+114,115c114
+< A_OBJECT do_an_a ( A, op ) A_OBJECT A ;
+< char * op ;
+---
+> A_OBJECT do_an_a ( A_OBJECT A, char * op )
+319,321c318
+< A_OBJECT do_ann_a ( A, op, arg ) A_OBJECT A ;
+< char * op ;
+< char * arg ;
+---
+> A_OBJECT do_ann_a ( A_OBJECT A, char * op, char * arg )
+358,359c355
+< A_OBJECT do_nn_a ( op, arg ) char * op ;
+< char * arg ;
+---
+> A_OBJECT do_nn_a ( char * op, char * arg )
 diff -r -w aa/Lex.c bb/Lex.c
+38c38
+< char * pad20 ( s ) char * s ;
+---
+> char * pad20 ( char * s )
+56c56
+< char * copyof ( str ) char * str ;
+---
+> char * copyof ( char * str )
 417,418c417
 < int main ( argc, argv ) int argc ;
 < char * argv [ ] ;
 ---
 > int main ( int argc, char * argv [ ] )
+461c460
+<     fprintf ( fpout, "Version %s (Sep 11, 2018)\n", Version ) ;
+---
+>     fprintf ( fpout, "Version %s (Mar 25, 1988)\n", Version ) ;
+463c462
+<     fprintf ( fpout, "             Copyright (C) 1988-2018 J Howard Johnson\n" ) ;
+---
+>     fprintf ( fpout, "             Copyright (C) 1988 J Howard Johnson\n" ) ;
 510c509,513
 <   PROMT ( void ) yyparse ( ) ;
 ---
@@ -75,42 +534,167 @@ diff -r -w aa/Lex.c bb/Lex.c
 ---
 > int tonum ( char * p )
 diff -r -w aa/Makefile bb/Makefile
-13c13
-< 	gcc -Wall -O -g -c $*.c
----
-> 	gcc -Wall -O0 -g -c $*.c
-16,20c16
-< 	gcc -Wall -O -g $(OFILES) -o ginr
-< 
+18,21d17
 < format:	$(CFILES) $(HFILES)
 < 	astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
 < --break-blocks=all $(CFILES) $(HFILES)
----
-> 	gcc -Wall -O0 -g $(OFILES) -o ginr
+< 
 diff -r -w aa/Parse.y bb/Parse.y
 30a31,33
 >   int yylex ( ) ;
 >   int yyparse ( void ) ;
 >   void yyerror ( char * ) ;
+diff -r -w aa/R.c bb/R.c
+45c45
+< void R_destroy ( R ) R_OBJECT R ;
+---
+> void R_destroy ( R_OBJECT R )
+55,56c55
+< int R_member ( R, reca, recb ) R_OBJECT R ;
+< int reca, recb ;
+---
+> int R_member ( R_OBJECT R, int reca, int recb )
+60c59
+<   p = R -> R_hash + ( ( ( ( 16807 * reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
+---
+>   p = R -> R_hash + ( ( ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
+78,79c77
+< R_OBJECT R_grow ( R, lrec ) R_OBJECT R ;
+< int lrec ;
+---
+> R_OBJECT R_grow ( R_OBJECT R, int lrec )
+125,126c123
+< int R_insert ( R, reca, recb ) R_OBJECT R ;
+< int reca, recb ;
+---
+> int R_insert ( R_OBJECT R, int reca, int recb )
+146,147c143
+< R_row * R_rec ( R, i ) R_OBJECT R ;
+< int i ;
+---
+> R_row * R_rec ( R_OBJECT R, int i )
 diff -r -w aa/S.c bb/S.c
-67c67,68
+59,60c59
+< void copymem ( n, from, to ) long n ;
+< char * from, * to ;
+---
+> void copymem ( long n, char * from, char * to )
+67c66,67
 <   if ( from >= to ) while ( -- n >= 0 ) {
 ---
 >   if ( from >= to ) {
 >     while ( -- n >= 0 ) {
-68a70
+68a69
 >     }
-420c422
+79c80
+< void scribble ( p, q ) char * p, * q ;
+---
+> void scribble ( char * p, char * q )
+118,119c119
+< void S_free ( l, k ) S_ft * l ;
+< int k ;
+---
+> void S_free ( S_ft * l, int k )
+165c165
+< void S_morecore ( k ) int k ;
+---
+> void S_morecore ( int k )
+188c188
+< S_ft * S_malloc ( k ) int k ;
+---
+> S_ft * S_malloc ( int k )
+233,234c233
+< S_ft * S_realloc ( l, k1, k2 ) S_ft * l ;
+< int k1, k2 ;
+---
+> S_ft * S_realloc ( S_ft * l, int k1, int k2 )
+285,286c284
+< S_ft * S_copy ( l, k ) S_ft * l ;
+< int k ;
+---
+> S_ft * S_copy ( S_ft * l, int k )
+351c349
+< char * Salloc ( n ) long n ;
+---
+> char * Salloc ( long n )
+372c370
+< void Sfree ( p ) char * p ;
+---
+> void Sfree ( char * p )
+386,387c384
+< char * Srealloc ( p, n ) char * p ;
+< long n ;
+---
+> char * Srealloc ( char * p, long n )
+411c408
+< char * Scopy ( p ) char * p ;
+---
+> char * Scopy ( char * p )
+420c417
 < long Ssize ( p ) char * p ;
 ---
 > long Ssize ( char * p )
 diff -r -w aa/stamp.c bb/stamp.c
 28,29c28,29
-< char Version [ ] = "2.0.3a" ;
+< char Version [ ] = "2.0.3b" ;
 < char Date [ ] = "Sept 11, 2018" ;
 ---
-> char Version [ ] = "2.0.3e" ;
-> char Date [ ] = "Jan 13 2022" ;
+> char Version [ ] = "2.0.3f" ;
+> char Date [ ] = "Jan 14 2022" ;
+diff -r -w aa/T.c bb/T.c
+47c47
+< void T_destroy ( T ) T_OBJECT T ;
+---
+> void T_destroy ( T_OBJECT T )
+66,67c66
+< int T_member ( T, name ) T_OBJECT T ;
+< char * name ;
+---
+> int T_member ( T_OBJECT T, char * name )
+100,101c99
+< T_OBJECT T_grow ( T, lname ) T_OBJECT T ;
+< int lname ;
+---
+> T_OBJECT T_grow ( T_OBJECT T, int lname )
+146,147c144
+< int T_insert ( T, name ) T_OBJECT T ;
+< char * name ;
+---
+> int T_insert ( T_OBJECT T, char * name )
+166,167c163
+< char * T_name ( T, i ) T_OBJECT T ;
+< int i ;
+---
+> char * T_name ( T_OBJECT T, int i )
+diff -r -w aa/U.c bb/U.c
+45c45
+< void U_destroy ( U ) U_OBJECT U ;
+---
+> void U_destroy ( U_OBJECT U )
+55,56c55
+< int U_member ( U, reca, recb, recc ) U_OBJECT U ;
+< int reca, recb, recc ;
+---
+> int U_member ( U_OBJECT U, int reca, int recb, int recc )
+60c59
+<   p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
+---
+>   p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
+78,79c77
+< U_OBJECT U_grow ( U, lrec ) U_OBJECT U ;
+< int lrec ;
+---
+> U_OBJECT U_grow ( U_OBJECT U, int lrec )
+125,126c123
+< int U_insert ( U, reca, recb, recc ) U_OBJECT U ;
+< int reca, recb, recc ;
+---
+> int U_insert ( U_OBJECT U, int reca, int recb, int recc )
+147,148c144
+< A_row * U_rec ( U, i ) U_OBJECT U ;
+< int i ;
+---
+> A_row * U_rec ( U_OBJECT U, int i )
 diff -r -w aa/util.c bb/util.c
 29c29
 < void Warning ( s ) char * s ;
@@ -120,6 +704,14 @@ diff -r -w aa/util.c bb/util.c
 < void Error ( s ) char * s ;
 ---
 > void Error ( char * s )
+39c39
+< SHORT * s_alloc ( n ) int n ;
+---
+> SHORT * s_alloc ( int n )
+43c43
+< int * i_alloc ( n ) int n ;
+---
+> int * i_alloc ( int n )
 diff -r -w aa/V.c bb/V.c
 33c33
 < SHORT * veccpy ( p, q ) SHORT * p, * q ;
@@ -133,4 +725,28 @@ diff -r -w aa/V.c bb/V.c
 < int veclen ( p ) SHORT * p ;
 ---
 > int veclen ( SHORT * p )
+78c78
+< void V_destroy ( V ) V_OBJECT V ;
+---
+> void V_destroy ( V_OBJECT V )
+97,98c97
+< int V_member ( V, vec ) V_OBJECT V ;
+< SHORT * vec ;
+---
+> int V_member ( V_OBJECT V, SHORT * vec )
+131,132c130
+< V_OBJECT V_grow ( V, lvec ) V_OBJECT V ;
+< int lvec ;
+---
+> V_OBJECT V_grow ( V_OBJECT V, int lvec )
+177,178c175
+< int V_insert ( V, vec ) V_OBJECT V ;
+< SHORT * vec ;
+---
+> int V_insert ( V_OBJECT V, SHORT * vec )
+197,198c194
+< SHORT * V_vec ( V, i ) V_OBJECT V ;
+< int i ;
+---
+> SHORT * V_vec ( V_OBJECT V, int i )
 Only in aa: VERSION

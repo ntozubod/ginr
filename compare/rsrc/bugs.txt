@@ -1,0 +1,28 @@
+
+===============================================================================
+20180918
+***** Context:
+valgrind ginr
+a b;
+***** yields:
+==3571== Conditional jump or move depends on uninitialised value(s)
+==3571==    at 0x109C61: A_close (Aopen.c:220)
+==3571==    by 0x10B929: A_trim (Atrim.c:83)
+==3571==    by 0x10BEC8: A_lameq (Alameq.c:91)
+==3571==    by 0x10C127: A_lamcm (Alamcm.c:66)
+==3571==    by 0x10C72D: A_clsure (Aclos.c:101)
+==3571==    by 0x10CB1B: A_subs (Asubs.c:55)
+==3571==    by 0x10D53C: A_min (Amin.c:56)
+==3571==    by 0x11E17D: yyparse (Parse.y:88)
+==3571==    by 0x11C5A4: main (Lex.c:536)
+***** Fix: Correct sentinel to avoid referring to uninitialize memory.
++++ b/src/Aopen.c
+@@ -196,7 +196,7 @@ A_OBJECT A_close( register A_OBJECT A )
+   t2z-> A_a = ( t2z - 1 )-> A_a;
+   t2z-> A_b = ( t2z - 1 )-> A_b;
+   t2z-> A_c = ( t2z - 1 )-> A_c;
+-  ( t2z + 1 )-> A_a = MAXSHORT;
++  ( t2z + 1 )-> A_c = MAXSHORT;
+ 
+   p = t2;
+   t1 = t2 - 1;

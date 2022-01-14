@@ -55,7 +55,7 @@ void A_st_free ( )
   Sfree ( ( char * ) st_work ) ;
   st_ptr = st_work = NULL ;
 }
-int A_st_DFS ( q, i ) int q, i ;
+int A_st_DFS ( int q, int i )
 {
   A_row * p ;
   int try, newtry ;
@@ -109,8 +109,7 @@ int A_st_DFS ( q, i ) int q, i ;
 
   return ( try ) ;
 }
-SHORT ** A_stems ( A, tape ) A_OBJECT A ;
-int tape ;
+SHORT ** A_stems ( A_OBJECT A, int tape )
 {
   int q, i ;
   A_OBJECT Aw ;

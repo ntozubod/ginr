@@ -24,8 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-A_OBJECT A_retape ( A1, A2, T ) A_OBJECT A1, A2 ;
-T_OBJECT T ;
+A_OBJECT A_retape ( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
 {
   int i ;
   A_row * p ;
@@ -126,7 +125,7 @@ T_OBJECT T ;
   A1 = A_close ( A1 ) ;
   return ( A1 ) ;
 }
-A_OBJECT A_comma ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_comma ( A_OBJECT A1, A_OBJECT A2 )
 {
   A_row * p ;
   int sigma, tape, ntapes ;

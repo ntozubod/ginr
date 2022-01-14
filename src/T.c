@@ -38,7 +38,7 @@ static int T_fail = 0;
 
 T_OBJECT T_create( )
 {
-    register T_OBJECT T;
+    T_OBJECT T;
     T = (T_OBJECT) Salloc( sizeof(struct T_desc) );
     T-> Type = T_Object;
     T-> T_n  = 0;
@@ -50,10 +50,9 @@ T_OBJECT T_create( )
     return( T );
 }
 
-void T_destroy( T )
-register T_OBJECT T;
+void T_destroy( T_OBJECT T )
 {
-    register char **p, **pl;
+    char **p, **pl;
     if ( T == NULL ) return;
     p = T-> T_name;
     pl = p + T-> T_n;
@@ -63,13 +62,11 @@ register T_OBJECT T;
     Sfree( (char *) T );
 }
 
-int T_member( T, name )
-register T_OBJECT T;
-char *name;
+int T_member( T_OBJECT T, char *name )
 {
-    register int h;
-    register char *na;
-    register SHORT *p;
+    int h;
+    char *na;
+    SHORT *p;
     ++T_calls;
     h = 0;
     for ( na = name; *na; ) h = ( ( h + *na++ ) * 16807 ) & 017777777777;
@@ -86,13 +83,11 @@ char *name;
     return( -1 );
 }
 
-T_OBJECT T_grow( T, lname )
-register T_OBJECT T;
-int lname;
+T_OBJECT T_grow( T_OBJECT T, int lname )
 {
-    register SHORT *p, *pl;
-    register char **q, **ql;
-    register int i;
+    SHORT *p, *pl;
+    char **q, **ql;
+    int i;
     if ( lname < 15 ) lname = 15;
     if ( lname <= T-> T_lname ) return( T );
     Sfree( (char *) T-> T_hash );
@@ -117,11 +112,9 @@ int lname;
     return( T );
 }
 
-int T_insert( T, name )
-register T_OBJECT T;
-register char *name;
+int T_insert( T_OBJECT T, char *name )
 {
-    register int i;
+    int i;
     if ( T-> T_n >= T-> T_lname ) {
         if ( T-> T_n >= MAXSHORT )
             Error( "T_insert: Table FULL" );
@@ -133,9 +126,7 @@ register char *name;
     return( *T_hashpos = T-> T_n++ );
 }
 
-char *T_name( T, i )
-register T_OBJECT T;
-register int i;
+char *T_name( T_OBJECT T, int i )
 {
     if ( i >= 0 && i < T-> T_n ) return( T-> T_name[ i ] );
     else    return( NULL );

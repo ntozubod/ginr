@@ -37,7 +37,7 @@ static int V_fail = 0;
 
 SHORT *veccpy( SHORT *p, SHORT *q )
 {
-    register SHORT *save = p;
+    SHORT *save = p;
     while( *q < MAXSHORT ) *p++ = *q++;
     *p = *q;
     return( save );
@@ -53,14 +53,14 @@ int veccmp( SHORT *p, SHORT *q )
 
 int veclen( SHORT *p )
 {
-    register int i = 0;
+    int i = 0;
     while ( *p++ < MAXSHORT ) ++i;
     return( i );
 }
 
 V_OBJECT V_create( )
 {
-    register V_OBJECT V;
+    V_OBJECT V;
     V = (V_OBJECT) Salloc( sizeof(struct V_desc) );
     V-> Type = V_Object;
     V-> V_n  = 0;
@@ -72,10 +72,9 @@ V_OBJECT V_create( )
     return( V );
 }
 
-void V_destroy( V )
-register V_OBJECT V;
+void V_destroy( V_OBJECT V )
 {
-    register SHORT **p, **pl;
+    SHORT **p, **pl;
     if ( V == NULL ) return;
     p = V-> V_vec;
     pl = p + V-> V_n;
@@ -85,13 +84,11 @@ register V_OBJECT V;
     Sfree( (char *) V );
 }
 
-int V_member( V, vec )
-register V_OBJECT V;
-SHORT *vec;
+int V_member( V_OBJECT V, SHORT *vec )
 {
-    register int h;
-    register SHORT *na;
-    register SHORT *p;
+    int h;
+    SHORT *na;
+    SHORT *p;
     ++V_calls;
     h = 0;
     for ( na = vec; *na < MAXSHORT; )
@@ -109,13 +106,11 @@ SHORT *vec;
     return( -1 );
 }
 
-V_OBJECT V_grow( V, lvec )
-register V_OBJECT V;
-int lvec;
+V_OBJECT V_grow( V_OBJECT V, int lvec )
 {
-    register SHORT *p, *pl;
-    register SHORT **q, **ql;
-    register int i;
+    SHORT *p, *pl;
+    SHORT **q, **ql;
+    int i;
     if ( lvec < 15 ) lvec = 15;
     if ( lvec <= V-> V_lvec ) return( V );
     Sfree( (char *) V-> V_hash );
@@ -140,11 +135,9 @@ int lvec;
     return( V );
 }
 
-int V_insert( V, vec )
-register V_OBJECT V;
-register SHORT *vec;
+int V_insert( V_OBJECT V, SHORT *vec )
 {
-    register int i;
+    int i;
     if ( V-> V_n >= V-> V_lvec ) {
         if ( V-> V_n >= MAXSHORT )
             Error( "V_insert: Table FULL" );
@@ -156,9 +149,7 @@ register SHORT *vec;
     return( *V_hashpos = V-> V_n++ );
 }
 
-SHORT *V_vec( V, i )
-register V_OBJECT V;
-register int i;
+SHORT *V_vec( V_OBJECT V, int i )
 {
     if ( i >= 0 && i < V-> V_n ) return( V-> V_vec[ i ] );
     else    return( NULL );

@@ -32,11 +32,10 @@ extern FILE *fpout;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
 
-A_OBJECT A_subs( A )
-register A_OBJECT A;
+A_OBJECT A_subs( A_OBJECT A )
 {
-    register int i, j, tmp;
-    register A_row *p, *pz;
+    int i, j, tmp;
+    A_row *p, *pz;
     int n, hsize, base, head, current, father, son, gap, vlen;
     A_row *insert, *last, **heap, **pnlam;
     SHORT *set, *vec, *fvec;

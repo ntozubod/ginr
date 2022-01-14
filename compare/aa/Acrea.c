@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-#define INIT_lrows      20
+#define INIT_lrows 20
 int A_report = 0 ;
 extern FILE * fpout ;
 A_OBJECT A_create ( )
@@ -43,7 +43,7 @@ A_OBJECT A_create ( )
   A -> A_lrows = Ssize ( ( char * ) A -> A_t ) / ( sizeof ( A_row ) ) - 2 ;
   return ( A ) ;
 }
-void A_destroy ( A ) A_OBJECT A ;
+void A_destroy ( A_OBJECT A )
 {
   if ( A != NULL ) {
     Sfree ( ( char * ) A -> A_p ) ;
@@ -52,7 +52,7 @@ void A_destroy ( A ) A_OBJECT A ;
 
   Sfree ( ( char * ) A ) ;
 }
-A_OBJECT A_rept ( A ) A_OBJECT A ;
+A_OBJECT A_rept ( A_OBJECT A )
 {
   if ( A == NULL ) {
     fprintf ( fpout, "  NULL Automaton\n" ) ;
@@ -120,7 +120,7 @@ A_OBJECT A_rept ( A ) A_OBJECT A ;
   fflush ( fpout ) ;
   return ( A ) ;
 }
-void A_exchange ( A1, A2 ) A_OBJECT A1, A2 ;
+void A_exchange ( A_OBJECT A1, A_OBJECT A2 )
 {
   int t_int ;
   A_row ** t_Arpp ;
@@ -172,7 +172,7 @@ void A_exchange ( A1, A2 ) A_OBJECT A1, A2 ;
     A_destroy ( A2 ) ;
   }
 }
-A_OBJECT A_copy ( A ) A_OBJECT A ;
+A_OBJECT A_copy ( A_OBJECT A )
 {
   int i ;
   A_OBJECT newA ;
@@ -197,7 +197,7 @@ A_OBJECT A_copy ( A ) A_OBJECT A ;
 
   return ( newA ) ;
 }
-A_OBJECT A_deems ( A ) A_OBJECT A ;
+A_OBJECT A_deems ( A_OBJECT A )
 {
   int new_mode ;
   int lst_em ;
@@ -220,16 +220,18 @@ A_OBJECT A_deems ( A ) A_OBJECT A ;
 
   for ( p = A -> A_t + A -> A_nrows ;
         -- p >= A -> A_t ;
-      ) if ( p -> A_b > 1 && p -> A_b <= lst_em ) {
+      ) {
+    if ( p -> A_b > 1 && p -> A_b <= lst_em ) {
       p -> A_b = 0 ;
     }
+  }
 
   A = A_close ( A ) ;
   A -> A_mode = new_mode ;
   A -> A_ems = 0 ;
   return A ;
 }
-A_OBJECT A_adems ( A ) A_OBJECT A ;
+A_OBJECT A_adems ( A_OBJECT A )
 {
   int new_mode ;
   int fst_em, lst_em ;
@@ -260,10 +262,12 @@ A_OBJECT A_adems ( A ) A_OBJECT A ;
 
   for ( p = A -> A_t + A -> A_nrows ;
         -- p >= A -> A_t ;
-      ) if ( p -> A_b == 1 ) {
+      ) {
+    if ( p -> A_b == 1 ) {
       p -> A_b = fst_em ;
       p -> A_c = base ;
     }
+  }
 
   for ( i = fst_em + 1 ;
         i <= lst_em ;
@@ -275,5 +279,5 @@ A_OBJECT A_adems ( A ) A_OBJECT A ;
   A = A_close ( A ) ;
   A -> A_mode = new_mode ;
   A -> A_ems = 1 ;
-  return A ;
+  return ( A ) ;
 }

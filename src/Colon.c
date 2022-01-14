@@ -40,8 +40,7 @@ extern char * pad20();
 
 int disp_flag;
 
-int do_n_i( op )
-char * op;
+int do_n_i( char *op )
 {
     int i;
     if ( !strcmp("alph",op) ) {
@@ -99,9 +98,7 @@ To get additional help type\n\
     return 0;
 }
 
-A_OBJECT do_an_a( A, op )
-A_OBJECT A;
-char * op;
+A_OBJECT do_an_a( A_OBJECT A, char *op )
 {
     int i, num;
     disp_flag = 0;
@@ -243,10 +240,7 @@ char * op;
     return A;
 }
 
-A_OBJECT do_ann_a( A, op, arg )
-A_OBJECT A;
-char * op;
-char * arg;
+A_OBJECT do_ann_a( A_OBJECT A, char *op, char *arg )
 {
     int num;
     disp_flag = 0;
@@ -274,9 +268,7 @@ char * arg;
     return A;
 }
 
-A_OBJECT do_nn_a( op, arg )
-char * op;
-char * arg;
+A_OBJECT do_nn_a( char *op, char *arg )
 {
     int i;
     A_OBJECT A;

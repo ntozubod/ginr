@@ -30,7 +30,7 @@ extern FILE * fpout ;
 static A_OBJECT GAt ;
 static SHORT * t_stk, * t_low ;
 static int t_cnt ;
-SHORT A_tr_DFS ( state ) SHORT state ;
+SHORT A_tr_DFS ( SHORT state )
 {
   SHORT dfn ;
   A_row * p ;
@@ -58,7 +58,7 @@ SHORT A_tr_DFS ( state ) SHORT state ;
 
   return ( state ) ;
 }
-A_OBJECT A_trim ( A ) A_OBJECT A ;
+A_OBJECT A_trim ( A_OBJECT A )
 {
   A_row * p, * pz ;
   int i, must_reopen ;

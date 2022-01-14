@@ -56,8 +56,7 @@ int LINUXmem = 0 ;
 /*
  *     Copy a block of memory
  */
-void copymem ( n, from, to ) long n ;
-char * from, * to ;
+void copymem ( long n, char * from, char * to )
 {
   if ( from + n <= to || to + n <= from ) {
     bcopy ( from, to, n ) ;
@@ -78,7 +77,7 @@ char * from, * to ;
     }
   }
 }
-void scribble ( p, q ) char * p, * q ;
+void scribble ( char * p, char * q )
 {
   while ( p < q ) {
     * p ++ = 0x55 ;
@@ -117,8 +116,7 @@ void S_init ( )
     }
   }
 }
-void S_free ( l, k ) S_ft * l ;
-int k ;
+void S_free ( S_ft * l, int k )
 {
   S_ft * p ;
 
@@ -164,7 +162,7 @@ int k ;
   set_linkb ( l, p = & S_avail [ k ] ) ;
   set_linkf ( p, l ) ;
 }
-void S_morecore ( k ) int k ;
+void S_morecore ( int k )
 {
   int a, b ;
 
@@ -187,7 +185,7 @@ void S_morecore ( k ) int k ;
     a += 1 << k ;
   }
 }
-S_ft * S_malloc ( k ) int k ;
+S_ft * S_malloc ( int k )
 {
   int j ;
   S_ft * p, * l, * q ;
@@ -232,8 +230,7 @@ S_ft * S_malloc ( k ) int k ;
 
   return ( l ) ;
 }
-S_ft * S_realloc ( l, k1, k2 ) S_ft * l ;
-int k1, k2 ;
+S_ft * S_realloc ( S_ft * l, int k1, int k2 )
 {
   int k0 ;
   S_ft * p, * q ;
@@ -284,8 +281,7 @@ int k1, k2 ;
     return ( p ) ;
   }
 }
-S_ft * S_copy ( l, k ) S_ft * l ;
-int k ;
+S_ft * S_copy ( S_ft * l, int k )
 {
   S_ft * p ;
   p = S_malloc ( k ) ;
@@ -350,7 +346,7 @@ void S_arena ( )
  *     Interface to provide allocator for INR.
  *     The length code and an audit flag are stored in allocated blocks
  */
-char * Salloc ( n ) long n ;
+char * Salloc ( long n )
 {
   char * p ;
   int k ;
@@ -371,7 +367,7 @@ char * Salloc ( n ) long n ;
   p [ 1 ] = k ;
   return ( p + 4 ) ;
 }
-void Sfree ( p ) char * p ;
+void Sfree ( char * p )
 {
   if ( ! p ) {
     return ;
@@ -385,8 +381,7 @@ void Sfree ( p ) char * p ;
 
   S_free ( ( S_ft * ) p, ( int ) p [ 1 ] ) ;
 }
-char * Srealloc ( p, n ) char * p ;
-long n ;
+char * Srealloc ( char * p, long n )
 {
   int k ;
 
@@ -410,7 +405,7 @@ long n ;
   p [ 1 ] = k ;
   return ( p + 4 ) ;
 }
-char * Scopy ( p ) char * p ;
+char * Scopy ( char * p )
 {
   if ( ! p ) {
     return ( 0 ) ;

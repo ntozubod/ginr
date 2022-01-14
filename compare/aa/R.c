@@ -57,7 +57,7 @@ int reca, recb ;
 {
   SHORT * p ;
   ++ R_calls ;
-  p = R -> R_hash + ( ( ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
+  p = R -> R_hash + ( ( ( ( 16807 * reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
 
   while ( * p < MAXSHORT ) {
     ++ R_probes ;

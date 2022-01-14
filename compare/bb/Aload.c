@@ -26,28 +26,6 @@
 #include <string.h>
 #include "O.h"
 #define MAX_TOKEN       1024
-#ifdef CMS
-char new [ 100 ] ;
-char * cnvrtn ( name ) char * name ;
-{
-  char * p ;
-  strcpy ( new, name ) ;
-
-  if ( index ( new, ' ' ) == 0 ) {
-    strcat ( new, " file" ) ;
-  }
-
-  for ( p = new ;
-        * p ;
-        p ++ ) if ( * p == '_' ) {
-      * p = ' ' ;
-    }
-
-  return ( new ) ;
-}
-#else
-#define cnvrtn(name) name
-#endif
 static FILE * fp ;
 FILE * fpin, * fpout ;
 extern FILE * fopen ( ) ;
@@ -104,7 +82,7 @@ char * get_name ( )
   token [ i ] = 0 ;
   return ( token ) ;
 }
-void put_name ( str ) char * str ;
+void put_name ( char * str )
 {
   int i ;
 
@@ -147,8 +125,7 @@ int get_nl ( )
   c = getc ( fp ) ;
   return ( 1 ) ;
 }
-A_OBJECT A_load ( file, T_Sigma ) char * file ;
-T_OBJECT T_Sigma ;
+A_OBJECT A_load ( char * file, T_OBJECT T_Sigma )
 {
   int from, symb, to, tape, ntapes, i ;
   A_OBJECT A ;
@@ -157,7 +134,7 @@ T_OBJECT T_Sigma ;
   A_row * p ;
 
   if ( file != NULL ) {
-    fp = fopen ( cnvrtn ( file ), "r" ) ;
+    fp = fopen ( file, "r" ) ;
 
   } else if ( fpin != NULL ) {
     fp = fpin ;
@@ -274,40 +251,12 @@ T_OBJECT T_Sigma ;
     }
 
     while ( c != EOF ) {
-#ifdef CMS
-
-      if ( c == '\\' ) {
-        c = getc ( fp ) ;
-      }
-
-#endif
       from = ( c & 0377 ) * 256 ;
       c = getc ( fp ) ;
-#ifdef CMS
-
-      if ( c == '\\' ) {
-        c = getc ( fp ) ;
-      }
-
-#endif
       from += c & 0377 ;
       c = getc ( fp ) ;
-#ifdef CMS
-
-      if ( c == '\\' ) {
-        c = getc ( fp ) ;
-      }
-
-#endif
       to = ( c & 0377 ) * 256 ;
       c = getc ( fp ) ;
-#ifdef CMS
-
-      if ( c == '\\' ) {
-        c = getc ( fp ) ;
-      }
-
-#endif
       to += c & 0377 ;
       c = getc ( fp ) ;
 
@@ -372,9 +321,7 @@ T_OBJECT T_Sigma ;
     return ( A ) ;
   }
 }
-A_OBJECT A_store ( A, file, T_Sigma ) A_OBJECT A ;
-char * file ;
-T_OBJECT T_Sigma ;
+A_OBJECT A_store ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
 {
   int t ;
   A_row * p, * pz ;
@@ -388,7 +335,7 @@ T_OBJECT T_Sigma ;
       return ( A ) ;
 
     } else {
-      fp = fopen ( cnvrtn ( file ), "w" ) ;
+      fp = fopen ( file, "w" ) ;
     }
 
   } else {
@@ -447,9 +394,7 @@ T_OBJECT T_Sigma ;
 
   return ( A ) ;
 }
-A_OBJECT A_save ( A, file, T_Sigma ) A_OBJECT A ;
-char * file ;
-T_OBJECT T_Sigma ;
+A_OBJECT A_save ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
 {
   int t ;
   A_row * p, * pz ;
@@ -463,7 +408,7 @@ T_OBJECT T_Sigma ;
       return ( A ) ;
 
     } else {
-      fp = fopen ( cnvrtn ( file ), "w" ) ;
+      fp = fopen ( file, "w" ) ;
     }
 
   } else {
@@ -488,40 +433,12 @@ T_OBJECT T_Sigma ;
         p < pz ;
         p ++ ) {
     t = ( p -> A_a / 256 ) & 0377 ;
-#ifdef CMS
-
-    if ( t == '\\' || t == '\n' ) {
-      ( void ) putc ( '\\', fp ) ;
-    }
-
-#endif
     ( void ) putc ( ( char ) ( t ), fp ) ;
     t = p -> A_a % 256 ;
-#ifdef CMS
-
-    if ( t == '\\' || t == '\n' ) {
-      ( void ) putc ( '\\', fp ) ;
-    }
-
-#endif
     ( void ) putc ( ( char ) ( t ), fp ) ;
     t = ( p -> A_c / 256 ) & 0377 ;
-#ifdef CMS
-
-    if ( t == '\\' || t == '\n' ) {
-      ( void ) putc ( '\\', fp ) ;
-    }
-
-#endif
     ( void ) putc ( ( char ) ( t ), fp ) ;
     t = p -> A_c % 256 ;
-#ifdef CMS
-
-    if ( t == '\\' || t == '\n' ) {
-      ( void ) putc ( '\\', fp ) ;
-    }
-
-#endif
     ( void ) putc ( ( char ) ( t ), fp ) ;
 
     if ( ( t = p -> A_b ) <= 1 || A -> A_nT == 1 ) {
@@ -544,15 +461,14 @@ T_OBJECT T_Sigma ;
 
   return ( A ) ;
 }
-A_OBJECT A_lwds ( file, T_Sigma ) char * file ;
-T_OBJECT T_Sigma ;
+A_OBJECT A_lwds ( char * file, T_OBJECT T_Sigma )
 {
   A_OBJECT A, As ;
   char * p, t [ 2 ] ;
   int i, nQ ;
 
   if ( file != NULL ) {
-    fp = fopen ( cnvrtn ( file ), "r" ) ;
+    fp = fopen ( file, "r" ) ;
 
   } else if ( fpin != NULL ) {
     fp = fpin ;
@@ -622,9 +538,7 @@ T_OBJECT T_Sigma ;
   As -> A_mode = NFA_CLOSED ;
   return ( As ) ;
 }
-A_OBJECT A_prsseq ( A, file, T_Sigma ) A_OBJECT A ;
-char * file ;
-T_OBJECT T_Sigma ;
+A_OBJECT A_prsseq ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
 {
   int t ;
   A_row * p, * pz ;
@@ -648,7 +562,7 @@ T_OBJECT T_Sigma ;
       return ( A ) ;
 
     } else {
-      fp = fopen ( cnvrtn ( file ), "w" ) ;
+      fp = fopen ( file, "w" ) ;
     }
 
   } else {
@@ -723,9 +637,6 @@ T_OBJECT T_Sigma ;
         }
 
         fprintf ( fp, " ]  " ) ;
-#ifndef CMS
-        fprintf ( fp, "\t" ) ;
-#endif
 
         if ( t == START ) {
           fprintf ( fp, "(START)\n" ) ;

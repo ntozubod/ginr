@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-A_OBJECT A_clsseq ( A1 ) A_OBJECT A1 ;
+A_OBJECT A_clsseq ( A_OBJECT A1 )
 {
   A_OBJECT A ;
   int current, end_st, i, bb, last_label, label, hi_next, k ;

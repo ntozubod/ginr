@@ -111,71 +111,70 @@ typedef struct A_desc {
 // Acrea.c
 extern  int A_report;
 A_OBJECT    A_create();
-void        A_destroy( register A_OBJECT );
-A_OBJECT    A_rept( register A_OBJECT );
-void        A_exchange( register A_OBJECT, register A_OBJECT );
-A_OBJECT    A_copy( register A_OBJECT );
-A_OBJECT    A_deems( register A_OBJECT );
-A_OBJECT    A_adems( register A_OBJECT );
+void        A_destroy( A_OBJECT );
+A_OBJECT    A_rept( A_OBJECT );
+void        A_exchange( A_OBJECT, A_OBJECT );
+A_OBJECT    A_copy( A_OBJECT );
+A_OBJECT    A_deems( A_OBJECT );
+A_OBJECT    A_adems( A_OBJECT );
 
 // Aopen.c
-A_OBJECT    A_add( register A_OBJECT,
-                   register int, register int, register int );
-A_OBJECT    A_open( register A_OBJECT );
-A_OBJECT    A_close( register A_OBJECT );
-A_OBJECT    A_rename( register A_OBJECT, register SHORT * );
-A_OBJECT    A_mkdense( register A_OBJECT );
+A_OBJECT    A_add( A_OBJECT, int, int, int );
+A_OBJECT    A_open( A_OBJECT );
+A_OBJECT    A_close( A_OBJECT );
+A_OBJECT    A_rename( A_OBJECT, SHORT * );
+A_OBJECT    A_mkdense( A_OBJECT );
 
 // Aload.c
 char *      get_name();
-void        put_name( register char * );
+void        put_name( char * );
 int         get_nl();
 A_OBJECT    A_load( char *, T_OBJECT );
-A_OBJECT    A_store( register A_OBJECT, char *, register T_OBJECT );
-A_OBJECT    A_save( register A_OBJECT, char *, register T_OBJECT );
+A_OBJECT    A_store( A_OBJECT, char *, T_OBJECT );
+A_OBJECT    A_save( A_OBJECT, char *, T_OBJECT );
 A_OBJECT    A_lwds( char *, T_OBJECT );
-A_OBJECT    A_prsseq( register A_OBJECT, char *, register T_OBJECT );
+A_OBJECT    A_prsseq( A_OBJECT, char *, T_OBJECT );
 
 // Atrim.c
 SHORT       A_tr_DFS( SHORT );
-A_OBJECT    A_trim( register A_OBJECT );
+A_OBJECT    A_trim( A_OBJECT );
 
 // Alameq.c
 int         A_la_DFS( int );
-A_OBJECT    A_lameq( register A_OBJECT );
+A_OBJECT    A_lameq( A_OBJECT );
 
 // Alamcm.c
 int         A_cm_DFS( int );
-A_OBJECT    A_lamcm( register A_OBJECT );
+A_OBJECT    A_lamcm( A_OBJECT );
 
 // Aclos.c
 void        A_cl_DFS( int );
-A_OBJECT    A_clsure( register A_OBJECT );
+A_OBJECT    A_clsure( A_OBJECT );
 
 // Asubs.c
-A_OBJECT    A_subs( register A_OBJECT );
+A_OBJECT    A_subs( A_OBJECT );
 
 // Amin.c
-A_OBJECT    A_min( register A_OBJECT );
+A_OBJECT    A_min( A_OBJECT );
 
 // Abasic.c
-void        A_conform( register A_OBJECT, register A_OBJECT );
+void        A_conform( A_OBJECT, A_OBJECT );
 A_OBJECT    A_phi();
 A_OBJECT    A_lambda();
 A_OBJECT    A_letter( int, int );
-A_OBJECT    A_deecho( register A_OBJECT, int, int );
-A_OBJECT    A_opt( register A_OBJECT );
-A_OBJECT    A_plus( register A_OBJECT );
+A_OBJECT    A_deecho( A_OBJECT, int, int );
+A_OBJECT    A_opt( A_OBJECT );
+A_OBJECT    A_plus( A_OBJECT );
 A_OBJECT    A_star( A_OBJECT );
-A_OBJECT    A_union( register A_OBJECT, register A_OBJECT );
-A_OBJECT    A_percent( register A_OBJECT, register A_OBJECT );
-A_OBJECT    A_concat( register A_OBJECT, register A_OBJECT );
-A_OBJECT    A_intersect( register A_OBJECT, register A_OBJECT );
-A_OBJECT    A_differ( register A_OBJECT, register A_OBJECT );
-A_OBJECT    A_xor( register A_OBJECT, register A_OBJECT );
-A_OBJECT    A_alph( register A_OBJECT );
-A_OBJECT    A_rev( register A_OBJECT );
-A_OBJECT    A_shuffle( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_union( A_OBJECT, A_OBJECT );
+A_OBJECT    A_percent( A_OBJECT, A_OBJECT );
+A_OBJECT    A_concat( A_OBJECT, A_OBJECT );
+A_OBJECT    A_intersect( A_OBJECT, A_OBJECT );
+A_OBJECT    A_differ( A_OBJECT, A_OBJECT );
+A_OBJECT    A_xor( A_OBJECT, A_OBJECT );
+A_OBJECT    A_alph( A_OBJECT );
+A_OBJECT    A_rev( A_OBJECT );
+A_OBJECT    A_shuffle( A_OBJECT, A_OBJECT );
 
 // Aenum.c
 int         A_en_DFS( SHORT );
@@ -186,36 +185,36 @@ A_OBJECT    A_pref( A_OBJECT );
 A_OBJECT    A_suff( A_OBJECT );
 
 // Acompose.c
-A_OBJECT    A_compose( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_compose( A_OBJECT, A_OBJECT );
 
 // Ajoin.c
-A_OBJECT    A_join( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_join( A_OBJECT, A_OBJECT );
 
 // Aretape.c
-A_OBJECT    A_retape( register A_OBJECT, register A_OBJECT, T_OBJECT );
-A_OBJECT    A_comma( register A_OBJECT, register A_OBJECT );
+A_OBJECT    A_retape( A_OBJECT, A_OBJECT, T_OBJECT );
+A_OBJECT    A_comma( A_OBJECT, A_OBJECT );
 
 // Apowers.c
-A_OBJECT    A_catpow( register A_OBJECT, register int );
-A_OBJECT    A_ident( register A_OBJECT );
-A_OBJECT    A_cmpow( register A_OBJECT, register int );
+A_OBJECT    A_catpow( A_OBJECT, int );
+A_OBJECT    A_ident( A_OBJECT );
+A_OBJECT    A_cmpow( A_OBJECT, int );
 
 // Alenmin.c
-A_OBJECT    A_lenmin( register A_OBJECT );
-int         A_minlen( register A_OBJECT );
+A_OBJECT    A_lenmin( A_OBJECT );
+int         A_minlen( A_OBJECT );
 
 // Asseq.c
-A_OBJECT    A_sseq( register A_OBJECT );
+A_OBJECT    A_sseq( A_OBJECT );
 
 // AGMsseq.c
 int         GMcmp( SHORT *, SHORT * );
-A_OBJECT    A_GMsseq( register A_OBJECT );
+A_OBJECT    A_GMsseq( A_OBJECT );
 
 // ALMsseq.c
-A_OBJECT    A_LMsseq( register A_OBJECT );
+A_OBJECT    A_LMsseq( A_OBJECT );
 
 // Aclsseq.c
-A_OBJECT    A_clsseq( register A_OBJECT );
+A_OBJECT    A_clsseq( A_OBJECT );
 
 // Astems.c
 void        A_st_free();
@@ -225,51 +224,49 @@ void        A_prstems( A_OBJECT, T_OBJECT, int );
 
 // T.c
 T_OBJECT    T_create();
-void        T_destroy( register T_OBJECT );
-int         T_member( register T_OBJECT, char * );
-T_OBJECT    T_grow( register T_OBJECT, int );
-int         T_insert( register T_OBJECT, register char * );
-char *      T_name( register T_OBJECT, register int );
+void        T_destroy( T_OBJECT );
+int         T_member( T_OBJECT, char * );
+T_OBJECT    T_grow( T_OBJECT, int );
+int         T_insert( T_OBJECT, char * );
+char *      T_name( T_OBJECT, int );
 void        T_stats();
 
 // V.c
 SHORT *     veccpy( SHORT *, SHORT * );
 int         veccmp( SHORT *, SHORT * );
-int         veclen( register SHORT * );
+int         veclen( SHORT * );
 V_OBJECT    V_create();
-void        V_destroy( register V_OBJECT );
-int         V_member( register V_OBJECT, SHORT * );
-V_OBJECT    V_grow( register V_OBJECT, int );
-int         V_insert( register V_OBJECT, register SHORT * );
-SHORT *     V_vec( register V_OBJECT, register int );
+void        V_destroy( V_OBJECT );
+int         V_member( V_OBJECT, SHORT * );
+V_OBJECT    V_grow( V_OBJECT, int );
+int         V_insert( V_OBJECT, SHORT * );
+SHORT *     V_vec( V_OBJECT, int );
 void        V_stats();
 
 // R.c
 R_OBJECT    R_create();
-void        R_destroy( register R_OBJECT );
-int         R_member( register R_OBJECT, register int, register int );
-R_OBJECT    R_grow( register R_OBJECT, int );
-int         R_insert( register R_OBJECT, register int, register int );
-R_row *     R_rec( register R_OBJECT, register int );
+void        R_destroy( R_OBJECT );
+int         R_member( R_OBJECT, int, int );
+R_OBJECT    R_grow( R_OBJECT, int );
+int         R_insert( R_OBJECT, int, int );
+R_row *     R_rec( R_OBJECT, int );
 void        R_stats();
 
 // U.c
 U_OBJECT    U_create();
-void        U_destroy( register U_OBJECT );
-int         U_member( register U_OBJECT,
-                      register int, register int, register int );
-U_OBJECT    U_grow( register U_OBJECT, int );
-int         U_insert( register U_OBJECT,
-                      register int, register int, register int );
-A_row *     U_rec( register U_OBJECT, register int );
+void        U_destroy( U_OBJECT );
+int         U_member( U_OBJECT, int, int, int );
+U_OBJECT    U_grow( U_OBJECT, int );
+int         U_insert( U_OBJECT, int, int, int );
+A_row *     U_rec( U_OBJECT, int );
 void        U_stats();
 
 // S.c
-void        copymem( register long, register char *, register char * );
-char *      Salloc( register long );
-void        Sfree( register char * );
-char *      Srealloc( register char *, register long );
-char *      Scopy( register char * );
+void        copymem( long, char *, char * );
+char *      Salloc( long );
+void        Sfree( char * );
+char *      Srealloc( char *, long );
+char *      Scopy( char * );
 long        Ssize( char * );
 char *      Sfind( char * );
 void        Sarena();

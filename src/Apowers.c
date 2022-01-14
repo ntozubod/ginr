@@ -25,9 +25,7 @@
 
 #include "O.h"
 
-A_OBJECT A_catpow( A, n )
-register A_OBJECT A;
-register int n;
+A_OBJECT A_catpow( A_OBJECT A, int n )
 {
     A_OBJECT Aprod;
     if ( n < 0 ) Error( "A_catpow: negative power" );
@@ -44,8 +42,7 @@ register int n;
     return( Aprod );
 }
 
-A_OBJECT A_ident( A )
-register A_OBJECT A;
+A_OBJECT A_ident( A_OBJECT A )
 {
     A_OBJECT A2;
     int i, sigma, last;
@@ -63,9 +60,7 @@ register A_OBJECT A;
     return( A_star( A2 ) );
 }
 
-A_OBJECT A_cmpow( A, n )
-register A_OBJECT A;
-register int n;
+A_OBJECT A_cmpow( A_OBJECT A, int n )
 {
     A_OBJECT Aprod;
     if ( n < 0 ) Error( "A_cmpow: negative power" );

@@ -27,10 +27,9 @@
 
 #include "O.h"
 
-A_OBJECT A_compose( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_compose( A_OBJECT A1, A_OBJECT A2 )
 {
-    register A_OBJECT A;
+    A_OBJECT A;
     int current, s1, s2, t1, t2, cur_a, cur_b, flag, flag2;
     t1 = 0; t2 = 0; /* Initialiaze to suppress warning JHJ */
     A_row *p1, *p1z, *p2, *p2z;

@@ -75,7 +75,7 @@ V_OBJECT V_create ( )
   V -> V_hash [ 0 ] = MAXSHORT ;
   return ( V ) ;
 }
-void V_destroy ( V ) V_OBJECT V ;
+void V_destroy ( V_OBJECT V )
 {
   SHORT ** p, ** pl ;
 
@@ -94,8 +94,7 @@ void V_destroy ( V ) V_OBJECT V ;
   Sfree ( ( char * ) V -> V_hash ) ;
   Sfree ( ( char * ) V ) ;
 }
-int V_member ( V, vec ) V_OBJECT V ;
-SHORT * vec ;
+int V_member ( V_OBJECT V, SHORT * vec )
 {
   int h ;
   SHORT * na ;
@@ -128,8 +127,7 @@ SHORT * vec ;
   V_hashpos = p ;
   return ( - 1 ) ;
 }
-V_OBJECT V_grow ( V, lvec ) V_OBJECT V ;
-int lvec ;
+V_OBJECT V_grow ( V_OBJECT V, int lvec )
 {
   SHORT * p, * pl ;
   SHORT ** q, ** ql ;
@@ -174,8 +172,7 @@ int lvec ;
 
   return ( V ) ;
 }
-int V_insert ( V, vec ) V_OBJECT V ;
-SHORT * vec ;
+int V_insert ( V_OBJECT V, SHORT * vec )
 {
   int i ;
 
@@ -194,8 +191,7 @@ SHORT * vec ;
   V -> V_vec [ V -> V_n ] = veccpy ( s_alloc ( V_vecptr - vec + 1 ), vec ) ;
   return ( * V_hashpos = V -> V_n ++ ) ;
 }
-SHORT * V_vec ( V, i ) V_OBJECT V ;
-int i ;
+SHORT * V_vec ( V_OBJECT V, int i )
 {
   if ( i >= 0 && i < V -> V_n ) {
     return ( V -> V_vec [ i ] ) ;

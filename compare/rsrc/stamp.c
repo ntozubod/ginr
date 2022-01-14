@@ -27,5 +27,5 @@
  * Name and modification date of the current version
  */
 
-char Version[] = "2.0.3a";
+char Version[] = "2.0.3b";
 char Date[] = "Sept 11, 2018";

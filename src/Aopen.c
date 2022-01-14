@@ -1,4 +1,3 @@
-extern int S_flag;
 /*
  * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
  *
@@ -25,6 +24,7 @@ extern int S_flag;
  */
 
 #include <stdio.h>
+#include <assert.h>
 
 extern FILE *fpout;
 
@@ -33,18 +33,14 @@ extern FILE *fpout;
 SHORT *s_rena = 0;
 int f_rena = 0;
 
-A_OBJECT A_add( A, a, b, c )
-register A_OBJECT A;
-register int a, b, c;
+A_OBJECT A_add( A_OBJECT A, int a, int b, int c )
 {
-    register A_row *p;
+    A_row *p;
 
-    if ( A == NULL ) Error( "A_add: No OBJECT" );
-    if ( A-> A_mode != OPEN ) Error( "A_add: Object not OPEN" );
-    if ( a < 0 || b < 0 || c < 0 )
-        Error( "A_add: Numbers cannot be negative" );
-    if ( a >= MAXSHORT || b >= MAXSHORT || c >= MAXSHORT )
-        Error( "A_add: Numbers are too big" );
+    assert( A != NULL );
+    assert( A-> A_mode == OPEN );
+    assert( a >= 0 && b >= 0 && c >= 0 );
+    assert( a < MAXSHORT && b < MAXSHORT && c < MAXSHORT );
     if ( A-> A_nrows >= A-> A_lrows ) {
         A-> A_t = (A_row *) Srealloc( (char *) A-> A_t,
                                       ( 2 * A-> A_nrows + 2 ) * sizeof(A_row) );
@@ -60,28 +56,26 @@ register int a, b, c;
     return( A );
 }
 
-A_OBJECT A_open( A )
-register A_OBJECT A;
+A_OBJECT A_open( A_OBJECT A )
 {
-    if ( A == NULL ) Error( "A_open: No OBJECT" );
+    assert( A != NULL );
     A-> A_mode = OPEN;
     Sfree( (char *) A-> A_p );
     A-> A_p =       NULL;
     return( A );
 }
 
-A_OBJECT A_close( A )
-register A_OBJECT A;
+A_OBJECT A_close( A_OBJECT A )
 {
-    register int i;
-    register A_row *p, *q, *t1, *t2;
+    int i;
+    A_row *p, *q, *t1, *t2;
 
     int N, NQ, NS;
     A_row *t1z, *t2z;
     int *cnt;
     A_row **ptr;
 
-    if ( A == NULL ) Error( "A_close: No OBJECT" );
+    assert( A != NULL );
     if ( A-> A_mode != OPEN ) return( A );
 
     if ( A-> A_nrows == 0 ) {
@@ -100,6 +94,7 @@ register A_OBJECT A;
     NQ = A-> A_nQ;
     NS = A-> A_nS * A-> A_nT;
     N = ( NQ > NS ) ? NQ : NS;
+    assert( N > 0 );
 
     t1  = A-> A_t;
     t2  = (A_row *) Salloc( ( A-> A_nrows + 2 ) * sizeof(A_row) );
@@ -110,7 +105,10 @@ register A_OBJECT A;
     ptr = (A_row **) Salloc( ( N + 1 ) * sizeof(A_row *) );
     for( i = N; --i >= 0; ) cnt[i] = 0;
 
-    for( p = t1z; --p >= t1; ) ++cnt[ p-> A_c ];
+    for( p = t1z; --p >= t1; ) {
+        assert( p-> A_c < N );
+        ++cnt[ p-> A_c ];
+    }
 
     p = t2z;
     for( i = NQ; --i >= 0; ) {
@@ -118,11 +116,14 @@ register A_OBJECT A;
         p -= cnt[ i ];
         cnt[ i ] = 0;
     }
+
+    assert( p == t2 );
     for( p = t1z; --p >= t1; ) {
-        q = --ptr[ i = p-> A_c ];
+        q = --ptr[ p-> A_c ];
         q-> A_a = p-> A_a;
+        assert( p-> A_b < N );
         ++cnt[ q-> A_b = p-> A_b ];
-        q-> A_c = i;
+        q-> A_c = p-> A_c;
     }
 
     p = t1z;
@@ -131,10 +132,13 @@ register A_OBJECT A;
         p -= cnt[ i ];
         cnt[ i ] = 0;
     }
+
+    assert( p == t1 );
     for( p = t2z; --p >= t2; ) {
-        q = --ptr[ i = p-> A_b ];
+        q = --ptr[ p-> A_b ];
+        assert( p-> A_a < N );
         ++cnt[ q-> A_a = p-> A_a ];
-        q-> A_b = i;
+        q-> A_b = p-> A_b;
         q-> A_c = p-> A_c;
     }
 
@@ -144,9 +148,11 @@ register A_OBJECT A;
         p -= cnt[ i ];
         cnt[ i ] = 0;
     }
+
+    assert( p == t2 );
     for( p = t1z; --p >= t1; ) {
-        q = --ptr[ i = p-> A_a ];
-        q-> A_a = i;
+        q = --ptr[ p-> A_a ];
+        q-> A_a = p-> A_a;
         q-> A_b = p-> A_b;
         q-> A_c = p-> A_c;
     }
@@ -157,7 +163,7 @@ register A_OBJECT A;
     t2z-> A_a = (t2z - 1)-> A_a;
     t2z-> A_b = (t2z - 1)-> A_b;
     t2z-> A_c = (t2z - 1)-> A_c;
-    (t2z + 1)-> A_a = MAXSHORT;
+    (t2z + 1)-> A_c = MAXSHORT;
 
     p = t2;
     t1 = t2 - 1;
@@ -166,14 +172,18 @@ register A_OBJECT A;
         ++cnt[ t2-> A_a ];
         while ( (++t1)-> A_c != (++t2)-> A_c
                 ||    t1 -> A_b !=    t2 -> A_b
-                ||    t1 -> A_a !=    t2 -> A_a ) ++cnt[ t2-> A_a ];
-        if ( p < q )
-            copymem( ( t2-q ) * sizeof(A_row),
-                     (char *) q, (char *) p );
+                ||    t1 -> A_a !=    t2 -> A_a ) {
+            ++cnt[ t2-> A_a ];
+        }
+        if ( p < q ) {
+            copymem( ( t2-q ) * sizeof(A_row), (char *) q, (char *) p );
+        }
         p += t2 - q;
         while ( (++t1)-> A_c == (++t2)-> A_c
                 &&    t1 -> A_b ==    t2 -> A_b
-                &&    t1 -> A_a ==    t2 -> A_a );
+                &&    t1 -> A_a ==    t2 -> A_a ) {
+            /* empty */;
+        }
     }
 
     A-> A_mode = NFA;
@@ -189,15 +199,13 @@ register A_OBJECT A;
     return( A );
 }
 
-A_OBJECT A_rename( A, rena )
-register A_OBJECT A;
-register SHORT *rena;
+A_OBJECT A_rename( A_OBJECT A, SHORT *rena )
 {
-    register A_row  *p, *pz;
-    register SHORT  *trena, *sp;
+    A_row  *p, *pz;
+    SHORT  *trena, *sp;
     int             nrena, i;
 
-    if ( A == NULL ) Error( "A_rename: No OBJECT" );
+    assert( A != NULL );
 
     trena = s_alloc( A-> A_nQ );
     for( sp = trena + A-> A_nQ; --sp >= trena; ) *sp = MAXSHORT;
@@ -219,7 +227,7 @@ register SHORT *rena;
         if ( *sp == MAXSHORT ) *sp = nrena++;
         p-> A_a = *sp;
     }
-    for( p = pz; --p >= A-> A_t; )
+    for( p = pz; --p >= A-> A_t; ) {
         if ( (p-> A_c = trena[p-> A_c]) == MAXSHORT
                 || ( p-> A_a == p-> A_c && p-> A_b == 0 ) ) {
             --pz;
@@ -227,6 +235,7 @@ register SHORT *rena;
             p-> A_b = pz-> A_b;
             p-> A_c = pz-> A_c;
         }
+    }
 
     Sfree( (char *) s_rena );
     s_rena = NULL;
@@ -250,13 +259,12 @@ register SHORT *rena;
     return( A_close( A_open( A ) ) );
 }
 
-A_OBJECT A_mkdense( A )
-register A_OBJECT A;
+A_OBJECT A_mkdense( A_OBJECT A )
 {
-    register A_row *p, *pz;
-    register R_OBJECT R;
+    A_row *p, *pz;
+    R_OBJECT R;
 
-    if ( A == NULL ) Error( "A_rename: No OBJECT" );
+    assert( A != NULL );
 
     R = R_create();
     R_insert( R, 0, 0 );

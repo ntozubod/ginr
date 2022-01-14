@@ -28,7 +28,7 @@ extern FILE * fpout ;
 extern T_OBJECT TT ;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
-int GMcmp ( u, v ) SHORT * u, * v ;
+int GMcmp ( SHORT * u, SHORT * v )
 {
   int ul, vl ;
   ul = veclen ( u ) ;
@@ -44,7 +44,7 @@ int GMcmp ( u, v ) SHORT * u, * v ;
 
   return veccmp ( u, v ) ;
 }
-A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
+A_OBJECT A_GMsseq ( A_OBJECT A )
 {
   int i, j, tmp ;
   A_row * p, * pz ;

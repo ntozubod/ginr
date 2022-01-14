@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-A_OBJECT A_lenmin ( A ) A_OBJECT A ;
+A_OBJECT A_lenmin ( A_OBJECT A )
 {
   A_row * lo, * hi, * p ;
   int i, l, cur, dead ;
