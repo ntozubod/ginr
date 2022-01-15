@@ -70,11 +70,10 @@ void A_cl_DFS( int state )
     if ( c_mark[ state ] == UNMARK ) c_mark[ state ] = MARK;
 }
 
-A_OBJECT A_clsure( A )
-register A_OBJECT A;
+A_OBJECT A_clsure( A_OBJECT A )
 {
-    register A_row *p, *pz;
-    register int i, n_condemned;
+    A_row *p, *pz;
+    int i, n_condemned;
 
     if ( A == NULL ) Error( "A_closure: No OBJECT" );
     if ( A-> A_mode <  NFA_CMLAM ) A = A_lamcm( A );

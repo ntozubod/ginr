@@ -42,14 +42,12 @@ void Error( char *s )
     exit( 1 );
 }
 
-SHORT *s_alloc( n )
-int n;
+SHORT *s_alloc( int n )
 {
     return( (SHORT *) Salloc( n * sizeof( SHORT ) ) );
 }
 
-int *i_alloc( n )
-int n;
+int *i_alloc( int n )
 {
     return( (int *) Salloc( n * sizeof( int ) ) );
 }

@@ -27,10 +27,9 @@
 
 #include "O.h"
 
-A_OBJECT A_clsseq( A1 )
-register A_OBJECT A1;
+A_OBJECT A_clsseq( A_OBJECT A1 )
 {
-    register A_OBJECT A;
+    A_OBJECT A;
     int current, end_st, i, bb, last_label, label, hi_next, k;
     last_label = 0; /* Initialiaze to suppress warning JHJ */
     SHORT *vec, *cur_vec;

@@ -69,9 +69,7 @@ int    LINUXmem = 0;
  *     Copy a block of memory
  */
 
-void copymem( n, from, to )
-register long n;
-register char *from, *to;
+void copymem( long n, char *from, char *to )
 {
     if ( from + n <= to || to + n <= from ) {
         bcopy( from, to, n );
@@ -88,8 +86,7 @@ register char *from, *to;
     }
 }
 
-void scribble( p, q )
-register char *p, *q;
+void scribble( char *p, char *q )
 {
     while( p < q ) *p++ = 0x55;
 }
@@ -100,8 +97,8 @@ register char *p, *q;
 
 void S_init()
 {
-    register S_ft *p;
-    register int i;
+    S_ft *p;
+    int i;
     if ( S_lo == 0 ) {
         int mem;
         for( mem = 512 * 1024 * 1024; S_lo == 0; mem /= 2 ) {
@@ -118,11 +115,9 @@ void S_init()
     }
 }
 
-void S_free( l, k )
-register S_ft *l;
-register int k;
+void S_free( S_ft *l, int k )
 {
-    register S_ft *p;
+    S_ft *p;
     if ( (long) l & 7 ) Error( "S_free: l not divisible by 8" );
     if ( l < S_lo || l + (1 << k) > S_hi ) Error( "S_free: bounds" );
     if ( ( l-S_lo ) & ((1 << k)-1) ) Error( "S_free: l improper" );
@@ -143,11 +138,10 @@ register int k;
     set_linkf( p, l );
 }
 
-void S_morecore( k )
-register int k;
+void S_morecore( int k )
 {
 
-    register int a, b;
+    int a, b;
     if ( S_hi != S_lo ) Error( "S_morecore: Out of Memory" );
     a = 0;
     S_hi = S_lo + LINUXmem / sizeof(S_ft);
@@ -161,11 +155,10 @@ register int k;
     }
 }
 
-S_ft *S_malloc( k )
-register int k;
+S_ft *S_malloc( int k )
 {
-    register int j;
-    register S_ft *p, *l, *q;
+    int j;
+    S_ft *p, *l, *q;
     if ( k >= S_m ) Error( "S_malloc: Argument constraint error" );
     ++S_alld_cnt[k];
     for(;;) {
@@ -192,12 +185,10 @@ register int k;
     return( l );
 }
 
-S_ft *S_realloc( l, k1, k2 )
-register S_ft *l;
-register int k1, k2;
+S_ft *S_realloc( S_ft *l, int k1, int k2 )
 {
-    register int k0;
-    register S_ft *p, *q;
+    int k0;
+    S_ft *p, *q;
     --S_alld_cnt[k1];
     ++S_alld_cnt[k2];
     if ( k1 >= k2 ) {
@@ -235,11 +226,9 @@ register int k1, k2;
     }
 }
 
-S_ft *S_copy( l, k )
-register S_ft *l;
-register int k;
+S_ft *S_copy( S_ft *l, int k )
 {
-    register S_ft *p;
+    S_ft *p;
     p = S_malloc( k );
     copymem( sizeof(S_ft) << k, ( char * ) l, ( char * ) p );
     return( p );
@@ -289,11 +278,10 @@ void S_arena()
  *     The length code and an audit flag are stored in allocated blocks
  */
 
-char *Salloc( n )
-register long n;
+char *Salloc( long n )
 {
-    register char *p;
-    register int k;
+    char *p;
+    int k;
     S_init();
     if ( n < 0 ) Error( "Salloc: Argument constraint error" );
     n = ( n + sizeof(S_ft) + 3 ) / sizeof(S_ft);
@@ -304,8 +292,7 @@ register long n;
     return( p + 4 );
 }
 
-void Sfree( p )
-register char *p;
+void Sfree( char *p )
 {
     if ( !p ) return;
     p -= 4;
@@ -313,11 +300,9 @@ register char *p;
     S_free( (S_ft *)p, (int)p[1] );
 }
 
-char *Srealloc( p, n )
-register char *p;
-register long n;
+char *Srealloc( char *p, long n )
 {
-    register int k;
+    int k;
     if ( n < 0 ) Error( "Srealloc: Argument constraint error" );
     if ( !p ) return( Salloc( n ) );
     n = ( n + sizeof(S_ft) + 3 ) / sizeof(S_ft);
@@ -329,8 +314,7 @@ register long n;
     return( p + 4 );
 }
 
-char *Scopy( p )
-register char *p;
+char *Scopy( char *p )
 {
     if ( !p ) return( 0 );
     p -= 4;

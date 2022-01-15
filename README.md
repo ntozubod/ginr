@@ -15,3 +15,8 @@ of the release under GPL version 3:
 [PDF](doc/inr_intro.pdf).
 This is in the process of being converted to markdown:
 [MD](doc/inr_intro.md).
+
+A hopefully trustworthy commit is and will be identified as using a
+separate branch 'restable'.
+Although the HEAD of this 'remaster' branch contains only tested code, it
+should be used with a caution until more testing has been done.

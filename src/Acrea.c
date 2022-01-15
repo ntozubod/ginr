@@ -34,7 +34,7 @@ extern FILE *fpout;
 
 A_OBJECT A_create()
 {
-    register A_OBJECT A;
+    A_OBJECT A;
 
     A = (A_OBJECT) Salloc( sizeof(struct A_desc) );
     A-> Type =      A_Object;
@@ -50,8 +50,7 @@ A_OBJECT A_create()
     return( A );
 }
 
-void A_destroy( A )
-register A_OBJECT A;
+void A_destroy( A_OBJECT A )
 {
     if ( A != NULL ) {
         Sfree( (char *) A-> A_p );
@@ -60,8 +59,7 @@ register A_OBJECT A;
     Sfree( (char *) A );
 }
 
-A_OBJECT A_rept( A )
-register A_OBJECT A;
+A_OBJECT A_rept( A_OBJECT A )
 {
     if ( A == NULL ) {
         fprintf( fpout, "  NULL Automaton\n" );
@@ -116,12 +114,11 @@ register A_OBJECT A;
     return( A );
 }
 
-void A_exchange( A1, A2 )
-register A_OBJECT A1, A2;
+void A_exchange( A_OBJECT A1, A_OBJECT A2 )
 {
-    register int            t_int;
-    register A_row **       t_Arpp;
-    register A_row *        t_Arp;
+    int            t_int;
+    A_row **       t_Arpp;
+    A_row *        t_Arp;
 
     if ( A1 == NULL ) {
         A1 = A_create();
@@ -162,11 +159,10 @@ register A_OBJECT A1, A2;
     if ( A2-> A_mode == (-1) ) A_destroy( A2 );
 }
 
-A_OBJECT A_copy( A )
-register A_OBJECT A;
+A_OBJECT A_copy( A_OBJECT A )
 {
-    register int i;
-    register A_OBJECT newA;
+    int i;
+    A_OBJECT newA;
     if ( A == NULL ) return( NULL );
     newA = (A_OBJECT) Scopy( (char *) A );
     newA-> A_p = NULL;
@@ -179,34 +175,33 @@ register A_OBJECT A;
     return( newA );
 }
 
-A_OBJECT A_deems( A )
-register A_OBJECT A;
+A_OBJECT A_deems( A_OBJECT A )
 {
     int new_mode;
     int lst_em;
-    register A_row *p;
+    A_row *p;
 
     if ( !( A-> A_ems ) ) return A;
     lst_em = 2 * A-> A_nT - 1;
     if ( A-> A_mode < NFA_EQLAM )   new_mode = A-> A_mode;
     else                            new_mode = NFA_EQLAM;
     A = A_open( A );
-    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
+    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
         if ( p-> A_b > 1 && p-> A_b <= lst_em ) p-> A_b = 0;
+    }
     A = A_close( A );
     A-> A_mode = new_mode;
     A-> A_ems = 0;
     return A;
 }
 
-A_OBJECT A_adems( A )
-register A_OBJECT A;
+A_OBJECT A_adems( A_OBJECT A )
 {
     int new_mode;
     int fst_em, lst_em;
-    register int i;
-    register int base;
-    register A_row *p;
+    int i;
+    int base;
+    A_row *p;
 
     if ( A-> A_ems ) return A;
     if ( A-> A_nT == 1 )
@@ -217,16 +212,17 @@ register A_OBJECT A;
     else                            new_mode = DFA_MIN;
     A = A_open( A );
     base = A-> A_nQ;
-    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; )
+    for ( p = A-> A_t + A-> A_nrows; --p >= A-> A_t; ) {
         if ( p-> A_b == 1 ) {
             p-> A_b = fst_em;
             p-> A_c = base;
         }
+    }
     for ( i = fst_em + 1; i <= lst_em; i++ )
         A = A_add( A, base + i - fst_em - 1, i, base + i - fst_em );
     A = A_add( A, base + lst_em - fst_em, 1, FINAL );
     A = A_close( A );
     A-> A_mode = new_mode;
     A-> A_ems = 1;
-    return A;
+    return ( A );
 }

@@ -36,8 +36,7 @@ static A_OBJECT GAl;
 static SHORT *l_stk, *l_low;
 static int l_cnt, l_top, l_reopen;
 
-int A_la_DFS( state )
-int state;
+int A_la_DFS( int state )
 {
     static int next;
     int dfn;
@@ -67,10 +66,9 @@ int state;
     return( state );
 }
 
-A_OBJECT A_lameq( A )
-register A_OBJECT A;
+A_OBJECT A_lameq( A_OBJECT A )
 {
-    register int i;
+    int i;
 
     if ( A == NULL ) Error( "A_lameq: No OBJECT" );
     if ( A-> A_nQ >= DELETED ) Error( "A_lameq: Too many states" );

@@ -40,8 +40,7 @@ T_OBJECT    TAlist;
 A_OBJECT    Alist[100];
 T_OBJECT    TT;
 
-char * pad20( s )
-char * s;
+char * pad20( char *s )
 {
     static char tmp[ 41 ];
     if ( strlen( s ) >= 20 ) return( s );
@@ -59,8 +58,7 @@ int ch = ' ';
 char    token[512];
 int in_string = 0;
 
-char *copyof( str )
-char *str;
+char *copyof( char *str )
 {
     return( strcpy( Salloc( strlen( str ) + 1 ), str ) );
 }

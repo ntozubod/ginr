@@ -1,5 +1,25 @@
 # INR remaster Changelog
 
+## 2.0.3f redux (2022-01-14)
+
+The redux branch is now tracing the dev branch to pick up any useful
+changes that occur there.
+
+#### src (from version 2.0.3b September 21, 2018)
+
+Acrea.c: Converted function declarations.
+
+Aopen.c: Converted function declatations and added use of assert() macro
+calls as an alternative to test and call to Error().
+
+Aload.c: Removed last instance of conditional compile for CMS.
+
+Lex.c: Postponed updating Copyright years.
+
+All .c files: Removed any use of the register declaration.
+
+All .c files: Converted any function declarations to C89 form.
+
 ## Branch started from redux (2022-01-13)
 
 The mainenance directories (compare and misc) are deleted as this branch

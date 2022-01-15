@@ -33,11 +33,10 @@ extern T_OBJECT TT;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
 
-A_OBJECT A_LMsseq( A )
-register A_OBJECT A;
+A_OBJECT A_LMsseq( A_OBJECT A )
 {
-    register int i, j, tmp;
-    register A_row *p, *pz;
+    int i, j, tmp;
+    A_row *p, *pz;
     int tt;
     int n, hsize, base, head, current, father, son, gap, vlen;
     int k, sig_lim;

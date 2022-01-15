@@ -36,7 +36,7 @@ static int R_fail = 0;
 
 R_OBJECT R_create( )
 {
-    register R_OBJECT R;
+    R_OBJECT R;
     R = (R_OBJECT) Salloc( sizeof(struct R_desc) );
     R-> Type = R_Object;
     R-> R_n  = 0;
@@ -48,8 +48,7 @@ R_OBJECT R_create( )
     return( R );
 }
 
-void R_destroy( R )
-register R_OBJECT R;
+void R_destroy( R_OBJECT R )
 {
     if ( R == NULL ) return;
     Sfree( (char *) R-> R_rec );
@@ -57,11 +56,9 @@ register R_OBJECT R;
     Sfree( (char *) R );
 }
 
-int R_member( R, reca, recb )
-register R_OBJECT R;
-register int reca, recb;
+int R_member( R_OBJECT R, int reca, int recb )
 {
-    register SHORT *p;
+    SHORT *p;
     ++R_calls;
     p  = R-> R_hash
          + ((((16807 * (unsigned) reca + recb) & 017777777777) * 16807 )
@@ -78,13 +75,11 @@ register int reca, recb;
     return( -1 );
 }
 
-R_OBJECT R_grow( R, lrec )
-register R_OBJECT R;
-int lrec;
+R_OBJECT R_grow( R_OBJECT R, int lrec )
 {
-    register SHORT *p, *pl;
-    register R_row *q, *ql;
-    register int i;
+    SHORT *p, *pl;
+    R_row *q, *ql;
+    int i;
     if ( lrec < 15 ) lrec = 15;
     if ( lrec <= R-> R_lrec ) return( R );
     Sfree( (char *) R-> R_hash );
@@ -110,11 +105,9 @@ int lrec;
     return( R );
 }
 
-int R_insert( R, reca, recb )
-register R_OBJECT R;
-register int reca, recb;
+int R_insert( R_OBJECT R, int reca, int recb )
 {
-    register int i;
+    int i;
     if ( R-> R_n >= R-> R_lrec ) {
         if ( R-> R_n >= MAXSHORT )
             Error( "R_insert: Table FULL" );
@@ -126,9 +119,7 @@ register int reca, recb;
     return( *R_hashpos = R-> R_n++ );
 }
 
-R_row *R_rec( R, i )
-register R_OBJECT R;
-register int i;
+R_row *R_rec( R_OBJECT R, int i )
 {
     if ( i >= 0 && i < R-> R_n ) return( R-> R_rec + i );
     else    return( NULL );

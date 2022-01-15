@@ -27,12 +27,10 @@
 
 #include "O.h"
 
-A_OBJECT A_retape( A1, A2, T )
-register A_OBJECT A1, A2;
-T_OBJECT T;
+A_OBJECT A_retape( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
 {
-    register int i;
-    register A_row *p;
+    int i;
+    A_row *p;
     int sigma, tape, ntapes;
     int old, base, i1, i2;
     char * chp;
@@ -98,10 +96,9 @@ T_OBJECT T;
     return( A1 );
 }
 
-A_OBJECT A_comma( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_comma( A_OBJECT A1, A_OBJECT A2 )
 {
-    register A_row *p;
+    A_row *p;
     int sigma, tape, ntapes;
 
     if ( A1-> A_ems ) A1 = A_deems( A1 );

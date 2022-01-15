@@ -29,11 +29,10 @@ extern FILE *fpout;
 
 #include "O.h"
 
-void A_conform( A1, A2 )
-register A_OBJECT A1, A2;
+void A_conform( A_OBJECT A1, A_OBJECT A2 )
 {
-    register int i;
-    register A_row *p;
+    int i;
+    A_row *p;
 
     if ( A1-> A_nT < A2-> A_nT ) {
         for( p = A1-> A_t + A1-> A_nrows; --p >= A1-> A_t; ) {
@@ -64,22 +63,19 @@ A_OBJECT A_lambda()
     return( A_add( A_create(), START, 1, FINAL ) );
 }
 
-A_OBJECT A_letter( t, x )
-int t, x;
+A_OBJECT A_letter( int t, int x )
 {
-    register A_OBJECT A;
+    A_OBJECT A;
     A = A_create();
     A-> A_nT = t + 1;
     if ( x == 1 && t == 0 ) A-> A_nT = 2;
     return( A_add( A_add( A, START, x * A-> A_nT + t, 2 ), 2, 1, FINAL ) );
 }
 
-A_OBJECT A_deecho( A, ECHO, NOECHO )
-register A_OBJECT A;
-int ECHO, NOECHO;
+A_OBJECT A_deecho( A_OBJECT A, int ECHO, int NOECHO )
 {
-    register A_OBJECT A1;
-    register A_row *p;
+    A_OBJECT A1;
+    A_row *p;
     int e, base;
     A = A_min( A );
     A1 = A_create();
@@ -111,11 +107,10 @@ int ECHO, NOECHO;
     return A1;
 }
 
-A_OBJECT A_opt( A )
-register A_OBJECT A;
+A_OBJECT A_opt( A_OBJECT A )
 {
-    register int new_state;
-    register A_row *p;
+    int new_state;
+    A_row *p;
 
     if ( A-> A_ems ) A = A_deems( A );
     A = A_open( A );
@@ -129,11 +124,10 @@ register A_OBJECT A;
     return( A );
 }
 
-A_OBJECT A_plus( A )
-register A_OBJECT A;
+A_OBJECT A_plus( A_OBJECT A )
 {
-    register int new_state;
-    register A_row *p;
+    int new_state;
+    A_row *p;
 
     if ( A-> A_ems ) A = A_deems( A );
     A = A_open( A_trim( A ) );
@@ -148,17 +142,15 @@ register A_OBJECT A;
     return( A );
 }
 
-A_OBJECT A_star( A )
-A_OBJECT A;
+A_OBJECT A_star( A_OBJECT A )
 {
     return( A_opt( A_plus( A ) ) );
 }
 
-A_OBJECT A_union( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_union( A_OBJECT A1, A_OBJECT A2 )
 {
-    register int base, a, c;
-    register A_row *p;
+    int base, a, c;
+    A_row *p;
 
     if ( A1-> A_ems && !(A2-> A_ems) ) A1 = A_deems( A1 );
     if ( A2-> A_ems && !(A1-> A_ems) ) A2 = A_deems( A2 );
@@ -179,11 +171,10 @@ register A_OBJECT A1, A2;
     return( A1 );
 }
 
-A_OBJECT A_percent( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_percent( A_OBJECT A1, A_OBJECT A2 )
 {
-    register int base, a, b, c;
-    register A_row *p;
+    int base, a, b, c;
+    A_row *p;
 
     if ( A1-> A_ems ) A1 = A_deems( A1 );
     if ( A2-> A_ems ) A2 = A_deems( A2 );
@@ -212,11 +203,10 @@ register A_OBJECT A1, A2;
     return( A1 );
 }
 
-A_OBJECT A_concat( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_concat( A_OBJECT A1, A_OBJECT A2 )
 {
-    register int base, a, c;
-    register A_row *p;
+    int base, a, c;
+    A_row *p;
 
     if ( A1-> A_ems ) A1 = A_deems( A1 );
     A_conform( A1, A2 );
@@ -239,10 +229,9 @@ register A_OBJECT A1, A2;
     return( A1 );
 }
 
-A_OBJECT A_intersect( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_intersect( A_OBJECT A1, A_OBJECT A2 )
 {
-    register A_OBJECT A;
+    A_OBJECT A;
     int current;
     A_row *p1, *p1z, *p2, *p2z;
     R_OBJECT R;
@@ -291,10 +280,9 @@ register A_OBJECT A1, A2;
     return( A );
 }
 
-A_OBJECT A_differ( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_differ( A_OBJECT A1, A_OBJECT A2 )
 {
-    register A_OBJECT A;
+    A_OBJECT A;
     int current, dead;
     A_row *p1, *p1z, *p2, *p2z;
     R_OBJECT R;
@@ -355,10 +343,9 @@ register A_OBJECT A1, A2;
     return( A );
 }
 
-A_OBJECT A_xor( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_xor( A_OBJECT A1, A_OBJECT A2 )
 {
-    register A_OBJECT A;
+    A_OBJECT A;
     int current, dead;
     A_row *p1, *p1z, *p2, *p2z;
     R_OBJECT R;
@@ -445,10 +432,9 @@ register A_OBJECT A1, A2;
     return( A );
 }
 
-A_OBJECT A_alph( A )
-register A_OBJECT A;
+A_OBJECT A_alph( A_OBJECT A )
 {
-    register A_row *p;
+    A_row *p;
 
     if ( A-> A_ems ) A = A_deems( A );
     A = A_open( A_trim( A ) );
@@ -469,11 +455,10 @@ register A_OBJECT A;
     return( A_trim( A ) );
 }
 
-A_OBJECT A_rev( A )
-register A_OBJECT A;
+A_OBJECT A_rev( A_OBJECT A )
 {
-    register A_row *p;
-    register int tmp;
+    A_row *p;
+    int tmp;
     int new_state;
     int old_mode;
 
@@ -499,10 +484,9 @@ register A_OBJECT A;
     return( A );
 }
 
-A_OBJECT A_shuffle( A1, A2 )
-register A_OBJECT A1, A2;
+A_OBJECT A_shuffle( A_OBJECT A1, A_OBJECT A2 )
 {
-    register A_OBJECT A;
+    A_OBJECT A;
     int current, cur_a, cur_b;
     A_row *p1, *p1z, *p2, *p2z;
     R_OBJECT R;
