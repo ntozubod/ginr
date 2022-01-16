@@ -1,5 +1,17 @@
 # INR remaster Changelog
 
+## 2.0.3g redux (2022-01-16)
+
+The tryaug branch was an attempt in August 2018 to extend and improve INR.
+It did not go very far but there may be some useful mods to merge into redux.
+
+#### src (from version 2.0.4a August 15, 2018 updated Sept 6, 2018)
+
+Most of the mods found are of questionable utility and have not been carried
+over.
+However, there was some work done on S.c that might prove useful.
+These changes have been incorporated.
+
 ## 2.0.3f redux (2022-01-14)
 
 The redux branch is now tracing the dev branch to pick up any useful
