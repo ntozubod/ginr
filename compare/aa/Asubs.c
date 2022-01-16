@@ -25,9 +25,9 @@
 #include <stdio.h>
 extern FILE * fpout ;
 #include "O.h"
-#define UNMARK          MAXSHORT
-#define LAST            (MAXSHORT-1)
-A_OBJECT A_subs ( A ) A_OBJECT A ;
+#define UNMARK MAXSHORT
+#define LAST   (MAXSHORT-1)
+A_OBJECT A_subs ( A_OBJECT A )
 {
   int i, j, tmp ;
   A_row * p, * pz ;
@@ -92,7 +92,7 @@ A_OBJECT A_subs ( A ) A_OBJECT A ;
     pnlam [ i ] = p ;
   }
 
-  vec [ i = 0 ] = START ;
+  vec [ ( i = 0 ) ] = START ;
   pz = pnlam [ START ] ;
 
   for ( p = A -> A_t ;
@@ -122,9 +122,11 @@ A_OBJECT A_subs ( A ) A_OBJECT A ;
 
     for ( i = 0 ;
           ( j = fvec [ i ] ) < MAXSHORT ;
-          i ++ ) if ( pnlam [ j ] != A -> A_p [ j + 1 ] ) {
+          i ++ ) {
+      if ( pnlam [ j ] != A -> A_p [ j + 1 ] ) {
         heap [ ++ hsize ] = pnlam [ j ] ;
       }
+    }
 
     if ( hsize == 0 ) {
       continue ;
@@ -170,21 +172,29 @@ A_OBJECT A_subs ( A ) A_OBJECT A ;
 
           for ( gap = n / 2 ;
                 gap > 0 ;
-                gap /= 2 ) for ( i = gap ;
-                                   i < n ;
-                                   i ++ ) for ( j = i - gap ;
-                                                  j >= 0 && vec [ j ] > vec [ j + gap ] ;
-                                                  j -= gap ) {
+                gap /= 2 ) {
+            for ( i = gap ;
+                  i < n ;
+                  i ++ ) {
+              for ( j = i - gap ;
+                    j >= 0 && vec [ j ] > vec [ j + gap ] ;
+                    j -= gap ) {
                 tmp = vec [ j ] ;
                 vec [ j ] = vec [ j + gap ] ;
                 vec [ j + gap ] = tmp ;
               }
-
-        } else for ( i = 0 ;
-                       i < A -> A_nQ ;
-                       ++ i ) if ( set [ i ] != UNMARK ) {
-              set [ vec [ n ++ ] = i ] = UNMARK ;
             }
+          }
+
+        } else {
+          for ( i = 0 ;
+                i < A -> A_nQ ;
+                ++ i ) {
+            if ( set [ i ] != UNMARK ) {
+              set [ ( vec [ n ++ ] = i ) ] = UNMARK ;
+            }
+          }
+        }
 
         head = LAST ;
         vlen = 0 ;

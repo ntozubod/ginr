@@ -25,9 +25,9 @@
 #include <stdio.h>
 extern FILE * fpout ;
 #include "O.h"
-#define UNMARK  MAXSHORT
-#define LAST    (MAXSHORT-1)
-A_OBJECT A_min ( A ) A_OBJECT A ;
+#define UNMARK MAXSHORT
+#define LAST   (MAXSHORT-1)
+A_OBJECT A_min ( A_OBJECT A )
 {
   A_row * p ;
   int f, s, j, ns ;
@@ -97,7 +97,7 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
   int_N = s_alloc ( A -> A_nQ ) ;
   heap = ( A_row ** ) Salloc ( ( A -> A_nQ + 1 ) * sizeof ( A_row * ) ) ;
   nB = 2 ;
-  in_B [ START ] = in_B [ 2 ] = 0 ;
+  in_B [ START ] = ( in_B [ 2 ] = 0 ) ;
   B_card [ 0 ] = A -> A_nQ - 1 ;
   B_H [ 0 ] = START ;
   B_N [ START ] = 2 ;
@@ -115,7 +115,7 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
 
   in_B [ FINAL ] = 1 ;
   B_card [ 1 ] = 1 ;
-  B_H [ 1 ] = B_N [ FINAL ] = B_L [ FINAL ] = FINAL ;
+  B_H [ 1 ] = ( B_N [ FINAL ] = ( B_L [ FINAL ] = FINAL ) ) ;
   in_wait [ 0 ] = 0 ;
   in_wait [ 1 ] = 0 ;
   wait_H = 1 ;
@@ -139,7 +139,7 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
     for ( s = B_H [ b ] ;
           s != B_H [ b ] || p == NULL ;
           s = B_N [ s ] ) {
-      p = lo = A -> A_p [ s ] ;
+      p = ( lo = A -> A_p [ s ] ) ;
       hi = A -> A_p [ s + 1 ] - 1 ;
 
       if ( lo <= hi && x <= hi -> A_b ) {
@@ -193,9 +193,6 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
     for ( ;
           ;
         ) {
-      /*-------------------------------------------------------------------------*/
-      /**/
-      /**/
       if ( x != heap [ 1 ] -> A_b || hsize == 0 ) {
         for ( j = JL_H ;
               j < LAST ;
@@ -211,7 +208,7 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
               in_B [ s ] = nB ;
               -- B_card [ j ] ;
               ++ B_card [ nB ] ;
-              B_L [ B_H [ j ] = B_N [ B_L [ s ] ] = B_N [ s ] ] = B_L [ s ] ;
+              B_L [ ( B_H [ j ] = ( B_N [ B_L [ s ] ] = B_N [ s ] ) ) ] = B_L [ s ] ;
               B_N [ s ] = B_H [ nB ] ;
               B_H [ nB ] = s ;
               ns = int_N [ s ] ;
@@ -224,7 +221,7 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
               B_L [ ns ] = s ;
             }
 
-            B_L [ B_N [ s ] = B_H [ nB ] ] = s ;
+            B_L [ ( B_N [ s ] = B_H [ nB ] ) ] = s ;
             in_JL [ nB ] = 0 ;
 
             if ( in_wait [ j ] < LAST || B_card [ nB ] <= B_card [ j ] ) {
@@ -251,12 +248,14 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
 
             ++ nB ;
 
-          } else for ( s = int_H [ j ] ;
-                         s < LAST ;
-                         s = ns ) {
+          } else {
+            for ( s = int_H [ j ] ;
+                  s < LAST ;
+                  s = ns ) {
               ns = int_N [ s ] ;
               int_N [ s ] = UNMARK ;
             }
+          }
 
           in_JL [ j ] = 0 ;
         }
@@ -313,9 +312,6 @@ A_OBJECT A_min ( A ) A_OBJECT A ;
       }
 
       heap [ f ] = lo ;
-      /**/
-      /**/
-      /*-------------------------------------------------------------------------*/
     }
   }
 

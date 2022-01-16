@@ -44,7 +44,7 @@ T_OBJECT T_create ( )
   T -> T_hash [ 0 ] = MAXSHORT ;
   return ( T ) ;
 }
-void T_destroy ( T ) T_OBJECT T ;
+void T_destroy ( T_OBJECT T )
 {
   char ** p, ** pl ;
 
@@ -63,8 +63,7 @@ void T_destroy ( T ) T_OBJECT T ;
   Sfree ( ( char * ) T -> T_hash ) ;
   Sfree ( ( char * ) T ) ;
 }
-int T_member ( T, name ) T_OBJECT T ;
-char * name ;
+int T_member ( T_OBJECT T, char * name )
 {
   int h ;
   char * na ;
@@ -97,8 +96,7 @@ char * name ;
   T_hashpos = p ;
   return ( - 1 ) ;
 }
-T_OBJECT T_grow ( T, lname ) T_OBJECT T ;
-int lname ;
+T_OBJECT T_grow ( T_OBJECT T, int lname )
 {
   SHORT * p, * pl ;
   char ** q, ** ql ;
@@ -143,8 +141,7 @@ int lname ;
 
   return ( T ) ;
 }
-int T_insert ( T, name ) T_OBJECT T ;
-char * name ;
+int T_insert ( T_OBJECT T, char * name )
 {
   int i ;
 
@@ -163,8 +160,7 @@ char * name ;
   T -> T_name [ T -> T_n ] = strcpy ( Salloc ( T_nmeptr - name + 1 ), name ) ;
   return ( * T_hashpos = T -> T_n ++ ) ;
 }
-char * T_name ( T, i ) T_OBJECT T ;
-int i ;
+char * T_name ( T_OBJECT T, int i )
 {
   if ( i >= 0 && i < T -> T_n ) {
     return ( T -> T_name [ i ] ) ;

@@ -42,7 +42,7 @@ U_OBJECT U_create ( )
   U -> U_hash [ 0 ] = MAXSHORT ;
   return ( U ) ;
 }
-void U_destroy ( U ) U_OBJECT U ;
+void U_destroy ( U_OBJECT U )
 {
   if ( U == NULL ) {
     return ;
@@ -52,8 +52,7 @@ void U_destroy ( U ) U_OBJECT U ;
   Sfree ( ( char * ) U -> U_hash ) ;
   Sfree ( ( char * ) U ) ;
 }
-int U_member ( U, reca, recb, recc ) U_OBJECT U ;
-int reca, recb, recc ;
+int U_member ( U_OBJECT U, int reca, int recb, int recc )
 {
   SHORT * p ;
   ++ U_calls ;
@@ -75,8 +74,7 @@ int reca, recb, recc ;
   U_hashpos = p ;
   return ( - 1 ) ;
 }
-U_OBJECT U_grow ( U, lrec ) U_OBJECT U ;
-int lrec ;
+U_OBJECT U_grow ( U_OBJECT U, int lrec )
 {
   SHORT * p, * pl ;
   A_row * q, * ql ;
@@ -122,8 +120,7 @@ int lrec ;
 
   return ( U ) ;
 }
-int U_insert ( U, reca, recb, recc ) U_OBJECT U ;
-int reca, recb, recc ;
+int U_insert ( U_OBJECT U, int reca, int recb, int recc )
 {
   int i ;
 
@@ -144,8 +141,7 @@ int reca, recb, recc ;
   U -> U_rec [ U -> U_n ] . A_c = recc ;
   return ( * U_hashpos = U -> U_n ++ ) ;
 }
-A_row * U_rec ( U, i ) U_OBJECT U ;
-int i ;
+A_row * U_rec ( U_OBJECT U, int i )
 {
   if ( i >= 0 && i < U -> U_n ) {
     return ( U -> U_rec + i ) ;

@@ -26,9 +26,9 @@
 #include "O.h"
 extern FILE * fpout ;
 extern T_OBJECT TT ;
-#define UNMARK          MAXSHORT
-#define LAST            (MAXSHORT-1)
-int GMcmp ( u, v ) SHORT * u, * v ;
+#define UNMARK MAXSHORT
+#define LAST   (MAXSHORT-1)
+int GMcmp ( SHORT * u, SHORT * v )
 {
   int ul, vl ;
   ul = veclen ( u ) ;
@@ -44,16 +44,17 @@ int GMcmp ( u, v ) SHORT * u, * v ;
 
   return veccmp ( u, v ) ;
 }
-A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
+A_OBJECT A_GMsseq ( A_OBJECT A )
 {
   int i, j, tmp ;
   A_row * p, * pz ;
   int tt ;
   int n, hsize, base, head, current, father, son, gap, vlen ;
   int k, sig_lim, queue_lim ;
-
-  int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
-
+  int aa, bb, cc, nq, len, from, to, label, hi_next, try1 ;
+  label = 0 ;
+  from = 0 ;
+// Initialiaze to suppress warning JHJ
   int GMval ;
   A_row * insert, * last, ** heap ;
   SHORT * set, * vec, * fvec, ** fr_coeff, ** to_coeff, * queue, * st_len ;
@@ -88,10 +89,12 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
 
   for ( i = A -> A_nrows ;
         -- i >= 0 ;
-      ) if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
+      ) {
+    if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
       tmp = 1 ;
       A -> A_t [ i ] . A_b = 0 ;
     }
+  }
 
   if ( tmp ) {
     A = A_min ( A_open ( A ) ) ;
@@ -135,8 +138,7 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
   }
 
   hi_next = MAXSHORT - 2 ;
-  /* Construct start state as the write closure of START.
-   */
+// Construct start state as the write closure of START.
   set [ START ] = head ;
   head = START ;
   ++ vlen ;
@@ -159,7 +161,7 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
           continue ;
         }
 
-        /* Error( "A_sseq: Relation not single-valued (S2)" ); */
+// Error( "A_sseq: Relation not single-valued (S2)" );
         if ( set [ p -> A_c ] == UNMARK ) {
           set [ p -> A_c ] = head ;
           head = p -> A_c ;
@@ -207,15 +209,18 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
 
   for ( i = 0 ;
         i < A -> A_nQ ;
-        ++ i ) if ( set [ i ] != UNMARK ) {
+        ++ i ) {
+    if ( set [ i ] != UNMARK ) {
       set [ i ] = UNMARK ;
       pz = A -> A_p [ i + 1 ] ;
 
       for ( p = A -> A_p [ i ] ;
             p < pz ;
-            p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+            p ++ ) {
+        if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
           break ;
         }
+      }
 
       if ( i == FINAL || p < pz ) {
         vec [ n ++ ] = i ;
@@ -224,6 +229,7 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
         Sfree ( ( char * ) to_coeff [ i ] ) ;
       }
     }
+  }
 
   vlen = n ;
 
@@ -250,24 +256,26 @@ A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
   for ( j = 0 ;
         ;
         j ++ ) {
-    try = to_coeff [ vec [ 0 ] ] [ j ] ;
+    try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
 
-    if ( try == MAXSHORT ) goto idone ;
+    if ( try1 == MAXSHORT ) {
+      goto idone ;
+    }
 
     for ( i = 1 ;
           i < vlen ;
-          i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+          i ++ ) {
+      if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
         goto idone ;
       }
+    }
 
     if ( to != START ) {
       An = A_add ( An, from, label, to ) ;
     }
 
     from = to ;
-
-    label = 2 * try + 1 ;
-
+    label = 2 * try1 + 1 ;
     to = hi_next -- ;
   }
 
@@ -307,12 +315,11 @@ idone :
       continue ;
     }
 
-    /*     Unpack current state:
-     * (1) fvec is set to vector of component states followed by their coeffs
-     * (2) load heap with positions in source automaton for each component state
-     * (3) load fr_coeff with the pointers to coeff vectors
-     * (4) heapify the heap
-     */
+// Unpack current state:
+// (1) fvec is set to vector of component states followed by their coeffs
+// (2) load heap with positions in source automaton for each component state
+// (3) load fr_coeff with the pointers to coeff vectors
+// (4) heapify the heap
     hsize = 0 ;
     fvec = V_vec ( V, current ) ;
     len = veclen ( fvec ) / 2 ;
@@ -329,18 +336,23 @@ idone :
       fr_coeff [ j ] = V_vec ( Vs, fvec [ len + i ] ) ;
     }
 
-    /*
-    printf( "\n" );
-    printf( "Processing state %d\n", current );
-    printf( "state coeff\n" );
-    for( i = 0; i < len; i++ ) {
-    j = fvec[ i ];
-    printf( "%5d ", j );
-    for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
-    printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
-    printf( "\n" );
-    }
-    */
+//      printf( "\n" );
+//      printf( "Processing state %d\n", current );
+//      printf( "state coeff\n" );
+//
+//      for (   i = 0;
+//              i < len;
+//              i++ ) {
+//          j = fvec[ i ];
+//          printf( "%5d ", j );
+//
+//          for (   tt = 0;
+//                  fr_coeff[ j ][ tt ] != MAXSHORT;
+//                  tt++ ) {
+//              printf( "%s ", T_name( TT, fr_coeff[ j ][ tt ] ) ); }
+//
+//          printf( "\n" );
+//      }
     if ( hsize == 0 ) {
       continue ;
     }
@@ -367,16 +379,14 @@ idone :
       heap [ father ] = insert ;
     }
 
-    /* Main loop to process current state: Each cycle processes position at the
-     * top of the heap.
-     */
+// Main loop to process current state: Each cycle processes position at the
+// top of the heap.
     last = heap [ 1 ] ;
 
     for ( ;
           ;
         ) {
-      /* End processing for an output state.
-       */
+// End processing for an output state.
       if ( ( last -> A_b != heap [ 1 ] -> A_b || hsize == 0 ) && vlen > 0 ) {
         n = 0 ;
 
@@ -388,9 +398,11 @@ idone :
 
             for ( p = A -> A_p [ head ] ;
                   p < pz ;
-                  p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+                  p ++ ) {
+              if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
                 break ;
               }
+            }
 
             if ( head == FINAL || p < pz ) {
               vec [ n ++ ] = head ;
@@ -406,28 +418,35 @@ idone :
 
           for ( gap = n / 2 ;
                 gap > 0 ;
-                gap /= 2 ) for ( i = gap ;
-                                   i < n ;
-                                   i ++ ) for ( j = i - gap ;
-                                                  j >= 0 && vec [ j ] > vec [ j + gap ] ;
-                                                  j -= gap ) {
+                gap /= 2 ) {
+            for ( i = gap ;
+                  i < n ;
+                  i ++ ) {
+              for ( j = i - gap ;
+                    j >= 0 && vec [ j ] > vec [ j + gap ] ;
+                    j -= gap ) {
                 tmp = vec [ j ] ;
                 vec [ j ] = vec [ j + gap ] ;
                 vec [ j + gap ] = tmp ;
               }
+            }
+          }
 
         } else {
           for ( i = 0 ;
                 i < A -> A_nQ ;
-                ++ i ) if ( set [ i ] != UNMARK ) {
+                ++ i ) {
+            if ( set [ i ] != UNMARK ) {
               set [ i ] = UNMARK ;
               pz = A -> A_p [ i + 1 ] ;
 
               for ( p = A -> A_p [ i ] ;
                     p < pz ;
-                    p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+                    p ++ ) {
+                if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
                   break ;
                 }
+              }
 
               if ( i == FINAL || p < pz ) {
                 vec [ n ++ ] = i ;
@@ -436,6 +455,7 @@ idone :
                 Sfree ( ( char * ) to_coeff [ i ] ) ;
               }
             }
+          }
         }
 
         vlen = n ;
@@ -449,42 +469,50 @@ idone :
 
         to = hi_next ;
 
-        /*
-        printf( "Destination state\n" );
-        printf( "state coeff\n" );
-        for( i = 0; i < vlen; i++ ) {
-        j = vec[ i ];
-        printf( "%5d ", j );
-        for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ ) {
-        int symb = T_name( TT, to_coeff[j][tt] )[ 0 ] & 0xff;
-        if ( symb <= ' ' || symb > 127 ) {
-        printf( "\\%x ", symb );
-        }
-        else {
-        printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
-        }
-        }
-        printf( "\n" );
-        }
-        */
+//              printf( "Destination state\n" );
+//              printf( "state coeff\n" );
+//
+//              for (   i = 0;
+//                      i < vlen;
+//                      i++ ) {
+//                  j = vec[ i ];
+//                  printf( "%5d ", j );
+//
+//                  for ( tt = 0;
+//                        to_coeff[ j ][ tt ] != MAXSHORT;
+//                        tt++ ) {
+//                      int symb =
+//                          T_name( TT, to_coeff[ j ][ tt ] )[ 0 ] & 0xff;
+//
+//                      if ( symb <= ' ' || symb > 127 ) {
+//                          printf( "\\%x ", symb ); }
+//
+//                      else {
+//                          printf( "%s ",
+//                              T_name( TT, to_coeff[ j ][ tt ] ) ); } }
+//
+//                  printf( "\n" );
+//              }
         for ( j = 0 ;
               ;
               j ++ ) {
-          try = to_coeff [ vec [ 0 ] ] [ j ] ;
+          try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
 
-          if ( try == MAXSHORT ) goto done ;
+          if ( try1 == MAXSHORT ) {
+            goto done ;
+          }
 
           for ( i = 1 ;
                 i < vlen ;
-                i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+                i ++ ) {
+            if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
               goto done ;
             }
+          }
 
           An = A_add ( An, from, label, to ) ;
           from = to ;
-
-          label = 2 * try + 1 ;
-
+          label = 2 * try1 + 1 ;
           to = -- hi_next ;
 
           if ( to < V -> V_n ) {
@@ -524,25 +552,36 @@ done :
 
             for ( k = current ;
                   k > 0 ;
-                  k = back [ k ] ) if ( sig [ k ] == i ) {
+                  k = back [ k ] ) {
+              if ( sig [ k ] == i ) {
                 ++ j ;
               }
+            }
 
             if ( j > 2 ) {
               Error ( "A_sseq: Not subsequential (?)" ) ;
-// if ( j > vlen )
-              /*
-                            printf( "Destination state\n" );
-                            printf( "state coeff\n" );
-                            int i1;
-                            for( i1 = 0; i1 < vlen; i1++ ) {
-                              int j1 = vec[ i1 ];
-                              printf( "%5d ", j1 );
-                              for( tt = 0; to_coeff[j1][tt] != MAXSHORT; tt++ )
-                              printf( "%s ", T_name( TT, to_coeff[j1][tt] ) );
-                              printf( "\n" );
-                            }
-              */
+//                          if ( j > vlen ) {
+//                              printf( "Destination state\n" );
+//                              printf( "state coeff\n" );
+//                              int i1;
+//
+//                              for (   i1 = 0;
+//                                      i1 < vlen;
+//                                      i1++ ) {
+//                                  int j1 = vec[ i1 ];
+//                                  printf( "%5d ", j1 );
+//
+//                                  for (   tt = 0;
+//                                          to_coeff[ j1 ][ tt ] != MAXSHORT;
+//                                          tt++ ) {
+//                                      printf( "%s ",
+//                                              T_name( TT,
+//                                                      to_coeff[ j1 ][ tt ]
+//                                                    ) ); }
+//
+//                                  printf( "\n" );
+//                              }
+//                          }
             }
           }
         }
@@ -554,9 +593,8 @@ done :
         break ;
       }
 
-      /* Main processing for a transition from the input automaton.
-       * Add state to subset and compute coefficient.
-       */
+// Main processing for a transition from the input automaton.
+// Add state to subset and compute coefficient.
       aa = heap [ 1 ] -> A_a ;
       bb = heap [ 1 ] -> A_b ;
       cc = heap [ 1 ] -> A_c ;
@@ -615,7 +653,7 @@ done :
           for ( i = 0 ;
                 i < nq ;
                 i ++ ) {
-            /* printf( "--> %d\n", queue[ i ] ); */
+//                      printf( "--> %d\n", queue[ i ] );
             pz = A -> A_p [ queue [ i ] + 1 ] ;
 
             for ( p = A -> A_p [ queue [ i ] ] ;
@@ -626,7 +664,7 @@ done :
                   continue ;
                 }
 
-                /* Error( "A_sseq: Relation not single-valued (2)" ); */
+// Error( "A_sseq: Relation not single-valued (2)" );
                 if ( set [ p -> A_c ] == UNMARK ) {
                   set [ p -> A_c ] = head ;
                   head = p -> A_c ;
@@ -722,9 +760,7 @@ done :
   A_destroy ( An ) ;
   V_destroy ( V ) ;
   V_destroy ( Vs ) ;
-  /*
-      A = A_rename( A, 0 );
-  */
+//  A = A_rename( A, 0 );
   A = A_mkdense ( A ) ;
   A = A_close ( A ) ;
   A -> A_mode = SSEQ ;

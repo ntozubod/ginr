@@ -10,14 +10,13 @@ util.o Lex.o Colon.o y.tab.o
 SOURCE 	= Makefile $(HFILES) $(CFILES) Parse.y
 
 .c.o:
-	gcc -Wall -O0 -g -c $*.c
+	gcc -Wall -O -c $*.c
 
 ginr:	$(OFILES)
-	gcc -Wall -O0 -g $(OFILES) -o ginr
+	gcc -Wall -O $(OFILES) -o ginr
 
-format:	$(CFILES) $(HFILES)
-	astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
---break-blocks=all $(CFILES) $(HFILES)
+format:	$(CFILES)
+	astyle --style=1tbs $(CFILES)
 
 inrx.a:
 	echo hi >inrx.a
@@ -26,7 +25,7 @@ inrx.a:
 	ranlib inrx.a
 
 install:	ginr
-	cp -p ginr ~/bin/ginr
+	cp -p ginr ~/bin/ninr
 
 lint:	y.tab.c
 	lint $(CFILES) y.tab.c
@@ -39,4 +38,4 @@ y.tab.c y.tab.h:	Parse.y
 Lex.o:	y.tab.h
 
 clean:
-	rm -f $(OFILES) y.tab.h y.tab.c *.orig
+	rm -f $(OFILES) y.tab.h y.tab.c

@@ -42,7 +42,7 @@ R_OBJECT R_create ( )
   R -> R_hash [ 0 ] = MAXSHORT ;
   return ( R ) ;
 }
-void R_destroy ( R ) R_OBJECT R ;
+void R_destroy ( R_OBJECT R )
 {
   if ( R == NULL ) {
     return ;
@@ -52,8 +52,7 @@ void R_destroy ( R ) R_OBJECT R ;
   Sfree ( ( char * ) R -> R_hash ) ;
   Sfree ( ( char * ) R ) ;
 }
-int R_member ( R, reca, recb ) R_OBJECT R ;
-int reca, recb ;
+int R_member ( R_OBJECT R, int reca, int recb )
 {
   SHORT * p ;
   ++ R_calls ;
@@ -75,8 +74,7 @@ int reca, recb ;
   R_hashpos = p ;
   return ( - 1 ) ;
 }
-R_OBJECT R_grow ( R, lrec ) R_OBJECT R ;
-int lrec ;
+R_OBJECT R_grow ( R_OBJECT R, int lrec )
 {
   SHORT * p, * pl ;
   R_row * q, * ql ;
@@ -122,8 +120,7 @@ int lrec ;
 
   return ( R ) ;
 }
-int R_insert ( R, reca, recb ) R_OBJECT R ;
-int reca, recb ;
+int R_insert ( R_OBJECT R, int reca, int recb )
 {
   int i ;
 
@@ -143,8 +140,7 @@ int reca, recb ;
   R -> R_rec [ R -> R_n ] . R_b = recb ;
   return ( * R_hashpos = R -> R_n ++ ) ;
 }
-R_row * R_rec ( R, i ) R_OBJECT R ;
-int i ;
+R_row * R_rec ( R_OBJECT R, int i )
 {
   if ( i >= 0 && i < R -> R_n ) {
     return ( R -> R_rec + i ) ;

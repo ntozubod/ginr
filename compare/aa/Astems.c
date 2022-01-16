@@ -55,10 +55,10 @@ void A_st_free ( )
   Sfree ( ( char * ) st_work ) ;
   st_ptr = st_work = NULL ;
 }
-int A_st_DFS ( q, i ) int q, i ;
+int A_st_DFS ( int q, int i )
 {
   A_row * p ;
-  int try, newtry ;
+  int try1, newtry ;
 
   if ( i < st_len [ q ] ) {
     return ( st_work [ q ] [ i ] ) ;
@@ -71,7 +71,7 @@ int A_st_DFS ( q, i ) int q, i ;
     return ( MAXSHORT ) ;
   }
 
-  try = WILD ;
+  try1 = WILD ;
 
   for ( p = GAs -> A_p [ q ] ;
         p < GAs -> A_p [ q + 1 ] ;
@@ -86,17 +86,19 @@ int A_st_DFS ( q, i ) int q, i ;
       newtry = p -> A_b ;
     }
 
-    if ( try == WILD || try == newtry ) try = newtry ;
+    if ( try1 == WILD || try1 == newtry ) {
+      try1 = newtry ;
 
-    else {
-      try = MAXSHORT ;
-
+    } else {
+      try1 = MAXSHORT ;
       st_closed [ q ] = 1 ;
       break ;
     }
   }
 
-  if ( try == WILD ) try = MAXSHORT ;
+  if ( try1 == WILD ) {
+    try1 = MAXSHORT ;
+  }
 
   st_len [ q ] ++ ;
   st_work [ q ] = ( SHORT * ) Srealloc ( ( char * ) st_work [ q ], st_len [ q ] * sizeof ( SHORT ) ) ;
@@ -105,12 +107,10 @@ int A_st_DFS ( q, i ) int q, i ;
     Error ( "A_stems: Bounds check" ) ;
   }
 
-  st_work [ q ] [ i ] = try ;
-
-  return ( try ) ;
+  st_work [ q ] [ i ] = try1 ;
+  return ( try1 ) ;
 }
-SHORT ** A_stems ( A, tape ) A_OBJECT A ;
-int tape ;
+SHORT ** A_stems ( A_OBJECT A, int tape )
 {
   int q, i ;
   A_OBJECT Aw ;
@@ -132,14 +132,15 @@ int tape ;
 
     for ( p = Aw -> A_t + Aw -> A_nrows ;
           -- p >= Aw -> A_t ;
-        ) if ( p -> A_b > 1 && p -> A_b % Aw -> A_nT != tape ) {
+        ) {
+      if ( p -> A_b > 1 && p -> A_b % Aw -> A_nT != tape ) {
         p -> A_b = 0 ;
 
       } else if ( p -> A_b > 1 ) {
         p -> A_b = p -> A_b / Aw -> A_nT ;
       }
+    }
 
-    /* else if ( p-> A_b > 1 ) p-> A_b /= Aw-> A_nT; generates bad code? */
     Aw -> A_nT = 1 ;
   }
 
@@ -170,9 +171,13 @@ int tape ;
 
   for ( q = Aw -> A_nQ ;
         -- q >= 0 ;
-      ) for ( i = 0 ;
-                A_st_DFS ( q, i ) != MAXSHORT ;
-                i ++ ) ;
+      ) {
+    for ( i = 0 ;
+          A_st_DFS ( q, i ) != MAXSHORT ;
+          i ++ ) {
+      ;
+    }
+  }
 
   Sfree ( ( char * ) st_len ) ;
   Sfree ( ( char * ) st_closed ) ;
@@ -200,9 +205,7 @@ int tape ;
   s_rena = 0 ;
   return ( st_ptr ) ;
 }
-void A_prstems ( A, T, tape ) A_OBJECT A ;
-T_OBJECT T ;
-int tape ;
+void A_prstems ( A_OBJECT A, T_OBJECT T, int tape )
 {
   int q, i, ch ;
   char * s ;

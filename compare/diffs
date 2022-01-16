@@ -1,396 +1,863 @@
 diff -r -w aa/Abasic.c bb/Abasic.c
-28c28
-< void A_conform ( A1, A2 ) A_OBJECT A1, A2 ;
+166,167c166
+<       ) {
+<     if ( p -> A_b == 1 ) {
 ---
-> void A_conform ( A_OBJECT A1, A_OBJECT A2 )
-72c72
-< A_OBJECT A_letter ( t, x ) int t, x ;
----
-> A_OBJECT A_letter ( int t, int x )
-84,85c84
-< A_OBJECT A_deecho ( A, ECHO, NOECHO ) A_OBJECT A ;
-< int ECHO, NOECHO ;
----
-> A_OBJECT A_deecho ( A_OBJECT A, int ECHO, int NOECHO )
-125c124
-< A_OBJECT A_opt ( A ) A_OBJECT A ;
----
-> A_OBJECT A_opt ( A_OBJECT A )
-153c152
-< A_OBJECT A_plus ( A ) A_OBJECT A ;
----
-> A_OBJECT A_plus ( A_OBJECT A )
-176c175
-< A_OBJECT A_star ( A ) A_OBJECT A ;
----
-> A_OBJECT A_star ( A_OBJECT A )
-180c179
-< A_OBJECT A_union ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_union ( A_OBJECT A1, A_OBJECT A2 )
-227c226
-< A_OBJECT A_percent ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_percent ( A_OBJECT A1, A_OBJECT A2 )
-283c282
-< A_OBJECT A_concat ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_concat ( A_OBJECT A1, A_OBJECT A2 )
-328c327
-< A_OBJECT A_intersect ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_intersect ( A_OBJECT A1, A_OBJECT A2 )
-395c394
-< A_OBJECT A_differ ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_differ ( A_OBJECT A1, A_OBJECT A2 )
-471c470
-< A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_xor ( A_OBJECT A1, A_OBJECT A2 )
-559c558
-< A_OBJECT A_alph ( A ) A_OBJECT A ;
----
-> A_OBJECT A_alph ( A_OBJECT A )
-589c588
-< A_OBJECT A_rev ( A ) A_OBJECT A ;
----
-> A_OBJECT A_rev ( A_OBJECT A )
-641c640
-< A_OBJECT A_shuffle ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_shuffle ( A_OBJECT A1, A_OBJECT A2 )
-diff -r -w aa/Aclos.c bb/Aclos.c
-35c35
-< void A_cl_DFS ( state ) int state ;
----
-> void A_cl_DFS ( int state )
-86c86
-< A_OBJECT A_clsure ( A ) A_OBJECT A ;
----
-> A_OBJECT A_clsure ( A_OBJECT A )
-diff -r -w aa/Aclsseq.c bb/Aclsseq.c
-27c27
-< A_OBJECT A_clsseq ( A1 ) A_OBJECT A1 ;
----
-> A_OBJECT A_clsseq ( A_OBJECT A1 )
-30a31,32
->   last_label = 0 ;
->   /* Initialiaze to suppress warning JHJ */
-diff -r -w aa/Acompose.c bb/Acompose.c
-27c27
-< A_OBJECT A_compose ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_compose ( A_OBJECT A1, A_OBJECT A2 )
-30a31,33
->   t1 = 0 ;
->   t2 = 0 ;
->   /* Initialiaze to suppress warning JHJ */
-diff -r -w aa/Aenum.c bb/Aenum.c
-36c36
-< int A_en_DFS ( state ) SHORT state ;
----
-> int A_en_DFS ( SHORT state )
-114,116c114
-< A_OBJECT A_enum ( A, T, max ) A_OBJECT A ;
-< T_OBJECT T ;
-< int max ;
----
-> A_OBJECT A_enum ( A_OBJECT A, T_OBJECT T, int max )
-148c146
-< int A_cd_DFS ( state ) SHORT state ;
----
-> int A_cd_DFS ( SHORT state )
-178c176
-< int A_card ( A ) A_OBJECT A ;
----
-> int A_card ( A_OBJECT A )
-200c198
-< A_OBJECT A_pref ( A ) A_OBJECT A ;
----
-> A_OBJECT A_pref ( A_OBJECT A )
-216c214
-< A_OBJECT A_suff ( A ) A_OBJECT A ;
----
-> A_OBJECT A_suff ( A_OBJECT A )
-diff -r -w aa/AGMsseq.c bb/AGMsseq.c
-31c31
-< int GMcmp ( u, v ) SHORT * u, * v ;
----
-> int GMcmp ( SHORT * u, SHORT * v )
-47c47
-< A_OBJECT A_GMsseq ( A ) A_OBJECT A ;
----
-> A_OBJECT A_GMsseq ( A_OBJECT A )
-56a57,59
->   label = 0 ;
->   from = 0 ;
->   /* Initialiaze to suppress warning JHJ */
-diff -r -w aa/Ajoin.c bb/Ajoin.c
-27c27
-< A_OBJECT A_join ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_join ( A_OBJECT A1, A_OBJECT A2 )
-30a31,33
->   t1 = 0 ;
->   t2 = 0 ;
->   /* Initialiaze to suppress warning JHJ */
-diff -r -w aa/Alamcm.c bb/Alamcm.c
-31c31
-< int A_cm_DFS ( state ) int state ;
----
-> int A_cm_DFS ( int state )
-43c43
-< A_OBJECT A_lamcm ( A ) A_OBJECT A ;
----
-> A_OBJECT A_lamcm ( A_OBJECT A )
-diff -r -w aa/Alameq.c bb/Alameq.c
-33c33
-< int A_la_DFS ( state ) int state ;
----
-> int A_la_DFS ( int state )
-71c71
-< A_OBJECT A_lameq ( A ) A_OBJECT A ;
----
-> A_OBJECT A_lameq ( A_OBJECT A )
-diff -r -w aa/Alenmin.c bb/Alenmin.c
-27c27
-< A_OBJECT A_lenmin ( A ) A_OBJECT A ;
----
-> A_OBJECT A_lenmin ( A_OBJECT A )
-83c83
-< int A_minlen ( A ) A_OBJECT A ;
----
-> int A_minlen ( A_OBJECT A )
-diff -r -w aa/ALMsseq.c bb/ALMsseq.c
-31c31
-< A_OBJECT A_LMsseq ( A ) A_OBJECT A ;
----
-> A_OBJECT A_LMsseq ( A_OBJECT A )
-40a41,43
->   label = 0 ;
->   from = 0 ;
->   /* Initialiaze to suppress warning JHJ */
-diff -r -w aa/Aload.c bb/Aload.c
-29,50d28
-< #ifdef CMS
-< char new [ 100 ] ;
-< char * cnvrtn ( name ) char * name ;
-< {
-<   char * p ;
-<   strcpy ( new, name ) ;
-< 
-<   if ( index ( new, ' ' ) == 0 ) {
-<     strcat ( new, " file" ) ;
+>       ) if ( p -> A_b == 1 ) {
+171d169
 <   }
-< 
-<   for ( p = new ;
-<         * p ;
-<         p ++ ) if ( * p == '_' ) {
-<       * p = ' ' ;
+299,300c297
+<       ) {
+<     if ( p -> A_b == 1 && p -> A_c == FINAL ) {
+---
+>       ) if ( p -> A_b == 1 && p -> A_c == FINAL ) {
+304d300
+<   }
+461,462c457
+<     } else {
+<       while ( p1 < p1z ) {
+---
+>     } else while ( p1 < p1z ) {
+467d461
+<   }
+527c521
+<             A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c ), dead ) ) ;
+---
+>             A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c, dead ) ) ;
+531c525
+<             A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ) ;
+---
+>             A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ;
+542c536
+<           A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c ), dead ) ) ;
+---
+>           A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c, dead ) ) ;
+551c545
+<         A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ) ;
+---
+>         A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ;
+576,577c570
+<       ) {
+<     if ( p -> A_b == 1 ) {
+---
+>       ) if ( p -> A_b == 1 ) {
+590d582
+<   }
+diff -r -w aa/Aclos.c bb/Aclos.c
+121,122c121
+<       ) {
+<     if ( A -> A_p [ i ] != ( p = A -> A_p [ i + 1 ] ) && ( p - 1 ) -> A_b == 0 ) {
+---
+>       ) if ( A -> A_p [ i ] != ( p = A -> A_p [ i + 1 ] ) && ( p - 1 ) -> A_b == 0 ) {
+129d127
+<   }
+136,137c134
+<           p ++ ) {
+<       if ( p -> A_b != 0 && c_mark [ p -> A_c ] == CONDEMN ) {
+---
+>           p ++ ) if ( p -> A_b != 0 && c_mark [ p -> A_c ] == CONDEMN ) {
+142d138
+<   }
+150,151c146
+<       ) {
+<     if ( c_mark [ i ] == UNMARK ) {
+---
+>       ) if ( c_mark [ i ] == UNMARK ) {
+154d148
+<   }
+161,162c155
+<         ) {
+<       if ( c_mark [ p -> A_a ] == CONDEMN || c_mark [ p -> A_c ] == CONDEMN ) {
+---
+>         ) if ( c_mark [ p -> A_a ] == CONDEMN || c_mark [ p -> A_c ] == CONDEMN ) {
+168d160
 <     }
-< 
-<   return ( new ) ;
-< }
-< #else
-< #define cnvrtn(name) name
-< #endif
-107c85
-< void put_name ( str ) char * str ;
+diff -r -w aa/Aclsseq.c bb/Aclsseq.c
+32c32
+< // Initialiaze to suppress warning JHJ
 ---
-> void put_name ( char * str )
-150,151c128
-< A_OBJECT A_load ( file, T_Sigma ) char * file ;
-< T_OBJECT T_Sigma ;
+>   /* Initialiaze to suppress warning JHJ */
+73,85c73,78
+< //              for (   k = 1;
+< //                      vec[ k ] < MAXSHORT;
+< //                      k++ ) {
+< //
+< //                  if (    A1-> A_p[ vec[ k ] ] == A1-> A_p[ vec[ k ] + 1 ]
+< //                          || A1-> A_p[ vec[ k ] ]-> A_b != 1 ) {
+< //                      break;
+< //                  }
+< //              }
+< //
+< //              if ( vec[ k ] == MAXSHORT ) {
+< //                  A = A_add( A, current, 1, FINAL );
+< //              }
 ---
-> A_OBJECT A_load ( char * file, T_OBJECT T_Sigma )
-160c137
-<     fp = fopen ( cnvrtn ( file ), "r" ) ;
+>         /*
+>                         for( k = 1; vec[k] < MAXSHORT; k++ )
+>                             if ( A1-> A_p[ vec[k] ] == A1-> A_p[ vec[k] + 1 ]
+>                               || A1-> A_p[ vec[k] ]-> A_b != 1 ) break;
+>                         if ( vec[k] == MAXSHORT )
+>         */
+204c197,199
+< //  A1 = A_min( A_rename( A1, 0 ) );
 ---
->     fp = fopen ( file, "r" ) ;
-277,283d253
-< #ifdef CMS
-< 
-<       if ( c == '\\' ) {
-<         c = getc ( fp ) ;
+>   /*
+>       A1 = A_min( A_rename( A1, 0 ) );
+>   */
+diff -r -w aa/Acompose.c bb/Acompose.c
+33c33
+< // Initialiaze to suppress warning JHJ
+---
+>   /* Initialiaze to suppress warning JHJ */
+130c130
+<           s1 = MAXSTATE ;
+---
+>           s1 = MAXSHORT ;
+151c151
+<           s2 = MAXSTATE ;
+---
+>           s2 = MAXSHORT ;
+diff -r -w aa/Acrea.c bb/Acrea.c
+282c282
+<   return A ;
+---
+>   return ( A ) ;
+diff -r -w aa/Aenum.c bb/Aenum.c
+43,44c43
+<         ++ p ) {
+<     if ( p -> A_b == 1 ) {
+---
+>         ++ p ) if ( p -> A_b == 1 ) {
+50,51c49
+<       } else {
+<         for ( i = 0 ;
+---
+>       } else for ( i = 0 ;
+93d90
 <       }
-< 
-< #endif
-286,292d255
-< #ifdef CMS
-< 
-<       if ( c == '\\' ) {
-<         c = getc ( fp ) ;
+114d110
+<   }
+165,166c161
+<         ++ p ) {
+<     if ( p -> A_b == 1 ) {
+---
+>         ++ p ) if ( p -> A_b == 1 ) {
+178d172
+<   }
+diff -r -w aa/AGMsseq.c bb/AGMsseq.c
+54c54,56
+<   int aa, bb, cc, nq, len, from, to, label, hi_next, try1 ;
+---
+> 
+>   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
+> 
+57c59
+< // Initialiaze to suppress warning JHJ
+---
+>   /* Initialiaze to suppress warning JHJ */
+92,93c94
+<       ) {
+<     if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
+---
+>       ) if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
+97d97
+<   }
+141c141,142
+< // Construct start state as the write closure of START.
+---
+>   /* Construct start state as the write closure of START.
+>    */
+164c165
+< // Error( "A_sseq: Relation not single-valued (S2)" );
+---
+>         /* Error( "A_sseq: Relation not single-valued (S2)" ); */
+212,213c213
+<         ++ i ) {
+<     if ( set [ i ] != UNMARK ) {
+---
+>         ++ i ) if ( set [ i ] != UNMARK ) {
+219,220c219
+<             p ++ ) {
+<         if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>             p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+223d221
 <       }
-< 
-< #endif
-295,301d257
-< #ifdef CMS
-< 
-<       if ( c == '\\' ) {
-<         c = getc ( fp ) ;
+232d229
+<   }
+259c256
+<     try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
+---
+>     try = to_coeff [ vec [ 0 ] ] [ j ] ;
+261,263c258
+<     if ( try1 == MAXSHORT ) {
+<       goto idone ;
+<     }
+---
+>     if ( try == MAXSHORT ) goto idone ;
+267,268c262
+<           i ++ ) {
+<       if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
+---
+>           i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+271d264
+<     }
+278c271,273
+<     label = 2 * try1 + 1 ;
+---
+> 
+>     label = 2 * try + 1 ;
+> 
+318,322c313,318
+< // Unpack current state:
+< // (1) fvec is set to vector of component states followed by their coeffs
+< // (2) load heap with positions in source automaton for each component state
+< // (3) load fr_coeff with the pointers to coeff vectors
+< // (4) heapify the heap
+---
+>     /*     Unpack current state:
+>      * (1) fvec is set to vector of component states followed by their coeffs
+>      * (2) load heap with positions in source automaton for each component state
+>      * (3) load fr_coeff with the pointers to coeff vectors
+>      * (4) heapify the heap
+>      */
+339,355c335,346
+< //      printf( "\n" );
+< //      printf( "Processing state %d\n", current );
+< //      printf( "state coeff\n" );
+< //
+< //      for (   i = 0;
+< //              i < len;
+< //              i++ ) {
+< //          j = fvec[ i ];
+< //          printf( "%5d ", j );
+< //
+< //          for (   tt = 0;
+< //                  fr_coeff[ j ][ tt ] != MAXSHORT;
+< //                  tt++ ) {
+< //              printf( "%s ", T_name( TT, fr_coeff[ j ][ tt ] ) ); }
+< //
+< //          printf( "\n" );
+< //      }
+---
+>     /*
+>     printf( "\n" );
+>     printf( "Processing state %d\n", current );
+>     printf( "state coeff\n" );
+>     for( i = 0; i < len; i++ ) {
+>     j = fvec[ i ];
+>     printf( "%5d ", j );
+>     for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
+>     printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
+>     printf( "\n" );
+>     }
+>     */
+382,383c373,375
+< // Main loop to process current state: Each cycle processes position at the
+< // top of the heap.
+---
+>     /* Main loop to process current state: Each cycle processes position at the
+>      * top of the heap.
+>      */
+389c381,382
+< // End processing for an output state.
+---
+>       /* End processing for an output state.
+>        */
+401,402c394
+<                   p ++ ) {
+<               if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>                   p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+405d396
+<             }
+421,422c412
+<                 gap /= 2 ) {
+<             for ( i = gap ;
+---
+>                 gap /= 2 ) for ( i = gap ;
+424,425c414
+<                   i ++ ) {
+<               for ( j = i - gap ;
+---
+>                                    i ++ ) for ( j = i - gap ;
+432,433d420
+<             }
+<           }
+438,439c425
+<                 ++ i ) {
+<             if ( set [ i ] != UNMARK ) {
+---
+>                 ++ i ) if ( set [ i ] != UNMARK ) {
+445,446c431
+<                     p ++ ) {
+<                 if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>                     p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+449d433
+<               }
+459d442
+<         }
+472,495c455,472
+< //              printf( "Destination state\n" );
+< //              printf( "state coeff\n" );
+< //
+< //              for (   i = 0;
+< //                      i < vlen;
+< //                      i++ ) {
+< //                  j = vec[ i ];
+< //                  printf( "%5d ", j );
+< //
+< //                  for ( tt = 0;
+< //                        to_coeff[ j ][ tt ] != MAXSHORT;
+< //                        tt++ ) {
+< //                      int symb =
+< //                          T_name( TT, to_coeff[ j ][ tt ] )[ 0 ] & 0xff;
+< //
+< //                      if ( symb <= ' ' || symb > 127 ) {
+< //                          printf( "\\%x ", symb ); }
+< //
+< //                      else {
+< //                          printf( "%s ",
+< //                              T_name( TT, to_coeff[ j ][ tt ] ) ); } }
+< //
+< //                  printf( "\n" );
+< //              }
+---
+>         /*
+>         printf( "Destination state\n" );
+>         printf( "state coeff\n" );
+>         for( i = 0; i < vlen; i++ ) {
+>         j = vec[ i ];
+>         printf( "%5d ", j );
+>         for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ ) {
+>         int symb = T_name( TT, to_coeff[j][tt] )[ 0 ] & 0xff;
+>         if ( symb <= ' ' || symb > 127 ) {
+>         printf( "\\%x ", symb );
+>         }
+>         else {
+>         printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
+>         }
+>         }
+>         printf( "\n" );
+>         }
+>         */
+499c476
+<           try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
+---
+>           try = to_coeff [ vec [ 0 ] ] [ j ] ;
+501,503c478
+<           if ( try1 == MAXSHORT ) {
+<             goto done ;
+<           }
+---
+>           if ( try == MAXSHORT ) goto done ;
+507,508c482
+<                 i ++ ) {
+<             if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
+---
+>                 i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+511d484
+<           }
+515c488,490
+<           label = 2 * try1 + 1 ;
+---
+> 
+>           label = 2 * try + 1 ;
+> 
+555,556c530
+<                   k = back [ k ] ) {
+<               if ( sig [ k ] == i ) {
+---
+>                   k = back [ k ] ) if ( sig [ k ] == i ) {
+559d532
+<             }
+563,584c536,548
+< //                          if ( j > vlen ) {
+< //                              printf( "Destination state\n" );
+< //                              printf( "state coeff\n" );
+< //                              int i1;
+< //
+< //                              for (   i1 = 0;
+< //                                      i1 < vlen;
+< //                                      i1++ ) {
+< //                                  int j1 = vec[ i1 ];
+< //                                  printf( "%5d ", j1 );
+< //
+< //                                  for (   tt = 0;
+< //                                          to_coeff[ j1 ][ tt ] != MAXSHORT;
+< //                                          tt++ ) {
+< //                                      printf( "%s ",
+< //                                              T_name( TT,
+< //                                                      to_coeff[ j1 ][ tt ]
+< //                                                    ) ); }
+< //
+< //                                  printf( "\n" );
+< //                              }
+< //                          }
+---
+> // if ( j > vlen )
+>               /*
+>                             printf( "Destination state\n" );
+>                             printf( "state coeff\n" );
+>                             int i1;
+>                             for( i1 = 0; i1 < vlen; i1++ ) {
+>                               int j1 = vec[ i1 ];
+>                               printf( "%5d ", j1 );
+>                               for( tt = 0; to_coeff[j1][tt] != MAXSHORT; tt++ )
+>                               printf( "%s ", T_name( TT, to_coeff[j1][tt] ) );
+>                               printf( "\n" );
+>                             }
+>               */
+596,597c560,562
+< // Main processing for a transition from the input automaton.
+< // Add state to subset and compute coefficient.
+---
+>       /* Main processing for a transition from the input automaton.
+>        * Add state to subset and compute coefficient.
+>        */
+656c621
+< //                      printf( "--> %d\n", queue[ i ] );
+---
+>             /* printf( "--> %d\n", queue[ i ] ); */
+667c632
+< // Error( "A_sseq: Relation not single-valued (2)" );
+---
+>                 /* Error( "A_sseq: Relation not single-valued (2)" ); */
+763c728,730
+< //  A = A_rename( A, 0 );
+---
+>   /*
+>       A = A_rename( A, 0 );
+>   */
+diff -r -w aa/Ajoin.c bb/Ajoin.c
+33c33
+< // Initialiaze to suppress warning JHJ
+---
+>   /* Initialiaze to suppress warning JHJ */
+97c97
+<           s1 = MAXSTATE ;
+---
+>           s1 = MAXSHORT ;
+118c118
+<           s2 = MAXSTATE ;
+---
+>           s2 = MAXSHORT ;
+diff -r -w aa/Alamcm.c bb/Alamcm.c
+82,83c82
+<         ) {
+<       if ( A -> A_p [ i + 1 ] == ( p = A -> A_p [ i ] ) + 1 && p -> A_b == 0 ) {
+---
+>         ) if ( A -> A_p [ i + 1 ] == ( p = A -> A_p [ i ] ) + 1 && p -> A_b == 0 ) {
+87d85
+<     }
+95,96c93
+<             p ++ ) {
+<         if ( c_rena [ j = p -> A_c ] < FAIL ) {
+---
+>             p ++ ) if ( c_rena [ j = p -> A_c ] < FAIL ) {
+108d104
+<     }
+112,113c108
+<         ) {
+<       if ( c_rena [ i ] < FAIL ) {
+---
+>         ) if ( c_rena [ i ] < FAIL ) {
+116d110
+<     }
+120,121c114
+<         ) {
+<       if ( c_rena [ i ] >= FAIL ) {
+---
+>         ) if ( c_rena [ i ] >= FAIL ) {
+124d116
+<     }
+diff -r -w aa/Alameq.c bb/Alameq.c
+38c38
+<   l_low [ state ] = ( dfn = l_cnt ++ ) ;
+---
+>   l_low [ state ] = dfn = l_cnt ++ ;
+61,62c61
+<   if ( l_low [ state ] == dfn ) {
+<     for ( next = ( - 1 ) ;
+---
+>   if ( l_low [ state ] == dfn ) for ( next = ( - 1 ) ;
+69d67
+<   }
+118,120c116
+<       ) {
+<     if ( l_stk [ i ] == UNMARK ) {
+<       if ( A_la_DFS ( i ) != i ) {
+---
+>       ) if ( l_stk [ i ] == UNMARK ) if ( A_la_DFS ( i ) != i ) {
+123,124d118
+<     }
+<   }
+diff -r -w aa/Alenmin.c bb/Alenmin.c
+75,76c75
+<         p ++ ) {
+<     if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
+---
+>         p ++ ) if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
+79d77
+<   }
+diff -r -w aa/ALMsseq.c bb/ALMsseq.c
+38c38,40
+<   int aa, bb, cc, nq, len, from, to, label, hi_next, try1 ;
+---
+> 
+>   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
+> 
+41c43
+< // Initialiaze to suppress warning JHJ
+---
+>   /* Initialiaze to suppress warning JHJ */
+75,76c77
+<       ) {
+<     if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
+---
+>       ) if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
+80d80
+<   }
+123c123,124
+< // Construct start state as the write closure of START.
+---
+>   /* Construct start state as the write closure of START.
+>    */
+146c147
+< // Error( "A_sseq: Relation not single-valued (S2)" );
+---
+>         /* Error( "A_sseq: Relation not single-valued (S2)" ); */
+189,190c190
+<         ++ i ) {
+<     if ( set [ i ] != UNMARK ) {
+---
+>         ++ i ) if ( set [ i ] != UNMARK ) {
+196,197c196
+<             p ++ ) {
+<         if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>             p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+200d198
 <       }
-< 
-< #endif
-304,310d259
-< #ifdef CMS
-< 
-<       if ( c == '\\' ) {
-<         c = getc ( fp ) ;
-<       }
-< 
-< #endif
-375,377c324
-< A_OBJECT A_store ( A, file, T_Sigma ) A_OBJECT A ;
-< char * file ;
-< T_OBJECT T_Sigma ;
+209d206
+<   }
+236c233
+<     try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
 ---
-> A_OBJECT A_store ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
-391c338
-<       fp = fopen ( cnvrtn ( file ), "w" ) ;
----
->       fp = fopen ( file, "w" ) ;
-450,452c397
-< A_OBJECT A_save ( A, file, T_Sigma ) A_OBJECT A ;
-< char * file ;
-< T_OBJECT T_Sigma ;
----
-> A_OBJECT A_save ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
-466c411
-<       fp = fopen ( cnvrtn ( file ), "w" ) ;
----
->       fp = fopen ( file, "w" ) ;
-491,497d435
-< #ifdef CMS
-< 
-<     if ( t == '\\' || t == '\n' ) {
-<       ( void ) putc ( '\\', fp ) ;
+>     try = to_coeff [ vec [ 0 ] ] [ j ] ;
+238,240c235
+<     if ( try1 == MAXSHORT ) {
+<       goto idone ;
 <     }
-< 
-< #endif
-500,506d437
-< #ifdef CMS
-< 
-<     if ( t == '\\' || t == '\n' ) {
-<       ( void ) putc ( '\\', fp ) ;
+---
+>     if ( try == MAXSHORT ) goto idone ;
+244,245c239
+<           i ++ ) {
+<       if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
+---
+>           i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+248d241
 <     }
-< 
-< #endif
-509,515d439
-< #ifdef CMS
-< 
-<     if ( t == '\\' || t == '\n' ) {
-<       ( void ) putc ( '\\', fp ) ;
-<     }
-< 
-< #endif
-518,524d441
-< #ifdef CMS
-< 
-<     if ( t == '\\' || t == '\n' ) {
-<       ( void ) putc ( '\\', fp ) ;
-<     }
-< 
-< #endif
-547,548c464
-< A_OBJECT A_lwds ( file, T_Sigma ) char * file ;
-< T_OBJECT T_Sigma ;
+255c248,250
+<     label = 2 * try1 + 1 ;
 ---
-> A_OBJECT A_lwds ( char * file, T_OBJECT T_Sigma )
-555c471
-<     fp = fopen ( cnvrtn ( file ), "r" ) ;
+> 
+>     label = 2 * try + 1 ;
+> 
+295,299c290,295
+< // Unpack current state:
+< // (1) fvec is set to vector of component states followed by their coeffs
+< // (2) load heap with positions in source automaton for each component state
+< // (3) load fr_coeff with the pointers to coeff vectors
+< // (4) heapify the heap
 ---
->     fp = fopen ( file, "r" ) ;
-625,627c541
-< A_OBJECT A_prsseq ( A, file, T_Sigma ) A_OBJECT A ;
-< char * file ;
-< T_OBJECT T_Sigma ;
+>     /*     Unpack current state:
+>      * (1) fvec is set to vector of component states followed by their coeffs
+>      * (2) load heap with positions in source automaton for each component state
+>      * (3) load fr_coeff with the pointers to coeff vectors
+>      * (4) heapify the heap
+>      */
+316,332c312,322
+< //      printf( "Processing state %d\n", current );
+< //      printf( "state coeff\n" );
+< //
+< //      for (   i = 0;
+< //              i < len;
+< //              i++ ) {
+< //          j = fvec[ i ];
+< //          printf( "%5d ", j );
+< //
+< //          for (   tt = 0;
+< //                  fr_coeff[ j ][ tt ] != MAXSHORT;
+< //                  tt++ ) {
+< //              printf( "%s ", T_name( TT, fr_coeff[ j ][ tt ] ) );
+< //          }
+< //
+< //          printf( "\n" );
+< //      }
 ---
-> A_OBJECT A_prsseq ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
-651c565
-<       fp = fopen ( cnvrtn ( file ), "w" ) ;
+>     /*
+>     printf( "Processing state %d\n", current );
+>     printf( "state coeff\n" );
+>     for( i = 0; i < len; i++ ) {
+>     j = fvec[ i ];
+>     printf( "%5d ", j );
+>     for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
+>     printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
+>     printf( "\n" );
+>     }
+>     */
+359,360c349,351
+< // Main loop to process current state: Each cycle processes position at the
+< // top of the heap.
 ---
->       fp = fopen ( file, "w" ) ;
-726,728d639
-< #ifndef CMS
-<         fprintf ( fp, "\t" ) ;
-< #endif
+>     /* Main loop to process current state: Each cycle processes position at the
+>      * top of the heap.
+>      */
+366c357,358
+< // End processing for an output state.
+---
+>       /* End processing for an output state.
+>        */
+378,379c370
+<                   p ++ ) {
+<               if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>                   p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+382d372
+<             }
+398,399c388
+<                 gap /= 2 ) {
+<             for ( i = gap ;
+---
+>                 gap /= 2 ) for ( i = gap ;
+401,402c390
+<                   i ++ ) {
+<               for ( j = i - gap ;
+---
+>                                    i ++ ) for ( j = i - gap ;
+409,410d396
+<             }
+<           }
+415,416c401
+<                 ++ i ) {
+<             if ( set [ i ] != UNMARK ) {
+---
+>                 ++ i ) if ( set [ i ] != UNMARK ) {
+422,423c407
+<                     p ++ ) {
+<                 if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>                     p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+426d409
+<               }
+436d418
+<         }
+449,465c431,441
+< //              printf( "Destination state\n" );
+< //              printf( "state coeff\n" );
+< //
+< //              for (   i = 0;
+< //                      i < vlen;
+< //                      i++ ) {
+< //                  j = vec[ i ];
+< //                  printf( "%5d ", j );
+< //
+< //                  for (   tt = 0;
+< //                          to_coeff[ j ][ tt ] != MAXSHORT;
+< //                          tt++ ) {
+< //                      printf( "%s ", T_name( TT, to_coeff[ j ][ tt ] ) );
+< //                  }
+< //
+< //                  printf( "\n" );
+< //              }
+---
+>         /*
+>         printf( "Destination state\n" );
+>         printf( "state coeff\n" );
+>         for( i = 0; i < vlen; i++ ) {
+>         j = vec[ i ];
+>         printf( "%5d ", j );
+>         for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
+>         printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
+>         printf( "\n" );
+>         }
+>         */
+469c445
+<           try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
+---
+>           try = to_coeff [ vec [ 0 ] ] [ j ] ;
+471,473c447
+<           if ( try1 == MAXSHORT ) {
+<             goto done ;
+<           }
+---
+>           if ( try == MAXSHORT ) goto done ;
+477,478c451
+<                 i ++ ) {
+<             if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
+---
+>                 i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+481d453
+<           }
+485c457,459
+<           label = 2 * try1 + 1 ;
+---
+> 
+>           label = 2 * try + 1 ;
+> 
+525,526c499
+<                   k = back [ k ] ) {
+<               if ( sig [ k ] == i ) {
+---
+>                   k = back [ k ] ) if ( sig [ k ] == i ) {
+529d501
+<             }
+544,545c516,518
+< // Main processing for a transition from the input automaton.
+< // Add state to subset and compute coefficient.
+---
+>       /* Main processing for a transition from the input automaton.
+>        * Add state to subset and compute coefficient.
+>        */
+613c586
+< // Error( "A_sseq: Relation not single-valued (2)" );
+---
+>                 /* Error( "A_sseq: Relation not single-valued (2)" ); */
+641c614
+<                   veccpy ( to_coeff [ p -> A_c ] + tt, ( st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ) ;
+---
+>                   veccpy ( to_coeff [ p -> A_c ] + tt, st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ;
+652c625
+<                       fprintf ( fpout, "%s ", T_name ( TT, ( to_coeff [ p -> A_c ] [ k ] ) ) ) ;
+---
+>                       fprintf ( fpout, "%s ", T_name ( TT, to_coeff [ p -> A_c ] [ k ] ) ) ;
+722c695,697
+< //  A = A_rename( A, 0 );
+---
+>   /*
+>       A = A_rename( A, 0 );
+>   */
 diff -r -w aa/Amin.c bb/Amin.c
-30c30
-< A_OBJECT A_min ( A ) A_OBJECT A ;
+100c100
+<   in_B [ START ] = ( in_B [ 2 ] = 0 ) ;
 ---
-> A_OBJECT A_min ( A_OBJECT A )
+>   in_B [ START ] = in_B [ 2 ] = 0 ;
+118c118
+<   B_H [ 1 ] = ( B_N [ FINAL ] = ( B_L [ FINAL ] = FINAL ) ) ;
+---
+>   B_H [ 1 ] = B_N [ FINAL ] = B_L [ FINAL ] = FINAL ;
+142c142
+<       p = ( lo = A -> A_p [ s ] ) ;
+---
+>       p = lo = A -> A_p [ s ] ;
+195a196,198
+>       /*-------------------------------------------------------------------------*/
+>       /**/
+>       /**/
+211c214
+<               B_L [ ( B_H [ j ] = ( B_N [ B_L [ s ] ] = B_N [ s ] ) ) ] = B_L [ s ] ;
+---
+>               B_L [ B_H [ j ] = B_N [ B_L [ s ] ] = B_N [ s ] ] = B_L [ s ] ;
+224c227
+<             B_L [ ( B_N [ s ] = B_H [ nB ] ) ] = s ;
+---
+>             B_L [ B_N [ s ] = B_H [ nB ] ] = s ;
+251,252c254
+<           } else {
+<             for ( s = int_H [ j ] ;
+---
+>           } else for ( s = int_H [ j ] ;
+258d259
+<           }
+314a316,318
+>       /**/
+>       /**/
+>       /*-------------------------------------------------------------------------*/
 diff -r -w aa/Aopen.c bb/Aopen.c
-1,22c1,24
-< // Copyright (c) 1985, J Howard Johnson, University of Waterloo.
-< //
-< // This software was developed while I was a student and, later, professor
-< // at the University of Waterloo.  It has only minimal enhancements and bug
-< // fixes from later than August 1988.  It was released under the GPLv3
-< // licence on July 26, 2010.
-< //                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
-< //
-< // This file is part of INR.
-< //
-< //   INR is free software: you can redistribute it and/or modify
-< //   it under the terms of the GNU General Public License as published by
-< //   the Free Software Foundation, either version 3 of the License, or
-< //   (at your option) any later version.
-< //
-< //   INR is distributed in the hope that it will be useful,
-< //   but WITHOUT ANY WARRANTY; without even the implied warranty of
-< //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-< //   GNU General Public License for more details.
-< //
-< //   You should have received a copy of the GNU General Public License
-< //   along with INR.  If not, see <http://www.gnu.org/licenses/>.
----
-> /*
->  * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
->  *
->  * This software was developed while I was a student and, later, professor
->  * at the University of Waterloo.  It has only minimal enhancements and bug
->  * fixes from later than August 1988.  It was released under the GPLv3
->  * licence on July 26, 2010.
->  *                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
->  *
->  * This file is part of INR.
->  *
->  *   INR is free software: you can redistribute it and/or modify
->  *   it under the terms of the GNU General Public License as published by
->  *   the Free Software Foundation, either version 3 of the License, or
->  *   (at your option) any later version.
->  *
->  *   INR is distributed in the hope that it will be useful,
->  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
->  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->  *   GNU General Public License for more details.
->  *
->  *   You should have received a copy of the GNU General Public License
->  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
->  */
-32,36c34
+1d0
+< extern int S_flag ;
+26a26
+> #include <assert.h>
+34,49c34,37
 < 
 <   if ( A == NULL ) {
 <     Error ( "A_add: No OBJECT" ) ;
 <   }
 < 
+<   if ( A -> A_mode != OPEN ) {
+<     Error ( "A_add: Object not OPEN" ) ;
+<   }
+< 
+<   if ( a < 0 || b < 0 || c < 0 ) {
+<     Error ( "A_add: Numbers cannot be negative" ) ;
+<   }
+< 
+<   if ( a >= MAXSHORT || b >= MAXSHORT || c >= MAXSHORT ) {
+<     Error ( "A_add: Numbers are too big" ) ;
+<   }
 ---
 >   assert ( A != NULL ) ;
-67,70c65
+>   assert ( A -> A_mode == OPEN ) ;
+>   assert ( a >= 0 && b >= 0 && c >= 0 ) ;
+>   assert ( a < MAXSHORT && b < MAXSHORT && c < MAXSHORT ) ;
+77,80c65
 <   if ( A == NULL ) {
 <     Error ( "A_open: No OBJECT" ) ;
 <   }
 < 
 ---
 >   assert ( A != NULL ) ;
-84,87c79
+94,97c79
 < 
 <   if ( A == NULL ) {
 <     Error ( "A_close: No OBJECT" ) ;
 <   }
 ---
 >   assert ( A != NULL ) ;
+120a103
+>   assert ( N > 0 ) ;
+136a120
+>     assert ( p -> A_c < N ) ;
+149a134,135
+>   assert ( p == t2 ) ;
+> 
+153c139
+<     q = -- ptr [ i = p -> A_c ] ;
+---
+>     q = -- ptr [ p -> A_c ] ;
+154a141
+>     assert ( p -> A_b < N ) ;
+156c143
+<     q -> A_c = i ;
+---
+>     q -> A_c = p -> A_c ;
+168a156,157
+>   assert ( p == t1 ) ;
+> 
+172c161,162
+<     q = -- ptr [ i = p -> A_b ] ;
+---
+>     q = -- ptr [ p -> A_b ] ;
+>     assert ( p -> A_a < N ) ;
+174c164
+<     q -> A_b = i ;
+---
+>     q -> A_b = p -> A_b ;
+187a178,179
+>   assert ( p == t2 ) ;
+> 
+191,192c183,184
+<     q = -- ptr [ i = p -> A_a ] ;
+<     q -> A_a = i ;
+---
+>     q = -- ptr [ p -> A_a ] ;
+>     q -> A_a = p -> A_a ;
+202c194
+<   ( t2z + 1 ) -> A_a = MAXSHORT ;
+---
+>   ( t2z + 1 ) -> A_c = MAXSHORT ;
 220a213
 >       /* empty */
 250,254c243
@@ -409,115 +876,473 @@ diff -r -w aa/Aopen.c bb/Aopen.c
 < 
 ---
 >   assert ( A != NULL ) ;
-diff -r -w aa/Apowers.c bb/Apowers.c
-26,27c26
-< A_OBJECT A_catpow ( A, n ) A_OBJECT A ;
-< int n ;
----
-> A_OBJECT A_catpow ( A_OBJECT A, int n )
-59c58
-< A_OBJECT A_ident ( A ) A_OBJECT A ;
----
-> A_OBJECT A_ident ( A_OBJECT A )
-80,81c79
-< A_OBJECT A_cmpow ( A, n ) A_OBJECT A ;
-< int n ;
----
-> A_OBJECT A_cmpow ( A_OBJECT A, int n )
 diff -r -w aa/Aretape.c bb/Aretape.c
-27,28c27
-< A_OBJECT A_retape ( A1, A2, T ) A_OBJECT A1, A2 ;
-< T_OBJECT T ;
+54,55c54
+<         i ++ ) {
+<     if ( A2 -> A_t [ i ] . A_a != i + 1 || A2 -> A_t [ i ] . A_c != i + 2 ) {
 ---
-> A_OBJECT A_retape ( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
-129c128
-< A_OBJECT A_comma ( A1, A2 ) A_OBJECT A1, A2 ;
----
-> A_OBJECT A_comma ( A_OBJECT A1, A_OBJECT A2 )
+>         i ++ ) if ( A2 -> A_t [ i ] . A_a != i + 1 || A2 -> A_t [ i ] . A_c != i + 2 ) {
+58d56
+<   }
 diff -r -w aa/Asseq.c bb/Asseq.c
-31c31
-< A_OBJECT A_sseq ( A ) A_OBJECT A ;
+37c37,39
+<   int aa, bb, cc, nq, len, from, to, label, hi_next, try1 ;
 ---
-> A_OBJECT A_sseq ( A_OBJECT A )
-39a40,42
->   label = 0 ;
->   from = 0 ;
+> 
+>   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
+> 
+40c42
+< // Initialiaze to suppress warning JHJ
+---
 >   /* Initialiaze to suppress warning JHJ */
+83,84c85
+<       ) {
+<     if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
+---
+>       ) if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
+88d88
+<   }
+131c131,132
+< // Construct start state as the write closure of START.
+---
+>   /* Construct start state as the write closure of START.
+>    */
+190,191c191
+<         ++ i ) {
+<     if ( set [ i ] != UNMARK ) {
+---
+>         ++ i ) if ( set [ i ] != UNMARK ) {
+197,198c197
+<             p ++ ) {
+<         if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>             p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+201d199
+<       }
+210d207
+<   }
+237c234
+<     try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
+---
+>     try = to_coeff [ vec [ 0 ] ] [ j ] ;
+239,241c236
+<     if ( try1 == MAXSHORT ) {
+<       goto idone ;
+<     }
+---
+>     if ( try == MAXSHORT ) goto idone ;
+245,246c240
+<           i ++ ) {
+<       if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
+---
+>           i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+249d242
+<     }
+256c249,251
+<     label = 2 * try1 + 1 ;
+---
+> 
+>     label = 2 * try + 1 ;
+> 
+296,300c291,296
+< // Unpack current state:
+< // (1) fvec is set to vector of component states followed by their coeffs
+< // (2) load heap with positions in source automaton for each component state
+< // (3) load fr_coeff with the pointers to coeff vectors
+< // (4) heapify the heap
+---
+>     /*     Unpack current state:
+>      * (1) fvec is set to vector of component states followed by their coeffs
+>      * (2) load heap with positions in source automaton for each component state
+>      * (3) load fr_coeff with the pointers to coeff vectors
+>      * (4) heapify the heap
+>      */
+317,333c313,323
+< //      printf( "Processing state %d\n", current );
+< //      printf( "state coeff\n" );
+< //
+< //      for (   i = 0;
+< //              i < len;
+< //              i++ ) {
+< //          j = fvec[ i ];
+< //          printf( "%5d ", j );
+< //
+< //          for (   tt = 0;
+< //                  fr_coeff[ j ][ tt ] != MAXSHORT;
+< //                  tt++ ) {
+< //              printf( "%s ", T_name( TT, fr_coeff[ j ][ tt ] ) );
+< //          }
+< //
+< //          printf( "\n" );
+< //      }
+---
+>     /*
+>     printf( "Processing state %d\n", current );
+>     printf( "state coeff\n" );
+>     for( i = 0; i < len; i++ ) {
+>     j = fvec[ i ];
+>     printf( "%5d ", j );
+>     for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
+>     printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
+>     printf( "\n" );
+>     }
+>     */
+360,361c350,352
+< // Main loop to process current state: Each cycle processes position at the
+< // top of the heap.
+---
+>     /* Main loop to process current state: Each cycle processes position at the
+>      * top of the heap.
+>      */
+367c358,359
+< // End processing for an output state.
+---
+>       /* End processing for an output state.
+>        */
+379,380c371
+<                   p ++ ) {
+<               if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>                   p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+383d373
+<             }
+399,400c389
+<                 gap /= 2 ) {
+<             for ( i = gap ;
+---
+>                 gap /= 2 ) for ( i = gap ;
+402,403c391
+<                   i ++ ) {
+<               for ( j = i - gap ;
+---
+>                                    i ++ ) for ( j = i - gap ;
+410,411d397
+<             }
+<           }
+416,417c402
+<                 ++ i ) {
+<             if ( set [ i ] != UNMARK ) {
+---
+>                 ++ i ) if ( set [ i ] != UNMARK ) {
+423,424c408
+<                     p ++ ) {
+<                 if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+---
+>                     p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
+427d410
+<               }
+437d419
+<         }
+450,466c432,442
+< //              printf( "Destination state\n" );
+< //              printf( "state coeff\n" );
+< //
+< //              for (   i = 0;
+< //                      i < vlen;
+< //                      i++ ) {
+< //                  j = vec[ i ];
+< //                  printf( "%5d ", j );
+< //
+< //                  for (   tt = 0;
+< //                          to_coeff[ j ][ tt ] != MAXSHORT;
+< //                          tt++ ) {
+< //                      printf( "%s ", T_name( TT, to_coeff[ j ][ tt ] ) );
+< //                  }
+< //
+< //                  printf( "\n" );
+< //              }
+---
+>         /*
+>         printf( "Destination state\n" );
+>         printf( "state coeff\n" );
+>         for( i = 0; i < vlen; i++ ) {
+>         j = vec[ i ];
+>         printf( "%5d ", j );
+>         for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
+>         printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
+>         printf( "\n" );
+>         }
+>         */
+470c446
+<           try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
+---
+>           try = to_coeff [ vec [ 0 ] ] [ j ] ;
+472,474c448
+<           if ( try1 == MAXSHORT ) {
+<             goto done ;
+<           }
+---
+>           if ( try == MAXSHORT ) goto done ;
+478,479c452
+<                 i ++ ) {
+<             if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
+---
+>                 i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
+482d454
+<           }
+486c458,460
+<           label = 2 * try1 + 1 ;
+---
+> 
+>           label = 2 * try + 1 ;
+> 
+526,527c500
+<                   k = back [ k ] ) {
+<               if ( sig [ k ] == i ) {
+---
+>                   k = back [ k ] ) if ( sig [ k ] == i ) {
+530d502
+<             }
+545,546c517,519
+< // Main processing for a transition from the input automaton.
+< // Add state to subset and compute coefficient.
+---
+>       /* Main processing for a transition from the input automaton.
+>        * Add state to subset and compute coefficient.
+>        */
+635c608
+<                   veccpy ( to_coeff [ p -> A_c ] + tt, ( st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ) ;
+---
+>                   veccpy ( to_coeff [ p -> A_c ] + tt, st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ;
+710c683,685
+< //  A = A_rename( A, 0 );
+---
+>   /*
+>       A = A_rename( A, 0 );
+>   */
 diff -r -w aa/Astems.c bb/Astems.c
-58c58
-< int A_st_DFS ( q, i ) int q, i ;
----
-> int A_st_DFS ( int q, int i )
-112,113c112
-< SHORT ** A_stems ( A, tape ) A_OBJECT A ;
-< int tape ;
----
-> SHORT ** A_stems ( A_OBJECT A, int tape )
-203,205c202
-< void A_prstems ( A, T, tape ) A_OBJECT A ;
-< T_OBJECT T ;
-< int tape ;
----
-> void A_prstems ( A_OBJECT A, T_OBJECT T, int tape )
-diff -r -w aa/Asubs.c bb/Asubs.c
-30c30
-< A_OBJECT A_subs ( A ) A_OBJECT A ;
----
-> A_OBJECT A_subs ( A_OBJECT A )
-diff -r -w aa/Atrim.c bb/Atrim.c
-33c33
-< SHORT A_tr_DFS ( state ) SHORT state ;
----
-> SHORT A_tr_DFS ( SHORT state )
 61c61
-< A_OBJECT A_trim ( A ) A_OBJECT A ;
+<   int try1, newtry ;
 ---
-> A_OBJECT A_trim ( A_OBJECT A )
-Only in aa: bugs.txt
-diff -r -w aa/Colon.c bb/Colon.c
-36c36
-< int do_n_i ( op ) char * op ;
+>   int try, newtry ;
+74c74
+<   try1 = WILD ;
 ---
-> int do_n_i ( char * op )
-114,115c114
-< A_OBJECT do_an_a ( A, op ) A_OBJECT A ;
-< char * op ;
+>   try = WILD ;
+89,90c89,92
+<     if ( try1 == WILD || try1 == newtry ) {
+<       try1 = newtry ;
 ---
-> A_OBJECT do_an_a ( A_OBJECT A, char * op )
-319,321c318
-< A_OBJECT do_ann_a ( A, op, arg ) A_OBJECT A ;
-< char * op ;
-< char * arg ;
+>     if ( try == WILD || try == newtry ) try = newtry ;
+> 
+>     else {
+>       try = MAXSHORT ;
+92,93d93
+<     } else {
+<       try1 = MAXSHORT ;
+99,101c99
+<   if ( try1 == WILD ) {
+<     try1 = MAXSHORT ;
+<   }
 ---
-> A_OBJECT do_ann_a ( A_OBJECT A, char * op, char * arg )
-358,359c355
-< A_OBJECT do_nn_a ( op, arg ) char * op ;
-< char * arg ;
+>   if ( try == WILD ) try = MAXSHORT ;
+110,111c108,110
+<   st_work [ q ] [ i ] = try1 ;
+<   return ( try1 ) ;
 ---
-> A_OBJECT do_nn_a ( char * op, char * arg )
-diff -r -w aa/Lex.c bb/Lex.c
+>   st_work [ q ] [ i ] = try ;
+> 
+>   return ( try ) ;
+135,136c134
+<         ) {
+<       if ( p -> A_b > 1 && p -> A_b % Aw -> A_nT != tape ) {
+---
+>         ) if ( p -> A_b > 1 && p -> A_b % Aw -> A_nT != tape ) {
+142d139
+<     }
+143a141
+>     /* else if ( p-> A_b > 1 ) p-> A_b /= Aw-> A_nT; generates bad code? */
+174,175c172
+<       ) {
+<     for ( i = 0 ;
+---
+>       ) for ( i = 0 ;
+177,180c174
+<           i ++ ) {
+<       ;
+<     }
+<   }
+---
+>                 i ++ ) ;
+diff -r -w aa/Asubs.c bb/Asubs.c
+95c95
+<   vec [ ( i = 0 ) ] = START ;
+---
+>   vec [ i = 0 ] = START ;
+125,126c125
+<           i ++ ) {
+<       if ( pnlam [ j ] != A -> A_p [ j + 1 ] ) {
+---
+>           i ++ ) if ( pnlam [ j ] != A -> A_p [ j + 1 ] ) {
+129d127
+<     }
+175,176c173
+<                 gap /= 2 ) {
+<             for ( i = gap ;
+---
+>                 gap /= 2 ) for ( i = gap ;
+178,179c175
+<                   i ++ ) {
+<               for ( j = i - gap ;
+---
+>                                    i ++ ) for ( j = i - gap ;
+186,187d181
+<             }
+<           }
+189,190c183
+<         } else {
+<           for ( i = 0 ;
+---
+>         } else for ( i = 0 ;
+192,196c185,186
+<                 ++ i ) {
+<             if ( set [ i ] != UNMARK ) {
+<               set [ ( vec [ n ++ ] = i ) ] = UNMARK ;
+<             }
+<           }
+---
+>                        ++ i ) if ( set [ i ] != UNMARK ) {
+>               set [ vec [ n ++ ] = i ] = UNMARK ;
+diff -r -w aa/Atrim.c bb/Atrim.c
 38c38
-< char * pad20 ( s ) char * s ;
+<   t_low [ state ] = ( dfn = t_cnt ++ ) ;
 ---
-> char * pad20 ( char * s )
-56c56
-< char * copyof ( str ) char * str ;
+>   t_low [ state ] = dfn = t_cnt ++ ;
+53,54c53
+<   if ( t_low [ state ] == dfn ) {
+<     for ( next = MAXSHORT ;
 ---
-> char * copyof ( char * str )
-417,418c417
-< int main ( argc, argv ) int argc ;
-< char * argv [ ] ;
+>   if ( t_low [ state ] == dfn ) for ( next = MAXSHORT ;
+59d57
+<   }
+94c92
+<   t_stk = ( stk_rem = s_alloc ( A -> A_nQ ) ) ;
 ---
-> int main ( int argc, char * argv [ ] )
-461c460
-<     fprintf ( fpout, "Version %s (Sep 11, 2018)\n", Version ) ;
+>   t_stk = stk_rem = s_alloc ( A -> A_nQ ) ;
+115c113
+<   for ( p = ( pz = A -> A_t + A -> A_nrows ) ;
 ---
->     fprintf ( fpout, "Version %s (Mar 25, 1988)\n", Version ) ;
-463c462
-<     fprintf ( fpout, "             Copyright (C) 1988-2018 J Howard Johnson\n" ) ;
+>   for ( p = pz = A -> A_t + A -> A_nrows ;
+117,118c115
+<       ) {
+<     if ( t_low [ p -> A_a ] >= DELETED || t_low [ p -> A_c ] >= DELETED ) {
 ---
->     fprintf ( fpout, "             Copyright (C) 1988 J Howard Johnson\n" ) ;
-510c509,513
+>       ) if ( t_low [ p -> A_a ] >= DELETED || t_low [ p -> A_c ] >= DELETED ) {
+125d121
+<   }
+136c132
+<   for ( p = ( pz = A -> A_t + A -> A_nrows ) ;
+---
+>   for ( p = pz = A -> A_t + A -> A_nrows ;
+138,139c134
+<       ) {
+<     if ( p -> A_b == 0 ) {
+---
+>       ) if ( p -> A_b == 0 ) {
+142d136
+<   }
+149,150c143
+<         ) {
+<       if ( ( p - 1 ) -> A_b == p -> A_b && ( p - 1 ) -> A_a == p -> A_a ) {
+---
+>         ) if ( ( p - 1 ) -> A_b == p -> A_b && ( p - 1 ) -> A_a == p -> A_a ) {
+153d145
+<     }
+diff -r -w aa/Colon.c bb/Colon.c
+76,77c76
+<           i ++ ) {
+<       if ( Alist [ i ] -> A_nrows > 0 ) {
+---
+>           i ++ ) if ( Alist [ i ] -> A_nrows > 0 ) {
+80d78
+<     }
+88,89c86
+<           i ++ ) {
+<       if ( Alist [ i ] -> A_nrows > 0 ) {
+---
+>           i ++ ) if ( Alist [ i ] -> A_nrows > 0 ) {
+92d88
+<     }
+97,98c93
+<   } else if ( ! strcmp ( "help", op ) ) {
+<     fprintf ( fpout, "\n\
+---
+>   } else if ( ! strcmp ( "help", op ) ) fprintf ( fpout, "\n\
+110c105
+<   } else if ( ! strcmp ( "done", op ) || ! strcmp ( "quit", op ) || ! strcmp ( "stop", op ) || ! strcmp ( "bye", op ) ) {
+---
+>   else if ( ! strcmp ( "done", op ) || ! strcmp ( "quit", op ) || ! strcmp ( "stop", op ) || ! strcmp ( "bye", op ) ) {
+399,400c394
+<     if ( ! strcmp ( "ops", arg ) ) {
+<       fprintf ( fpout, "\n\
+---
+>     if ( ! strcmp ( "ops", arg ) ) fprintf ( fpout, "\n\
+422,423c416
+<     } else if ( ! strcmp ( "colonops", arg ) ) {
+<       fprintf ( fpout, "\n\
+---
+>     else if ( ! strcmp ( "colonops", arg ) ) fprintf ( fpout, "\n\
+443,444c436
+<     } else if ( ! strcmp ( "ioops", arg ) ) {
+<       fprintf ( fpout, "\n\
+---
+>     else if ( ! strcmp ( "ioops", arg ) ) fprintf ( fpout, "\n\
+457,458c449
+<     } else if ( ! strcmp ( "stats", arg ) ) {
+<       fprintf ( fpout, "\n\
+---
+>     else if ( ! strcmp ( "stats", arg ) ) fprintf ( fpout, "\n\
+480,481c471
+<     } else if ( ! strcmp ( "w", arg ) ) {
+<       fprintf ( fpout, "\n\
+---
+>     else if ( ! strcmp ( "w", arg ) ) fprintf ( fpout, "\n\
+495,496c485
+<     } else if ( ! strcmp ( "c", arg ) ) {
+<       fprintf ( fpout, "\n\
+---
+>     else if ( ! strcmp ( "c", arg ) ) fprintf ( fpout, "\n\
+524c513
+<     } else {
+---
+>     else {
+diff -r -w aa/Lex.c bb/Lex.c
+168,169c168,169
+< //  case '"':   not used
+< //  case '#':   COMMENT
+---
+>   /*  case '"':   not used    */
+>   /*  case '#':   COMMENT     */
+201c201
+< //  case '.':   ALPHANUMERIC
+---
+>   /*  case '.':   ALPHANUMERIC    */
+211c211
+< //  case '<':   not used
+---
+>   /*  case '<':   not used    */
+215c215
+< //  case '>':   not used
+---
+>   /*  case '>':   not used    */
+234,235c234,235
+< //  case '_':   ALPHANUMERIC
+< //  case '`':   TOKEN QUOTE
+---
+>   /*  case '_':   ALPHANUMERIC    */
+>   /*  case '`':   TOKEN QUOTE */
+245c245
+< //  case '~':   not used
+---
+>   /*  case '~':   not used    */
+496,497c496
+<         ti ++ ) {
+<     if ( ( isascii ( ti ) && isprint ( ti ) ) || ti == '\t' || ti == '\n' ) {
+---
+>         ti ++ ) if ( ( isascii ( ti ) && isprint ( ti ) ) || ti == '\t' || ti == '\n' ) {
+501d499
+<   }
+511c509,513
 <   PROMT ( void ) yyparse ( ) ;
 ---
 > 
@@ -525,228 +1350,165 @@ diff -r -w aa/Lex.c bb/Lex.c
 >     Error ( "yyparse returned unexpectedly" ) ;
 >   }
 > 
-524c527
-< void yyerror ( str ) char * str ;
----
-> void yyerror ( char * str )
-528c531
-< int tonum ( p ) char * p ;
----
-> int tonum ( char * p )
 diff -r -w aa/Makefile bb/Makefile
-18,21d17
-< format:	$(CFILES) $(HFILES)
-< 	astyle --style=1tbs --indent=spaces=2 --pad-oper --pad-paren-in \
-< --break-blocks=all $(CFILES) $(HFILES)
+13c13
+< 	gcc -Wall -O -c $*.c
+---
+> 	gcc -Wall -O0 -g -c $*.c
+16,19c16
+< 	gcc -Wall -O $(OFILES) -o ginr
 < 
+< format:	$(CFILES)
+< 	astyle --style=1tbs $(CFILES)
+---
+> 	gcc -Wall -O0 -g $(OFILES) -o ginr
+28c25
+< 	cp -p ginr ~/bin/ninr
+---
+> 	cp -p ginr ~/bin/ginr
+41c38
+< 	rm -f $(OFILES) y.tab.h y.tab.c
+---
+> 	rm -f $(OFILES) y.tab.h y.tab.c *.orig
+diff -r -w aa/O.h bb/O.h
+31,37c31,32
+< typedef unsigned int SHORT ;
+< // #define MAXSHORT        037777777777
+< // change MAXSHORT to 31 one's to avoid bugs in usage for signed ints
+< // left over from change of SHORT to 32 bits.
+< // These cases will be reviewed one by one and repaired correctly (JHJ).
+< #define MAXSHORT        017777777777
+< #define MAXSTATE        017777777777
+---
+> typedef unsigned short SHORT ;
+> #define MAXSHORT        0177777
 diff -r -w aa/Parse.y bb/Parse.y
+28d27
+< #include <string.h>
+29a29
+> #include <string.h>
 30a31,33
 >   int yylex ( ) ;
 >   int yyparse ( void ) ;
 >   void yyerror ( char * ) ;
+37a41,44
+>   extern int do_n_i ( ) ;
+>   extern A_OBJECT do_an_a ( ) ;
+>   extern A_OBJECT do_ann_a ( ) ;
+>   extern A_OBJECT do_nn_a ( ) ;
+171c178
+<     return 1 ;
+---
+>     return ( 0 ) ;
+174d180
+< // to suppress warning JHJ
+423a430
+>   }
+426d432
+<   }
 diff -r -w aa/R.c bb/R.c
-45c45
-< void R_destroy ( R ) R_OBJECT R ;
----
-> void R_destroy ( R_OBJECT R )
-55,56c55
-< int R_member ( R, reca, recb ) R_OBJECT R ;
-< int reca, recb ;
----
-> int R_member ( R_OBJECT R, int reca, int recb )
-60c59
+59c59
 <   p = R -> R_hash + ( ( ( ( 16807 * reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
 ---
 >   p = R -> R_hash + ( ( ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
-78,79c77
-< R_OBJECT R_grow ( R, lrec ) R_OBJECT R ;
-< int lrec ;
----
-> R_OBJECT R_grow ( R_OBJECT R, int lrec )
-125,126c123
-< int R_insert ( R, reca, recb ) R_OBJECT R ;
-< int reca, recb ;
----
-> int R_insert ( R_OBJECT R, int reca, int recb )
-146,147c143
-< R_row * R_rec ( R, i ) R_OBJECT R ;
-< int i ;
----
-> R_row * R_rec ( R_OBJECT R, int i )
 diff -r -w aa/S.c bb/S.c
-59,60c59
-< void copymem ( n, from, to ) long n ;
-< char * from, * to ;
+29c29
+< void Error ( ) ;
 ---
-> void copymem ( long n, char * from, char * to )
-67c66,67
-<   if ( from >= to ) while ( -- n >= 0 ) {
+> #include "O.h"
+51,52c51,53
+< #define S_m             26
+< // S_m = 26 allows objects of up to 1 gigabyte
 ---
->   if ( from >= to ) {
->     while ( -- n >= 0 ) {
-68a69
->     }
-79c80
-< void scribble ( p, q ) char * p, * q ;
+> #define S_m             28
+> /* S_m = 26 allows objects of up to 2 gigabytes 2^(5+26)*/
+> /* S_m = 28 allows objects of up to 8 gigabytes 2^(5+28)*/
+56c57,59
+< //     Copy a block of memory
 ---
-> void scribble ( char * p, char * q )
-118,119c119
-< void S_free ( l, k ) S_ft * l ;
-< int k ;
+> /*
+>  *     Copy a block of memory
+>  */
+84c87,89
+< //     Binary Buddy system storage allocator as in Knuth vol. 1
 ---
-> void S_free ( S_ft * l, int k )
-165c165
-< void S_morecore ( k ) int k ;
+> /*
+>  *     Binary Buddy system storage allocator as in Knuth vol. 1
+>  */
+176,178c181
+<           ++ k ) {
+<       ;
+<     }
 ---
-> void S_morecore ( int k )
-188c188
-< S_ft * S_malloc ( k ) int k ;
+>           ++ k ) ;
+202,204c205
+<           ++ j ) {
+<       ;
+<     }
 ---
-> S_ft * S_malloc ( int k )
-233,234c233
-< S_ft * S_realloc ( l, k1, k2 ) S_ft * l ;
-< int k1, k2 ;
+>           ++ j ) ;
+310,311c311
+<       if ( p != q ) {
+<         for ( cnt = 1 ;
 ---
-> S_ft * S_realloc ( S_ft * l, int k1, int k2 )
-285,286c284
-< S_ft * S_copy ( l, k ) S_ft * l ;
-< int k ;
+>       if ( p != q ) for ( cnt = 1 ;
+313,317c313
+<               ++ cnt ) {
+<           ;
+<         }
+< 
+<         ;
 ---
-> S_ft * S_copy ( S_ft * l, int k )
-351c349
-< char * Salloc ( n ) long n ;
+>                             ++ cnt ) ;
+319c315
+<       } else {
 ---
-> char * Salloc ( long n )
-372c370
-< void Sfree ( p ) char * p ;
+>       else {
+350a347
+> // Check this out !!!!! JHJ
+413,414c410,413
+< //     Interface to provide allocator for INR.
+< //     The length code and an audit flag are stored in allocated blocks
 ---
-> void Sfree ( char * p )
-386,387c384
-< char * Srealloc ( p, n ) char * p ;
-< long n ;
+> /*
+>  *     Interface to provide allocator for INR.
+>  *     The length code and an audit flag are stored in allocated blocks
+>  */
+429,431c428
+<         ++ k ) {
+<     ;
+<   }
 ---
-> char * Srealloc ( char * p, long n )
-411c408
-< char * Scopy ( p ) char * p ;
+>         ++ k ) ;
+468,470c465
+<         ++ k ) {
+<     ;
+<   }
 ---
-> char * Scopy ( char * p )
-420c417
-< long Ssize ( p ) char * p ;
----
-> long Ssize ( char * p )
+>         ++ k ) ;
+491,494d485
+< char * Sfind ( char * p )
+< {
+<   return ( ( ( char * ) S_find ( p ) ) + 4 ) ;
+< }
 diff -r -w aa/stamp.c bb/stamp.c
 28,29c28,29
-< char Version [ ] = "2.0.3b" ;
-< char Date [ ] = "Sept 11, 2018" ;
+< char Version [ ] = "2.0.4a" ;
+< char Date [ ] = "August 15, 2018" ;
 ---
-> char Version [ ] = "2.0.3f" ;
-> char Date [ ] = "Jan 14 2022" ;
-diff -r -w aa/T.c bb/T.c
-47c47
-< void T_destroy ( T ) T_OBJECT T ;
----
-> void T_destroy ( T_OBJECT T )
-66,67c66
-< int T_member ( T, name ) T_OBJECT T ;
-< char * name ;
----
-> int T_member ( T_OBJECT T, char * name )
-100,101c99
-< T_OBJECT T_grow ( T, lname ) T_OBJECT T ;
-< int lname ;
----
-> T_OBJECT T_grow ( T_OBJECT T, int lname )
-146,147c144
-< int T_insert ( T, name ) T_OBJECT T ;
-< char * name ;
----
-> int T_insert ( T_OBJECT T, char * name )
-166,167c163
-< char * T_name ( T, i ) T_OBJECT T ;
-< int i ;
----
-> char * T_name ( T_OBJECT T, int i )
+> char Version [ ] = "2.0.3g" ;
+> char Date [ ] = "Jan 16 2022" ;
 diff -r -w aa/U.c bb/U.c
-45c45
-< void U_destroy ( U ) U_OBJECT U ;
----
-> void U_destroy ( U_OBJECT U )
-55,56c55
-< int U_member ( U, reca, recb, recc ) U_OBJECT U ;
-< int reca, recb, recc ;
----
-> int U_member ( U_OBJECT U, int reca, int recb, int recc )
-60c59
+59c59
 <   p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
 ---
 >   p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
-78,79c77
-< U_OBJECT U_grow ( U, lrec ) U_OBJECT U ;
-< int lrec ;
----
-> U_OBJECT U_grow ( U_OBJECT U, int lrec )
-125,126c123
-< int U_insert ( U, reca, recb, recc ) U_OBJECT U ;
-< int reca, recb, recc ;
----
-> int U_insert ( U_OBJECT U, int reca, int recb, int recc )
-147,148c144
-< A_row * U_rec ( U, i ) U_OBJECT U ;
-< int i ;
----
-> A_row * U_rec ( U_OBJECT U, int i )
-diff -r -w aa/util.c bb/util.c
-29c29
-< void Warning ( s ) char * s ;
----
-> void Warning ( char * s )
-33c33
-< void Error ( s ) char * s ;
----
-> void Error ( char * s )
-39c39
-< SHORT * s_alloc ( n ) int n ;
----
-> SHORT * s_alloc ( int n )
-43c43
-< int * i_alloc ( n ) int n ;
----
-> int * i_alloc ( int n )
 diff -r -w aa/V.c bb/V.c
-33c33
-< SHORT * veccpy ( p, q ) SHORT * p, * q ;
+49,50c49
+<   while ( *++ p == *++ q ) {
+<     if ( * p == MAXSHORT ) {
 ---
-> SHORT * veccpy ( SHORT * p, SHORT * q )
-44c44
-< int veccmp ( p, q ) SHORT * p, * q ;
----
-> int veccmp ( SHORT * p, SHORT * q )
-55c55
-< int veclen ( p ) SHORT * p ;
----
-> int veclen ( SHORT * p )
-78c78
-< void V_destroy ( V ) V_OBJECT V ;
----
-> void V_destroy ( V_OBJECT V )
-97,98c97
-< int V_member ( V, vec ) V_OBJECT V ;
-< SHORT * vec ;
----
-> int V_member ( V_OBJECT V, SHORT * vec )
-131,132c130
-< V_OBJECT V_grow ( V, lvec ) V_OBJECT V ;
-< int lvec ;
----
-> V_OBJECT V_grow ( V_OBJECT V, int lvec )
-177,178c175
-< int V_insert ( V, vec ) V_OBJECT V ;
-< SHORT * vec ;
----
-> int V_insert ( V_OBJECT V, SHORT * vec )
-197,198c194
-< SHORT * V_vec ( V, i ) V_OBJECT V ;
-< int i ;
----
-> SHORT * V_vec ( V_OBJECT V, int i )
+>   while ( *++ p == *++ q ) if ( * p == MAXSHORT ) {
+53d51
+<   }
 Only in aa: VERSION

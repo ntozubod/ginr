@@ -49,10 +49,11 @@ S_ft ;
 #define set_linkb(p,q)  (p)-> S_linkb = q
 #define U(p)            ((unsigned long)(p))
 #define S_m             28
-/* S_m = 26 allows objects of up to 1 gigabyte */
+/* S_m = 26 allows objects of up to 2 gigabytes 2^(5+26)*/
+/* S_m = 28 allows objects of up to 8 gigabytes 2^(5+28)*/
 static S_ft * S_lo = 0, * S_hi = 0, S_avail [ S_m + 1 ] ;
 static int S_alld_cnt [ S_m ] ;
-int LINUXmem = 0 ;
+long LINUXmem = 0 ;
 /*
  *     Copy a block of memory
  */
@@ -92,7 +93,7 @@ void S_init ( )
   int i ;
 
   if ( S_lo == 0 ) {
-    int mem ;
+    long mem ;
 
     for ( mem = 512 * 1024 * 1024 ;
           S_lo == 0 ;
@@ -164,7 +165,7 @@ void S_free ( S_ft * l, int k )
 }
 void S_morecore ( int k )
 {
-  int a, b ;
+  long a, b ;
 
   if ( S_hi != S_lo ) {
     Error ( "S_morecore: Out of Memory" ) ;
@@ -290,7 +291,8 @@ S_ft * S_copy ( S_ft * l, int k )
 }
 void S_arena ( )
 {
-  int grand, gran2, i, size, cnt ;
+  int i, cnt ;
+  long grand, gran2, size ;
   S_ft * p, * q ;
   S_init ( ) ;
   fprintf ( fpout, "Size      Free      Allocated\n" ) ;
@@ -315,32 +317,95 @@ void S_arena ( )
       }
 
       if ( size < 1024 ) {
-        fprintf ( fpout, "%4d ", size ) ;
+        fprintf ( fpout, "%4ld ", size ) ;
 
       } else if ( size < 1024 * 1024 ) {
-        fprintf ( fpout, "%4dK", size / 1024 ) ;
+        fprintf ( fpout, "%4ldK", size / 1024 ) ;
 
       } else {
-        fprintf ( fpout, "%4dM", size / 1024 / 1024 ) ;
+        fprintf ( fpout, "%4ldM", size / 1024 / 1024 ) ;
       }
 
       fprintf ( fpout, "%7d", cnt ) ;
-      fprintf ( fpout, "%5dM", ( cnt * size + 1023 ) / 1024 / 1024 ) ;
+      fprintf ( fpout, "%5ldM", ( cnt * size + 1023 ) / 1024 / 1024 ) ;
       fprintf ( fpout, "%7d", S_alld_cnt [ i ] ) ;
-      fprintf ( fpout, "%5dM\n", ( S_alld_cnt [ i ] * size + 1023 ) / 1024 / 1024 ) ;
+      fprintf ( fpout, "%5ldM\n", ( S_alld_cnt [ i ] * size + 1023 ) / 1024 / 1024 ) ;
       grand += cnt * size ;
       gran2 += S_alld_cnt [ i ] * size ;
     }
   }
 
-  fprintf ( fpout, "            %5dM", ( grand + 1023 ) / 1024 / 1024 ) ;
-  fprintf ( fpout, "       %5dM\n", ( gran2 + 1023 ) / 1024 / 1024 ) ;
+  fprintf ( fpout, "            %5ldM", ( grand + 1023 ) / 1024 / 1024 ) ;
+  fprintf ( fpout, "       %5ldM\n", ( gran2 + 1023 ) / 1024 / 1024 ) ;
   size = LINUXmem ;
-  fprintf ( fpout, "Memory Size %5dM\n", size / 1024 / 1024 ) ;
+  fprintf ( fpout, "Memory Size %5ldM\n", size / 1024 / 1024 ) ;
 
   if ( size % 1024 != 0 ) {
-    fprintf ( fpout, "Excess %d bytes\n", size % 1024 ) ;
+    fprintf ( fpout, "Excess %ld bytes\n", size % 1024 ) ;
   }
+}
+// Check this out !!!!! JHJ
+// Find the block that contains the provided address
+S_ft * S_find ( char * p )
+{
+  if ( p < ( char * ) S_lo || p >= ( char * ) S_hi ) {
+    Error ( "S_find: BOTCH 1" ) ;
+  }
+
+  S_ft * l = S_lo ;
+  long incr = ( p - ( char * ) S_lo ) / sizeof ( S_ft ) ;
+  long offset = ( p - ( char * ) S_lo ) % sizeof ( S_ft ) ;
+
+  if ( ( char * ) & l [ incr ] + offset != p ) {
+    Error ( "S_find: BOTCH 2" ) ;
+  }
+
+  if ( offset < 0 || offset >= sizeof ( S_ft ) ) {
+    Error ( "S_find: BOTCH 3" ) ;
+  }
+
+  long base = 0 ;
+  int base_k = kval ( & l [ base ] ) ;
+  long right = S_hi - S_lo ;
+  int k ;
+
+  for ( k = 0 ;
+        ( incr >> k ) ;
+        ++ k ) {
+    ;
+  }
+
+  -- k ;
+  right = ( 1 << k ) ;
+
+// printf( "\n" );
+// printf( "base %ld\n", base );
+// printf( "incr %ld\n", incr );
+// printf( "k %d\n", k );
+// printf( "base_k %d\n", base_k );
+// printf( "right %ld\n", right );
+  while ( base_k <= k ) {
+    base += right ;
+    incr -= right ;
+    base_k = kval ( & l [ base ] ) ;
+
+    for ( k = 0 ;
+          ( incr >> k ) ;
+          ++ k ) {
+      ;
+    }
+
+    -- k ;
+    right = ( 1 << k ) ;
+// printf( "\n" );
+// printf( "base %ld\n", base );
+// printf( "incr %ld\n", incr );
+// printf( "k %d\n", k );
+// printf( "base_k %d\n", base_k );
+// printf( "right %ld\n", right );
+  }
+
+  return ( & l [ base ] ) ;
 }
 /*
  *     Interface to provide allocator for INR.
@@ -448,7 +513,7 @@ void Saudit ( )
 
     if ( ! tag ( p ) ) {
       if ( pc [ 0 ] != 0x7f ) {
-        printf ( "Audit anomoly in busy block at %lx:\n", U ( p ) ) ;
+        printf ( "Audit anomaly in busy block at %lx:\n", U ( p ) ) ;
         printf ( "Size code %d\n", pc [ 1 ] ) ;
         printf ( "S_lo %lx S_hi %lx S_avail %lx\n", U ( S_lo ), U ( S_hi ), U ( S_avail ) ) ;
 
@@ -467,7 +532,7 @@ void Saudit ( )
       k = kval ( p ) ;
 
       if ( k >= 30 || ( ( linkf ( p ) < S_lo || linkf ( p ) >= S_hi ) && ( linkf ( p ) < S_avail || linkf ( p ) >= S_avail + S_m ) ) || ( ( linkb ( p ) < S_lo || linkb ( p ) >= S_hi ) && ( linkb ( p ) < S_avail || linkb ( p ) >= S_avail + S_m ) ) || linkb ( linkf ( p ) ) != p || linkf ( linkb ( p ) ) != p ) {
-        printf ( "Audit anomoly in free block at %lx:\n", U ( p ) ) ;
+        printf ( "Audit anomaly in free block at %lx:\n", U ( p ) ) ;
         printf ( "S_lo %lx S_hi %lx S_avail %lx\n", U ( S_lo ), U ( S_hi ), U ( S_avail ) ) ;
         printf ( "kval %d\n", k ) ;
         printf ( "linkf %lx linkb %lx\n", U ( linkf ( p ) ), U ( linkb ( p ) ) ) ;

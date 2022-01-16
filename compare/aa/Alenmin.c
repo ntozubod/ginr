@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-A_OBJECT A_lenmin ( A ) A_OBJECT A ;
+A_OBJECT A_lenmin ( A_OBJECT A )
 {
   A_row * lo, * hi, * p ;
   int i, l, cur, dead ;
@@ -72,15 +72,17 @@ A_OBJECT A_lenmin ( A ) A_OBJECT A ;
 
   for ( p = lo ;
         p < hi ;
-        p ++ ) if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
+        p ++ ) {
+    if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
       p -> A_c = dead ;
     }
+  }
 
   Sfree ( ( char * ) bfs ) ;
   Sfree ( ( char * ) dis ) ;
   return ( A_trim ( A ) ) ;
 }
-int A_minlen ( A ) A_OBJECT A ;
+int A_minlen ( A_OBJECT A )
 {
   A_row * lo, * hi, * p ;
   int i, l, cur ;

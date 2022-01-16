@@ -26,21 +26,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 extern FILE * fpout ;
-void Warning ( s ) char * s ;
+void Warning ( char * s )
 {
   fprintf ( fpout, "*** %s ***\n", s ) ;
 }
-void Error ( s ) char * s ;
+void Error ( char * s )
 {
   fprintf ( fpout, "*** %s ***\n", s ) ;
   fflush ( fpout ) ;
   exit ( 1 ) ;
 }
-SHORT * s_alloc ( n ) int n ;
+SHORT * s_alloc ( int n )
 {
   return ( ( SHORT * ) Salloc ( n * sizeof ( SHORT ) ) ) ;
 }
-int * i_alloc ( n ) int n ;
+int * i_alloc ( int n )
 {
   return ( ( int * ) Salloc ( n * sizeof ( int ) ) ) ;
 }

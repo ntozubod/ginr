@@ -25,8 +25,8 @@
 % {
 #include <stdio.h>
 #include <ctype.h>
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 #include "O.h"
   FILE * fopen ( ) ;
   extern FILE * fpin, * fpout ;
@@ -35,10 +35,6 @@
   extern A_OBJECT Alist [ 100 ] ;
   extern T_OBJECT TT ;
   extern int disp_flag ;
-  extern int do_n_i ( ) ;
-  extern A_OBJECT do_an_a ( ) ;
-  extern A_OBJECT do_ann_a ( ) ;
-  extern A_OBJECT do_nn_a ( ) ;
   int i, num ;
   char * t ;
   extern char * pad20 ( ) ;
@@ -172,9 +168,10 @@ reg_0 SEMI {
 
   if ( i )
   {
-    return ( 0 ) ;
+    return 1 ;
   }
 
+// to suppress warning JHJ
   if ( A_report )
   {
     pr_time_diff ( ) ;
@@ -424,9 +421,9 @@ reg_8 PLUS {
     if ( i >= 0 ) {
       fprintf ( fpout, "Warning: %s is a variable and a token\n", t ) ;
     }
-  }
 
-  Sfree ( $ 1 ) ;
+    Sfree ( $ 1 ) ;
+  }
 }
 | LBRACK reg_0 RBRACK {
   if ( A_report )

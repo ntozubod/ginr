@@ -35,7 +35,7 @@ A_OBJECT A, Atemp ;
 T_OBJECT TAlist ;
 A_OBJECT Alist [ 100 ] ;
 T_OBJECT TT ;
-char * pad20 ( s ) char * s ;
+char * pad20 ( char * s )
 {
   static char tmp [ 41 ] ;
 
@@ -53,7 +53,7 @@ char * pad20 ( s ) char * s ;
 int ch = ' ' ;
 char token [ 512 ] ;
 int in_string = 0 ;
-char * copyof ( str ) char * str ;
+char * copyof ( char * str )
 {
   return ( strcpy ( Salloc ( strlen ( str ) + 1 ), str ) ) ;
 }
@@ -165,8 +165,8 @@ int yylex ( )
   case '!' :
     return ( EXCLAM ) ;
 
-  /*  case '"':   not used    */
-  /*  case '#': COMMENT     */
+//  case '"':   not used
+//  case '#':   COMMENT
   case '$' :
     return ( DOLLAR ) ;
 
@@ -198,7 +198,7 @@ int yylex ( )
   case '-' :
     return ( MINUS ) ;
 
-  /*  case '.': ALPHANUMERIC    */
+//  case '.':   ALPHANUMERIC
   case '/' :
     return ( SLASH ) ;
 
@@ -208,11 +208,11 @@ int yylex ( )
   case ';' :
     return ( SEMI ) ;
 
-  /*  case '<': not used    */
+//  case '<':   not used
   case '=' :
     return ( EQUAL ) ;
 
-  /*  case '>': not used    */
+//  case '>':   not used
   case '?' :
     return ( QUESTION ) ;
 
@@ -231,8 +231,8 @@ int yylex ( )
   case '^' :
     return ( CIRCUMFLEX ) ;
 
-  /*  case '_': ALPHANUMERIC    */
-  /*  case '`': TOKEN QUOTE */
+//  case '_':   ALPHANUMERIC
+//  case '`':   TOKEN QUOTE
   case '{' :
     return ( LBRACE ) ;
 
@@ -242,7 +242,7 @@ int yylex ( )
   case '}' :
     return ( RBRACE ) ;
 
-  /*  case '~': not used    */
+//  case '~':   not used
   case '"' :
   case '<' :
   case '>' :
@@ -414,8 +414,7 @@ int yylex ( )
 char Notice [ ] = "Copyright (c) 1985, 1988, J Howard Johnson, University of Waterloo" ;
 extern char Version [ ] ;
 extern char Date [ ] ;
-int main ( argc, argv ) int argc ;
-char * argv [ ] ;
+int main ( int argc, char * argv [ ] )
 {
   int ti ;
   char tstr [ 2 ] ;
@@ -458,9 +457,9 @@ char * argv [ ] ;
   if ( isatty ( fileno ( fpout ) ) ) {
     fprintf ( fpout, "\n" ) ;
     fprintf ( fpout, "II  N     N  RRRRRR    I N R     " ) ;
-    fprintf ( fpout, "Version %s (Sep 11, 2018)\n", Version ) ;
+    fprintf ( fpout, "Version %s (Mar 25, 1988)\n", Version ) ;
     fprintf ( fpout, "II  N N   N  R    RR" ) ;
-    fprintf ( fpout, "             Copyright (C) 1988-2018 J Howard Johnson\n" ) ;
+    fprintf ( fpout, "             Copyright (C) 1988 J Howard Johnson\n" ) ;
     fprintf ( fpout, "II  N  N  N  RRRRRR    modified  %s\n", Date ) ;
     fprintf ( fpout, "II  N   N N  R    R\n" ) ;
     fprintf ( fpout, "II  N    NN  R     R" ) ;
@@ -494,10 +493,12 @@ char * argv [ ] ;
 
   for ( ti = 1 ;
         ti <= 255 ;
-        ti ++ ) if ( ( isascii ( ti ) && isprint ( ti ) ) || ti == '\t' || ti == '\n' ) {
+        ti ++ ) {
+    if ( ( isascii ( ti ) && isprint ( ti ) ) || ti == '\t' || ti == '\n' ) {
       tstr [ 0 ] = ti ;
       ( void ) T_insert ( TT, tstr ) ;
     }
+  }
 
   TAlist = T_create ( ) ;
 
@@ -521,11 +522,11 @@ char * argv [ ] ;
 
   exit ( 0 ) ;
 }
-void yyerror ( str ) char * str ;
+void yyerror ( char * str )
 {
   fprintf ( fpout, "*** %s ***\n", str ) ;
 }
-int tonum ( p ) char * p ;
+int tonum ( char * p )
 {
   int acum, c ;
   acum = 0 ;

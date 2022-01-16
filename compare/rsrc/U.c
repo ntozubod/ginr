@@ -36,150 +36,148 @@ static int U_fail = 0;
 
 U_OBJECT U_create( )
 {
-  register U_OBJECT U;
-  U = ( U_OBJECT ) Salloc( sizeof( struct U_desc ) );
-  U-> Type = U_Object;
-  U-> U_n  = 0;
-  U-> U_lrec = 0;
-  U-> U_lhash = 1;
-  U-> U_rec = 0;
-  U-> U_hash = s_alloc( 1 );
-  U-> U_hash[ 0 ] = MAXSHORT;
-  return( U );
+    register U_OBJECT U;
+    U = (U_OBJECT) Salloc( sizeof(struct U_desc) );
+    U-> Type = U_Object;
+    U-> U_n  = 0;
+    U-> U_lrec = 0;
+    U-> U_lhash = 1;
+    U-> U_rec = 0;
+    U-> U_hash = s_alloc( 1 );
+    U-> U_hash[ 0 ] = MAXSHORT;
+    return ( U );
 }
 
-void U_destroy( U )
-register U_OBJECT U;
+void U_destroy( register U_OBJECT U )
 {
-  if ( U == NULL ) {
-    return;
-  }
 
-  Sfree( ( char * ) U-> U_rec );
-  Sfree( ( char * ) U-> U_hash );
-  Sfree( ( char * ) U );
-}
-
-int U_member( U, reca, recb, recc )
-register U_OBJECT U;
-register int reca, recb, recc;
-{
-  register SHORT *p;
-  ++U_calls;
-  p  = U-> U_hash +
-       ( ( ( ( 16807 * ( ( 16807 * reca + recb ) & 017777777777 ) + recc )
-             & 017777777777 ) * 16807 ) & 017777777777 )
-       % U-> U_lhash;
-
-  while ( *p < MAXSHORT ) {
-    ++U_probes;
-
-    if ( U-> U_rec[*p].A_a == reca
-         && U-> U_rec[*p].A_b == recb
-         && U-> U_rec[*p].A_c == recc ) {
-      return( *p );
+    if ( U == NULL ) {
+        return;
     }
 
-    if ( --p < U-> U_hash ) {
-      p = U-> U_hash + U-> U_lhash - 1;
-    }
-  }
-
-  ++U_fail;
-  U_hashpos = p;
-  return( -1 );
+    Sfree( (char *) U-> U_rec );
+    Sfree( (char *) U-> U_hash );
+    Sfree( (char *) U );
 }
 
-U_OBJECT U_grow( U, lrec )
-register U_OBJECT U;
-int lrec;
+int U_member( register U_OBJECT U, register int reca, register int recb,
+              register int recc )
 {
-  register SHORT *p, *pl;
-  register A_row *q, *ql;
-  register int i;
+    register SHORT *p;
+    ++U_calls;
+    p  = U-> U_hash +
+         ((((16807 * ((16807 * reca + recb) & 017777777777) + recc)
+            & 017777777777) * 16807 ) & 017777777777 )
+         % U-> U_lhash;
 
-  if ( lrec < 15 ) {
-    lrec = 15;
-  }
+    while ( *p < MAXSHORT ) {
+        ++U_probes;
 
-  if ( lrec <= U-> U_lrec ) {
-    return( U );
-  }
+        if ( U-> U_rec[*p].A_a == reca
+                && U-> U_rec[*p].A_b == recb
+                && U-> U_rec[*p].A_c == recc ) {
+            return ( *p );
+        }
 
-  Sfree( ( char * ) U-> U_hash );
-  U-> U_rec =
-    ( A_row * ) Srealloc( ( char * ) U-> U_rec,
-                          lrec * sizeof( A_row ) );
-  U-> U_lrec = Ssize( ( char * ) U-> U_rec ) / sizeof( A_row );
-
-  if ( U-> U_lrec > MAXSHORT ) {
-    U-> U_lrec = MAXSHORT;
-  }
-
-  U-> U_hash = s_alloc( 2 * U-> U_lrec );
-  U-> U_lhash = Ssize( ( char * ) U-> U_hash ) / sizeof( SHORT );
-  p = U-> U_hash;
-  pl = p + U-> U_lhash;
-
-  while ( p < pl ) {
-    *p++ = MAXSHORT;
-  }
-
-  q = U-> U_rec;
-  ql = q + U-> U_n;
-  i = 0;
-
-  while ( q < ql ) {
-    if ( U_member( U, ( int )q-> A_a, ( int )q-> A_b, ( int )q-> A_c )
-         != ( -1 ) ) {
-      Error( "U_grow: BOTCH" );
+        if ( --p < U-> U_hash ) {
+            p = U-> U_hash + U-> U_lhash - 1;
+        }
     }
 
-    ++q;
-    *U_hashpos = i++;
-  }
-
-  return( U );
+    ++U_fail;
+    U_hashpos = p;
+    return ( -1 );
 }
 
-int U_insert( U, reca, recb, recc )
-register U_OBJECT U;
-register int reca, recb, recc;
+U_OBJECT U_grow( register U_OBJECT U, int lrec )
 {
-  register int i;
+    register SHORT *p, *pl;
+    register A_row *q, *ql;
+    register int i;
 
-  if ( U-> U_n >= U-> U_lrec ) {
-    if ( U-> U_n >= MAXSHORT ) {
-      Error( "U_insert: Table FULL" );
+    if ( lrec < 15 ) {
+        lrec = 15;
     }
 
-    U = U_grow( U, 2 * U-> U_lrec );
-  }
+    if ( lrec <= U-> U_lrec ) {
+        return ( U );
+    }
 
-  if ( ( i = U_member( U, reca, recb, recc ) ) >= 0 ) {
-    return( i );
-  }
+    Sfree( (char *) U-> U_hash );
+    U-> U_rec =
+        (A_row *) Srealloc( (char *) U-> U_rec,
+                            lrec * sizeof(A_row) );
+    U-> U_lrec = Ssize( (char *) U-> U_rec ) / sizeof(A_row);
 
-  U-> U_rec[ U-> U_n ].A_a = reca;
-  U-> U_rec[ U-> U_n ].A_b = recb;
-  U-> U_rec[ U-> U_n ].A_c = recc;
-  return( *U_hashpos = U-> U_n++ );
+    if ( U-> U_lrec > MAXSHORT ) {
+        U-> U_lrec = MAXSHORT;
+    }
+
+    U-> U_hash = s_alloc( 2 * U-> U_lrec );
+    U-> U_lhash = Ssize( (char *) U-> U_hash ) / sizeof(SHORT);
+    p = U-> U_hash;
+    pl = p + U-> U_lhash;
+
+    while ( p < pl ) {
+        *p++ = MAXSHORT;
+    }
+
+    q = U-> U_rec;
+    ql = q + U-> U_n;
+    i = 0;
+
+    while ( q < ql ) {
+
+        if ( U_member( U, (int)q-> A_a, (int)q-> A_b, (int)q-> A_c )
+                != (-1) ) {
+            Error( "U_grow: BOTCH" );
+        }
+
+        ++q;
+        *U_hashpos = i++;
+    }
+
+    return ( U );
 }
 
-A_row *U_rec( U, i )
-register U_OBJECT U;
-register int i;
+int U_insert( register U_OBJECT U, register int reca, register int recb,
+              register int recc )
 {
-  if ( i >= 0 && i < U-> U_n ) {
-    return( U-> U_rec + i );
+    register int i;
 
-  } else        {
-    return( NULL );
-  }
+    if ( U-> U_n >= U-> U_lrec ) {
+
+        if ( U-> U_n >= MAXSHORT ) {
+            Error( "U_insert: Table FULL" );
+        }
+
+        U = U_grow( U, 2 * U-> U_lrec );
+    }
+
+    if ( (i = U_member( U, reca, recb, recc )) >= 0 ) {
+        return ( i );
+    }
+
+    U-> U_rec[ U-> U_n ].A_a = reca;
+    U-> U_rec[ U-> U_n ].A_b = recb;
+    U-> U_rec[ U-> U_n ].A_c = recc;
+    return ( *U_hashpos = U-> U_n++ );
+}
+
+A_row *U_rec( register U_OBJECT U, register int i )
+{
+
+    if ( i >= 0 && i < U-> U_n ) {
+        return ( U-> U_rec + i );
+    }
+
+    else {
+        return ( NULL );
+    }
 }
 
 void U_stats()
 {
-  fprintf( fpout, "(U) Calls:%7d  Probes:%7d  Unsuccessful:%7d\n",
-           U_calls, U_probes, U_fail );
+    fprintf( fpout, "(U) Calls:%7d  Probes:%7d  Unsuccessful:%7d\n",
+             U_calls, U_probes, U_fail );
 }

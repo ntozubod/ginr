@@ -24,7 +24,7 @@
  */
 #include <stdio.h>
 #include "O.h"
-#define INIT_lrows 20
+#define INIT_lrows  20
 int A_report = 0 ;
 extern FILE * fpout ;
 A_OBJECT A_create ( )
@@ -279,5 +279,5 @@ A_OBJECT A_adems ( A_OBJECT A )
   A = A_close ( A ) ;
   A -> A_mode = new_mode ;
   A -> A_ems = 1 ;
-  return ( A ) ;
+  return A ;
 }

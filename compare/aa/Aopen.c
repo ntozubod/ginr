@@ -1,27 +1,29 @@
-// Copyright (c) 1985, J Howard Johnson, University of Waterloo.
-//
-// This software was developed while I was a student and, later, professor
-// at the University of Waterloo.  It has only minimal enhancements and bug
-// fixes from later than August 1988.  It was released under the GPLv3
-// licence on July 26, 2010.
-//                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
-//
-// This file is part of INR.
-//
-//   INR is free software: you can redistribute it and/or modify
-//   it under the terms of the GNU General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   INR is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
-//
-//   You should have received a copy of the GNU General Public License
-//   along with INR.  If not, see <http://www.gnu.org/licenses/>.
+extern int S_flag ;
+/*
+ * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
+ *
+ * This software was developed while I was a student and, later, professor
+ * at the University of Waterloo.  It has only minimal enhancements and bug
+ * fixes from later than August 1988.  It was released under the GPLv3
+ * licence on July 26, 2010.
+ *                 -- J Howard Johnson ( j.howard.johnson *at* gmail.com )
+ *
+ * This file is part of INR.
+ *
+ *   INR is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   INR is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include <stdio.h>
-#include <assert.h>
 extern FILE * fpout ;
 #include "O.h"
 SHORT * s_rena = 0 ;
@@ -34,9 +36,17 @@ A_OBJECT A_add ( A_OBJECT A, int a, int b, int c )
     Error ( "A_add: No OBJECT" ) ;
   }
 
-  assert ( A -> A_mode == OPEN ) ;
-  assert ( a >= 0 && b >= 0 && c >= 0 ) ;
-  assert ( a < MAXSHORT && b < MAXSHORT && c < MAXSHORT ) ;
+  if ( A -> A_mode != OPEN ) {
+    Error ( "A_add: Object not OPEN" ) ;
+  }
+
+  if ( a < 0 || b < 0 || c < 0 ) {
+    Error ( "A_add: Numbers cannot be negative" ) ;
+  }
+
+  if ( a >= MAXSHORT || b >= MAXSHORT || c >= MAXSHORT ) {
+    Error ( "A_add: Numbers are too big" ) ;
+  }
 
   if ( A -> A_nrows >= A -> A_lrows ) {
     A -> A_t = ( A_row * ) Srealloc ( ( char * ) A -> A_t, ( 2 * A -> A_nrows + 2 ) * sizeof ( A_row ) ) ;
@@ -108,7 +118,6 @@ A_OBJECT A_close ( A_OBJECT A )
   NQ = A -> A_nQ ;
   NS = A -> A_nS * A -> A_nT ;
   N = ( NQ > NS ) ? NQ : NS ;
-  assert ( N > 0 ) ;
   t1 = A -> A_t ;
   t2 = ( A_row * ) Salloc ( ( A -> A_nrows + 2 ) * sizeof ( A_row ) ) ;
   t1z = t1 + A -> A_nrows ;
@@ -125,7 +134,6 @@ A_OBJECT A_close ( A_OBJECT A )
   for ( p = t1z ;
         -- p >= t1 ;
       ) {
-    assert ( p -> A_c < N ) ;
     ++ cnt [ p -> A_c ] ;
   }
 
@@ -139,16 +147,13 @@ A_OBJECT A_close ( A_OBJECT A )
     cnt [ i ] = 0 ;
   }
 
-  assert ( p == t2 ) ;
-
   for ( p = t1z ;
         -- p >= t1 ;
       ) {
-    q = -- ptr [ p -> A_c ] ;
+    q = -- ptr [ i = p -> A_c ] ;
     q -> A_a = p -> A_a ;
-    assert ( p -> A_b < N ) ;
     ++ cnt [ q -> A_b = p -> A_b ] ;
-    q -> A_c = p -> A_c ;
+    q -> A_c = i ;
   }
 
   p = t1z ;
@@ -161,15 +166,12 @@ A_OBJECT A_close ( A_OBJECT A )
     cnt [ i ] = 0 ;
   }
 
-  assert ( p == t1 ) ;
-
   for ( p = t2z ;
         -- p >= t2 ;
       ) {
-    q = -- ptr [ p -> A_b ] ;
-    assert ( p -> A_a < N ) ;
+    q = -- ptr [ i = p -> A_b ] ;
     ++ cnt [ q -> A_a = p -> A_a ] ;
-    q -> A_b = p -> A_b ;
+    q -> A_b = i ;
     q -> A_c = p -> A_c ;
   }
 
@@ -183,13 +185,11 @@ A_OBJECT A_close ( A_OBJECT A )
     cnt [ i ] = 0 ;
   }
 
-  assert ( p == t2 ) ;
-
   for ( p = t1z ;
         -- p >= t1 ;
       ) {
-    q = -- ptr [ p -> A_a ] ;
-    q -> A_a = p -> A_a ;
+    q = -- ptr [ i = p -> A_a ] ;
+    q -> A_a = i ;
     q -> A_b = p -> A_b ;
     q -> A_c = p -> A_c ;
   }
@@ -199,7 +199,7 @@ A_OBJECT A_close ( A_OBJECT A )
   t2z -> A_a = ( t2z - 1 ) -> A_a ;
   t2z -> A_b = ( t2z - 1 ) -> A_b ;
   t2z -> A_c = ( t2z - 1 ) -> A_c ;
-  ( t2z + 1 ) -> A_c = MAXSHORT ;
+  ( t2z + 1 ) -> A_a = MAXSHORT ;
   p = t2 ;
   t1 = t2 - 1 ;
 

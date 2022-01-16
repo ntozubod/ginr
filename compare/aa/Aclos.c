@@ -25,14 +25,14 @@
 #include <stdio.h>
 extern FILE * fpout ;
 #include "O.h"
-#define UNMARK          0
-#define MARK            1
-#define CONDEMN         2
+#define UNMARK  0
+#define MARK    1
+#define CONDEMN 2
 static A_OBJECT GAc ;
 static A_OBJECT GAc2 ;
 static SHORT * c_stk, * c_mark ;
 static int c_top ;
-void A_cl_DFS ( state ) int state ;
+void A_cl_DFS ( int state )
 {
   A_row * p, * pz ;
   static int j, next ;
@@ -83,7 +83,7 @@ void A_cl_DFS ( state ) int state ;
     c_mark [ state ] = MARK ;
   }
 }
-A_OBJECT A_clsure ( A ) A_OBJECT A ;
+A_OBJECT A_clsure ( A_OBJECT A )
 {
   A_row * p, * pz ;
   int i, n_condemned ;
@@ -118,23 +118,27 @@ A_OBJECT A_clsure ( A ) A_OBJECT A ;
 
   for ( i = A -> A_nQ ;
         -- i >= 2 ;
-      ) if ( A -> A_p [ i ] != ( p = A -> A_p [ i + 1 ] ) && ( p - 1 ) -> A_b == 0 ) {
+      ) {
+    if ( A -> A_p [ i ] != ( p = A -> A_p [ i + 1 ] ) && ( p - 1 ) -> A_b == 0 ) {
       c_mark [ i ] = CONDEMN ;
       ++ n_condemned ;
 
     } else {
       c_mark [ i ] = UNMARK ;
     }
+  }
 
   if ( n_condemned > 0 ) {
     pz = A -> A_t + A -> A_nrows ;
 
     for ( p = A -> A_t ;
           p < pz ;
-          p ++ ) if ( p -> A_b != 0 && c_mark [ p -> A_c ] == CONDEMN ) {
+          p ++ ) {
+      if ( p -> A_b != 0 && c_mark [ p -> A_c ] == CONDEMN ) {
         c_mark [ p -> A_c ] = UNMARK ;
         -- n_condemned ;
       }
+    }
   }
 
   GAc2 = A_create ( ) ;
@@ -143,21 +147,25 @@ A_OBJECT A_clsure ( A ) A_OBJECT A ;
 
   for ( i = A -> A_nQ ;
         -- i >= START ;
-      ) if ( c_mark [ i ] == UNMARK ) {
+      ) {
+    if ( c_mark [ i ] == UNMARK ) {
       A_cl_DFS ( i ) ;
     }
+  }
 
   Sfree ( ( char * ) c_stk ) ;
 
   if ( n_condemned > 0 ) {
     for ( p = pz = A -> A_t + A -> A_nrows ;
           -- p > A -> A_t ;
-        ) if ( c_mark [ p -> A_a ] == CONDEMN || c_mark [ p -> A_c ] == CONDEMN ) {
+        ) {
+      if ( c_mark [ p -> A_a ] == CONDEMN || c_mark [ p -> A_c ] == CONDEMN ) {
         -- pz ;
         p -> A_a = pz -> A_a ;
         p -> A_b = pz -> A_b ;
         p -> A_c = pz -> A_c ;
       }
+    }
 
     A -> A_nrows = pz - A -> A_t ;
   }

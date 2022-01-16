@@ -25,7 +25,7 @@
 #include <stdio.h>
 extern FILE * fpout ;
 #include "O.h"
-void A_conform ( A1, A2 ) A_OBJECT A1, A2 ;
+void A_conform ( A_OBJECT A1, A_OBJECT A2 )
 {
   int i ;
   A_row * p ;
@@ -69,7 +69,7 @@ A_OBJECT A_lambda ( )
 {
   return ( A_add ( A_create ( ), START, 1, FINAL ) ) ;
 }
-A_OBJECT A_letter ( t, x ) int t, x ;
+A_OBJECT A_letter ( int t, int x )
 {
   A_OBJECT A ;
   A = A_create ( ) ;
@@ -81,8 +81,7 @@ A_OBJECT A_letter ( t, x ) int t, x ;
 
   return ( A_add ( A_add ( A, START, x * A -> A_nT + t, 2 ), 2, 1, FINAL ) ) ;
 }
-A_OBJECT A_deecho ( A, ECHO, NOECHO ) A_OBJECT A ;
-int ECHO, NOECHO ;
+A_OBJECT A_deecho ( A_OBJECT A, int ECHO, int NOECHO )
 {
   A_OBJECT A1 ;
   A_row * p ;
@@ -122,7 +121,7 @@ int ECHO, NOECHO ;
   A_destroy ( A ) ;
   return A1 ;
 }
-A_OBJECT A_opt ( A ) A_OBJECT A ;
+A_OBJECT A_opt ( A_OBJECT A )
 {
   int new_state ;
   A_row * p ;
@@ -150,7 +149,7 @@ A_OBJECT A_opt ( A ) A_OBJECT A ;
   A = A_add ( A, START, 1, FINAL ) ;
   return ( A ) ;
 }
-A_OBJECT A_plus ( A ) A_OBJECT A ;
+A_OBJECT A_plus ( A_OBJECT A )
 {
   int new_state ;
   A_row * p ;
@@ -164,20 +163,22 @@ A_OBJECT A_plus ( A ) A_OBJECT A ;
 
   for ( p = A -> A_t + A -> A_nrows ;
         -- p >= A -> A_t ;
-      ) if ( p -> A_b == 1 ) {
+      ) {
+    if ( p -> A_b == 1 ) {
       p -> A_b = 0 ;
       p -> A_c = new_state ;
     }
+  }
 
   A = A_add ( A, new_state, 0, START ) ;
   A = A_add ( A, new_state, 1, FINAL ) ;
   return ( A ) ;
 }
-A_OBJECT A_star ( A ) A_OBJECT A ;
+A_OBJECT A_star ( A_OBJECT A )
 {
   return ( A_opt ( A_plus ( A ) ) ) ;
 }
-A_OBJECT A_union ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_union ( A_OBJECT A1, A_OBJECT A2 )
 {
   int base, a, c ;
   A_row * p ;
@@ -224,7 +225,7 @@ A_OBJECT A_union ( A1, A2 ) A_OBJECT A1, A2 ;
   A_destroy ( A2 ) ;
   return ( A1 ) ;
 }
-A_OBJECT A_percent ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_percent ( A_OBJECT A1, A_OBJECT A2 )
 {
   int base, a, b, c ;
   A_row * p ;
@@ -280,7 +281,7 @@ A_OBJECT A_percent ( A1, A2 ) A_OBJECT A1, A2 ;
   A_destroy ( A2 ) ;
   return ( A1 ) ;
 }
-A_OBJECT A_concat ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_concat ( A_OBJECT A1, A_OBJECT A2 )
 {
   int base, a, c ;
   A_row * p ;
@@ -295,10 +296,12 @@ A_OBJECT A_concat ( A1, A2 ) A_OBJECT A1, A2 ;
 
   for ( p = A1 -> A_t + A1 -> A_nrows ;
         -- p >= A1 -> A_t ;
-      ) if ( p -> A_b == 1 && p -> A_c == FINAL ) {
+      ) {
+    if ( p -> A_b == 1 && p -> A_c == FINAL ) {
       p -> A_b = 0 ;
       p -> A_c = base + 1 ;
     }
+  }
 
   A1 -> A_nQ = base + 2 ;
 
@@ -325,7 +328,7 @@ A_OBJECT A_concat ( A1, A2 ) A_OBJECT A1, A2 ;
   A_destroy ( A2 ) ;
   return ( A1 ) ;
 }
-A_OBJECT A_intersect ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_intersect ( A_OBJECT A1, A_OBJECT A2 )
 {
   A_OBJECT A ;
   int current ;
@@ -392,7 +395,7 @@ A_OBJECT A_intersect ( A1, A2 ) A_OBJECT A1, A2 ;
   A -> A_mode = DFA ;
   return ( A ) ;
 }
-A_OBJECT A_differ ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_differ ( A_OBJECT A1, A_OBJECT A2 )
 {
   A_OBJECT A ;
   int current, dead ;
@@ -455,10 +458,12 @@ A_OBJECT A_differ ( A1, A2 ) A_OBJECT A1, A2 ;
         }
       }
 
-    } else while ( p1 < p1z ) {
+    } else {
+      while ( p1 < p1z ) {
         A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( int ) p1 -> A_c, dead ) ) ;
         ++ p1 ;
       }
+    }
   }
 
   A_destroy ( A1 ) ;
@@ -468,7 +473,7 @@ A_OBJECT A_differ ( A1, A2 ) A_OBJECT A1, A2 ;
   A -> A_mode = DFA ;
   return ( A ) ;
 }
-A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_xor ( A_OBJECT A1, A_OBJECT A2 )
 {
   A_OBJECT A ;
   int current, dead ;
@@ -519,11 +524,11 @@ A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
 
         while ( p1 < p1z || p2 < p2z ) {
           if ( p2 == p2z || ( p1 < p1z && p1 -> A_b < p2 -> A_b ) ) {
-            A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c, dead ) ) ;
+            A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c ), dead ) ) ;
             ++ p1 ;
 
           } else if ( p1 == p1z || ( p2 < p2z && p2 -> A_b < p1 -> A_b ) ) {
-            A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ;
+            A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ) ;
             ++ p2 ;
 
           } else {
@@ -534,7 +539,7 @@ A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
         }
 
       } else while ( p1 < p1z ) {
-          A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c, dead ) ) ;
+          A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c ), dead ) ) ;
           ++ p1 ;
         }
 
@@ -543,7 +548,7 @@ A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
       p2z = A2 -> A_p [ cur_st -> R_b + 1 ] ;
 
       while ( p2 < p2z ) {
-        A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ;
+        A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ) ;
         ++ p2 ;
       }
     }
@@ -556,7 +561,7 @@ A_OBJECT A_xor ( A1, A2 ) A_OBJECT A1, A2 ;
   A -> A_mode = DFA ;
   return ( A ) ;
 }
-A_OBJECT A_alph ( A ) A_OBJECT A ;
+A_OBJECT A_alph ( A_OBJECT A )
 {
   A_row * p ;
 
@@ -568,7 +573,8 @@ A_OBJECT A_alph ( A ) A_OBJECT A ;
 
   for ( p = A -> A_t + A -> A_nrows ;
         -- p >= A -> A_t ;
-      ) if ( p -> A_b == 1 ) {
+      ) {
+    if ( p -> A_b == 1 ) {
       p -> A_a = 2 ;
       p -> A_c = FINAL ;
 
@@ -581,12 +587,13 @@ A_OBJECT A_alph ( A ) A_OBJECT A ;
       p -> A_c = 2 ;
       p -> A_b /= A -> A_nT ;
     }
+  }
 
   A -> A_nT = 1 ;
   A -> A_nQ = 4 ;
   return ( A_trim ( A ) ) ;
 }
-A_OBJECT A_rev ( A ) A_OBJECT A ;
+A_OBJECT A_rev ( A_OBJECT A )
 {
   A_row * p ;
   int tmp ;
@@ -638,7 +645,7 @@ A_OBJECT A_rev ( A ) A_OBJECT A ;
 
   return ( A ) ;
 }
-A_OBJECT A_shuffle ( A1, A2 ) A_OBJECT A1, A2 ;
+A_OBJECT A_shuffle ( A_OBJECT A1, A_OBJECT A2 )
 {
   A_OBJECT A ;
   int current, cur_a, cur_b ;

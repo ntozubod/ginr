@@ -31,67 +31,74 @@
 #define U_Object        4
 #define A_Object        5
 
-typedef unsigned short  SHORT;
-#define MAXSHORT        0177777
+typedef unsigned int    SHORT;
+
+// #define MAXSHORT        037777777777
+// change MAXSHORT to 31 one's to avoid bugs in usage for signed ints
+// left over from change of SHORT to 32 bits.
+// These cases will be reviewed one by one and repaired correctly (JHJ).
+
+#define MAXSHORT        017777777777
+#define MAXSTATE        017777777777
 
 typedef struct {
-  SHORT       R_a;
-  SHORT       R_b;
+    SHORT       R_a;
+    SHORT       R_b;
 }   R_row;
 
 typedef struct {
-  SHORT       A_a;
-  SHORT       A_b;
-  SHORT       A_c;
+    SHORT       A_a;
+    SHORT       A_b;
+    SHORT       A_c;
 }   A_row;
 
 typedef struct T_desc {
-  int         Type;
-  int         T_n;
-  int         T_lname;
-  int         T_lhash;
-  char **     T_name;
-  SHORT *     T_hash;
+    int         Type;
+    int         T_n;
+    int         T_lname;
+    int         T_lhash;
+    char **     T_name;
+    SHORT *     T_hash;
 } * T_OBJECT;
 
 typedef struct V_desc {
-  int         Type;
-  int         V_n;
-  int         V_lvec;
-  int         V_lhash;
-  SHORT **    V_vec;
-  SHORT *     V_hash;
+    int         Type;
+    int         V_n;
+    int         V_lvec;
+    int         V_lhash;
+    SHORT **    V_vec;
+    SHORT *     V_hash;
 } * V_OBJECT;
 
 typedef struct R_desc {
-  int         Type;
-  int         R_n;
-  int         R_lrec;
-  int         R_lhash;
-  R_row *     R_rec;
-  SHORT *     R_hash;
+    int         Type;
+    int         R_n;
+    int         R_lrec;
+    int         R_lhash;
+    R_row *     R_rec;
+    SHORT *     R_hash;
 } * R_OBJECT;
 
 typedef struct U_desc {
-  int         Type;
-  int         U_n;
-  int         U_lrec;
-  int         U_lhash;
-  A_row *     U_rec;
-  SHORT *     U_hash;
+    int         Type;
+    int         U_n;
+    int         U_lrec;
+    int         U_lhash;
+    A_row *     U_rec;
+    SHORT *     U_hash;
 } * U_OBJECT;
 
 typedef struct A_desc {
-  int         Type;
-  SHORT       A_mode;
-  SHORT       A_ems;
-  int         A_nT;
-  int         A_nQ;
-  int         A_nS;
-  int         A_nrows;
-  int         A_lrows;
-  A_row **    A_p;
-  A_row *     A_t;
+    int         Type;
+    SHORT       A_mode;
+    SHORT       A_ems;
+    int         A_nT;
+    int         A_nQ;
+    int         A_nS;
+    int         A_nrows;
+    int         A_lrows;
+    A_row **    A_p;
+    A_row *     A_t;
 } * A_OBJECT;
 
 #define OPEN            0

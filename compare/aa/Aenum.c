@@ -33,22 +33,24 @@ static int e_lev ;
 static int en_cnt ;
 static int en_max ;
 static char * en_str ;
-int A_en_DFS ( state ) SHORT state ;
+int A_en_DFS ( SHORT state )
 {
   A_row * p ;
   static SHORT i ;
 
   for ( p = GAe -> A_p [ state ] ;
         p < GAe -> A_p [ state + 1 ] ;
-        ++ p ) if ( p -> A_b == 1 ) {
+        ++ p ) {
+    if ( p -> A_b == 1 ) {
       fprintf ( fpout, "    " ) ;
 
       if ( e_lev == 0 ) {
         fprintf ( fpout, "^ " ) ;
 
-      } else for ( i = 0 ;
-                     i < e_lev ;
-                     i ++ ) {
+      } else {
+        for ( i = 0 ;
+              i < e_lev ;
+              i ++ ) {
           ++ en_cnt ;
 
           if ( GAe -> A_nT == 1 ) {
@@ -88,6 +90,7 @@ int A_en_DFS ( state ) SHORT state ;
             fprintf ( fpout, "%1d.%s ", e_vec [ i ] % GAe -> A_nT, en_str ) ;
           }
         }
+      }
 
       fprintf ( fpout, "\n" ) ;
 
@@ -108,12 +111,11 @@ int A_en_DFS ( state ) SHORT state ;
 
       -- e_lev ;
     }
+  }
 
   return ( 0 ) ;
 }
-A_OBJECT A_enum ( A, T, max ) A_OBJECT A ;
-T_OBJECT T ;
-int max ;
+A_OBJECT A_enum ( A_OBJECT A, T_OBJECT T, int max )
 {
   A_OBJECT Ar, Am ;
 
@@ -145,7 +147,7 @@ int max ;
   A_destroy ( Ar ) ;
   return ( A ) ;
 }
-int A_cd_DFS ( state ) SHORT state ;
+int A_cd_DFS ( SHORT state )
 {
   A_row * p ;
   static int i ;
@@ -160,7 +162,8 @@ int A_cd_DFS ( state ) SHORT state ;
 
   for ( p = GAe -> A_p [ state ] ;
         p < GAe -> A_p [ state + 1 ] ;
-        ++ p ) if ( p -> A_b == 1 ) {
+        ++ p ) {
+    if ( p -> A_b == 1 ) {
       ++ count ;
 
     } else {
@@ -172,10 +175,11 @@ int A_cd_DFS ( state ) SHORT state ;
 
       count += i ;
     }
+  }
 
   return ( c_vec [ state ] = count ) ;
 }
-int A_card ( A ) A_OBJECT A ;
+int A_card ( A_OBJECT A )
 {
   int i ;
 
@@ -197,7 +201,7 @@ int A_card ( A ) A_OBJECT A ;
   Sfree ( ( char * ) c_vec ) ;
   return ( i ) ;
 }
-A_OBJECT A_pref ( A ) A_OBJECT A ;
+A_OBJECT A_pref ( A_OBJECT A )
 {
   int i ;
   A = A_open ( A_min ( A ) ) ;
@@ -213,7 +217,7 @@ A_OBJECT A_pref ( A ) A_OBJECT A ;
   A -> A_mode = DFA ;
   return ( A ) ;
 }
-A_OBJECT A_suff ( A ) A_OBJECT A ;
+A_OBJECT A_suff ( A_OBJECT A )
 {
   int i ;
   A = A_open ( A_min ( A ) ) ;

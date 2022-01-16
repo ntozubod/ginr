@@ -23,8 +23,7 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "O.h"
-A_OBJECT A_catpow ( A, n ) A_OBJECT A ;
-int n ;
+A_OBJECT A_catpow ( A_OBJECT A, int n )
 {
   A_OBJECT Aprod ;
 
@@ -56,7 +55,7 @@ int n ;
   A_destroy ( A ) ;
   return ( Aprod ) ;
 }
-A_OBJECT A_ident ( A ) A_OBJECT A ;
+A_OBJECT A_ident ( A_OBJECT A )
 {
   A_OBJECT A2 ;
   int i, sigma, last ;
@@ -77,8 +76,7 @@ A_OBJECT A_ident ( A ) A_OBJECT A ;
   A_destroy ( A ) ;
   return ( A_star ( A2 ) ) ;
 }
-A_OBJECT A_cmpow ( A, n ) A_OBJECT A ;
-int n ;
+A_OBJECT A_cmpow ( A_OBJECT A, int n )
 {
   A_OBJECT Aprod ;
 
