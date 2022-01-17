@@ -23,20 +23,7 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-
 #include "O.h"
-
-extern FILE *fpout;
-
-extern A_OBJECT Atemp;
-extern T_OBJECT TAlist;
-extern A_OBJECT Alist[100];
-extern T_OBJECT TT;
-
-extern char * pad20();
 
 int disp_flag;
 

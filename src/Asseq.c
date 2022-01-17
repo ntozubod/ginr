@@ -23,12 +23,7 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-
 #include "O.h"
-
-extern FILE *fpout;
-extern T_OBJECT TT;
 
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)

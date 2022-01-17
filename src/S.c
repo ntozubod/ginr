@@ -23,13 +23,46 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <strings.h>
-#include "local.h"
 #include "O.h"
 
-extern FILE *fpout;
+/*
+ *     Copy a block of memory
+ */
+
+void copymem( long n, char *from, char *to )
+{
+    if ( from + n <= to || to + n <= from ) {
+        bcopy( from, to, n );
+        return;
+    }
+    if ( from >= to ) {
+        while ( --n >= 0 ) {
+            *to++ = *from++;
+        }
+    } else {
+        from += n;
+        to += n;
+        while ( --n >= 0 ) *--to = *--from;
+    }
+}
+
+void scribble( char *p, char *q )
+{
+    while( p < q ) *p++ = 0x55;
+}
+
+/*
+ ========== CONDITIONAL COMPILE ==========
+ Use the Binary Buddy System Allocation implementation that was developed
+ with INR. 
+*/
+
+#ifndef USE_MALLOC_ALLOCATOR
+
+/*
+ *     Binary Buddy system storage allocator as in Knuth vol. 1
+ */
 
 typedef struct S_f {
     unsigned char fill_1;
@@ -65,36 +98,6 @@ static S_ft *S_lo = 0,
 static int   S_alld_cnt[S_m];
 
 long   LINUXmem = 0;
-
-/*
- *     Copy a block of memory
- */
-
-void copymem( long n, char *from, char *to )
-{
-    if ( from + n <= to || to + n <= from ) {
-        bcopy( from, to, n );
-        return;
-    }
-    if ( from >= to ) {
-        while ( --n >= 0 ) {
-            *to++ = *from++;
-        }
-    } else {
-        from += n;
-        to += n;
-        while ( --n >= 0 ) *--to = *--from;
-    }
-}
-
-void scribble( char *p, char *q )
-{
-    while( p < q ) *p++ = 0x55;
-}
-
-/*
- *     Binary Buddy system storage allocator as in Knuth vol. 1
- */
 
 void S_init()
 {
@@ -275,8 +278,10 @@ void S_arena()
         fprintf ( fpout, "Excess %ld bytes\n", size % 1024 );
 }
 
-// Check this out !!!!! JHJ
-// Find the block that contains the provided address
+/*
+ * Check this out !!!!! JHJ
+ * Find the block that contains the provided address
+ */
 
 S_ft *S_find( char *p )
 {
@@ -310,12 +315,14 @@ S_ft *S_find( char *p )
     --k;
     right = ( 1 << k );
 
-// printf( "\n" );
-// printf( "base %ld\n", base );
-// printf( "incr %ld\n", incr );
-// printf( "k %d\n", k );
-// printf( "base_k %d\n", base_k );
-// printf( "right %ld\n", right );
+/*
+    printf( "\n" );
+    printf( "base %ld\n", base );
+    printf( "incr %ld\n", incr );
+    printf( "k %d\n", k );
+    printf( "base_k %d\n", base_k );
+    printf( "right %ld\n", right );
+ */
 
     while ( base_k <= k ) {
         base += right;
@@ -329,12 +336,14 @@ S_ft *S_find( char *p )
         --k;
         right = ( 1 << k );
 
-// printf( "\n" );
-// printf( "base %ld\n", base );
-// printf( "incr %ld\n", incr );
-// printf( "k %d\n", k );
-// printf( "base_k %d\n", base_k );
-// printf( "right %ld\n", right );
+/*
+    printf( "\n" );
+    printf( "base %ld\n", base );
+    printf( "incr %ld\n", incr );
+    printf( "k %d\n", k );
+    printf( "base_k %d\n", base_k );
+    printf( "right %ld\n", right );
+ */
 
     }
     return ( &l[ base ] );
@@ -471,3 +480,78 @@ void Saudit()
         p = p + (1 << kval(p));
     }
 }
+
+
+/*
+ ========== CONDITIONAL COMPILE ==========
+ Replace the Binary Buddy System Allocation implementation with an
+ alternative which directly calls malloc/free.
+*/
+
+#else
+
+#define SPACE_BEFORE    8
+#define SPACE_AFTER    0
+#define MINSIZE    8
+
+char *Salloc( long n )
+{
+    char *p;
+    long *pi;
+    if ( n < MINSIZE ) n = MINSIZE;
+    p = malloc( n + SPACE_BEFORE + SPACE_AFTER );
+    pi = (long *) p;
+    *pi = n;
+    return ( p + SPACE_BEFORE );
+}
+
+void Sfree( char *p )
+{
+    if ( p == 0 ) return;
+    free( p - SPACE_BEFORE );
+}
+
+char *Srealloc( char *p, long n )
+{
+    char *q;
+    long *qi;
+    if ( p ) {
+        q = realloc( p - SPACE_BEFORE, n + SPACE_BEFORE + SPACE_AFTER );
+        qi = (long *) q;
+        *qi = n;
+        return ( q + SPACE_BEFORE );
+    } else {
+        return Salloc( n );
+    }
+}
+
+long Ssize( char *p )
+{
+    char *q;
+    long *qi;
+    q = p - SPACE_BEFORE;
+    qi = (long *) q;
+    return ( *qi );
+}
+
+char *Scopy( char *p )
+{
+    long n;
+    char *q;
+    n = Ssize( p );
+    q = Salloc( n );
+    copymem( n, p, q );
+    return ( q );
+}
+
+void Sarena()
+{
+    /* do nothing */
+}
+
+void Saudit()
+{
+    /* do nothing */
+}
+
+#endif

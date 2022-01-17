@@ -23,11 +23,6 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <string.h>
-
-extern FILE *fpout;
-
 #include "O.h"
 
 static char *T_nmeptr = 0;

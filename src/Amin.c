@@ -23,10 +23,6 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-
-extern FILE *fpout;
-
 #include "O.h"
 
 #define UNMARK  MAXSHORT
@@ -154,9 +150,6 @@ A_OBJECT A_min( A_OBJECT A )
 
         for(;;) {
 
-            /*-------------------------------------------------------------------------*/
-            /**/                                                                     /**/
-
             if ( x != heap[1]-> A_b || hsize == 0 ) {
 
                 for( j = JL_H; j < LAST; j = JL_N[j] ) {
@@ -233,9 +226,6 @@ A_OBJECT A_min( A_OBJECT A )
                 heap[f] = heap[s];
             }
             heap[ f ] = lo;
-
-            /**/                                                                     /**/
-            /*-------------------------------------------------------------------------*/
 
         }
     }

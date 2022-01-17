@@ -23,10 +23,7 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
 #include <assert.h>
-
-extern FILE *fpout;
 
 #include "O.h"
 

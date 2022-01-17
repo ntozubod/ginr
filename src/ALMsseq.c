@@ -27,9 +27,6 @@
 
 #include "O.h"
 
-extern FILE *fpout;
-extern T_OBJECT TT;
-
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
 

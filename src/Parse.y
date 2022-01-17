@@ -25,36 +25,10 @@
 
 %{
 
-#include <stdio.h>
-#include <ctype.h>
-#include <unistd.h>
-#include <string.h>
-
 #include "O.h"
-
-    int yylex();
-    int yyparse( void );
-    void yyerror( char * );
-
-    FILE    *fopen();
-    extern FILE *fpin, *fpout;
-
-    extern A_OBJECT A, Atemp;
-    extern T_OBJECT TAlist;
-    extern A_OBJECT Alist[100];
-    extern T_OBJECT TT;
-
-    extern int disp_flag;
-
-    extern int do_n_i();
-    extern A_OBJECT do_an_a();
-    extern A_OBJECT do_ann_a();
-    extern A_OBJECT do_nn_a();
 
     int             i, num;
     char *          t;
-
-    extern char * pad20();
 
 #define PROMT   if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
 
