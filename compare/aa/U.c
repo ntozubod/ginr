@@ -22,8 +22,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-extern FILE * fpout ;
 #include "O.h"
 static SHORT * U_hashpos = 0 ;
 static int U_calls = 0 ;
@@ -56,7 +54,7 @@ int U_member ( U_OBJECT U, int reca, int recb, int recc )
 {
   SHORT * p ;
   ++ U_calls ;
-  p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
+  p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
 
   while ( * p < MAXSHORT ) {
     ++ U_probes ;

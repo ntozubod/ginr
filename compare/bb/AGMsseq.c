@@ -24,8 +24,6 @@
  */
 #include <stdio.h>
 #include "O.h"
-extern FILE * fpout ;
-extern T_OBJECT TT ;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
 int GMcmp ( SHORT * u, SHORT * v )
@@ -533,8 +531,7 @@ done :
 
             if ( j > 2 ) {
               Error ( "A_sseq: Not subsequential (?)" ) ;
-// if ( j > vlen )
-              /*
+              /*        if ( j > vlen )
                             printf( "Destination state\n" );
                             printf( "state coeff\n" );
                             int i1;

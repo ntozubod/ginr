@@ -22,10 +22,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include "O.h"
-extern FILE * fpout ;
-extern T_OBJECT TT ;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
 A_OBJECT A_sseq ( A_OBJECT A )

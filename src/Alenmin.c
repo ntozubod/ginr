@@ -23,8 +23,6 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-
 #include "O.h"
 
 A_OBJECT A_lenmin( A_OBJECT A )

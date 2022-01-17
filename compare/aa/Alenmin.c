@@ -22,7 +22,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include "O.h"
 A_OBJECT A_lenmin ( A_OBJECT A )
 {
@@ -72,11 +71,9 @@ A_OBJECT A_lenmin ( A_OBJECT A )
 
   for ( p = lo ;
         p < hi ;
-        p ++ ) {
-    if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
+        p ++ ) if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
       p -> A_c = dead ;
     }
-  }
 
   Sfree ( ( char * ) bfs ) ;
   Sfree ( ( char * ) dis ) ;

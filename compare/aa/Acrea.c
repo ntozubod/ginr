@@ -22,11 +22,9 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include "O.h"
 #define INIT_lrows  20
 int A_report = 0 ;
-extern FILE * fpout ;
 A_OBJECT A_create ( )
 {
   A_OBJECT A ;
@@ -115,7 +113,7 @@ A_OBJECT A_rept ( A_OBJECT A )
 
   fprintf ( fpout, "States: %-6d Trans: %-6d", A -> A_nQ, A -> A_nrows ) ;
   fprintf ( fpout, " Tapes: %-2d", A -> A_nT ) ;
-  fprintf ( fpout, " Strg: %ld K", ( Ssize ( ( char * ) A ) + ( A -> A_mode == OPEN ? 0 : Ssize ( ( char * ) A -> A_p ) ) + Ssize ( ( char * ) A -> A_t ) + 1023 ) / 1024 ) ;
+  fprintf ( fpout, " Strg: %d K", ( Ssize ( ( char * ) A ) + ( A -> A_mode == OPEN ? 0 : Ssize ( ( char * ) A -> A_p ) ) + Ssize ( ( char * ) A -> A_t ) + 1023 ) / 1024 ) ;
   fprintf ( fpout, "\n" ) ;
   fflush ( fpout ) ;
   return ( A ) ;
@@ -220,11 +218,9 @@ A_OBJECT A_deems ( A_OBJECT A )
 
   for ( p = A -> A_t + A -> A_nrows ;
         -- p >= A -> A_t ;
-      ) {
-    if ( p -> A_b > 1 && p -> A_b <= lst_em ) {
+      ) if ( p -> A_b > 1 && p -> A_b <= lst_em ) {
       p -> A_b = 0 ;
     }
-  }
 
   A = A_close ( A ) ;
   A -> A_mode = new_mode ;
@@ -262,12 +258,10 @@ A_OBJECT A_adems ( A_OBJECT A )
 
   for ( p = A -> A_t + A -> A_nrows ;
         -- p >= A -> A_t ;
-      ) {
-    if ( p -> A_b == 1 ) {
+      ) if ( p -> A_b == 1 ) {
       p -> A_b = fst_em ;
       p -> A_c = base ;
     }
-  }
 
   for ( i = fst_em + 1 ;
         i <= lst_em ;

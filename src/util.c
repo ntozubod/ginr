@@ -25,11 +25,6 @@
 
 #include "O.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-extern FILE *fpout;
-
 void Warning( char *s )
 {
     fprintf( fpout, "*** %s ***\n", s );

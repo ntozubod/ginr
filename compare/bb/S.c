@@ -22,38 +22,8 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-#include <stdlib.h>
 #include <strings.h>
-#include "local.h"
 #include "O.h"
-extern FILE * fpout ;
-typedef struct S_f {
-  unsigned char fill_1 ;
-  unsigned char fill_2 ;
-  unsigned char S_kval ;
-  unsigned char S_tag ;
-  unsigned fill_3 ;
-  struct S_f * fill_4 ;
-  struct S_f * S_linkf ;
-  struct S_f * S_linkb ;
-}
-S_ft ;
-#define tag(p)          ((p)-> S_tag)
-#define kval(p)         ((p)-> S_kval)
-#define linkf(p)        ((p)-> S_linkf)
-#define linkb(p)        ((p)-> S_linkb)
-#define set_tag(p,t)    (p)-> S_tag = t
-#define set_kval(p,k)   (p)-> S_kval = k
-#define set_linkf(p,q)  (p)-> S_linkf = q
-#define set_linkb(p,q)  (p)-> S_linkb = q
-#define U(p)            ((unsigned long)(p))
-#define S_m             28
-/* S_m = 26 allows objects of up to 2 gigabytes 2^(5+26)*/
-/* S_m = 28 allows objects of up to 8 gigabytes 2^(5+28)*/
-static S_ft * S_lo = 0, * S_hi = 0, S_avail [ S_m + 1 ] ;
-static int S_alld_cnt [ S_m ] ;
-long LINUXmem = 0 ;
 /*
  *     Copy a block of memory
  */
@@ -85,8 +55,40 @@ void scribble ( char * p, char * q )
   }
 }
 /*
+ ========== CONDITIONAL COMPILE ==========
+ Use the Binary Buddy System Allocation implementation that was developed
+ with INR.
+*/
+#ifndef USE_MALLOC_ALLOCATOR
+/*
  *     Binary Buddy system storage allocator as in Knuth vol. 1
  */
+typedef struct S_f {
+  unsigned char fill_1 ;
+  unsigned char fill_2 ;
+  unsigned char S_kval ;
+  unsigned char S_tag ;
+  unsigned fill_3 ;
+  struct S_f * fill_4 ;
+  struct S_f * S_linkf ;
+  struct S_f * S_linkb ;
+}
+S_ft ;
+#define tag(p)          ((p)-> S_tag)
+#define kval(p)         ((p)-> S_kval)
+#define linkf(p)        ((p)-> S_linkf)
+#define linkb(p)        ((p)-> S_linkb)
+#define set_tag(p,t)    (p)-> S_tag = t
+#define set_kval(p,k)   (p)-> S_kval = k
+#define set_linkf(p,q)  (p)-> S_linkf = q
+#define set_linkb(p,q)  (p)-> S_linkb = q
+#define U(p)            ((unsigned long)(p))
+#define S_m             28
+/* S_m = 26 allows objects of up to 2 gigabytes 2^(5+26)*/
+/* S_m = 28 allows objects of up to 8 gigabytes 2^(5+28)*/
+static S_ft * S_lo = 0, * S_hi = 0, S_avail [ S_m + 1 ] ;
+static int S_alld_cnt [ S_m ] ;
+long LINUXmem = 0 ;
 void S_init ( )
 {
   S_ft * p ;
@@ -344,8 +346,10 @@ void S_arena ( )
     fprintf ( fpout, "Excess %ld bytes\n", size % 1024 ) ;
   }
 }
-// Check this out !!!!! JHJ
-// Find the block that contains the provided address
+/*
+ * Check this out !!!!! JHJ
+ * Find the block that contains the provided address
+ */
 S_ft * S_find ( char * p )
 {
   if ( p < ( char * ) S_lo || p >= ( char * ) S_hi ) {
@@ -378,12 +382,14 @@ S_ft * S_find ( char * p )
   -- k ;
   right = ( 1 << k ) ;
 
-// printf( "\n" );
-// printf( "base %ld\n", base );
-// printf( "incr %ld\n", incr );
-// printf( "k %d\n", k );
-// printf( "base_k %d\n", base_k );
-// printf( "right %ld\n", right );
+  /*
+      printf( "\n" );
+      printf( "base %ld\n", base );
+      printf( "incr %ld\n", incr );
+      printf( "k %d\n", k );
+      printf( "base_k %d\n", base_k );
+      printf( "right %ld\n", right );
+   */
   while ( base_k <= k ) {
     base += right ;
     incr -= right ;
@@ -397,12 +403,14 @@ S_ft * S_find ( char * p )
 
     -- k ;
     right = ( 1 << k ) ;
-// printf( "\n" );
-// printf( "base %ld\n", base );
-// printf( "incr %ld\n", incr );
-// printf( "k %d\n", k );
-// printf( "base_k %d\n", base_k );
-// printf( "right %ld\n", right );
+    /*
+        printf( "\n" );
+        printf( "base %ld\n", base );
+        printf( "incr %ld\n", incr );
+        printf( "k %d\n", k );
+        printf( "base_k %d\n", base_k );
+        printf( "right %ld\n", right );
+     */
   }
 
   return ( & l [ base ] ) ;
@@ -569,3 +577,75 @@ void Saudit ( )
     p = p + ( 1 << kval ( p ) ) ;
   }
 }
+/*
+ ========== CONDITIONAL COMPILE ==========
+ Replace the Binary Buddy System Allocation implementation with an
+ alternative which directly calls malloc/free.
+*/
+#else
+#define SPACE_BEFORE    8
+#define SPACE_AFTER    0
+#define MINSIZE    8
+char * Salloc ( long n )
+{
+  char * p ;
+  long * pi ;
+
+  if ( n < MINSIZE ) {
+    n = MINSIZE ;
+  }
+
+  p = malloc ( n + SPACE_BEFORE + SPACE_AFTER ) ;
+  pi = ( long * ) p ;
+  * pi = n ;
+  return ( p + SPACE_BEFORE ) ;
+}
+void Sfree ( char * p )
+{
+  if ( p == 0 ) {
+    return ;
+  }
+
+  free ( p - SPACE_BEFORE ) ;
+}
+char * Srealloc ( char * p, long n )
+{
+  char * q ;
+  long * qi ;
+
+  if ( p ) {
+    q = realloc ( p - SPACE_BEFORE, n + SPACE_BEFORE + SPACE_AFTER ) ;
+    qi = ( long * ) q ;
+    * qi = n ;
+    return ( q + SPACE_BEFORE ) ;
+
+  } else {
+    return Salloc ( n ) ;
+  }
+}
+long Ssize ( char * p )
+{
+  char * q ;
+  long * qi ;
+  q = p - SPACE_BEFORE ;
+  qi = ( long * ) q ;
+  return ( * qi ) ;
+}
+char * Scopy ( char * p )
+{
+  long n ;
+  char * q ;
+  n = Ssize ( p ) ;
+  q = Salloc ( n ) ;
+  copymem ( n, p, q ) ;
+  return ( q ) ;
+}
+void Sarena ( )
+{
+  /* do nothing */
+}
+void Saudit ( )
+{
+  /* do nothing */
+}
+#endif

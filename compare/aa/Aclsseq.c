@@ -22,14 +22,13 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include "O.h"
 A_OBJECT A_clsseq ( A_OBJECT A1 )
 {
   A_OBJECT A ;
   int current, end_st, i, bb, last_label, label, hi_next, k ;
   last_label = 0 ;
-// Initialiaze to suppress warning JHJ
+  /* Initialiaze to suppress warning JHJ */
   SHORT * vec, * cur_vec ;
   V_OBJECT V ;
   A_row * p, * pz, * lo, * hi, * mid ;
@@ -70,19 +69,12 @@ A_OBJECT A_clsseq ( A_OBJECT A1 )
           p < pz ;
           ++ p ) {
       if ( p -> A_b == 1 ) {
-//              for (   k = 1;
-//                      vec[ k ] < MAXSHORT;
-//                      k++ ) {
-//
-//                  if (    A1-> A_p[ vec[ k ] ] == A1-> A_p[ vec[ k ] + 1 ]
-//                          || A1-> A_p[ vec[ k ] ]-> A_b != 1 ) {
-//                      break;
-//                  }
-//              }
-//
-//              if ( vec[ k ] == MAXSHORT ) {
-//                  A = A_add( A, current, 1, FINAL );
-//              }
+        /*
+                for( k = 1; vec[k] < MAXSHORT; k++ )
+                    if ( A1-> A_p[ vec[k] ] == A1-> A_p[ vec[k] + 1 ]
+                          || A1-> A_p[ vec[k] ]-> A_b != 1 ) break;
+                if ( vec[k] == MAXSHORT )
+        */
         A = A_add ( A, current, 1, FINAL ) ;
         continue ;
       }
@@ -201,7 +193,9 @@ A_OBJECT A_clsseq ( A_OBJECT A1 )
   A_destroy ( A ) ;
   V_destroy ( V ) ;
   Sfree ( ( char * ) vec ) ;
-//  A1 = A_min( A_rename( A1, 0 ) );
+  /*
+      A1 = A_min( A_rename( A1, 0 ) );
+  */
   A1 = A_min ( A_mkdense ( A1 ) ) ;
   A1 -> A_mode = SSEQ_MIN ;
   A1 -> A_ems = 1 ;

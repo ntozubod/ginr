@@ -1,786 +1,73 @@
-diff -r -w aa/Abasic.c bb/Abasic.c
-166,167c166
-<       ) {
-<     if ( p -> A_b == 1 ) {
----
->       ) if ( p -> A_b == 1 ) {
-171d169
-<   }
-299,300c297
-<       ) {
-<     if ( p -> A_b == 1 && p -> A_c == FINAL ) {
----
->       ) if ( p -> A_b == 1 && p -> A_c == FINAL ) {
-304d300
-<   }
-461,462c457
-<     } else {
-<       while ( p1 < p1z ) {
----
->     } else while ( p1 < p1z ) {
-467d461
-<   }
-527c521
-<             A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c ), dead ) ) ;
----
->             A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c, dead ) ) ;
-531c525
-<             A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ) ;
----
->             A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ;
-542c536
-<           A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c ), dead ) ) ;
----
->           A = A_add ( A, current, ( int ) p1 -> A_b, R_insert ( R, ( p1 -> A_c == FINAL ) ? dead : ( int ) p1 -> A_c, dead ) ) ;
-551c545
-<         A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ) ;
----
->         A = A_add ( A, current, ( int ) p2 -> A_b, R_insert ( R, dead, ( p2 -> A_c == FINAL ) ? dead : ( int ) p2 -> A_c ) ) ;
-576,577c570
-<       ) {
-<     if ( p -> A_b == 1 ) {
----
->       ) if ( p -> A_b == 1 ) {
-590d582
-<   }
-diff -r -w aa/Aclos.c bb/Aclos.c
-121,122c121
-<       ) {
-<     if ( A -> A_p [ i ] != ( p = A -> A_p [ i + 1 ] ) && ( p - 1 ) -> A_b == 0 ) {
----
->       ) if ( A -> A_p [ i ] != ( p = A -> A_p [ i + 1 ] ) && ( p - 1 ) -> A_b == 0 ) {
-129d127
-<   }
-136,137c134
-<           p ++ ) {
-<       if ( p -> A_b != 0 && c_mark [ p -> A_c ] == CONDEMN ) {
----
->           p ++ ) if ( p -> A_b != 0 && c_mark [ p -> A_c ] == CONDEMN ) {
-142d138
-<   }
-150,151c146
-<       ) {
-<     if ( c_mark [ i ] == UNMARK ) {
----
->       ) if ( c_mark [ i ] == UNMARK ) {
-154d148
-<   }
-161,162c155
-<         ) {
-<       if ( c_mark [ p -> A_a ] == CONDEMN || c_mark [ p -> A_c ] == CONDEMN ) {
----
->         ) if ( c_mark [ p -> A_a ] == CONDEMN || c_mark [ p -> A_c ] == CONDEMN ) {
-168d160
-<     }
-diff -r -w aa/Aclsseq.c bb/Aclsseq.c
-32c32
-< // Initialiaze to suppress warning JHJ
----
->   /* Initialiaze to suppress warning JHJ */
-73,85c73,78
-< //              for (   k = 1;
-< //                      vec[ k ] < MAXSHORT;
-< //                      k++ ) {
-< //
-< //                  if (    A1-> A_p[ vec[ k ] ] == A1-> A_p[ vec[ k ] + 1 ]
-< //                          || A1-> A_p[ vec[ k ] ]-> A_b != 1 ) {
-< //                      break;
-< //                  }
-< //              }
-< //
-< //              if ( vec[ k ] == MAXSHORT ) {
-< //                  A = A_add( A, current, 1, FINAL );
-< //              }
----
->         /*
->                         for( k = 1; vec[k] < MAXSHORT; k++ )
->                             if ( A1-> A_p[ vec[k] ] == A1-> A_p[ vec[k] + 1 ]
->                               || A1-> A_p[ vec[k] ]-> A_b != 1 ) break;
->                         if ( vec[k] == MAXSHORT )
->         */
-204c197,199
-< //  A1 = A_min( A_rename( A1, 0 ) );
----
->   /*
->       A1 = A_min( A_rename( A1, 0 ) );
->   */
-diff -r -w aa/Acompose.c bb/Acompose.c
-33c33
-< // Initialiaze to suppress warning JHJ
----
->   /* Initialiaze to suppress warning JHJ */
-130c130
-<           s1 = MAXSTATE ;
----
->           s1 = MAXSHORT ;
-151c151
-<           s2 = MAXSTATE ;
----
->           s2 = MAXSHORT ;
 diff -r -w aa/Acrea.c bb/Acrea.c
-282c282
+116c116
+<   fprintf ( fpout, " Strg: %d K", ( Ssize ( ( char * ) A ) + ( A -> A_mode == OPEN ? 0 : Ssize ( ( char * ) A -> A_p ) ) + Ssize ( ( char * ) A -> A_t ) + 1023 ) / 1024 ) ;
+---
+>   fprintf ( fpout, " Strg: %ld K", ( Ssize ( ( char * ) A ) + ( A -> A_mode == OPEN ? 0 : Ssize ( ( char * ) A -> A_p ) ) + Ssize ( ( char * ) A -> A_t ) + 1023 ) / 1024 ) ;
+221c221,222
+<       ) if ( p -> A_b > 1 && p -> A_b <= lst_em ) {
+---
+>       ) {
+>     if ( p -> A_b > 1 && p -> A_b <= lst_em ) {
+223a225
+>   }
+261c263,264
+<       ) if ( p -> A_b == 1 ) {
+---
+>       ) {
+>     if ( p -> A_b == 1 ) {
+264a268
+>   }
+276c280
 <   return A ;
 ---
 >   return ( A ) ;
-diff -r -w aa/Aenum.c bb/Aenum.c
-43,44c43
-<         ++ p ) {
-<     if ( p -> A_b == 1 ) {
----
->         ++ p ) if ( p -> A_b == 1 ) {
-50,51c49
-<       } else {
-<         for ( i = 0 ;
----
->       } else for ( i = 0 ;
-93d90
-<       }
-114d110
-<   }
-165,166c161
-<         ++ p ) {
-<     if ( p -> A_b == 1 ) {
----
->         ++ p ) if ( p -> A_b == 1 ) {
-178d172
-<   }
 diff -r -w aa/AGMsseq.c bb/AGMsseq.c
-54c54,56
-<   int aa, bb, cc, nq, len, from, to, label, hi_next, try1 ;
+541,545c541,542
+<                           for( tt = 0;
+<                                to_coeff[j1][tt] != MAXSHORT;
+<                                tt++ )
+<                               printf( "%s ",
+<                                   T_name( TT, to_coeff[j1][tt] ) );
 ---
-> 
->   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
-> 
-57c59
-< // Initialiaze to suppress warning JHJ
----
->   /* Initialiaze to suppress warning JHJ */
-92,93c94
-<       ) {
-<     if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
----
->       ) if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
-97d97
-<   }
-141c141,142
-< // Construct start state as the write closure of START.
----
->   /* Construct start state as the write closure of START.
->    */
-164c165
-< // Error( "A_sseq: Relation not single-valued (S2)" );
----
->         /* Error( "A_sseq: Relation not single-valued (S2)" ); */
-212,213c213
-<         ++ i ) {
-<     if ( set [ i ] != UNMARK ) {
----
->         ++ i ) if ( set [ i ] != UNMARK ) {
-219,220c219
-<             p ++ ) {
-<         if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->             p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-223d221
-<       }
-232d229
-<   }
-259c256
-<     try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
----
->     try = to_coeff [ vec [ 0 ] ] [ j ] ;
-261,263c258
-<     if ( try1 == MAXSHORT ) {
-<       goto idone ;
-<     }
----
->     if ( try == MAXSHORT ) goto idone ;
-267,268c262
-<           i ++ ) {
-<       if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
----
->           i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
-271d264
-<     }
-278c271,273
-<     label = 2 * try1 + 1 ;
----
-> 
->     label = 2 * try + 1 ;
-> 
-318,322c313,318
-< // Unpack current state:
-< // (1) fvec is set to vector of component states followed by their coeffs
-< // (2) load heap with positions in source automaton for each component state
-< // (3) load fr_coeff with the pointers to coeff vectors
-< // (4) heapify the heap
----
->     /*     Unpack current state:
->      * (1) fvec is set to vector of component states followed by their coeffs
->      * (2) load heap with positions in source automaton for each component state
->      * (3) load fr_coeff with the pointers to coeff vectors
->      * (4) heapify the heap
->      */
-339,355c335,346
-< //      printf( "\n" );
-< //      printf( "Processing state %d\n", current );
-< //      printf( "state coeff\n" );
-< //
-< //      for (   i = 0;
-< //              i < len;
-< //              i++ ) {
-< //          j = fvec[ i ];
-< //          printf( "%5d ", j );
-< //
-< //          for (   tt = 0;
-< //                  fr_coeff[ j ][ tt ] != MAXSHORT;
-< //                  tt++ ) {
-< //              printf( "%s ", T_name( TT, fr_coeff[ j ][ tt ] ) ); }
-< //
-< //          printf( "\n" );
-< //      }
----
->     /*
->     printf( "\n" );
->     printf( "Processing state %d\n", current );
->     printf( "state coeff\n" );
->     for( i = 0; i < len; i++ ) {
->     j = fvec[ i ];
->     printf( "%5d ", j );
->     for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
->     printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
->     printf( "\n" );
->     }
->     */
-382,383c373,375
-< // Main loop to process current state: Each cycle processes position at the
-< // top of the heap.
----
->     /* Main loop to process current state: Each cycle processes position at the
->      * top of the heap.
->      */
-389c381,382
-< // End processing for an output state.
----
->       /* End processing for an output state.
->        */
-401,402c394
-<                   p ++ ) {
-<               if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->                   p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-405d396
-<             }
-421,422c412
-<                 gap /= 2 ) {
-<             for ( i = gap ;
----
->                 gap /= 2 ) for ( i = gap ;
-424,425c414
-<                   i ++ ) {
-<               for ( j = i - gap ;
----
->                                    i ++ ) for ( j = i - gap ;
-432,433d420
-<             }
-<           }
-438,439c425
-<                 ++ i ) {
-<             if ( set [ i ] != UNMARK ) {
----
->                 ++ i ) if ( set [ i ] != UNMARK ) {
-445,446c431
-<                     p ++ ) {
-<                 if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->                     p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-449d433
-<               }
-459d442
-<         }
-472,495c455,472
-< //              printf( "Destination state\n" );
-< //              printf( "state coeff\n" );
-< //
-< //              for (   i = 0;
-< //                      i < vlen;
-< //                      i++ ) {
-< //                  j = vec[ i ];
-< //                  printf( "%5d ", j );
-< //
-< //                  for ( tt = 0;
-< //                        to_coeff[ j ][ tt ] != MAXSHORT;
-< //                        tt++ ) {
-< //                      int symb =
-< //                          T_name( TT, to_coeff[ j ][ tt ] )[ 0 ] & 0xff;
-< //
-< //                      if ( symb <= ' ' || symb > 127 ) {
-< //                          printf( "\\%x ", symb ); }
-< //
-< //                      else {
-< //                          printf( "%s ",
-< //                              T_name( TT, to_coeff[ j ][ tt ] ) ); } }
-< //
-< //                  printf( "\n" );
-< //              }
----
->         /*
->         printf( "Destination state\n" );
->         printf( "state coeff\n" );
->         for( i = 0; i < vlen; i++ ) {
->         j = vec[ i ];
->         printf( "%5d ", j );
->         for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ ) {
->         int symb = T_name( TT, to_coeff[j][tt] )[ 0 ] & 0xff;
->         if ( symb <= ' ' || symb > 127 ) {
->         printf( "\\%x ", symb );
->         }
->         else {
->         printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
->         }
->         }
->         printf( "\n" );
->         }
->         */
-499c476
-<           try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
----
->           try = to_coeff [ vec [ 0 ] ] [ j ] ;
-501,503c478
-<           if ( try1 == MAXSHORT ) {
-<             goto done ;
-<           }
----
->           if ( try == MAXSHORT ) goto done ;
-507,508c482
-<                 i ++ ) {
-<             if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
----
->                 i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
-511d484
-<           }
-515c488,490
-<           label = 2 * try1 + 1 ;
----
-> 
->           label = 2 * try + 1 ;
-> 
-555,556c530
-<                   k = back [ k ] ) {
-<               if ( sig [ k ] == i ) {
----
->                   k = back [ k ] ) if ( sig [ k ] == i ) {
-559d532
-<             }
-563,584c536,548
-< //                          if ( j > vlen ) {
-< //                              printf( "Destination state\n" );
-< //                              printf( "state coeff\n" );
-< //                              int i1;
-< //
-< //                              for (   i1 = 0;
-< //                                      i1 < vlen;
-< //                                      i1++ ) {
-< //                                  int j1 = vec[ i1 ];
-< //                                  printf( "%5d ", j1 );
-< //
-< //                                  for (   tt = 0;
-< //                                          to_coeff[ j1 ][ tt ] != MAXSHORT;
-< //                                          tt++ ) {
-< //                                      printf( "%s ",
-< //                                              T_name( TT,
-< //                                                      to_coeff[ j1 ][ tt ]
-< //                                                    ) ); }
-< //
-< //                                  printf( "\n" );
-< //                              }
-< //                          }
----
-> // if ( j > vlen )
->               /*
->                             printf( "Destination state\n" );
->                             printf( "state coeff\n" );
->                             int i1;
->                             for( i1 = 0; i1 < vlen; i1++ ) {
->                               int j1 = vec[ i1 ];
->                               printf( "%5d ", j1 );
 >                               for( tt = 0; to_coeff[j1][tt] != MAXSHORT; tt++ )
 >                               printf( "%s ", T_name( TT, to_coeff[j1][tt] ) );
->                               printf( "\n" );
->                             }
->               */
-596,597c560,562
-< // Main processing for a transition from the input automaton.
-< // Add state to subset and compute coefficient.
+diff -r -w aa/Aload.c bb/Aload.c
+27,29d26
+< #define cnvrtn(name) name
+< FILE * fpin ;
+< FILE * fpout ;
+30a28
+> FILE * fpin, * fpout ;
+136c134
+<     fp = fopen ( cnvrtn ( file ), "r" ) ;
 ---
->       /* Main processing for a transition from the input automaton.
->        * Add state to subset and compute coefficient.
->        */
-656c621
-< //                      printf( "--> %d\n", queue[ i ] );
+>     fp = fopen ( file, "r" ) ;
+337c335
+<       fp = fopen ( cnvrtn ( file ), "w" ) ;
 ---
->             /* printf( "--> %d\n", queue[ i ] ); */
-667c632
-< // Error( "A_sseq: Relation not single-valued (2)" );
+>       fp = fopen ( file, "w" ) ;
+410c408
+<       fp = fopen ( cnvrtn ( file ), "w" ) ;
 ---
->                 /* Error( "A_sseq: Relation not single-valued (2)" ); */
-763c728,730
-< //  A = A_rename( A, 0 );
+>       fp = fopen ( file, "w" ) ;
+470c468
+<     fp = fopen ( cnvrtn ( file ), "r" ) ;
 ---
->   /*
->       A = A_rename( A, 0 );
->   */
-diff -r -w aa/Ajoin.c bb/Ajoin.c
-33c33
-< // Initialiaze to suppress warning JHJ
+>     fp = fopen ( file, "r" ) ;
+564c562
+<       fp = fopen ( cnvrtn ( file ), "w" ) ;
 ---
->   /* Initialiaze to suppress warning JHJ */
-97c97
-<           s1 = MAXSTATE ;
+>       fp = fopen ( file, "w" ) ;
+638c636
+<         fprintf ( fp, " ]  " ) ;
 ---
->           s1 = MAXSHORT ;
-118c118
-<           s2 = MAXSTATE ;
----
->           s2 = MAXSHORT ;
-diff -r -w aa/Alamcm.c bb/Alamcm.c
-82,83c82
-<         ) {
-<       if ( A -> A_p [ i + 1 ] == ( p = A -> A_p [ i ] ) + 1 && p -> A_b == 0 ) {
----
->         ) if ( A -> A_p [ i + 1 ] == ( p = A -> A_p [ i ] ) + 1 && p -> A_b == 0 ) {
-87d85
-<     }
-95,96c93
-<             p ++ ) {
-<         if ( c_rena [ j = p -> A_c ] < FAIL ) {
----
->             p ++ ) if ( c_rena [ j = p -> A_c ] < FAIL ) {
-108d104
-<     }
-112,113c108
-<         ) {
-<       if ( c_rena [ i ] < FAIL ) {
----
->         ) if ( c_rena [ i ] < FAIL ) {
-116d110
-<     }
-120,121c114
-<         ) {
-<       if ( c_rena [ i ] >= FAIL ) {
----
->         ) if ( c_rena [ i ] >= FAIL ) {
-124d116
-<     }
-diff -r -w aa/Alameq.c bb/Alameq.c
-38c38
-<   l_low [ state ] = ( dfn = l_cnt ++ ) ;
----
->   l_low [ state ] = dfn = l_cnt ++ ;
-61,62c61
-<   if ( l_low [ state ] == dfn ) {
-<     for ( next = ( - 1 ) ;
----
->   if ( l_low [ state ] == dfn ) for ( next = ( - 1 ) ;
-69d67
-<   }
-118,120c116
-<       ) {
-<     if ( l_stk [ i ] == UNMARK ) {
-<       if ( A_la_DFS ( i ) != i ) {
----
->       ) if ( l_stk [ i ] == UNMARK ) if ( A_la_DFS ( i ) != i ) {
-123,124d118
-<     }
-<   }
-diff -r -w aa/Alenmin.c bb/Alenmin.c
-75,76c75
-<         p ++ ) {
-<     if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
----
->         p ++ ) if ( dis [ p -> A_a ] >= dis [ p -> A_c ] ) {
-79d77
-<   }
-diff -r -w aa/ALMsseq.c bb/ALMsseq.c
-38c38,40
-<   int aa, bb, cc, nq, len, from, to, label, hi_next, try1 ;
----
-> 
->   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
-> 
-41c43
-< // Initialiaze to suppress warning JHJ
----
->   /* Initialiaze to suppress warning JHJ */
-75,76c77
-<       ) {
-<     if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
----
->       ) if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
-80d80
-<   }
-123c123,124
-< // Construct start state as the write closure of START.
----
->   /* Construct start state as the write closure of START.
->    */
-146c147
-< // Error( "A_sseq: Relation not single-valued (S2)" );
----
->         /* Error( "A_sseq: Relation not single-valued (S2)" ); */
-189,190c190
-<         ++ i ) {
-<     if ( set [ i ] != UNMARK ) {
----
->         ++ i ) if ( set [ i ] != UNMARK ) {
-196,197c196
-<             p ++ ) {
-<         if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->             p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-200d198
-<       }
-209d206
-<   }
-236c233
-<     try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
----
->     try = to_coeff [ vec [ 0 ] ] [ j ] ;
-238,240c235
-<     if ( try1 == MAXSHORT ) {
-<       goto idone ;
-<     }
----
->     if ( try == MAXSHORT ) goto idone ;
-244,245c239
-<           i ++ ) {
-<       if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
----
->           i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
-248d241
-<     }
-255c248,250
-<     label = 2 * try1 + 1 ;
----
-> 
->     label = 2 * try + 1 ;
-> 
-295,299c290,295
-< // Unpack current state:
-< // (1) fvec is set to vector of component states followed by their coeffs
-< // (2) load heap with positions in source automaton for each component state
-< // (3) load fr_coeff with the pointers to coeff vectors
-< // (4) heapify the heap
----
->     /*     Unpack current state:
->      * (1) fvec is set to vector of component states followed by their coeffs
->      * (2) load heap with positions in source automaton for each component state
->      * (3) load fr_coeff with the pointers to coeff vectors
->      * (4) heapify the heap
->      */
-316,332c312,322
-< //      printf( "Processing state %d\n", current );
-< //      printf( "state coeff\n" );
-< //
-< //      for (   i = 0;
-< //              i < len;
-< //              i++ ) {
-< //          j = fvec[ i ];
-< //          printf( "%5d ", j );
-< //
-< //          for (   tt = 0;
-< //                  fr_coeff[ j ][ tt ] != MAXSHORT;
-< //                  tt++ ) {
-< //              printf( "%s ", T_name( TT, fr_coeff[ j ][ tt ] ) );
-< //          }
-< //
-< //          printf( "\n" );
-< //      }
----
->     /*
->     printf( "Processing state %d\n", current );
->     printf( "state coeff\n" );
->     for( i = 0; i < len; i++ ) {
->     j = fvec[ i ];
->     printf( "%5d ", j );
->     for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
->     printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
->     printf( "\n" );
->     }
->     */
-359,360c349,351
-< // Main loop to process current state: Each cycle processes position at the
-< // top of the heap.
----
->     /* Main loop to process current state: Each cycle processes position at the
->      * top of the heap.
->      */
-366c357,358
-< // End processing for an output state.
----
->       /* End processing for an output state.
->        */
-378,379c370
-<                   p ++ ) {
-<               if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->                   p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-382d372
-<             }
-398,399c388
-<                 gap /= 2 ) {
-<             for ( i = gap ;
----
->                 gap /= 2 ) for ( i = gap ;
-401,402c390
-<                   i ++ ) {
-<               for ( j = i - gap ;
----
->                                    i ++ ) for ( j = i - gap ;
-409,410d396
-<             }
-<           }
-415,416c401
-<                 ++ i ) {
-<             if ( set [ i ] != UNMARK ) {
----
->                 ++ i ) if ( set [ i ] != UNMARK ) {
-422,423c407
-<                     p ++ ) {
-<                 if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->                     p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-426d409
-<               }
-436d418
-<         }
-449,465c431,441
-< //              printf( "Destination state\n" );
-< //              printf( "state coeff\n" );
-< //
-< //              for (   i = 0;
-< //                      i < vlen;
-< //                      i++ ) {
-< //                  j = vec[ i ];
-< //                  printf( "%5d ", j );
-< //
-< //                  for (   tt = 0;
-< //                          to_coeff[ j ][ tt ] != MAXSHORT;
-< //                          tt++ ) {
-< //                      printf( "%s ", T_name( TT, to_coeff[ j ][ tt ] ) );
-< //                  }
-< //
-< //                  printf( "\n" );
-< //              }
----
->         /*
->         printf( "Destination state\n" );
->         printf( "state coeff\n" );
->         for( i = 0; i < vlen; i++ ) {
->         j = vec[ i ];
->         printf( "%5d ", j );
->         for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
->         printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
->         printf( "\n" );
->         }
->         */
-469c445
-<           try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
----
->           try = to_coeff [ vec [ 0 ] ] [ j ] ;
-471,473c447
-<           if ( try1 == MAXSHORT ) {
-<             goto done ;
-<           }
----
->           if ( try == MAXSHORT ) goto done ;
-477,478c451
-<                 i ++ ) {
-<             if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
----
->                 i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
-481d453
-<           }
-485c457,459
-<           label = 2 * try1 + 1 ;
----
-> 
->           label = 2 * try + 1 ;
-> 
-525,526c499
-<                   k = back [ k ] ) {
-<               if ( sig [ k ] == i ) {
----
->                   k = back [ k ] ) if ( sig [ k ] == i ) {
-529d501
-<             }
-544,545c516,518
-< // Main processing for a transition from the input automaton.
-< // Add state to subset and compute coefficient.
----
->       /* Main processing for a transition from the input automaton.
->        * Add state to subset and compute coefficient.
->        */
-613c586
-< // Error( "A_sseq: Relation not single-valued (2)" );
----
->                 /* Error( "A_sseq: Relation not single-valued (2)" ); */
-641c614
-<                   veccpy ( to_coeff [ p -> A_c ] + tt, ( st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ) ;
----
->                   veccpy ( to_coeff [ p -> A_c ] + tt, st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ;
-652c625
-<                       fprintf ( fpout, "%s ", T_name ( TT, ( to_coeff [ p -> A_c ] [ k ] ) ) ) ;
----
->                       fprintf ( fpout, "%s ", T_name ( TT, to_coeff [ p -> A_c ] [ k ] ) ) ;
-722c695,697
-< //  A = A_rename( A, 0 );
----
->   /*
->       A = A_rename( A, 0 );
->   */
-diff -r -w aa/Amin.c bb/Amin.c
-100c100
-<   in_B [ START ] = ( in_B [ 2 ] = 0 ) ;
----
->   in_B [ START ] = in_B [ 2 ] = 0 ;
-118c118
-<   B_H [ 1 ] = ( B_N [ FINAL ] = ( B_L [ FINAL ] = FINAL ) ) ;
----
->   B_H [ 1 ] = B_N [ FINAL ] = B_L [ FINAL ] = FINAL ;
-142c142
-<       p = ( lo = A -> A_p [ s ] ) ;
----
->       p = lo = A -> A_p [ s ] ;
-195a196,198
->       /*-------------------------------------------------------------------------*/
->       /**/
->       /**/
-211c214
-<               B_L [ ( B_H [ j ] = ( B_N [ B_L [ s ] ] = B_N [ s ] ) ) ] = B_L [ s ] ;
----
->               B_L [ B_H [ j ] = B_N [ B_L [ s ] ] = B_N [ s ] ] = B_L [ s ] ;
-224c227
-<             B_L [ ( B_N [ s ] = B_H [ nB ] ) ] = s ;
----
->             B_L [ B_N [ s ] = B_H [ nB ] ] = s ;
-251,252c254
-<           } else {
-<             for ( s = int_H [ j ] ;
----
->           } else for ( s = int_H [ j ] ;
-258d259
-<           }
-314a316,318
->       /**/
->       /**/
->       /*-------------------------------------------------------------------------*/
+>         fprintf ( fp, " ]  \t" ) ;
 diff -r -w aa/Aopen.c bb/Aopen.c
 1d0
 < extern int S_flag ;
-26a26
+25a25
 > #include <assert.h>
-34,49c34,37
+32,47c32,35
 < 
 <   if ( A == NULL ) {
 <     Error ( "A_add: No OBJECT" ) ;
@@ -802,547 +89,105 @@ diff -r -w aa/Aopen.c bb/Aopen.c
 >   assert ( A -> A_mode == OPEN ) ;
 >   assert ( a >= 0 && b >= 0 && c >= 0 ) ;
 >   assert ( a < MAXSHORT && b < MAXSHORT && c < MAXSHORT ) ;
-77,80c65
+75,78c63
 <   if ( A == NULL ) {
 <     Error ( "A_open: No OBJECT" ) ;
 <   }
 < 
 ---
 >   assert ( A != NULL ) ;
-94,97c79
+92,95c77
 < 
 <   if ( A == NULL ) {
 <     Error ( "A_close: No OBJECT" ) ;
 <   }
 ---
 >   assert ( A != NULL ) ;
-120a103
+118a101
 >   assert ( N > 0 ) ;
-136a120
+134a118
 >     assert ( p -> A_c < N ) ;
-149a134,135
+147a132,133
 >   assert ( p == t2 ) ;
 > 
-153c139
+151c137
 <     q = -- ptr [ i = p -> A_c ] ;
 ---
 >     q = -- ptr [ p -> A_c ] ;
-154a141
+152a139
 >     assert ( p -> A_b < N ) ;
-156c143
+154c141
 <     q -> A_c = i ;
 ---
 >     q -> A_c = p -> A_c ;
-168a156,157
+166a154,155
 >   assert ( p == t1 ) ;
 > 
-172c161,162
+170c159,160
 <     q = -- ptr [ i = p -> A_b ] ;
 ---
 >     q = -- ptr [ p -> A_b ] ;
 >     assert ( p -> A_a < N ) ;
-174c164
+172c162
 <     q -> A_b = i ;
 ---
 >     q -> A_b = p -> A_b ;
-187a178,179
+185a176,177
 >   assert ( p == t2 ) ;
 > 
-191,192c183,184
+189,190c181,182
 <     q = -- ptr [ i = p -> A_a ] ;
 <     q -> A_a = i ;
 ---
 >     q = -- ptr [ p -> A_a ] ;
 >     q -> A_a = p -> A_a ;
-202c194
+200c192
 <   ( t2z + 1 ) -> A_a = MAXSHORT ;
 ---
 >   ( t2z + 1 ) -> A_c = MAXSHORT ;
-220a213
+218c210,213
+<     while ( ( ++ t1 ) -> A_c == ( ++ t2 ) -> A_c && t1 -> A_b == t2 -> A_b && t1 -> A_a == t2 -> A_a ) ;
+---
+>     while ( ( ++ t1 ) -> A_c == ( ++ t2 ) -> A_c && t1 -> A_b == t2 -> A_b && t1 -> A_a == t2 -> A_a ) {
 >       /* empty */
-250,254c243
-< 
-<   if ( A == NULL ) {
-<     Error ( "A_rename: No OBJECT" ) ;
-<   }
-< 
----
->   assert ( A != NULL ) ;
-339,343c328
-< 
-<   if ( A == NULL ) {
-<     Error ( "A_rename: No OBJECT" ) ;
-<   }
-< 
----
->   assert ( A != NULL ) ;
-diff -r -w aa/Aretape.c bb/Aretape.c
-54,55c54
-<         i ++ ) {
-<     if ( A2 -> A_t [ i ] . A_a != i + 1 || A2 -> A_t [ i ] . A_c != i + 2 ) {
----
->         i ++ ) if ( A2 -> A_t [ i ] . A_a != i + 1 || A2 -> A_t [ i ] . A_c != i + 2 ) {
-58d56
-<   }
-diff -r -w aa/Asseq.c bb/Asseq.c
-37c37,39
-<   int aa, bb, cc, nq, len, from, to, label, hi_next, try1 ;
----
-> 
->   int aa, bb, cc, nq, len, from, to, label, hi_next, try ;
-> 
-40c42
-< // Initialiaze to suppress warning JHJ
----
->   /* Initialiaze to suppress warning JHJ */
-83,84c85
-<       ) {
-<     if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
----
->       ) if ( A -> A_t [ i ] . A_b / 2 == 1 ) {
-88d88
-<   }
-131c131,132
-< // Construct start state as the write closure of START.
----
->   /* Construct start state as the write closure of START.
->    */
-190,191c191
-<         ++ i ) {
-<     if ( set [ i ] != UNMARK ) {
----
->         ++ i ) if ( set [ i ] != UNMARK ) {
-197,198c197
-<             p ++ ) {
-<         if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->             p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-201d199
-<       }
-210d207
-<   }
-237c234
-<     try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
----
->     try = to_coeff [ vec [ 0 ] ] [ j ] ;
-239,241c236
-<     if ( try1 == MAXSHORT ) {
-<       goto idone ;
-<     }
----
->     if ( try == MAXSHORT ) goto idone ;
-245,246c240
-<           i ++ ) {
-<       if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
----
->           i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
-249d242
-<     }
-256c249,251
-<     label = 2 * try1 + 1 ;
----
-> 
->     label = 2 * try + 1 ;
-> 
-296,300c291,296
-< // Unpack current state:
-< // (1) fvec is set to vector of component states followed by their coeffs
-< // (2) load heap with positions in source automaton for each component state
-< // (3) load fr_coeff with the pointers to coeff vectors
-< // (4) heapify the heap
----
->     /*     Unpack current state:
->      * (1) fvec is set to vector of component states followed by their coeffs
->      * (2) load heap with positions in source automaton for each component state
->      * (3) load fr_coeff with the pointers to coeff vectors
->      * (4) heapify the heap
->      */
-317,333c313,323
-< //      printf( "Processing state %d\n", current );
-< //      printf( "state coeff\n" );
-< //
-< //      for (   i = 0;
-< //              i < len;
-< //              i++ ) {
-< //          j = fvec[ i ];
-< //          printf( "%5d ", j );
-< //
-< //          for (   tt = 0;
-< //                  fr_coeff[ j ][ tt ] != MAXSHORT;
-< //                  tt++ ) {
-< //              printf( "%s ", T_name( TT, fr_coeff[ j ][ tt ] ) );
-< //          }
-< //
-< //          printf( "\n" );
-< //      }
----
->     /*
->     printf( "Processing state %d\n", current );
->     printf( "state coeff\n" );
->     for( i = 0; i < len; i++ ) {
->     j = fvec[ i ];
->     printf( "%5d ", j );
->     for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
->     printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
->     printf( "\n" );
+>       ;
 >     }
->     */
-360,361c350,352
-< // Main loop to process current state: Each cycle processes position at the
-< // top of the heap.
----
->     /* Main loop to process current state: Each cycle processes position at the
->      * top of the heap.
->      */
-367c358,359
-< // End processing for an output state.
----
->       /* End processing for an output state.
->        */
-379,380c371
-<                   p ++ ) {
-<               if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->                   p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-383d373
-<             }
-399,400c389
-<                 gap /= 2 ) {
-<             for ( i = gap ;
----
->                 gap /= 2 ) for ( i = gap ;
-402,403c391
-<                   i ++ ) {
-<               for ( j = i - gap ;
----
->                                    i ++ ) for ( j = i - gap ;
-410,411d397
-<             }
-<           }
-416,417c402
-<                 ++ i ) {
-<             if ( set [ i ] != UNMARK ) {
----
->                 ++ i ) if ( set [ i ] != UNMARK ) {
-423,424c408
-<                     p ++ ) {
-<                 if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
----
->                     p ++ ) if ( p -> A_b == 1 || p -> A_b % 2 == 0 ) {
-427d410
-<               }
-437d419
-<         }
-450,466c432,442
-< //              printf( "Destination state\n" );
-< //              printf( "state coeff\n" );
-< //
-< //              for (   i = 0;
-< //                      i < vlen;
-< //                      i++ ) {
-< //                  j = vec[ i ];
-< //                  printf( "%5d ", j );
-< //
-< //                  for (   tt = 0;
-< //                          to_coeff[ j ][ tt ] != MAXSHORT;
-< //                          tt++ ) {
-< //                      printf( "%s ", T_name( TT, to_coeff[ j ][ tt ] ) );
-< //                  }
-< //
-< //                  printf( "\n" );
-< //              }
----
->         /*
->         printf( "Destination state\n" );
->         printf( "state coeff\n" );
->         for( i = 0; i < vlen; i++ ) {
->         j = vec[ i ];
->         printf( "%5d ", j );
->         for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
->         printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
->         printf( "\n" );
->         }
->         */
-470c446
-<           try1 = to_coeff [ vec [ 0 ] ] [ j ] ;
----
->           try = to_coeff [ vec [ 0 ] ] [ j ] ;
-472,474c448
-<           if ( try1 == MAXSHORT ) {
-<             goto done ;
-<           }
----
->           if ( try == MAXSHORT ) goto done ;
-478,479c452
-<                 i ++ ) {
-<             if ( to_coeff [ vec [ i ] ] [ j ] != try1 ) {
----
->                 i ++ ) if ( to_coeff [ vec [ i ] ] [ j ] != try ) {
-482d454
-<           }
-486c458,460
-<           label = 2 * try1 + 1 ;
----
-> 
->           label = 2 * try + 1 ;
-> 
-526,527c500
-<                   k = back [ k ] ) {
-<               if ( sig [ k ] == i ) {
----
->                   k = back [ k ] ) if ( sig [ k ] == i ) {
-530d502
-<             }
-545,546c517,519
-< // Main processing for a transition from the input automaton.
-< // Add state to subset and compute coefficient.
----
->       /* Main processing for a transition from the input automaton.
->        * Add state to subset and compute coefficient.
->        */
-635c608
-<                   veccpy ( to_coeff [ p -> A_c ] + tt, ( st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ) ;
----
->                   veccpy ( to_coeff [ p -> A_c ] + tt, st_ptr [ p -> A_c ] + tt - ( len - st_len [ p -> A_c ] ) ) ;
-710c683,685
-< //  A = A_rename( A, 0 );
----
->   /*
->       A = A_rename( A, 0 );
->   */
-diff -r -w aa/Astems.c bb/Astems.c
-61c61
-<   int try1, newtry ;
----
->   int try, newtry ;
-74c74
-<   try1 = WILD ;
----
->   try = WILD ;
-89,90c89,92
-<     if ( try1 == WILD || try1 == newtry ) {
-<       try1 = newtry ;
----
->     if ( try == WILD || try == newtry ) try = newtry ;
-> 
->     else {
->       try = MAXSHORT ;
-92,93d93
-<     } else {
-<       try1 = MAXSHORT ;
-99,101c99
-<   if ( try1 == WILD ) {
-<     try1 = MAXSHORT ;
+246,250c241
+< 
+<   if ( A == NULL ) {
+<     Error ( "A_rename: No OBJECT" ) ;
 <   }
+< 
 ---
->   if ( try == WILD ) try = MAXSHORT ;
-110,111c108,110
-<   st_work [ q ] [ i ] = try1 ;
-<   return ( try1 ) ;
+>   assert ( A != NULL ) ;
+293c284,285
+<       ) if ( ( p -> A_c = trena [ p -> A_c ] ) == MAXSHORT || ( p -> A_a == p -> A_c && p -> A_b == 0 ) ) {
 ---
->   st_work [ q ] [ i ] = try ;
-> 
->   return ( try ) ;
-135,136c134
-<         ) {
-<       if ( p -> A_b > 1 && p -> A_b % Aw -> A_nT != tape ) {
----
->         ) if ( p -> A_b > 1 && p -> A_b % Aw -> A_nT != tape ) {
-142d139
-<     }
-143a141
->     /* else if ( p-> A_b > 1 ) p-> A_b /= Aw-> A_nT; generates bad code? */
-174,175c172
-<       ) {
-<     for ( i = 0 ;
----
->       ) for ( i = 0 ;
-177,180c174
-<           i ++ ) {
-<       ;
-<     }
+>       ) {
+>     if ( ( p -> A_c = trena [ p -> A_c ] ) == MAXSHORT || ( p -> A_a == p -> A_c && p -> A_b == 0 ) ) {
+298a291
+>   }
+333,337c326
+< 
+<   if ( A == NULL ) {
+<     Error ( "A_rename: No OBJECT" ) ;
 <   }
+< 
 ---
->                 i ++ ) ;
-diff -r -w aa/Asubs.c bb/Asubs.c
-95c95
-<   vec [ ( i = 0 ) ] = START ;
----
->   vec [ i = 0 ] = START ;
-125,126c125
-<           i ++ ) {
-<       if ( pnlam [ j ] != A -> A_p [ j + 1 ] ) {
----
->           i ++ ) if ( pnlam [ j ] != A -> A_p [ j + 1 ] ) {
-129d127
-<     }
-175,176c173
-<                 gap /= 2 ) {
-<             for ( i = gap ;
----
->                 gap /= 2 ) for ( i = gap ;
-178,179c175
-<                   i ++ ) {
-<               for ( j = i - gap ;
----
->                                    i ++ ) for ( j = i - gap ;
-186,187d181
-<             }
-<           }
-189,190c183
-<         } else {
-<           for ( i = 0 ;
----
->         } else for ( i = 0 ;
-192,196c185,186
-<                 ++ i ) {
-<             if ( set [ i ] != UNMARK ) {
-<               set [ ( vec [ n ++ ] = i ) ] = UNMARK ;
-<             }
-<           }
----
->                        ++ i ) if ( set [ i ] != UNMARK ) {
->               set [ vec [ n ++ ] = i ] = UNMARK ;
-diff -r -w aa/Atrim.c bb/Atrim.c
-38c38
-<   t_low [ state ] = ( dfn = t_cnt ++ ) ;
----
->   t_low [ state ] = dfn = t_cnt ++ ;
-53,54c53
-<   if ( t_low [ state ] == dfn ) {
-<     for ( next = MAXSHORT ;
----
->   if ( t_low [ state ] == dfn ) for ( next = MAXSHORT ;
-59d57
-<   }
-94c92
-<   t_stk = ( stk_rem = s_alloc ( A -> A_nQ ) ) ;
----
->   t_stk = stk_rem = s_alloc ( A -> A_nQ ) ;
-115c113
-<   for ( p = ( pz = A -> A_t + A -> A_nrows ) ;
----
->   for ( p = pz = A -> A_t + A -> A_nrows ;
-117,118c115
-<       ) {
-<     if ( t_low [ p -> A_a ] >= DELETED || t_low [ p -> A_c ] >= DELETED ) {
----
->       ) if ( t_low [ p -> A_a ] >= DELETED || t_low [ p -> A_c ] >= DELETED ) {
-125d121
-<   }
-136c132
-<   for ( p = ( pz = A -> A_t + A -> A_nrows ) ;
----
->   for ( p = pz = A -> A_t + A -> A_nrows ;
-138,139c134
-<       ) {
-<     if ( p -> A_b == 0 ) {
----
->       ) if ( p -> A_b == 0 ) {
-142d136
-<   }
-149,150c143
-<         ) {
-<       if ( ( p - 1 ) -> A_b == p -> A_b && ( p - 1 ) -> A_a == p -> A_a ) {
----
->         ) if ( ( p - 1 ) -> A_b == p -> A_b && ( p - 1 ) -> A_a == p -> A_a ) {
-153d145
-<     }
+>   assert ( A != NULL ) ;
 diff -r -w aa/Colon.c bb/Colon.c
-76,77c76
-<           i ++ ) {
-<       if ( Alist [ i ] -> A_nrows > 0 ) {
----
->           i ++ ) if ( Alist [ i ] -> A_nrows > 0 ) {
-80d78
-<     }
-88,89c86
-<           i ++ ) {
-<       if ( Alist [ i ] -> A_nrows > 0 ) {
----
->           i ++ ) if ( Alist [ i ] -> A_nrows > 0 ) {
-92d88
-<     }
-97,98c93
-<   } else if ( ! strcmp ( "help", op ) ) {
-<     fprintf ( fpout, "\n\
----
->   } else if ( ! strcmp ( "help", op ) ) fprintf ( fpout, "\n\
-110c105
-<   } else if ( ! strcmp ( "done", op ) || ! strcmp ( "quit", op ) || ! strcmp ( "stop", op ) || ! strcmp ( "bye", op ) ) {
----
->   else if ( ! strcmp ( "done", op ) || ! strcmp ( "quit", op ) || ! strcmp ( "stop", op ) || ! strcmp ( "bye", op ) ) {
-399,400c394
-<     if ( ! strcmp ( "ops", arg ) ) {
-<       fprintf ( fpout, "\n\
----
->     if ( ! strcmp ( "ops", arg ) ) fprintf ( fpout, "\n\
-422,423c416
-<     } else if ( ! strcmp ( "colonops", arg ) ) {
-<       fprintf ( fpout, "\n\
----
->     else if ( ! strcmp ( "colonops", arg ) ) fprintf ( fpout, "\n\
-443,444c436
-<     } else if ( ! strcmp ( "ioops", arg ) ) {
-<       fprintf ( fpout, "\n\
----
->     else if ( ! strcmp ( "ioops", arg ) ) fprintf ( fpout, "\n\
-457,458c449
-<     } else if ( ! strcmp ( "stats", arg ) ) {
-<       fprintf ( fpout, "\n\
----
->     else if ( ! strcmp ( "stats", arg ) ) fprintf ( fpout, "\n\
-480,481c471
-<     } else if ( ! strcmp ( "w", arg ) ) {
-<       fprintf ( fpout, "\n\
----
->     else if ( ! strcmp ( "w", arg ) ) fprintf ( fpout, "\n\
-495,496c485
-<     } else if ( ! strcmp ( "c", arg ) ) {
-<       fprintf ( fpout, "\n\
----
->     else if ( ! strcmp ( "c", arg ) ) fprintf ( fpout, "\n\
-524c513
-<     } else {
----
->     else {
+45a46
+>     ( void ) Saudit ( ) ;
+Only in aa: ginr
+Only in aa: ISSUES_LIMITS
+Only in aa: ISSUES_OTHER
+Only in aa: ISSUES_STACK
 diff -r -w aa/Lex.c bb/Lex.c
-168,169c168,169
-< //  case '"':   not used
-< //  case '#':   COMMENT
+487c487
+<         ti ++ ) if ( ( isascii ( ti ) && isprint ( ti ) ) || ti == '\t' || ti == '\n' ) {
 ---
->   /*  case '"':   not used    */
->   /*  case '#':   COMMENT     */
-201c201
-< //  case '.':   ALPHANUMERIC
----
->   /*  case '.':   ALPHANUMERIC    */
-211c211
-< //  case '<':   not used
----
->   /*  case '<':   not used    */
-215c215
-< //  case '>':   not used
----
->   /*  case '>':   not used    */
-234,235c234,235
-< //  case '_':   ALPHANUMERIC
-< //  case '`':   TOKEN QUOTE
----
->   /*  case '_':   ALPHANUMERIC    */
->   /*  case '`':   TOKEN QUOTE */
-245c245
-< //  case '~':   not used
----
->   /*  case '~':   not used    */
-496,497c496
-<         ti ++ ) {
-<     if ( ( isascii ( ti ) && isprint ( ti ) ) || ti == '\t' || ti == '\n' ) {
----
->         ti ++ ) if ( ( isascii ( ti ) && isprint ( ti ) ) || ti == '\t' || ti == '\n' ) {
-501d499
-<   }
-511c509,513
+>         ti ++ ) if ( isprint ( ti ) || ti == '\t' || ti == '\n' ) {
+500c500,504
 <   PROMT ( void ) yyparse ( ) ;
 ---
 > 
@@ -1351,164 +196,334 @@ diff -r -w aa/Lex.c bb/Lex.c
 >   }
 > 
 diff -r -w aa/Makefile bb/Makefile
-13c13
-< 	gcc -Wall -O -c $*.c
+3,4c3,4
+< Asubs.c Amin.c Abasic.c Aenum.c Acompose.c Ajoin.c Apowers.c Aretape.c \
+< Alenmin.c Astems.c Asseq.c Aclsseq.c ALMsseq.c AGMsseq.c T.c V.c R.c U.c S.c \
 ---
-> 	gcc -Wall -O0 -g -c $*.c
-16,19c16
-< 	gcc -Wall -O $(OFILES) -o ginr
-< 
-< format:	$(CFILES)
-< 	astyle --style=1tbs $(CFILES)
+> Asubs.c Amin.c Abasic.c Aenum.c Acompose.c Ajoin.c Aretape.c Apowers.c \
+> Alenmin.c Asseq.c AGMsseq.c ALMsseq.c Aclsseq.c Astems.c T.c V.c R.c U.c S.c \
+7,8c7,8
+< Asubs.o Amin.o Abasic.o Aenum.o Acompose.o Ajoin.o Apowers.o Aretape.o \
+< Alenmin.o Astems.o Asseq.o Aclsseq.o ALMsseq.o AGMsseq.o T.o V.o R.o U.o S.o \
 ---
-> 	gcc -Wall -O0 -g $(OFILES) -o ginr
-28c25
+> Asubs.o Amin.o Abasic.o Aenum.o Acompose.o Ajoin.o Aretape.o Apowers.o \
+> Alenmin.o Asseq.o AGMsseq.o ALMsseq.o Aclsseq.o Astems.o T.o V.o R.o U.o S.o \
+10,11c10
+< SOURCE 	= Makefile $(HFILES) localc.h localh.h locals.h $(CFILES) Parse.y \
+< compcms.exec cwinr.exec comphw.exec
+---
+> SOURCE 	= Makefile $(HFILES) $(CFILES) Parse.y
+14c13,14
+< 	gcc -ansi -Wall -O -c $*.c
+---
+> 	gcc -ansi -Wall -O0 -g -c $*.c
+> #	gcc -DUSE_MALLOC_ALLOCATOR -ansi -Wall -O0 -g -c $*.c
+17c17
+< 	gcc -ansi -Wall -O $(OFILES) -o ginr
+---
+> 	gcc -ansi -Wall -O0 -g $(OFILES) -o ginr
+26c26
 < 	cp -p ginr ~/bin/ninr
 ---
 > 	cp -p ginr ~/bin/ginr
-41c38
+39c39
 < 	rm -f $(OFILES) y.tab.h y.tab.c
 ---
 > 	rm -f $(OFILES) y.tab.h y.tab.c *.orig
 diff -r -w aa/O.h bb/O.h
-31,37c31,32
-< typedef unsigned int SHORT ;
-< // #define MAXSHORT        037777777777
-< // change MAXSHORT to 31 one's to avoid bugs in usage for signed ints
-< // left over from change of SHORT to 32 bits.
-< // These cases will be reviewed one by one and repaired correctly (JHJ).
-< #define MAXSHORT        017777777777
-< #define MAXSTATE        017777777777
+31c31
+< /* these seem to be needed with the -ansi option to suppress warnings */
 ---
-> typedef unsigned short SHORT ;
-> #define MAXSHORT        0177777
+> /* this seems to be needed with the -ansi option to suppress warnings */
+33d32
+< int isascii ( int ) ;
+116,117c115,116
+< void copymem ( int, char *, char * ) ;
+< char * Salloc ( int ) ;
+---
+> void copymem ( long, char *, char * ) ;
+> char * Salloc ( long ) ;
+119c118
+< char * Srealloc ( char *, int ) ;
+---
+> char * Srealloc ( char *, long ) ;
+121c120,121
+< int Ssize ( char * ) ;
+---
+> long Ssize ( char * ) ;
+> char * Sfind ( char * ) ;
 diff -r -w aa/Parse.y bb/Parse.y
-28d27
-< #include <string.h>
-29a29
-> #include <string.h>
-30a31,33
->   int yylex ( ) ;
->   int yyparse ( void ) ;
->   void yyerror ( char * ) ;
-37a41,44
->   extern int do_n_i ( ) ;
->   extern A_OBJECT do_an_a ( ) ;
->   extern A_OBJECT do_ann_a ( ) ;
->   extern A_OBJECT do_nn_a ( ) ;
-171c178
+159c159
 <     return 1 ;
 ---
 >     return ( 0 ) ;
-174d180
-< // to suppress warning JHJ
-423a430
->   }
-426d432
-<   }
-diff -r -w aa/R.c bb/R.c
-59c59
-<   p = R -> R_hash + ( ( ( ( 16807 * reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
----
->   p = R -> R_hash + ( ( ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) * 16807 ) & 017777777777 ) % R -> R_lhash ;
+162d161
+<   /* to suppress warning JHJ */
 diff -r -w aa/S.c bb/S.c
-29c29
-< void Error ( ) ;
+25,26d24
+< #include "O.h"
+< /* for bcopy */
+28,54c26
+< #define USE_BB true
+< #ifdef USE_BB
+< typedef struct S_f {
+<   unsigned char fill_1 ;
+<   unsigned char fill_2 ;
+<   unsigned char S_kval ;
+<   unsigned char S_tag ;
+<   unsigned fill_3 ;
+<   struct S_f * S_linkf ;
+<   struct S_f * S_linkb ;
+< }
+< S_ft ;
+< #define tag(p)          ((p)-> S_tag)
+< #define kval(p)         ((p)-> S_kval)
+< #define linkf(p)        ((p)-> S_linkf)
+< #define linkb(p)        ((p)-> S_linkb)
+< #define set_tag(p,t)    (p)-> S_tag = t
+< #define set_kval(p,k)   (p)-> S_kval = k
+< #define set_linkf(p,q)  (p)-> S_linkf = q
+< #define set_linkb(p,q)  (p)-> S_linkb = q
+< #define U(p)            ((unsigned long)(p))
+< #define S_m             28
+< /* S_m = 26 allows objects of up to 1 gigabyte */
+< static S_ft * S_lo = 0, * S_hi = 0, S_avail [ S_m + 1 ] ;
+< static int S_alld_cnt [ S_m ] ;
+< int LINUXmem = 0 ;
+< #endif
 ---
 > #include "O.h"
-51,52c51,53
-< #define S_m             26
-< // S_m = 26 allows objects of up to 1 gigabyte
+58c30
+< void copymem ( int n, char * from, char * to )
 ---
+> void copymem ( long n, char * from, char * to )
+85c57,62
+< #ifdef USE_BB
+---
+> /*
+>  ========== CONDITIONAL COMPILE ==========
+>  Use the Binary Buddy System Allocation implementation that was developed
+>  with INR.
+> */
+> #ifndef USE_MALLOC_ALLOCATOR
+88a66,91
+> typedef struct S_f {
+>   unsigned char fill_1 ;
+>   unsigned char fill_2 ;
+>   unsigned char S_kval ;
+>   unsigned char S_tag ;
+>   unsigned fill_3 ;
+>   struct S_f * fill_4 ;
+>   struct S_f * S_linkf ;
+>   struct S_f * S_linkb ;
+> }
+> S_ft ;
+> #define tag(p)          ((p)-> S_tag)
+> #define kval(p)         ((p)-> S_kval)
+> #define linkf(p)        ((p)-> S_linkf)
+> #define linkb(p)        ((p)-> S_linkb)
+> #define set_tag(p,t)    (p)-> S_tag = t
+> #define set_kval(p,k)   (p)-> S_kval = k
+> #define set_linkf(p,q)  (p)-> S_linkf = q
+> #define set_linkb(p,q)  (p)-> S_linkb = q
+> #define U(p)            ((unsigned long)(p))
 > #define S_m             28
 > /* S_m = 26 allows objects of up to 2 gigabytes 2^(5+26)*/
 > /* S_m = 28 allows objects of up to 8 gigabytes 2^(5+28)*/
-56c57,59
-< //     Copy a block of memory
+> static S_ft * S_lo = 0, * S_hi = 0, S_avail [ S_m + 1 ] ;
+> static int S_alld_cnt [ S_m ] ;
+> long LINUXmem = 0 ;
+95c98
+<     int mem ;
 ---
+>     long mem ;
+167c170
+<   int a, b ;
+---
+>   long a, b ;
+293c296,297
+<   int grand, gran2, i, size, cnt ;
+---
+>   int i, cnt ;
+>   long grand, gran2, size ;
+318c322
+<         fprintf ( fpout, "%4d ", size ) ;
+---
+>         fprintf ( fpout, "%4ld ", size ) ;
+321c325
+<         fprintf ( fpout, "%4dK", size / 1024 ) ;
+---
+>         fprintf ( fpout, "%4ldK", size / 1024 ) ;
+324c328
+<         fprintf ( fpout, "%4dM", size / 1024 / 1024 ) ;
+---
+>         fprintf ( fpout, "%4ldM", size / 1024 / 1024 ) ;
+328c332
+<       fprintf ( fpout, "%5dM", ( cnt * size + 1023 ) / 1024 / 1024 ) ;
+---
+>       fprintf ( fpout, "%5ldM", ( cnt * size + 1023 ) / 1024 / 1024 ) ;
+330c334
+<       fprintf ( fpout, "%5dM\n", ( S_alld_cnt [ i ] * size + 1023 ) / 1024 / 1024 ) ;
+---
+>       fprintf ( fpout, "%5ldM\n", ( S_alld_cnt [ i ] * size + 1023 ) / 1024 / 1024 ) ;
+336,337c340,341
+<   fprintf ( fpout, "            %5dM", ( grand + 1023 ) / 1024 / 1024 ) ;
+<   fprintf ( fpout, "       %5dM\n", ( gran2 + 1023 ) / 1024 / 1024 ) ;
+---
+>   fprintf ( fpout, "            %5ldM", ( grand + 1023 ) / 1024 / 1024 ) ;
+>   fprintf ( fpout, "       %5ldM\n", ( gran2 + 1023 ) / 1024 / 1024 ) ;
+339c343
+<   fprintf ( fpout, "Memory Size %5dM\n", size / 1024 / 1024 ) ;
+---
+>   fprintf ( fpout, "Memory Size %5ldM\n", size / 1024 / 1024 ) ;
+342c346,413
+<     fprintf ( fpout, "Excess %d bytes\n", size % 1024 ) ;
+---
+>     fprintf ( fpout, "Excess %ld bytes\n", size % 1024 ) ;
+>   }
+> }
 > /*
->  *     Copy a block of memory
+>  * Check this out !!!!! JHJ
+>  * Find the block that contains the provided address
 >  */
-84c87,89
-< //     Binary Buddy system storage allocator as in Knuth vol. 1
+> S_ft * S_find ( char * p )
+> {
+>   if ( p < ( char * ) S_lo || p >= ( char * ) S_hi ) {
+>     Error ( "S_find: BOTCH 1" ) ;
+>   }
+> 
+>   S_ft * l = S_lo ;
+>   long incr = ( p - ( char * ) S_lo ) / sizeof ( S_ft ) ;
+>   long offset = ( p - ( char * ) S_lo ) % sizeof ( S_ft ) ;
+> 
+>   if ( ( char * ) & l [ incr ] + offset != p ) {
+>     Error ( "S_find: BOTCH 2" ) ;
+>   }
+> 
+>   if ( offset < 0 || offset >= sizeof ( S_ft ) ) {
+>     Error ( "S_find: BOTCH 3" ) ;
+>   }
+> 
+>   long base = 0 ;
+>   int base_k = kval ( & l [ base ] ) ;
+>   long right = S_hi - S_lo ;
+>   int k ;
+> 
+>   for ( k = 0 ;
+>         ( incr >> k ) ;
+>         ++ k ) {
+>     ;
+>   }
+> 
+>   -- k ;
+>   right = ( 1 << k ) ;
+> 
+>   /*
+>       printf( "\n" );
+>       printf( "base %ld\n", base );
+>       printf( "incr %ld\n", incr );
+>       printf( "k %d\n", k );
+>       printf( "base_k %d\n", base_k );
+>       printf( "right %ld\n", right );
+>    */
+>   while ( base_k <= k ) {
+>     base += right ;
+>     incr -= right ;
+>     base_k = kval ( & l [ base ] ) ;
+> 
+>     for ( k = 0 ;
+>           ( incr >> k ) ;
+>           ++ k ) {
+>       ;
+>     }
+> 
+>     -- k ;
+>     right = ( 1 << k ) ;
+>     /*
+>         printf( "\n" );
+>         printf( "base %ld\n", base );
+>         printf( "incr %ld\n", incr );
+>         printf( "k %d\n", k );
+>         printf( "base_k %d\n", base_k );
+>         printf( "right %ld\n", right );
+>      */
+343a415,416
+> 
+>   return ( & l [ base ] ) ;
+349c422
+< char * Salloc ( int n )
 ---
+> char * Salloc ( long n )
+384c457
+< char * Srealloc ( char * p, int n )
+---
+> char * Srealloc ( char * p, long n )
+417c490
+< int Ssize ( char * p )
+---
+> long Ssize ( char * p )
+451c524
+<         printf ( "Audit anomoly in busy block at %lx:\n", U ( p ) ) ;
+---
+>         printf ( "Audit anomaly in busy block at %lx:\n", U ( p ) ) ;
+469,470c542,543
+<       if ( k >= 20 || ( ( linkf ( p ) < S_lo || linkf ( p ) >= S_hi ) && ( linkf ( p ) < S_avail || linkf ( p ) >= S_avail + S_m ) ) || ( ( linkb ( p ) < S_lo || linkb ( p ) >= S_hi ) && ( linkb ( p ) < S_avail || linkb ( p ) >= S_avail + S_m ) ) || linkb ( linkf ( p ) ) != p || linkf ( linkb ( p ) ) != p ) {
+<         printf ( "Audit anomoly in free block at %lx:\n", U ( p ) ) ;
+---
+>       if ( k >= 30 || ( ( linkf ( p ) < S_lo || linkf ( p ) >= S_hi ) && ( linkf ( p ) < S_avail || linkf ( p ) >= S_avail + S_m ) ) || ( ( linkb ( p ) < S_lo || linkb ( p ) >= S_hi ) && ( linkb ( p ) < S_avail || linkb ( p ) >= S_avail + S_m ) ) || linkb ( linkf ( p ) ) != p || linkf ( linkb ( p ) ) != p ) {
+>         printf ( "Audit anomaly in free block at %lx:\n", U ( p ) ) ;
+506a580,584
 > /*
->  *     Binary Buddy system storage allocator as in Knuth vol. 1
->  */
-176,178c181
-<           ++ k ) {
-<       ;
-<     }
+>  ========== CONDITIONAL COMPILE ==========
+>  Replace the Binary Buddy System Allocation implementation with an
+>  alternative which directly calls malloc/free.
+> */
+511c589
+< char * Salloc ( int n )
 ---
->           ++ k ) ;
-202,204c205
-<           ++ j ) {
-<       ;
-<     }
+> char * Salloc ( long n )
+514c592
+<   int * pi ;
 ---
->           ++ j ) ;
-310,311c311
-<       if ( p != q ) {
-<         for ( cnt = 1 ;
+>   long * pi ;
+521c599
+<   pi = ( int * ) p ;
 ---
->       if ( p != q ) for ( cnt = 1 ;
-313,317c313
-<               ++ cnt ) {
-<           ;
-<         }
-< 
-<         ;
+>   pi = ( long * ) p ;
+533c611
+< char * Srealloc ( char * p, int n )
 ---
->                             ++ cnt ) ;
-319c315
-<       } else {
+> char * Srealloc ( char * p, long n )
+536c614
+<   int * qi ;
 ---
->       else {
-350a347
-> // Check this out !!!!! JHJ
-413,414c410,413
-< //     Interface to provide allocator for INR.
-< //     The length code and an audit flag are stored in allocated blocks
+>   long * qi ;
+540c618
+<     qi = ( int * ) q ;
 ---
-> /*
->  *     Interface to provide allocator for INR.
->  *     The length code and an audit flag are stored in allocated blocks
->  */
-429,431c428
-<         ++ k ) {
-<     ;
-<   }
+>     qi = ( long * ) q ;
+548c626
+< int Ssize ( char * p )
 ---
->         ++ k ) ;
-468,470c465
-<         ++ k ) {
-<     ;
-<   }
+> long Ssize ( char * p )
+551c629
+<   int * qi ;
 ---
->         ++ k ) ;
-491,494d485
-< char * Sfind ( char * p )
-< {
-<   return ( ( ( char * ) S_find ( p ) ) + 4 ) ;
-< }
+>   long * qi ;
+553c631
+<   qi = ( int * ) q ;
+---
+>   qi = ( long * ) q ;
+558c636
+<   int n ;
+---
+>   long n ;
 diff -r -w aa/stamp.c bb/stamp.c
 28,29c28,29
 < char Version [ ] = "2.0.4a" ;
 < char Date [ ] = "August 15, 2018" ;
 ---
-> char Version [ ] = "2.0.3g" ;
-> char Date [ ] = "Jan 16 2022" ;
-diff -r -w aa/U.c bb/U.c
-59c59
-<   p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
----
->   p = U -> U_hash + ( ( ( ( 16807 * ( ( 16807 * ( unsigned ) reca + recb ) & 017777777777 ) + recc ) & 017777777777 ) * 16807 ) & 017777777777 ) % U -> U_lhash ;
-diff -r -w aa/V.c bb/V.c
-49,50c49
-<   while ( *++ p == *++ q ) {
-<     if ( * p == MAXSHORT ) {
----
->   while ( *++ p == *++ q ) if ( * p == MAXSHORT ) {
-53d51
-<   }
+> char Version [ ] = "2.0.3h" ;
+> char Date [ ] = "Jan 17 2022" ;
+Only in aa: TODO_FOR_C89
 Only in aa: VERSION

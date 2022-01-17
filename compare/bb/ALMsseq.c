@@ -24,8 +24,6 @@
  */
 #include <stdio.h>
 #include "O.h"
-extern FILE * fpout ;
-extern T_OBJECT TT ;
 #define UNMARK          MAXSHORT
 #define LAST            (MAXSHORT-1)
 A_OBJECT A_LMsseq ( A_OBJECT A )

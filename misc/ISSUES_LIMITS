@@ -1,0 +1,17 @@
+==================================================
+== Limits on maximum number of states in automaton:
+
+(1) A_trim reserves the values MAXSHORT and MAXSHORT - 1 as sentinals.
+Hence, max number of states <= MAXSHORT - 2.
+
+(2) A_lameq reserves the values MAXSHORT and MAXSHORT - 1 as sentinals.
+Hence, max number of states <= MAXSHORT - 2.
+
+(3) A_lamcm reserves the values MAXSHORT and MAXSHORT - 1 as sentinals.
+Hence, max number of states <= MAXSHORT - 2.
+
+(4) A_subs reserves the values MAXSHORT and MAXSHORT - 1 as sentinals.
+Hence, max number of states <= MAXSHORT - 2.
+
+(5) A_min reserves the values MAXSHORT and MAXSHORT - 1 as sentinals.
+Hence, max number of states <= MAXSHORT - 2.

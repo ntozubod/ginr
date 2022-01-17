@@ -1,0 +1,24 @@
+==================================================
+== Other obscure corners where bugs are likely to lurk
+
+(1) A_retape has a second argument that controls the form of the retaping
+operation. Is it bullet-proof against mal-formed inputs.
+
+(2) Review what A_lenmin and A_minlen are doing.
+
+(3) All of the sub-sequential code was developed in the later part of my
+time at U of Waterloo. It was not used by anyone but me and has bugs. It is
+also desperately needs to be re-factored. Fortunately, it has a natural
+structure as a modified form of the subsets construction over a *-semiring
+structure. This will be explored in a separate repo in the future (??).
+
+(4) Aclsseq: *** Here be dragons ***
+Aclsseq is a special case. I as trying to come up with a form of a
+closure operation over transduction composition. To make this simpler, I
+restricted the transductions to subsequential functions. NB: mathematically,
+this is impossible in general because the closure of even a sseq-function is
+not rational. I was looking for interesting special cases. I hadn't found any
+before I left U of Waterloo, and never revisited the problem.
+
+(5) Why do I need the declarations of fileno and isascii to suppress warnings
+with the -ansi option?

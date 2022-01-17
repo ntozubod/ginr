@@ -22,11 +22,9 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-extern FILE * fpout ;
 #include "O.h"
-#define UNMARK  MAXSHORT
-#define DELETED (MAXSHORT-1)
+#define UNMARK          MAXSHORT
+#define DELETED         (MAXSHORT-1)
 static A_OBJECT GAl ;
 static SHORT * l_stk, * l_low ;
 static int l_cnt, l_top, l_reopen ;
@@ -35,7 +33,7 @@ int A_la_DFS ( int state )
   static int next ;
   int dfn ;
   A_row * p, * pz ;
-  l_low [ state ] = ( dfn = l_cnt ++ ) ;
+  l_low [ state ] = dfn = l_cnt ++ ;
   l_stk [ state ] = l_top ;
   l_top = state ;
   pz = GAl -> A_p [ state + 1 ] ;
@@ -58,15 +56,13 @@ int A_la_DFS ( int state )
     }
   }
 
-  if ( l_low [ state ] == dfn ) {
-    for ( next = ( - 1 ) ;
-          next != state ;
-        ) {
+  if ( l_low [ state ] == dfn ) for ( next = ( - 1 ) ;
+                                        next != state ;
+                                      ) {
       l_top = l_stk [ next = l_top ] ;
       l_stk [ next ] = DELETED ;
       l_low [ next ] = dfn ;
     }
-  }
 
   return ( state ) ;
 }
@@ -115,13 +111,9 @@ A_OBJECT A_lameq ( A_OBJECT A )
 
   for ( i = A -> A_nQ ;
         -- i >= 0 ;
-      ) {
-    if ( l_stk [ i ] == UNMARK ) {
-      if ( A_la_DFS ( i ) != i ) {
+      ) if ( l_stk [ i ] == UNMARK ) if ( A_la_DFS ( i ) != i ) {
         Error ( "A_lameq: BOTCH" ) ;
       }
-    }
-  }
 
   Sfree ( ( char * ) l_stk ) ;
 

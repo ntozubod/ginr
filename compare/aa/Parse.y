@@ -23,21 +23,9 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 % {
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-#include <unistd.h>
 #include "O.h"
-  FILE * fopen ( ) ;
-  extern FILE * fpin, * fpout ;
-  extern A_OBJECT A, Atemp ;
-  extern T_OBJECT TAlist ;
-  extern A_OBJECT Alist [ 100 ] ;
-  extern T_OBJECT TT ;
-  extern int disp_flag ;
   int i, num ;
   char * t ;
-  extern char * pad20 ( ) ;
 #define PROMT   if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
   %
 }
@@ -171,7 +159,7 @@ reg_0 SEMI {
     return 1 ;
   }
 
-// to suppress warning JHJ
+  /* to suppress warning JHJ */
   if ( A_report )
   {
     pr_time_diff ( ) ;
@@ -421,9 +409,9 @@ reg_8 PLUS {
     if ( i >= 0 ) {
       fprintf ( fpout, "Warning: %s is a variable and a token\n", t ) ;
     }
-
-    Sfree ( $ 1 ) ;
   }
+
+  Sfree ( $ 1 ) ;
 }
 | LBRACK reg_0 RBRACK {
   if ( A_report )

@@ -22,7 +22,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include "O.h"
 A_OBJECT A_retape ( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
 {
@@ -51,11 +50,9 @@ A_OBJECT A_retape ( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
 
   for ( i = 0 ;
         i < A2 -> A_nrows ;
-        i ++ ) {
-    if ( A2 -> A_t [ i ] . A_a != i + 1 || A2 -> A_t [ i ] . A_c != i + 2 ) {
+        i ++ ) if ( A2 -> A_t [ i ] . A_a != i + 1 || A2 -> A_t [ i ] . A_c != i + 2 ) {
       Error ( "A_retape: improper form for second argument" ) ;
     }
-  }
 
   ntapes = A2 -> A_nT ;
   tp [ 0 ] = 0 ;

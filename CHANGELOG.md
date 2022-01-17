@@ -1,5 +1,33 @@
 # INR redux Changelog
 
+## 2.0.3h redux (2022-01-17)
+
+#### src (from version 2.0.4a August 15, 2018 updated December 14, 2021)
+
+In early December 2021, I was attempting a cleanup of INR souce and managed
+a number of improvements before starting the redux branch.
+These will be added in to the main 'redux' and 'remaster' branches:
+
+1. Re-ordered the declarations of O.h to a more sensible one.
+
+2. Rationalized the #include calls across the source tree.
+
+3. Added an alternative implementation of S.c that directly calls malloc
+instead of using the binary buddy system of the original INR.
+This is selectable by the compile time ifdef USE_MALLOC_ALLOCATOR.
+
+4. Compiled with the -ansi option to force additional warnings.
+
+5. There was a change in behaviour of :prsseq as a result of removing the
+CMS conditional compile code from Aload.c.
+A tab character was formerly printed for each transition before the target
+state.
+This has been restored to avoid breaking the use of diff on :prsseq output.
+
+6. There is a change in the warnings for the isascii declaration if using
+the -ansi compile option.
+Just remove the use of this macro/function.
+
 ## 2.0.3g redux (2022-01-16)
 
 The tryaug branch was an attempt in August 2018 to extend and improve INR.

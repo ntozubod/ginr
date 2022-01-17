@@ -22,8 +22,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-extern FILE * fpout ;
 #include "O.h"
 static A_OBJECT GAe ;
 static T_OBJECT GTe ;
@@ -40,17 +38,15 @@ int A_en_DFS ( SHORT state )
 
   for ( p = GAe -> A_p [ state ] ;
         p < GAe -> A_p [ state + 1 ] ;
-        ++ p ) {
-    if ( p -> A_b == 1 ) {
+        ++ p ) if ( p -> A_b == 1 ) {
       fprintf ( fpout, "    " ) ;
 
       if ( e_lev == 0 ) {
         fprintf ( fpout, "^ " ) ;
 
-      } else {
-        for ( i = 0 ;
-              i < e_lev ;
-              i ++ ) {
+      } else for ( i = 0 ;
+                     i < e_lev ;
+                     i ++ ) {
           ++ en_cnt ;
 
           if ( GAe -> A_nT == 1 ) {
@@ -90,7 +86,6 @@ int A_en_DFS ( SHORT state )
             fprintf ( fpout, "%1d.%s ", e_vec [ i ] % GAe -> A_nT, en_str ) ;
           }
         }
-      }
 
       fprintf ( fpout, "\n" ) ;
 
@@ -111,7 +106,6 @@ int A_en_DFS ( SHORT state )
 
       -- e_lev ;
     }
-  }
 
   return ( 0 ) ;
 }
@@ -162,8 +156,7 @@ int A_cd_DFS ( SHORT state )
 
   for ( p = GAe -> A_p [ state ] ;
         p < GAe -> A_p [ state + 1 ] ;
-        ++ p ) {
-    if ( p -> A_b == 1 ) {
+        ++ p ) if ( p -> A_b == 1 ) {
       ++ count ;
 
     } else {
@@ -175,7 +168,6 @@ int A_cd_DFS ( SHORT state )
 
       count += i ;
     }
-  }
 
   return ( c_vec [ state ] = count ) ;
 }

@@ -23,8 +23,6 @@ extern int S_flag ;
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-extern FILE * fpout ;
 #include "O.h"
 SHORT * s_rena = 0 ;
 int f_rena = 0 ;
@@ -217,9 +215,7 @@ A_OBJECT A_close ( A_OBJECT A )
 
     p += t2 - q ;
 
-    while ( ( ++ t1 ) -> A_c == ( ++ t2 ) -> A_c && t1 -> A_b == t2 -> A_b && t1 -> A_a == t2 -> A_a ) {
-      ;
-    }
+    while ( ( ++ t1 ) -> A_c == ( ++ t2 ) -> A_c && t1 -> A_b == t2 -> A_b && t1 -> A_a == t2 -> A_a ) ;
   }
 
   A -> A_mode = NFA ;
@@ -294,14 +290,12 @@ A_OBJECT A_rename ( A_OBJECT A, SHORT * rena )
 
   for ( p = pz ;
         -- p >= A -> A_t ;
-      ) {
-    if ( ( p -> A_c = trena [ p -> A_c ] ) == MAXSHORT || ( p -> A_a == p -> A_c && p -> A_b == 0 ) ) {
+      ) if ( ( p -> A_c = trena [ p -> A_c ] ) == MAXSHORT || ( p -> A_a == p -> A_c && p -> A_b == 0 ) ) {
       -- pz ;
       p -> A_a = pz -> A_a ;
       p -> A_b = pz -> A_b ;
       p -> A_c = pz -> A_c ;
     }
-  }
 
   Sfree ( ( char * ) s_rena ) ;
   s_rena = NULL ;

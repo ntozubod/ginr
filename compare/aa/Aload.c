@@ -22,13 +22,12 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-#include <string.h>
 #include "O.h"
 #define MAX_TOKEN       1024
+#define cnvrtn(name) name
+FILE * fpin ;
+FILE * fpout ;
 static FILE * fp ;
-FILE * fpin, * fpout ;
-extern FILE * fopen ( ) ;
 static int c ;
 char * get_name ( )
 {
@@ -134,7 +133,7 @@ A_OBJECT A_load ( char * file, T_OBJECT T_Sigma )
   A_row * p ;
 
   if ( file != NULL ) {
-    fp = fopen ( file, "r" ) ;
+    fp = fopen ( cnvrtn ( file ), "r" ) ;
 
   } else if ( fpin != NULL ) {
     fp = fpin ;
@@ -335,7 +334,7 @@ A_OBJECT A_store ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
       return ( A ) ;
 
     } else {
-      fp = fopen ( file, "w" ) ;
+      fp = fopen ( cnvrtn ( file ), "w" ) ;
     }
 
   } else {
@@ -408,7 +407,7 @@ A_OBJECT A_save ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
       return ( A ) ;
 
     } else {
-      fp = fopen ( file, "w" ) ;
+      fp = fopen ( cnvrtn ( file ), "w" ) ;
     }
 
   } else {
@@ -468,7 +467,7 @@ A_OBJECT A_lwds ( char * file, T_OBJECT T_Sigma )
   int i, nQ ;
 
   if ( file != NULL ) {
-    fp = fopen ( file, "r" ) ;
+    fp = fopen ( cnvrtn ( file ), "r" ) ;
 
   } else if ( fpin != NULL ) {
     fp = fpin ;
@@ -562,7 +561,7 @@ A_OBJECT A_prsseq ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
       return ( A ) ;
 
     } else {
-      fp = fopen ( file, "w" ) ;
+      fp = fopen ( cnvrtn ( file ), "w" ) ;
     }
 
   } else {

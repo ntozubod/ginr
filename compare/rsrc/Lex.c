@@ -23,31 +23,18 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-
 #include "O.h"
 #include "y.tab.h"
-
-FILE    *fopen();
-extern FILE *fpin, *fpout;
 
 A_OBJECT    A, Atemp;
 T_OBJECT    TAlist;
 A_OBJECT    Alist[100];
 T_OBJECT    TT;
 
-char * pad20( char * s )
+char * pad20( char *s )
 {
     static char tmp[ 41 ];
-
-    if ( strlen( s ) >= 20 ) {
-        return( s );
-    }
-
+    if ( strlen( s ) >= 20 ) return( s );
     else {
         (void) strcpy( tmp, s );
         (void) strcat( tmp, " -------------------" );
@@ -59,7 +46,7 @@ char * pad20( char * s )
 #define PROMT   if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
 
 int ch = ' ';
-char token[ 512 ];
+char    token[512];
 int in_string = 0;
 
 char *copyof( char *str )
@@ -67,26 +54,21 @@ char *copyof( char *str )
     return( strcpy( Salloc( strlen( str ) + 1 ), str ) );
 }
 
-int yylex( )
+int yylex()
 {
     int li, d, lflag, in_comment;
     fflush( fpout );
-
     if ( in_string ) {
         ch = getc( fpin );
-
         if ( ch == '\'' ) {
             ch = getc( fpin );
-
             if ( ch != '\'' ) {
                 in_string = 0;
                 return( RPAREN );
             }
         }
-
         if ( ch == '\\' ) {
             ch = getc( fpin );
-
             switch( ch ) {
             case 'n':
                 ch = '\n';
@@ -99,86 +81,41 @@ int yylex( )
                 break;
             case 'x':
                 d = getc( fpin );
-
-                if ( d >= '0' && d <= '9' ) {
-                    d = d - '0';
-                }
-
-                else if ( d >= 'a' && d <= 'f' ) {
-                    d = d - 'a' + 10;
-                }
-
-                else if ( d >= 'A' && d <= 'F' ) {
-                    d = d - 'A' + 10;
-                }
-
-                else {
-                    Error( "Unexpected Hex digit" );
-                }
-
+                if ( d >= '0' && d <= '9' ) d = d - '0';
+                else if ( d >= 'a' && d <= 'f' ) d = d - 'a' + 10;
+                else if ( d >= 'A' && d <= 'F' ) d = d - 'A' + 10;
+                else Error( "Unexpected Hex digit" );
                 ch = d << 4;
                 d = getc( fpin );
-
-                if ( d >= '0' && d <= '9' ) {
-                    d = d - '0';
-                }
-
-                else if ( d >= 'a' && d <= 'f' ) {
-                    d = d - 'a' + 10;
-                }
-
-                else if ( d >= 'A' && d <= 'F' ) {
-                    d = d - 'A' + 10;
-                }
-
-                else {
-                    Error( "Unexpected Hex digit" );
-                }
-
+                if ( d >= '0' && d <= '9' ) d = d - '0';
+                else if ( d >= 'a' && d <= 'f' ) d = d - 'a' + 10;
+                else if ( d >= 'A' && d <= 'F' ) d = d - 'A' + 10;
+                else Error( "Unexpected Hex digit" );
                 ch += d;
             }
         }
-
-        if ( ch == EOF ) {
-            Error( "End of file in string" );
-        }
-
+        if ( ch == EOF ) Error( "End of file in string" );
         token[ 0 ] = ch;
         token[ 1 ] = 0;
         yylval.up = copyof( token );
         return( NAME );
     }
-
     in_comment = 0;
-    while ( ch == ' ' || ch == '\t' || ch == '\n' || ch == '#'
+    while( ch == ' ' || ch == '\t' || ch == '\n' || ch == '#'
             || in_comment ) {
-
-        if ( ch == '#'  ) {
-            in_comment = 1;
-        }
-
-        if ( ch == '\n' ) {
-            in_comment = 0;
-        }
-
-        if ( ch == EOF  ) {
-            Error( "End of file in comment" );
-        }
-
+        if ( ch == '#'  ) in_comment = 1;
+        if ( ch == '\n' ) in_comment = 0;
+        if ( ch == EOF  ) Error( "End of file in comment" );
         ch = getc( fpin );
     }
-
-    if ( ch == EOF ) {
-        return( 0 );
-    }
-
+    if ( ch == EOF ) return( 0 );
     d = ch;
     ch = ' ';
     switch( d ) {
     case '!':
         return( EXCLAM );
-//  case '"':   not used
-//  case '#':   COMMENT
+    /*  case '"':   not used    */
+    /*  case '#':   COMMENT     */
     case '$':
         return( DOLLAR );
     case '%':
@@ -201,7 +138,7 @@ int yylex( )
         return( COMMA );
     case '-':
         return( MINUS );
-//  case '.':   ALPHANUMERIC
+    /*  case '.':   ALPHANUMERIC    */
     case '/':
         return( SLASH );
 
@@ -209,10 +146,10 @@ int yylex( )
         return( COLON );
     case ';':
         return( SEMI );
-//  case '<':   not used
+    /*  case '<':   not used    */
     case '=':
         return( EQUAL );
-//  case '>':   not used
+    /*  case '>':   not used    */
     case '?':
         return( QUESTION );
 
@@ -227,9 +164,9 @@ int yylex( )
         return( RBRACK );
     case '^':
         return( CIRCUMFLEX );
-//  case '_':   ALPHANUMERIC
+    /*  case '_':   ALPHANUMERIC    */
 
-//  case '`':   TOKEN QUOTE
+    /*  case '`':   TOKEN QUOTE */
 
     case '{':
         return( LBRACE );
@@ -237,7 +174,7 @@ int yylex( )
         return( VBAR );
     case '}':
         return( RBRACE );
-//  case '~':   not used
+    /*  case '~':   not used    */
 
     case '"':
     case '<':
@@ -246,26 +183,18 @@ int yylex( )
         fprintf( fpout, "Reserved character: %c\n", d );
         return( d );
     }
-
     li = 0;
     ch = d;
     lflag = 1;
-
     if ( ch == '`' ) {
         ch = getc( fpin );
-
         while ( ch != EOF ) {
-
             if ( ch == '`' ) {
                 ch = getc( fpin );
-                if ( ch != '`' ) {
-                    break;
-                }
+                if ( ch != '`' ) break;
             }
-
             if ( ch == '\\' ) {
                 ch = getc( fpin );
-
                 switch( ch ) {
                 case 'n':
                     ch = '\n';
@@ -278,62 +207,29 @@ int yylex( )
                     break;
                 case 'x':
                     d = getc( fpin );
-
-                    if ( d >= '0' && d <= '9' ) {
-                        d = d - '0';
-                    }
-
-                    else if ( d >= 'a' && d <= 'f' ) {
-                        d = d - 'a' + 10;
-                    }
-
-                    else if ( d >= 'A' && d <= 'F' ) {
-                        d = d - 'A' + 10;
-                    }
-
-                    else {
-                        Error( "Unexpected Hex digit" );
-                    }
-
+                    if ( d >= '0' && d <= '9' ) d = d - '0';
+                    else if ( d >= 'a' && d <= 'f' ) d = d - 'a' + 10;
+                    else if ( d >= 'A' && d <= 'F' ) d = d - 'A' + 10;
+                    else Error( "Unexpected Hex digit" );
                     ch = d << 4;
                     d = getc( fpin );
-
-                    if ( d >= '0' && d <= '9' ) {
-                        d = d - '0';
-                    }
-
-                    else if ( d >= 'a' && d <= 'f' ) {
-                        d = d - 'a' + 10;
-                    }
-
-                    else if ( d >= 'A' && d <= 'F' ) {
-                        d = d - 'A' + 10;
-                    }
-
-                    else {
-                        Error( "Unexpected Hex digit" );
-                    }
-
+                    if ( d >= '0' && d <= '9' ) d = d - '0';
+                    else if ( d >= 'a' && d <= 'f' ) d = d - 'a' + 10;
+                    else if ( d >= 'A' && d <= 'F' ) d = d - 'A' + 10;
+                    else Error( "Unexpected Hex digit" );
                     ch += d;
                 }
             }
-
             token[ li++ ] = ch;
             ch = getc( fpin );
         }
-
-        if ( li == 0 ) {
-            return( CIRCUMFLEX );
-        }
-    }
-
-    else {
-
+        if ( li == 0 ) return( CIRCUMFLEX );
+    } else {
         while ( lflag && ch != EOF ) {
             token[ li++ ] = ch;
             ch = getc( fpin );
 
-            if ( li != 2 || token[ 1 ] != '.' || !isdigit( token[ 0 ] ) ) {
+            if ( li!=2 || token[1]!='.' || !isdigit(token[0]) ) {
                 lflag = 0;
                 switch( ch ) {
                 case '.':
@@ -407,9 +303,9 @@ int yylex( )
                     break;
                 }
             }
+
         }
     }
-
     token[ li ] = 0;
     yylval.up = copyof( token );
     return( NAME );
@@ -417,8 +313,6 @@ int yylex( )
 
 char Notice[]
     = "Copyright (c) 1985, 1988, J Howard Johnson, University of Waterloo";
-extern char Version[];
-extern char Date[];
 
 int main( int argc, char *argv[] )
 {
@@ -429,42 +323,34 @@ int main( int argc, char *argv[] )
     fpin  = stdin;
     fpout = stdout;
 
-    if ( argc > 3) {
+    if( argc > 3) {
         printf( "Usage: inr [ input_file ] [ output_file ]\n" );
         exit (1) ;
     }
 
-    if ( argc > 2 ) {
+    if( argc > 2 ) {
         strcpy( file_out, argv[2] ) ;
         fpout = fopen( file_out, "w" );
     }
 
-    if ( argc > 1 ) {
+    if( argc > 1 ) {
         strcpy( file_in, argv[1] ) ;
         fpin = fopen( file_in, "r" );
     }
 
     if (fpin == 0 || fpout == 0 ) {
-
-        if ( fpin ) {
-            strcpy( rpt_out, file_out );
-        }
-
-        else if (fpout ) {
-            strcpy( rpt_out, file_in );
-        }
-
+        if( fpin )   strcpy( rpt_out, file_out );
+        else if (fpout ) strcpy( rpt_out, file_in );
         else {
             strcpy( rpt_out, file_in );
             strcat( rpt_out, ", " );
             strcat( rpt_out, file_out );
         }
-
         printf ( "Problem with %s file(s) opens. -- aborting\n", rpt_out) ;
         exit (1) ;
     }
 
-    if ( isatty( fileno( fpout ) ) ) {
+    if ( isatty(fileno(fpout)) ) {
 
         fprintf( fpout, "\n" );
         fprintf( fpout, "II  N     N  RRRRRR    I N R     " );
@@ -481,51 +367,34 @@ int main( int argc, char *argv[] )
         fprintf( fpout, "to redistribute it under certain\n" );
         fprintf( fpout, "conditions; type `:help c;' for details.\n" );
         fprintf( fpout, "\n" );
-    }
 
-    else {
+    } else {
         fprintf( fpout, "I N R -- V %s, modified %s\n", Version, Date );
         fprintf( fpout, "Copyright (C) 1988 J Howard Johnson\n" );
         fprintf( fpout, "Distributed under GPLv3 (see COPYING)\n" );
-
-        if ( fpin != stdin ) {
+        if ( fpin != stdin )
             fprintf( fpout, "  (Source file: %s)", file_in ) ;
-        }
-
         fprintf( fpout, "\n\n\n" );
     }
 
     TT = T_create();
-
-    if ( T_insert( TT, "^^" ) != 0 || T_insert( TT, "-|" ) != 1 ) {
-        Error( "main: Initializing TT" );
-    }
-
-    tstr[ 1 ] = 0;
-    for (   ti = 1;
-            ti <= 255;
-            ti++ ) {
-
-        if (    ( isascii( ti ) && isprint( ti ) )
-                || ti == '\t' || ti == '\n' ) {
-            tstr[ 0 ] = ti;
+    if ( T_insert( TT, "^^" ) != 0
+            || T_insert( TT, "-|" ) != 1 ) Error( "main: Initializing TT" );
+    tstr[1] = 0;
+    for( ti = 1; ti <= 255; ti++ )
+        if ( ( isascii(ti) && isprint(ti) ) || ti == '\t' || ti == '\n' ) {
+            tstr[0] = ti;
             (void) T_insert( TT, tstr );
         }
-    }
-
     TAlist = T_create();
-
-    if ( T_insert( TAlist, "_Last_" ) != 0 ) {
+    if ( T_insert( TAlist, "_Last_" ) != 0 )
         Error( "main: Initializing TAlist" );
-    }
-
     Alist[ 0 ] = A_create();
     pr_time_diff();
     PROMT
     (void) yyparse();
     T_destroy( TT );
     T_destroy( TAlist );
-
     if ( A_report ) {
         fprintf( fpout, "\n" );
         T_stats();
@@ -533,7 +402,6 @@ int main( int argc, char *argv[] )
         R_stats();
         U_stats();
     }
-
     exit( 0 );
 }
 
@@ -546,15 +414,9 @@ int tonum( char *p )
 {
     int acum, c;
     acum = 0;
-
     while ( ( c = *p++ ) ) {
-
-        if ( c < '0' || c > '9' ) {
-            return( -1 );
-        }
-
+        if ( c < '0' || c > '9' ) return( -1 );
         acum = acum * 10 + c - '0';
     }
-
     return( acum );
 }

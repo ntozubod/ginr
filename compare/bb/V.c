@@ -22,8 +22,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-extern FILE * fpout ;
 #include "O.h"
 static SHORT * V_vecptr = 0 ;
 static SHORT * V_hashpos = 0 ;

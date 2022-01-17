@@ -1,4 +1,132 @@
-2.0.3
+==================================================
+== 20211214
+
+(1) cleanup for Astems.c, Asseq.c, ALMsseq.c, AGMsseq.c, Aclsseq.c
+These all require a lot of work: refactoring, debugging, documentation.
+This repo will focus on the minimum. Go to the 'ginr' repo for more
+complete work -- in the future.
+
+(2) cleanup for T.c
+
+(3) cleanup for V.c
+
+(4) cleanup for R.c
+
+(5) cleanup for U.c
+
+(6) cleanup for util.c
+
+(7) cleanup for stamp.c
+
+(8) cleanup for Colon.c
+
+(9) cleanup for Lex.c Parse.y and straighten out all externs, includes,
+and overall module structure for whole source base.
+
+(10) compile with the -ansi option to force addtional warnings. The only thing
+was // style comments and a couple of file decls missing: fileno and isascii .
+
+==================================================
+== 20211213
+
+(1) cleanup for Aretape.c
+
+(2) cleanup for Apowers.c
+
+(2) cleanup for Alenmin.c
+
+==================================================
+== 20211212
+
+(1) cleanup for Acompose.c
+
+(2) cleanup for Ajoin.c (almost identical to above)
+
+==================================================
+== 20211211
+
+(1) cleanup for Abasic.c
+
+(2) cleanup for Aenum.c
+
+==================================================
+== 20211209
+
+(1) cleanup for Asubs.c
+
+(2) cleanup for Amin.c
+
+==================================================
+== 20211208
+
+(1) cleanup for Alamcm.c
+
+(2) cleanup for Aclos.c
+
+==================================================
+== 20211207
+
+(1) cleanup for Atrim.c
+
+(2) start tracking implementation issues with ISSUES_LIMITS and ISSUES_STACK.
+
+(3) cleanup for Alameq.c
+
+==================================================
+== 20211206
+
+(1) verify cleanup for Acrea.c
+
+(2) cleanup for Aopen.c
+
+(3) cleanup for Aload.c
+
+==================================================
+== 20211205
+
+(1) modified S.c to add an alternative storage allocator that does not use
+the binary buddy system but calls malloc/free directly. Make the choice of
+allocator selectable and the simpler one the default.
+
+(2) convert function prototypes for S.c to C89 form
+
+(3) remove register declarations for S.c
+
+S.c     add direct simple storage allocator
+S.c     control selection using #ifdef USE_BB == use Binary Buddy impl
+S.c     cleanup for C89
+O.h     cleanup for C89
+
+==================================================
+== 20211204
+
+(1) checked out version 6109cfc as 2.0.4a from ntozubod/ginr
+
+(2) revert SHORT and MAXSHORT to provide a more stable basis for bug-finding
+
+(3) a bug was found yesterday in V.c as a result of a confusion of unsigned
+and signed arithmetic. The bug caused a crash when compiled with -O and not
+with lower levels of optimisation. It is probably a result of undefined
+behaviour as a result of permissible re-ordering that might have been
+introduced as a result of C89. (It might not have been a bug in K&R C.)
+
+(4) similar bug in R.c -- there remain other similar examples.
+
+(5) start a cleanup sweep of the code to:
+ (a) convert K&R style declarations to C89 style
+ (b) remove all register declarations
+ (c) catch obvious undefined behaviour problems (some will be missed)
+
+O.h     SHORT back to unsigned short -- until bugs fixed
+O.h     MAXSHORT back to 0177777 (16 ones)
+U.c     fix bug caused by signed/unsigned temporary issue
+R.c     fix bug caused by signed/unsigned temporary issue
+Acrea.c remove some register decls
+O.h     remove some register decls
+TODO_FOR_C89 new file
+
+==================================================
+== 2.0.3
 
 changed SHORT to be unsigned int (instead of unsigned short)
 changed MAXSHORT to be 037777777777 (32 ones)

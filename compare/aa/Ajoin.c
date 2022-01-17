@@ -22,7 +22,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include "O.h"
 A_OBJECT A_join ( A_OBJECT A1, A_OBJECT A2 )
 {
@@ -30,7 +29,7 @@ A_OBJECT A_join ( A_OBJECT A1, A_OBJECT A2 )
   int current, s1, s2, t1, t2, cur_a, cur_b, flag ;
   t1 = 0 ;
   t2 = 0 ;
-// Initialiaze to suppress warning JHJ
+  /* Initialiaze to suppress warning JHJ */
   A_row * p1, * p1z, * p2, * p2z ;
   U_OBJECT U ;
   A_row * cur_st ;
@@ -94,7 +93,7 @@ A_OBJECT A_join ( A_OBJECT A1, A_OBJECT A2 )
           }
 
         } else {
-          s1 = MAXSTATE ;
+          s1 = MAXSHORT ;
         }
       }
 
@@ -115,7 +114,7 @@ A_OBJECT A_join ( A_OBJECT A1, A_OBJECT A2 )
           }
 
         } else {
-          s2 = MAXSTATE ;
+          s2 = MAXSHORT ;
         }
       }
 

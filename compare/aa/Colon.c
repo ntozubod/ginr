@@ -22,16 +22,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
 #include "O.h"
-extern FILE * fpout ;
-extern A_OBJECT Atemp ;
-extern T_OBJECT TAlist ;
-extern A_OBJECT Alist [ 100 ] ;
-extern T_OBJECT TT ;
-extern char * pad20 ( ) ;
 int disp_flag ;
 int do_n_i ( char * op )
 {
@@ -52,7 +43,6 @@ int do_n_i ( char * op )
   } else if ( ! strcmp ( "free", op ) ) {
     fprintf ( fpout, "\n" ) ;
     ( void ) Sarena ( ) ;
-    ( void ) Saudit ( ) ;
     fprintf ( fpout, "\n" ) ;
 
   } else if ( ! strcmp ( "list", op ) ) {
@@ -73,11 +63,9 @@ int do_n_i ( char * op )
   } else if ( ! strcmp ( "pr", op ) ) {
     for ( i = 1 ;
           i < TAlist -> T_n ;
-          i ++ ) {
-      if ( Alist [ i ] -> A_nrows > 0 ) {
+          i ++ ) if ( Alist [ i ] -> A_nrows > 0 ) {
         ( void ) A_store ( Alist [ i ], T_name ( TAlist, i ), TT ) ;
       }
-    }
 
   } else if ( ! strcmp ( "report", op ) ) {
     A_report = 1 ;
@@ -85,17 +73,14 @@ int do_n_i ( char * op )
   } else if ( ! strcmp ( "save", op ) ) {
     for ( i = 1 ;
           i < TAlist -> T_n ;
-          i ++ ) {
-      if ( Alist [ i ] -> A_nrows > 0 ) {
+          i ++ ) if ( Alist [ i ] -> A_nrows > 0 ) {
         Alist [ i ] = A_save ( Alist [ i ], T_name ( TAlist, i ), TT ) ;
       }
-    }
 
   } else if ( ! strcmp ( "time", op ) ) {
     pr_time_diff ( ) ;
 
-  } else if ( ! strcmp ( "help", op ) ) {
-    fprintf ( fpout, "\n\
+  } else if ( ! strcmp ( "help", op ) ) fprintf ( fpout, "\n\
 Basic Help\n\
 \n\
 To terminate session type       :bye;\n\
@@ -107,7 +92,7 @@ To get additional help type\n\
      :help ioops;        (IO operators)\n\
      :help stats;        (Form of statements)\n\n" ) ;
 
-  } else if ( ! strcmp ( "done", op ) || ! strcmp ( "quit", op ) || ! strcmp ( "stop", op ) || ! strcmp ( "bye", op ) ) {
+  else if ( ! strcmp ( "done", op ) || ! strcmp ( "quit", op ) || ! strcmp ( "stop", op ) || ! strcmp ( "bye", op ) ) {
     return 1 ;
 
   } else {
@@ -396,8 +381,7 @@ A_OBJECT do_nn_a ( char * op, char * arg )
     }
 
   } else if ( ! strcmp ( "help", op ) ) {
-    if ( ! strcmp ( "ops", arg ) ) {
-      fprintf ( fpout, "\n\
+    if ( ! strcmp ( "ops", arg ) ) fprintf ( fpout, "\n\
 Operations by priority (highest to lowest):\n\
 \n\
 +   *   ?               postfix operators for 1 or more, 0 or more, 0 or 1\n\
@@ -419,8 +403,7 @@ Parentheses may be used to indicate a specific order of evaluation.\n\
 `   ` is a token containing arbitrary symbols.\n\
 ^     indicates the empty word (or an explicit concatenation operator).\n\n" ) ;
 
-    } else if ( ! strcmp ( "colonops", arg ) ) {
-      fprintf ( fpout, "\n\
+    else if ( ! strcmp ( "colonops", arg ) ) fprintf ( fpout, "\n\
 Colon operations (postfix operators at lowest priority)\n\
 \n\
 Transformation Operators               Displaying Operators\n\
@@ -440,8 +423,7 @@ Transformation Operators               Displaying Operators\n\
 \n\
 :enum may take an optional argument to specify the quantity of output.\n\n" ) ;
 
-    } else if ( ! strcmp ( "ioops", arg ) ) {
-      fprintf ( fpout, "\n\
+    else if ( ! strcmp ( "ioops", arg ) ) fprintf ( fpout, "\n\
 IO operations\n\
 \n\
 :pr <filename>        Postfix operator to display automaton into a file\n\
@@ -454,8 +436,7 @@ IO operations\n\
 <var> = :load;        Short for <var> = :load <var>;\n\
 :save <var>;          Short for <var> :save <var>;\n\n" ) ;
 
-    } else if ( ! strcmp ( "stats", arg ) ) {
-      fprintf ( fpout, "\n\
+    else if ( ! strcmp ( "stats", arg ) ) fprintf ( fpout, "\n\
 Statement forms\n\
 \n\
 :bye;           Terminate session\n\
@@ -477,8 +458,7 @@ Coercing Operator:  display the value using :pr implicitly\n\
 Printing Operator:  do not perform additional display\n\
 Other:              coerce to DFAMIN and display using :pr\n\n" ) ;
 
-    } else if ( ! strcmp ( "w", arg ) ) {
-      fprintf ( fpout, "\n\
+    else if ( ! strcmp ( "w", arg ) ) fprintf ( fpout, "\n\
 (from GPLv3: see COPYING or http://www.gnu.org/licenses/gpl-3.0.html)\n\
   15. Disclaimer of Warranty.\n\
 \n\
@@ -492,8 +472,7 @@ IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF\n\
 ALL NECESSARY SERVICING, REPAIR OR CORRECTION.\n\
 \n" ) ;
 
-    } else if ( ! strcmp ( "c", arg ) ) {
-      fprintf ( fpout, "\n\
+    else if ( ! strcmp ( "c", arg ) ) fprintf ( fpout, "\n\
 (from GPLv3: see COPYING or http://www.gnu.org/licenses/gpl-3.0.html)\n\
   2. Basic Permissions.\n\
 \n\
@@ -521,7 +500,7 @@ the conditions stated below.  Sublicensing is not allowed; section 10\n\
 makes it unnecessary.\n\
 \n" ) ;
 
-    } else {
+    else {
       fprintf ( fpout, "Unknown help request" ) ;
     }
 

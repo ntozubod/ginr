@@ -1,11 +1,11 @@
 
-in the ginr repo:
-git checkout e80fe07
-copy src directory to rsrc here
+in the inr-1987 repo:
+git checkout 76d87d7
+copy src/2.0.4a directory to rsrc here
 
-HEAD is now at e80fe07
-Added Sfind S_find to S.c and changed some int's to long's.
-(done September 6, 2018)
+HEAD is now at 76d87d7
+Compile with -ansi to force fussier compiles
+(done December 14, 2021)
 
 char Version[] = "2.0.4a";
 char Date[] = "August 15, 2018";

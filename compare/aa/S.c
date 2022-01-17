@@ -22,19 +22,17 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-#include <stdlib.h>
+#include "O.h"
+/* for bcopy */
 #include <strings.h>
-#include "local.h"
-void Error ( ) ;
-extern FILE * fpout ;
+#define USE_BB true
+#ifdef USE_BB
 typedef struct S_f {
   unsigned char fill_1 ;
   unsigned char fill_2 ;
   unsigned char S_kval ;
   unsigned char S_tag ;
   unsigned fill_3 ;
-  struct S_f * fill_4 ;
   struct S_f * S_linkf ;
   struct S_f * S_linkb ;
 }
@@ -48,13 +46,16 @@ S_ft ;
 #define set_linkf(p,q)  (p)-> S_linkf = q
 #define set_linkb(p,q)  (p)-> S_linkb = q
 #define U(p)            ((unsigned long)(p))
-#define S_m             26
-// S_m = 26 allows objects of up to 1 gigabyte
+#define S_m             28
+/* S_m = 26 allows objects of up to 1 gigabyte */
 static S_ft * S_lo = 0, * S_hi = 0, S_avail [ S_m + 1 ] ;
 static int S_alld_cnt [ S_m ] ;
-long LINUXmem = 0 ;
-//     Copy a block of memory
-void copymem ( long n, char * from, char * to )
+int LINUXmem = 0 ;
+#endif
+/*
+ *     Copy a block of memory
+ */
+void copymem ( int n, char * from, char * to )
 {
   if ( from + n <= to || to + n <= from ) {
     bcopy ( from, to, n ) ;
@@ -81,14 +82,17 @@ void scribble ( char * p, char * q )
     * p ++ = 0x55 ;
   }
 }
-//     Binary Buddy system storage allocator as in Knuth vol. 1
+#ifdef USE_BB
+/*
+ *     Binary Buddy system storage allocator as in Knuth vol. 1
+ */
 void S_init ( )
 {
   S_ft * p ;
   int i ;
 
   if ( S_lo == 0 ) {
-    long mem ;
+    int mem ;
 
     for ( mem = 512 * 1024 * 1024 ;
           S_lo == 0 ;
@@ -160,7 +164,7 @@ void S_free ( S_ft * l, int k )
 }
 void S_morecore ( int k )
 {
-  long a, b ;
+  int a, b ;
 
   if ( S_hi != S_lo ) {
     Error ( "S_morecore: Out of Memory" ) ;
@@ -173,9 +177,7 @@ void S_morecore ( int k )
   while ( a < b ) {
     for ( k = 0 ;
           ! ( a >> k & 1 ) && ( b - a ) >> ( k + 1 ) ;
-          ++ k ) {
-      ;
-    }
+          ++ k ) ;
 
     ++ S_alld_cnt [ k ] ;
     set_tag ( S_lo + a, 0 ) ;
@@ -199,9 +201,7 @@ S_ft * S_malloc ( int k )
       ) {
     for ( j = k ;
           linkf ( & S_avail [ j ] ) == & S_avail [ j ] ;
-          ++ j ) {
-      ;
-    }
+          ++ j ) ;
 
     if ( j < S_m ) {
       break ;
@@ -290,8 +290,7 @@ S_ft * S_copy ( S_ft * l, int k )
 }
 void S_arena ( )
 {
-  int i, cnt ;
-  long grand, gran2, size ;
+  int grand, gran2, i, size, cnt ;
   S_ft * p, * q ;
   S_init ( ) ;
   fprintf ( fpout, "Size      Free      Allocated\n" ) ;
@@ -307,112 +306,47 @@ void S_arena ( )
     if ( ( p = linkf ( q ) ) != q || S_alld_cnt [ i ] ) {
       size = sizeof ( S_ft ) << i ;
 
-      if ( p != q ) {
-        for ( cnt = 1 ;
-              ( p = linkf ( p ) ) != q ;
-              ++ cnt ) {
-          ;
-        }
+      if ( p != q ) for ( cnt = 1 ;
+                            ( p = linkf ( p ) ) != q ;
+                            ++ cnt ) ;
 
-        ;
-
-      } else {
+      else {
         cnt = 0 ;
       }
 
       if ( size < 1024 ) {
-        fprintf ( fpout, "%4ld ", size ) ;
+        fprintf ( fpout, "%4d ", size ) ;
 
       } else if ( size < 1024 * 1024 ) {
-        fprintf ( fpout, "%4ldK", size / 1024 ) ;
+        fprintf ( fpout, "%4dK", size / 1024 ) ;
 
       } else {
-        fprintf ( fpout, "%4ldM", size / 1024 / 1024 ) ;
+        fprintf ( fpout, "%4dM", size / 1024 / 1024 ) ;
       }
 
       fprintf ( fpout, "%7d", cnt ) ;
-      fprintf ( fpout, "%5ldM", ( cnt * size + 1023 ) / 1024 / 1024 ) ;
+      fprintf ( fpout, "%5dM", ( cnt * size + 1023 ) / 1024 / 1024 ) ;
       fprintf ( fpout, "%7d", S_alld_cnt [ i ] ) ;
-      fprintf ( fpout, "%5ldM\n", ( S_alld_cnt [ i ] * size + 1023 ) / 1024 / 1024 ) ;
+      fprintf ( fpout, "%5dM\n", ( S_alld_cnt [ i ] * size + 1023 ) / 1024 / 1024 ) ;
       grand += cnt * size ;
       gran2 += S_alld_cnt [ i ] * size ;
     }
   }
 
-  fprintf ( fpout, "            %5ldM", ( grand + 1023 ) / 1024 / 1024 ) ;
-  fprintf ( fpout, "       %5ldM\n", ( gran2 + 1023 ) / 1024 / 1024 ) ;
+  fprintf ( fpout, "            %5dM", ( grand + 1023 ) / 1024 / 1024 ) ;
+  fprintf ( fpout, "       %5dM\n", ( gran2 + 1023 ) / 1024 / 1024 ) ;
   size = LINUXmem ;
-  fprintf ( fpout, "Memory Size %5ldM\n", size / 1024 / 1024 ) ;
+  fprintf ( fpout, "Memory Size %5dM\n", size / 1024 / 1024 ) ;
 
   if ( size % 1024 != 0 ) {
-    fprintf ( fpout, "Excess %ld bytes\n", size % 1024 ) ;
+    fprintf ( fpout, "Excess %d bytes\n", size % 1024 ) ;
   }
 }
-// Find the block that contains the provided address
-S_ft * S_find ( char * p )
-{
-  if ( p < ( char * ) S_lo || p >= ( char * ) S_hi ) {
-    Error ( "S_find: BOTCH 1" ) ;
-  }
-
-  S_ft * l = S_lo ;
-  long incr = ( p - ( char * ) S_lo ) / sizeof ( S_ft ) ;
-  long offset = ( p - ( char * ) S_lo ) % sizeof ( S_ft ) ;
-
-  if ( ( char * ) & l [ incr ] + offset != p ) {
-    Error ( "S_find: BOTCH 2" ) ;
-  }
-
-  if ( offset < 0 || offset >= sizeof ( S_ft ) ) {
-    Error ( "S_find: BOTCH 3" ) ;
-  }
-
-  long base = 0 ;
-  int base_k = kval ( & l [ base ] ) ;
-  long right = S_hi - S_lo ;
-  int k ;
-
-  for ( k = 0 ;
-        ( incr >> k ) ;
-        ++ k ) {
-    ;
-  }
-
-  -- k ;
-  right = ( 1 << k ) ;
-
-// printf( "\n" );
-// printf( "base %ld\n", base );
-// printf( "incr %ld\n", incr );
-// printf( "k %d\n", k );
-// printf( "base_k %d\n", base_k );
-// printf( "right %ld\n", right );
-  while ( base_k <= k ) {
-    base += right ;
-    incr -= right ;
-    base_k = kval ( & l [ base ] ) ;
-
-    for ( k = 0 ;
-          ( incr >> k ) ;
-          ++ k ) {
-      ;
-    }
-
-    -- k ;
-    right = ( 1 << k ) ;
-// printf( "\n" );
-// printf( "base %ld\n", base );
-// printf( "incr %ld\n", incr );
-// printf( "k %d\n", k );
-// printf( "base_k %d\n", base_k );
-// printf( "right %ld\n", right );
-  }
-
-  return ( & l [ base ] ) ;
-}
-//     Interface to provide allocator for INR.
-//     The length code and an audit flag are stored in allocated blocks
-char * Salloc ( long n )
+/*
+ *     Interface to provide allocator for INR.
+ *     The length code and an audit flag are stored in allocated blocks
+ */
+char * Salloc ( int n )
 {
   char * p ;
   int k ;
@@ -426,9 +360,7 @@ char * Salloc ( long n )
 
   for ( k = 0 ;
         n > ( 1 << k ) ;
-        ++ k ) {
-    ;
-  }
+        ++ k ) ;
 
   p = ( char * ) S_malloc ( k ) ;
   p [ 0 ] = 0x7f ;
@@ -449,7 +381,7 @@ void Sfree ( char * p )
 
   S_free ( ( S_ft * ) p, ( int ) p [ 1 ] ) ;
 }
-char * Srealloc ( char * p, long n )
+char * Srealloc ( char * p, int n )
 {
   int k ;
 
@@ -465,9 +397,7 @@ char * Srealloc ( char * p, long n )
 
   for ( k = 0 ;
         n > ( 1 << k ) ;
-        ++ k ) {
-    ;
-  }
+        ++ k ) ;
 
   p -= 4 ;
   p = ( char * ) S_realloc ( ( S_ft * ) p, ( int ) p [ 1 ], k ) ;
@@ -484,13 +414,9 @@ char * Scopy ( char * p )
   p -= 4 ;
   return ( ( char * ) S_copy ( ( S_ft * ) p, ( int ) p [ 1 ] ) + 4 ) ;
 }
-long Ssize ( char * p )
+int Ssize ( char * p )
 {
   return ( ( sizeof ( S_ft ) << p [ - 3 ] ) - 4 ) ;
-}
-char * Sfind ( char * p )
-{
-  return ( ( ( char * ) S_find ( p ) ) + 4 ) ;
 }
 void Sarena ( )
 {
@@ -522,7 +448,7 @@ void Saudit ( )
 
     if ( ! tag ( p ) ) {
       if ( pc [ 0 ] != 0x7f ) {
-        printf ( "Audit anomaly in busy block at %lx:\n", U ( p ) ) ;
+        printf ( "Audit anomoly in busy block at %lx:\n", U ( p ) ) ;
         printf ( "Size code %d\n", pc [ 1 ] ) ;
         printf ( "S_lo %lx S_hi %lx S_avail %lx\n", U ( S_lo ), U ( S_hi ), U ( S_avail ) ) ;
 
@@ -540,29 +466,29 @@ void Saudit ( )
     } else {
       k = kval ( p ) ;
 
-      if ( k >= 30 || ( ( linkf ( p ) < S_lo || linkf ( p ) >= S_hi ) && ( linkf ( p ) < S_avail || linkf ( p ) >= S_avail + S_m ) ) || ( ( linkb ( p ) < S_lo || linkb ( p ) >= S_hi ) && ( linkb ( p ) < S_avail || linkb ( p ) >= S_avail + S_m ) ) || linkb ( linkf ( p ) ) != p || linkf ( linkb ( p ) ) != p ) {
-        printf ( "Audit anomaly in free block at %lx:\n", U ( p ) ) ;
+      if ( k >= 20 || ( ( linkf ( p ) < S_lo || linkf ( p ) >= S_hi ) && ( linkf ( p ) < S_avail || linkf ( p ) >= S_avail + S_m ) ) || ( ( linkb ( p ) < S_lo || linkb ( p ) >= S_hi ) && ( linkb ( p ) < S_avail || linkb ( p ) >= S_avail + S_m ) ) || linkb ( linkf ( p ) ) != p || linkf ( linkb ( p ) ) != p ) {
+        printf ( "Audit anomoly in free block at %lx:\n", U ( p ) ) ;
         printf ( "S_lo %lx S_hi %lx S_avail %lx\n", U ( S_lo ), U ( S_hi ), U ( S_avail ) ) ;
         printf ( "kval %d\n", k ) ;
         printf ( "linkf %lx linkb %lx\n", U ( linkf ( p ) ), U ( linkb ( p ) ) ) ;
 
         if ( ( linkf ( p ) >= S_lo && linkf ( p ) < S_hi ) || ( linkf ( p ) >= S_avail && linkf ( p ) < S_avail + S_m ) ) {
-          printf ( "linkb( linkf( p ) )  %lx\n", U ( linkb ( linkf ( p ) ) ) ) ;
+          printf ( "linkb(linkf(p)) %lx\n", U ( linkb ( linkf ( p ) ) ) ) ;
         }
 
         if ( ( linkb ( p ) >= S_lo && linkb ( p ) < S_hi ) || ( linkb ( p ) >= S_avail && linkb ( p ) < S_avail + S_m ) ) {
-          printf ( "linkf( linkb( p ) )  %lx\n", U ( linkf ( linkb ( p ) ) ) ) ;
+          printf ( "linkf(linkb(p)) %lx\n", U ( linkf ( linkb ( p ) ) ) ) ;
         }
 
         for ( i = 0 ;
               i < S_m ;
               i ++ ) {
           if ( linkf ( S_avail + i ) == p ) {
-            printf ( "linkf( S_avail + i ) %lx\n", U ( linkf ( S_avail + i ) ) ) ;
+            printf ( "linkf(S_avail+i) %lx\n", U ( linkf ( S_avail + i ) ) ) ;
           }
 
           if ( linkb ( S_avail + i ) == p ) {
-            printf ( "linkb( S_avail + i ) %lx\n", U ( linkb ( S_avail + i ) ) ) ;
+            printf ( "linkb(S_avail+i) %lx\n", U ( linkb ( S_avail + i ) ) ) ;
           }
         }
 
@@ -578,3 +504,70 @@ void Saudit ( )
     p = p + ( 1 << kval ( p ) ) ;
   }
 }
+#else
+#define SPACE_BEFORE    8
+#define SPACE_AFTER    0
+#define MINSIZE    8
+char * Salloc ( int n )
+{
+  char * p ;
+  int * pi ;
+
+  if ( n < MINSIZE ) {
+    n = MINSIZE ;
+  }
+
+  p = malloc ( n + SPACE_BEFORE + SPACE_AFTER ) ;
+  pi = ( int * ) p ;
+  * pi = n ;
+  return ( p + SPACE_BEFORE ) ;
+}
+void Sfree ( char * p )
+{
+  if ( p == 0 ) {
+    return ;
+  }
+
+  free ( p - SPACE_BEFORE ) ;
+}
+char * Srealloc ( char * p, int n )
+{
+  char * q ;
+  int * qi ;
+
+  if ( p ) {
+    q = realloc ( p - SPACE_BEFORE, n + SPACE_BEFORE + SPACE_AFTER ) ;
+    qi = ( int * ) q ;
+    * qi = n ;
+    return ( q + SPACE_BEFORE ) ;
+
+  } else {
+    return Salloc ( n ) ;
+  }
+}
+int Ssize ( char * p )
+{
+  char * q ;
+  int * qi ;
+  q = p - SPACE_BEFORE ;
+  qi = ( int * ) q ;
+  return ( * qi ) ;
+}
+char * Scopy ( char * p )
+{
+  int n ;
+  char * q ;
+  n = Ssize ( p ) ;
+  q = Salloc ( n ) ;
+  copymem ( n, p, q ) ;
+  return ( q ) ;
+}
+void Sarena ( )
+{
+  /* do nothing */
+}
+void Saudit ( )
+{
+  /* do nothing */
+}
+#endif

@@ -22,11 +22,9 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-extern FILE * fpout ;
 #include "O.h"
-#define NONE MAXSHORT
-#define FAIL (MAXSHORT-1)
+#define NONE    MAXSHORT
+#define FAIL    (MAXSHORT-1)
 static SHORT * c_rena ;
 int A_cm_DFS ( int state )
 {
@@ -79,12 +77,10 @@ A_OBJECT A_lamcm ( A_OBJECT A )
 
     for ( i = A -> A_nQ ;
           -- i >= 0 ;
-        ) {
-      if ( A -> A_p [ i + 1 ] == ( p = A -> A_p [ i ] ) + 1 && p -> A_b == 0 ) {
+        ) if ( A -> A_p [ i + 1 ] == ( p = A -> A_p [ i ] ) + 1 && p -> A_b == 0 ) {
         c_rena [ i ] = p -> A_c ;
         ++ n_combine ;
       }
-    }
 
     if ( n_combine == 0 ) {
       c_rena [ START ] = FAIL ;
@@ -92,8 +88,7 @@ A_OBJECT A_lamcm ( A_OBJECT A )
 
       for ( p = A -> A_t ;
             p < pz ;
-            p ++ ) {
-        if ( c_rena [ j = p -> A_c ] < FAIL ) {
+            p ++ ) if ( c_rena [ j = p -> A_c ] < FAIL ) {
           c_rena [ j ] = FAIL ;
           -- n_combine ;
 
@@ -104,24 +99,19 @@ A_OBJECT A_lamcm ( A_OBJECT A )
           c_rena [ j ] = p -> A_a ;
           ++ n_combine ;
         }
-      }
     }
 
     for ( i = A -> A_nQ ;
           -- i >= 0 ;
-        ) {
-      if ( c_rena [ i ] < FAIL ) {
+        ) if ( c_rena [ i ] < FAIL ) {
         c_rena [ i ] = A_cm_DFS ( ( int ) c_rena [ i ] ) ;
       }
-    }
 
     for ( i = A -> A_nQ ;
           -- i >= 0 ;
-        ) {
-      if ( c_rena [ i ] >= FAIL ) {
+        ) if ( c_rena [ i ] >= FAIL ) {
         c_rena [ i ] = i ;
       }
-    }
 
     if ( n_combine > 0 ) {
       A = A_rename ( A, c_rena ) ;

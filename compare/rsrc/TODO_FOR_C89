@@ -1,0 +1,50 @@
+Work to do to cleanup source to C89 & 64-bit architecture
+(1) change function prototypes
+(2) remove register declarations
+(3) remove any hidden dependencies of pointers being 32-bit
+
+==================================================
+== Currently working on:
+
+==================================================
+== Not Done:
+
+==================================================
+== Done:
+stamp.c
+S.c
+util.c
+
+T.c
+V.c
+R.c
+U.c
+
+Acrea.c
+Aopen.c
+Aload.c
+Atrim.c
+Alameq.c
+Alamcm.c
+Aclos.c
+Asubs.c
+Amin.c
+
+Abasic.c
+Aenum.c
+
+Acompose.c
+Ajoin.c
+Aretape.c
+Apowers.c
+Alenmin.c
+
+Astems.c
+Asseq.c
+ALMsseq.c
+AGMsseq.c
+Aclsseq.c
+
+Colon.c
+Lex.c
+Parse.y

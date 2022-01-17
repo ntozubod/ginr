@@ -22,11 +22,9 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include "O.h"
 #define INIT_lrows      20
 int A_report = 0 ;
-extern FILE * fpout ;
 A_OBJECT A_create ( )
 {
   A_OBJECT A ;

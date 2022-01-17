@@ -23,14 +23,7 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-
-extern FILE *fpout;
-
 #include "O.h"
-
-extern SHORT *s_rena;
-extern int f_rena;
 
 #define WILD (MAXSHORT-1)
 

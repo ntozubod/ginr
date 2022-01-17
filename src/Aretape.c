@@ -23,8 +23,6 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-
 #include "O.h"
 
 A_OBJECT A_retape( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )

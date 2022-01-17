@@ -25,11 +25,6 @@
 
 #include "O.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-extern FILE *fpout;
-
 void Warning( char *s )
 {
     fprintf( fpout, "*** %s ***\n", s );
@@ -52,7 +47,7 @@ int *i_alloc( int n )
     return( (int *) Salloc( n * sizeof( int ) ) );
 }
 
-void pr_time_diff( )
+void pr_time_diff()
 {
     return;
 }

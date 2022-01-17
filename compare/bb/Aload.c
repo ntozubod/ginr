@@ -22,13 +22,10 @@
  *   You should have received a copy of the GNU General Public License
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
-#include <string.h>
 #include "O.h"
 #define MAX_TOKEN       1024
 static FILE * fp ;
 FILE * fpin, * fpout ;
-extern FILE * fopen ( ) ;
 static int c ;
 char * get_name ( )
 {
@@ -636,7 +633,7 @@ A_OBJECT A_prsseq ( A_OBJECT A, char * file, T_OBJECT T_Sigma )
           t = A -> A_p [ t ] -> A_c ;
         }
 
-        fprintf ( fp, " ]  " ) ;
+        fprintf ( fp, " ]  \t" ) ;
 
         if ( t == START ) {
           fprintf ( fp, "(START)\n" ) ;
