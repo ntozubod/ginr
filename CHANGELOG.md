@@ -1,5 +1,19 @@
 # INR redux Changelog
 
+## 2.0.3h redux (2022-01-17 updated Jan 20, 2022)
+
+#### doc
+
+The latex input is relocated to a subdirectory of the doc directory.
+
+A script that converts this same latex input to markdown is set up in a
+directory named 'md'.
+The package pandoc is used together with some special handling done in Perl.
+The markdown has been compared against the PDF text to verify an
+accurate conversion of difficult cases.
+The one case of two dollar signs inside a verbatim block is corrected as a
+special case.
+
 ## 2.0.3h redux (2022-01-17)
 
 #### src (from version 2.0.4a August 15, 2018 updated December 14, 2021)

@@ -13,4 +13,4 @@ rm -f main.aux
 rm -f main.blg
 rm -f main.log
 
-mv main.pdf inr_intro.pdf
+mv main.pdf ../inr_intro.pdf
