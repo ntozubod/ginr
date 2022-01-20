@@ -1,12 +1,15 @@
 Introduction
 ============
 
+(Extracted from latex source of a [white paper](doc/inr_intro.pdf)
+written in 1988 as documentation for INR.)
+
 INR is a program that constructs finite state automata and transducers
 from generalized rational expressions. Although originally developed
-with to support research into approximate string matching [@Johnson83]
-it has proved useful for a number of other purposes.
+to support research into approximate string matching, it has proved useful
+for a number of other purposes.
 
-The program operates in a traditional read/evaluate/print mode, that is,
+The program operates in a traditional read/evaluate/print mode; that is,
 it repeatedly reads an expression from the input stream, computes the
 automaton required, and displays a result. For example, if we wish to
 find the minimized automaton over the alphabet <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}"> that recognizes
@@ -16,8 +19,7 @@ intersection of words containing *a* and words containing *b*:
 
 > <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}^*a\{a,b\}^* \wedge \{a,b\}^*b\{a,b\}^*.">
 
-This expression can
-be presented to INR in the following form:
+This expression can be presented to INR in the following form:
 
 >     {a,b}* a {a,b}* & {a,b}* b {a,b}*;
 
@@ -46,7 +48,7 @@ so that
 
 >     3 a 4
 
-indicates a transition from state `3` to state `2` which reads an *a*.
+indicates a transition from state `3` to state `4` which reads an *a*.
 The start state is denoted by the special state name `(START)` and final
 states are indicated by a transition on end-marker (`-|`) to the dummy
 state `(FINAL)`. In the above example
@@ -86,18 +88,17 @@ terminating when it reaches a preset limit.
 Another interactive use for INR involves testing whether two regular
 sets are the same. For example consider the set of all words over the
 alphabet <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}^*"> that are not either all *a*'s or all *b*'s. This
-can be denoted using the extended regular expression
+can be denoted using the extended regular expression:
 
-> <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}^* - ( \{a\}^* \cup \{b\}^* ).">
+> <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}^* - ( \{a\}^* \cup \{b\}^* )">
 
-This can be indicated to INR
-as:
+and indicated to INR as:
 
 >     {a,b}* - ( a* | b* );
 
 To check that these are the same sets, we can compute the symmetric
-difference of the two regular languages and verify that is empty. The
-symmetric difference (exclusive or) operator for INR is the symbol `!`.
+difference of the two regular languages and verify that it is empty.
+The symmetric difference (exclusive or) operator for INR is the symbol `!`.
 
 >     ( {a,b}* a {a,b}* & {a,b}* b {a,b}* )
 >       ! ( {a,b}* - ( a* | b* ) );
@@ -135,7 +136,7 @@ itself (if that name has not been used as a transition label).
 INR is very often run in a non-interactive (batch) mode using variables
 to build up larger and larger automata followed by a `:pr` or a `:save`
 to store the result into a file. For large automata this is the
-preferred approach since INR provides no mechanisn for recalling past
+preferred approach since INR provides no mechanism for recalling past
 expressions or for editing them.
 
 Lexical Conventions
@@ -150,7 +151,7 @@ comments.
 *Symbols* are made up of any non-empty sequence of characters from the
 set of upper and lower case letters, digits, and the following special
 characters `.` and `_`. To specify a symbol not satisfying this
-restriction, simply put back-quote (grave accent) characters (') before
+restriction, simply put back-quote (grave accent) characters (`` ` ``) before
 and after it. The string that results after the back-quotes are stripped
 off then constitute the symbol. If the desired symbol contains
 back-quotes they can be escaped with a preceding backslash.
@@ -252,10 +253,9 @@ distinguishing symbols. Thus `a b c` indicates a string with three
 one-letter tokens whereas `abc` indicates a single token.
 
 Since one-letter tokens are very useful to denote the printable
-characters of the ASCII (or EBCDIC) character set an alternative
-notation is provided to indicate strings of one-letter tokens. Any such
-string can be written without blanks but preceded and followed by single
-forward quotes ('):
+characters of the ASCII character set an alternative notation is provided
+to indicate strings of one-letter tokens. Any such string can be written
+without blanks but preceded and followed by single forward quotes ('):
 
 `a b c;`\
 or `'abc';`
@@ -282,9 +282,8 @@ Empty String
 
 The empty string is indicated by `^`. This symbol is used because of its
 vague similariy to the Greek letter <img src="https://render.githubusercontent.com/render/math?math=\Lambda"> that is often used for
-this purpose. Note that in EBCDIC this character has a graphic
-representation of <img src="https://render.githubusercontent.com/render/math?math=\not c">. Alternative representations is `()` (empty
-parentheses) or `''` (empty forward quotes).
+this purpose.  Alternative representations is `()` (empty parentheses)
+or `''` (empty forward quotes).
 
 `^;`\
 or `();`\
@@ -1174,33 +1173,19 @@ deterministic automata and produces as a result a not necessarily
 minimized deterministic automaton. For debugging and education purposes,
 the coercing operator can be explicitly used:
 
-> :nfa
+> **:nfa** Sort and unduplicate transitions.
 >
-> :   Sort and unduplicate transitions.
+> **:trim** Remove states that are unreachable. (Reduce)
 >
-> :trim
+> **:lameq** Remove lambda equivalent states.
 >
-> :   Remove states that are unreachable. (Reduce)
+> **:lamcm** Combine lambda implied states.
 >
-> :lameq
+> **:closed** Form lambda closure.
 >
-> :   Remove lambda equivalent states.
+> **:dfa** Form deterministic machine. (Subsets Construction)
 >
-> :lamcm
->
-> :   Combine lambda implied states.
->
-> :closed
->
-> :   Form lambda closure.
->
-> :dfa
->
-> :   Form deterministic machine. (Subsets Construction)
->
-> :min
->
-> :   Minimize the DFA.
+> **:min** Minimize the DFA.
 
 Thus `<expression> :trim;` will print the trim (reduced) automaton
 corresponding to the expression. Note that coercing is one way and that
@@ -1211,29 +1196,17 @@ Displaying Operators
 
 The following operators cause some form of printing:
 
-> :pr
+> **:pr** Print in readable format.
 >
-> :   Print in readable format.
+> **:save** Save in condensed format.
 >
-> :save
+> **:report** Write a one line report.
 >
-> :   Save in condensed format.
+> **:enum** Enumerate words.
 >
-> :report
+> **:card** Count number of words and print.
 >
-> :   Write a one line report.
->
-> :enum
->
-> :   Enumerate words.
->
-> :card
->
-> :   Count number of words and print.
->
-> :length
->
-> :   Print length of shortest word.
+> **:length** Print length of shortest word.
 
 The operation `:pr` may be followed by a filename in which case the
 automaton is printed into that file. The operation `:save` must be
@@ -1293,41 +1266,23 @@ Command Statement
 A number of commands that cause certain actions to be performed are
 provided.
 
-> :alph;
+> **:alph;** Display token symbol table.
 >
-> :   Display token symbol table.
+> **:free;** Display status of free lists.
 >
-> :free;
+> **:list;** Display variable symbol table.
 >
-> :   Display status of free lists.
+> **:noreport;** Turn off (verbose) debug tracing.
 >
-> :list;
+> **:pr;** Save all variables in files with the same names.
 >
-> :   Display variable symbol table.
+> **:quit;** Terminate session.
 >
-> :noreport;
+> **:report;** Turn on (verbose) debug tracing.
 >
-> :   Turn off (verbose) debug tracing.
+> **:save;** Save all variables in files (condensed) with the same names.
 >
-> :pr;
->
-> :   Save all variables in files with the same names.
->
-> :quit;
->
-> :   Terminate session.
->
-> :report;
->
-> :   Turn on (verbose) debug tracing.
->
-> :save;
->
-> :   Save all variables in files (condensed) with the same names.
->
-> :time;
->
-> :   Display time since last :time call (VAX only).
+> **:time;** Display time since last :time call (VAX only).
 
 Internals
 =========

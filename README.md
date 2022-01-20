@@ -13,10 +13,23 @@ changes merged into the remaster and master branches.
 Limited documentation in the form of a PDF file was produced in 2010 as part
 of the release under GPL version 3:
 [PDF](doc/inr_intro.pdf).
-This is in the process of being converted to markdown:
-[MD](doc/inr_intro.md).
+See also [USAGE.md](USAGE.md) extracted from the latex source using pandoc
+and with some long-standing errors corrected.
 
 A hopefully trustworthy commit is and will be identified as using a
 separate branch 'restable'.
 Although the HEAD of this 'remaster' branch contains only tested code, it
 should be used with a caution until more testing has been done.
+
+## Installation
+
+INR is a C program that will compile and run comfortably in a LINUX
+environment or one sufficiently similar to it.
+The only dependencies are *gcc*, *make* and *yacc* (as provided by *bison*).
+
+There is a make file in the src directory that will do the proper build and
+produce an executable *ginr*.
+
+## Usage
+
+See [USAGE.md](USAGE.md).
