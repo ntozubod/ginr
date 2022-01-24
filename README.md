@@ -1,4 +1,11 @@
-# INR main2021
+# INR main2022
+
+Beginning of *main2022* branch and INR version 2.1.0x.
+
+This branch will begin with the exploration of the conversion of SHORT to
+32-bit and an introduction of Unicode support.
+
+## Branch reorganization
 
 The branch history of INR has been a little confusing.
 The several attempts to sort this out have all been incomplete and
@@ -7,7 +14,7 @@ In order to move toward a simpler structure with one *main* branch and
 one *stable* branch, the previous candidate branches need to be named in
 a consistent manner.
 
-The current branch (*remaster*) is now changed to *main2021*.
+The *remaster* branch was changed to *main2021*.
 After the reorganization is complete, *remaster* will disappear.
 
 The *stable* branch will be merged forward to agree with *master* and then,
@@ -16,21 +23,14 @@ It will represent a 'stable' commit in the the *main2021* branch with
 *main2021* sometimes leading to allow for bug fixes.
 The *main2021* branch will correspond to INR version 2.0.x.
 
-Meanwhile, a new *main2022* branch will allow for new development and
-use INR version numbers of 2.1.x.
-Two needed changes, for example, are the conversion of SHORT to 32-bit and
-a introduction of Unicode support.
-I haven't found any way of doing this that doesn't uncover or introduce
-bugs as well as breaking old INR scripts.
-
 For completeness, *main2018*, *main2010*, and *main1988* branches have also
 been created to facilitate access to previous notions of what a 'main'
 branch should be.
 The branches *master* and *remaster* will eventually disappear.
 
-Its commit history of *main2021* traces back through the *redux* branch to
-the *main2010* branch, re-applying all of the changes made by the *main2018*
-branch without the agressive reformatting.
+Its commit history of *main2022* and *main2021* traces back through the
+*redux* branch to the *main2010* branch, re-applying all of the changes
+made by the *main2018* branch without the agressive reformatting.
 
 Once all of this is in place, a new *main* branch will be introduced based on
 the *main2022* branch.

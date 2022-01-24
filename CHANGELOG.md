@@ -1,4 +1,10 @@
-# INR main2021 Changelog
+# INR main2022 Changelog
+
+## 2.1.0a (2022-01-24)
+
+Beginning of INR version 2.1.x and main2022 branch.
+To start the src directory is identical to version 2.0.3h with only a
+change to the version number.
 
 ## 2.0.3h (2022-01-17 updated Jan 24, 2022)
 
