@@ -1,4 +1,11 @@
-# INR remaster Changelog
+# INR main2021 Changelog
+
+## 2.0.3h (2022-01-17 updated Jan 24, 2022)
+
+Branch structure of repo changed to consolitate history and prepare for
+new work.
+
+The name of the default branch is changed from *remaster* to *main2021*.
 
 ## 2.0.3h redux (2022-01-17 updated Jan 20, 2022)
 
