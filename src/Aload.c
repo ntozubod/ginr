@@ -321,7 +321,7 @@ A_OBJECT A_save( A_OBJECT A, char *file, T_OBJECT T_Sigma )
 A_OBJECT A_lwds( char *file, T_OBJECT T_Sigma )
 {
     A_OBJECT A, As;
-    char *p, t[2];
+    char *p;
     int i, nQ;
 
     if ( file != NULL )             fp = fopen( file, "r" );
@@ -331,12 +331,13 @@ A_OBJECT A_lwds( char *file, T_OBJECT T_Sigma )
         Warning( "File does not exist" );
         return( NULL );
     }
-    if ( T_Sigma == NULL
-            || T_insert( T_Sigma, "^^" ) != 0
-            || T_insert( T_Sigma, "-|" ) != 1 ) Error( "A_lwds: BOTCH 1" );
+
+    assert( T_Sigma != NULL );
+    assert( T_Sigma-> T_n >= 258 );
+
     A = A_create();
     As = A_create();
-    t[ 1 ] = 0;
+
     c = getc( fp );
     while ( c != EOF ) {
         if ( A-> A_nQ > 64000 || A-> A_nrows > 100000 ) {
@@ -358,9 +359,8 @@ A_OBJECT A_lwds( char *file, T_OBJECT T_Sigma )
             return( NULL );
         }
         for( i = 0; p[i] != 0; ++i ) {
-            t[ 0 ] = p[ i ];
             A = A_add( A, (i == 0) ? 0 : nQ + i - 1,
-                       T_insert( T_Sigma, t ), nQ + i );
+                ( p[ i ] & 0xff ) + 2, nQ + i );
         }
         A = A_add( A, nQ + i - 1, 1, 1 );
         if ( !get_nl() ) {

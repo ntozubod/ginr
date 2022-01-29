@@ -1,39 +1,15 @@
-# INR main2022
+# INR
 
-Beginning of *main2022* branch and INR version 2.1.0x.
+A consolidation of the INR code base has been largely completed and new
+work is beginning.
 
-This branch will begin with the exploration of the conversion of SHORT to
-32-bit and an introduction of Unicode support.
+Three main ideas are being introduced: (1) larger maximums for the number
+of states and the alphabet size, (2) some support for Unicode, and
+(3) some better handling of I/O for non-interactive use.
 
-## Branch reorganization
-
-The branch history of INR has been a little confusing.
-The several attempts to sort this out have all been incomplete and
-added to the confusion.
-In order to move toward a simpler structure with one *main* branch and
-one *stable* branch, the previous candidate branches need to be named in
-a consistent manner.
-
-The *remaster* branch was changed to *main2021*.
-After the reorganization is complete, *remaster* will disappear.
-
-The *stable* branch will be merged forward to agree with *master* and then,
-after merging, track the *main2021* branch.
-It will represent a 'stable' commit in the the *main2021* branch with
-*main2021* sometimes leading to allow for bug fixes.
-The *main2021* branch will correspond to INR version 2.0.x.
-
-For completeness, *main2018*, *main2010*, and *main1988* branches have also
-been created to facilitate access to previous notions of what a 'main'
-branch should be.
-The branches *master* and *remaster* will eventually disappear.
-
-Its commit history of *main2022* and *main2021* traces back through the
-*redux* branch to the *main2010* branch, re-applying all of the changes
-made by the *main2018* branch without the agressive reformatting.
-
-Once all of this is in place, a new *main* branch will be introduced based on
-the *main2022* branch.
+These changes facilitate a number of potentially important use cases
+associated with low level Unicode text processing, as well as helping with
+the development of better test material and documentation.
 
 ## Installation
 

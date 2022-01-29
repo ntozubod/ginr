@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm *.sseq
+
+ginr < u8_1.inr > u8_1.out
+ginr < u8_2.inr > u8_2.out

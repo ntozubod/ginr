@@ -1,4 +1,67 @@
-# INR main2022 Changelog
+# INR Changelog
+
+## 2.1.0b (2022-01-29)
+
+Starting work on a dev branch.
+
+#### src
+
+##### Define SHORT as int
+
+Changing the definition of SHORT to *unsigned int* causes INR to fail in
+a number of parts of the code where SHORTs and signed ints are used together.
+Although this is a result of sloppiness in code written 40 years ago, most
+of the grief can be avoided by making SHORT be a signed int and setting
+MAXSHORT to its maximum positive value (017777777777 = 2^31-1).
+
+This approach appears to be working but a lot of testing is required before
+this can be considered stable.
+INR has always had SHORT set to *unsigned short* with MAXSHORT as its
+largest possible value (177777 = 2^16-1), that is, except for a failed
+experiment in 2011.
+
+##### Support of Unicode UTF-8
+
+By treating input as octets as opposed to encoded characters, the size of
+alphabet becomes a managable small number (256).
+
+The symbol table can be pre-loaded with this whole alphabet in a predefined
+order and with a known pre-determined index.
+Thus for each octet a *name* will be provided that is indexed by the octet
+value.
+The name associated with octet having value k will be stored in position
+k + 2.
+
+All of the octets corresponding to printable ASCII preserve their
+character values from previous versions of INR.
+The remainder have a two digit (two octet) hex number to identify their value.
+
+This simple change seems to be quite workable and also largely preserves
+backward compatibility.
+More functionality is needed to fully support UFT-8 adequately but this is
+a start.
+
+##### Echo comments in batch mode
+
+To make the examples more understandable, the output from INR should include
+commentary.
+An easy way of doing this is to echo comment text when INR is invoked
+non-interactively.
+A one line modification has been added to Lex.c to achieve this.
+
+#### egs/utf8
+
+Some experiments have been started in the use of UTF-8 in INR.
+It appears reasonable to use a subsequential transduction for conversion
+between a Unicode code point number and UTF-8 encoding.
+There are some caveats.
+
+If this is done with an octet-based alphabet, a state explosion ensues.
+However, if base 16 is used the situation is much better.
+Note that base 4 or even base 2 are better in this particular example.
+
+Perhaps this might show a way to use transduction in other applications
+since state explosion is an ever-present problem.
 
 ## 2.1.0a (2022-01-24)
 

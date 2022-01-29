@@ -1,0 +1,216 @@
+## ======================================================================
+##  B1: A binary digit is either a one or a two represented by 0 and 1.
+##  C1: Copy a digit from input to output.
+#
+
+B1 = { 0, 1 };
+C1 = { 0, 1 } $ ( 0, 0 );
+
+#
+## ======================================================================
+## Handle special cases for each of 5 types of UTF-8 bytes.
+## Input is a 21-bit string representing the Unicode code point.
+## Output is a sequence of 1 to 4 8-bit bytes all as a bit string.
+#
+## Ascii: High order 14 bits are zero. Copy low order 7 bits with a
+##   0 added in front.
+## Extra_6: Copy 6 bits to output with a leading '10' to signal a
+##   UTF-8 continuation octet.
+## Bits_11: High order 10 bits are zero; remaining 11 bits are split
+##   into 5 and 6. The first 5 go into the first output octet preceded
+##   by '110'. The remaining 6 go into a continuation octet.
+## Bits_16: High order 5 bits are zero; remaining 16 bits are split
+##   into 4, 6 and 6. The first 4 go into the first output octet preceded
+##   by '1110'. The remaining 12 go into two continuation octets.
+## Bits_21: The 21 bits are split into 3, and three sequences of 6 bits.
+##   The first 3 go into the first output octet preceded by '11110'.
+##   The remaining 18 go into three continuation octets.
+##   2^21                    = 2097152  Full 21 bits
+##   2^20 + 2^16             = 1114112  0 to 0x10FFFF
+##   2^20 + 2^16 - 2^11      = 1112064  subtract surrogate support
+##   2^20 + 2^16 - 2^11 - 66 = 1111998  subtract non-characters
+#
+
+Ascii   = ( 0 :14 , 0 )         (C1 :7);
+Extra_6 = (       , 1 0 )       (C1 :6);
+Bits_11 = ( 0 :10 , 1 1 0 )     (C1 :5) Extra_6;
+Bits_16 = ( 0 :5  , 1 1 1 0 )   (C1 :4) Extra_6 Extra_6;
+Bits_21 = (       , 1 1 1 1 0 ) (C1 :3) Extra_6 Extra_6 Extra_6;
+
+#
+## ======================================================================
+## Combine special cases into a code point to UTF-8 converter.
+## Input is a 21-bit string representing the Unicode code point.
+## Output is a sequence of 1 to 4 8-bit bytes all as a bit string.
+#
+## Unicode21: Convert a Unicode code point by applying one of the
+##   4 conversion methods defined above. The one providing the shortest
+##   output is to be used.
+#
+
+Unicode21__UTF8_base = Ascii || Bits_11 || Bits_16 || Bits_21;
+Unicode21__UTF8_base   :prsseq Unicode21__UTF8_base.sseq;
+
+UTF8__Unicode21_base = Unicode21__UTF8_base $ ( 1, 0 );
+UTF8__Unicode21_base   :prsseq UTF8__Unicode21_base.sseq;
+
+##
+## ======================================================================
+## Unicode code points are integer values between 0 and 0x10FFFF.
+## Input is a 21-bit string representing the Unicode code point.
+#
+## If the high order bit is 1, then the next four bits must be 0.
+## Input is a 21-bit string representing the Unicode code point.
+## Domain_base: contains all values from 0 upto 0x10FFFF.
+#
+
+Domain_base = { 0 ( B1 :20 ), '10000' ( B1 :16 ) };
+Domain_base :card;
+
+#
+## ======================================================================
+## Remove illegal code points from the Domain.
+## Input is a 21-bit string representing the Unicode code point.
+#
+## UTF-16 uses a range of Unicode code points between 0xD800 and 0xDCFF
+##   to encode the upper 10 bits (0xD800-0xDBFF) and the lower 10 bits
+##   (0xDC00-0xDFFF). As a result, and to allow conversions between
+##   transfer formats, we have to remove these ranges.
+#
+## from Wikipedia page about UTF-16 encoding:
+## U' = yyyyyyyyyyxxxxxxxxxx  // U - 0x10000
+## W1 = 110110yyyyyyyyyy      // 0xD800 + yyyyyyyyyy
+## W2 = 110111xxxxxxxxxx      // 0xDC00 + xxxxxxxxxx
+#
+## Surrogate: 5 zeros followed by the pattern '11011' followed by
+##   11 bits (1 bit to signal higher of lower plus 10 bits to encode the
+##   value of the surrogate)
+#
+
+Surrogate = ( 0 :5 ) ( '11011' ) ( B1 :11 );
+Domain = Domain_base - Surrogate;
+Domain :card;
+
+#
+#
+
+Unicode21__UTF8 = Domain @@ Unicode21__UTF8_base;
+Unicode21__UTF8   :prsseq Unicode21__UTF8.sseq;
+
+UTF8__Unicode21 = Unicode21__UTF8 $ ( 1, 0 );
+UTF8__Unicode21   :prsseq UTF8__Unicode21.sseq;
+
+#
+## ======================================================================
+## There are some other code points that are not to be used.
+## Input is a 21-bit string representing the Unicode code point.
+#
+## (1) The following code points are non-characters in every plane:
+##   0xFFFE 0xFFFF (34 code points)
+#
+## (2) The range U+FDD0 to U+FDEF are also non-characters (32 code points).
+##  from  1111 1101 1101 0000
+##    to  1111 1101 1110 1111
+#
+## These code points are not removed from the domain:
+## Unicode Corrigendum #9: Clarification About Noncharacters
+##   states that these should not be censored from input or output
+#
+
+NonChars1 = { 0 ( B1 :4 ), 1 '0000' } '1111' '1111' '1111' '111' B1;
+NonChars2 = '0' '0000' '1111' '1101' '11' { '01', '10' } ( B1 :4 );
+NonCharacters = NonChars1 | NonChars2;
+
+Domain_strict = Domain - NonCharacters;
+Domain_strict :card;
+
+#
+## ======================================================================
+## Define Range directly and painfully
+#
+## (1) Ensure shortest output form is used by avoiding leading 0's.
+## (2) For surrogates avoid '11011' pattern at beginning of 16-bit forms.
+## (3) If 21-bit form starting with 1, '0000' must follow.
+## This is particularly challenging if constraint spills over into the
+##   first continuation octet.
+#
+## Theory shows that all use of negative constructions can be avoided
+##   but at the cost of a bit of pain.
+#
+
+B2 = B1 B1;
+B3 = B2 B1;
+B4 = B3 B1;
+B5 = B4 B1;
+B6 = B5 B1;
+B7 = B6 B1;
+
+#
+## NZ_2 = B2 - '00';
+## NZ_4 = B4 - '0000';
+## NSZ4 = B4 - '0000' - '1101';
+#
+
+NZ_2 = '01'   | '1' B1;
+NZ_4 = '0001' | '001' B1 | '01' B2 | '1' B3;
+NSZ4 = '0001' | '001' B1 | '01' B2 | '10' B2 | '111' B1 | '1100';
+
+Range_Ascii   =   '0'     B7;
+RE_6          =   '10'    B6;
+Range_Bits_11 =   '110'   NZ_4 B1   RE_6;
+Range_Bits_16 = ( '1110'  NSZ4      RE_6           RE_6 )
+              | ( '1110'  '0000'    '10' '1' B5    RE_6 )
+              | ( '1110'  '1101'    '10' '0' B5    RE_6 );
+Range_Bits_21 = ( '11110' '0' NZ_2  RE_6           RE_6 RE_6 )
+              | ( '11110' '000'     '10' NZ_2 B4   RE_6 RE_6 )
+              | ( '11110' '100'     '10' '00' B4   RE_6 RE_6 );
+
+Range1 = Unicode21__UTF8 $ 1;
+
+Range = Range_Ascii | Range_Bits_11 | Range_Bits_16 | Range_Bits_21;
+
+Range ! Range1;
+
+#
+## ======================================================================
+#
+
+Base_16 = {
+  ( 0, '0000' ), ( 1, '0001' ), ( 2, '0010' ), ( 3, '0011' ),
+  ( 4, '0100' ), ( 5, '0101' ), ( 6, '0110' ), ( 7, '0111' ),
+  ( 8, '1000' ), ( 9, '1001' ), ( a, '1010' ), ( b, '1011' ),
+  ( c, '1100' ), ( d, '1101' ), ( e, '1110' ), ( f, '1111' ) };
+
+Hex__Bits = Base_16*;
+Bits__Hex = Hex__Bits $ ( 1, 0 );
+
+UnicodeHex6__UTF8Hex = Hex__Bits @ ( '000' Unicode21__UTF8 ) @ Bits__Hex;
+UnicodeHex6__UTF8Hex   :prsseq UnicodeHex6__UTF8Hex.sseq;
+
+UTF8Hex__UnicodeHex6 = UnicodeHex6__UTF8Hex $ ( 1, 0 );
+UTF8Hex__UnicodeHex6   :prsseq UTF8Hex__UnicodeHex6.sseq;
+
+#
+## ======================================================================
+#
+
+Hex1 = Base_16 $ 0;
+CopyHex1 = Hex1 $ ( 0, 0 );
+
+UnicodeHex6__UniHex =
+     ( ( '00', 'U+' ) ( CopyHex1 :4 ) )
+  || ( (  '0', 'U+' ) ( CopyHex1 :5 ) )
+  || ( (     , 'U+' ) ( CopyHex1 :6 ) );
+UnicodeHex6__UniHex   :prsseq UnicodeHex6__UniHex.sseq;
+
+UniHex__UnicodeHex6 = UnicodeHex6__UniHex $ ( 1, 0 );
+
+#
+## UniHex__UnicodeHex6   :prsseq UniHex__UnicodeHex6.sseq;
+## yields an explosion of states since a subsequential transducer
+## is forced to remember everything until it sees or can infer the
+## length of the input.
+## SHORT == unsigned short  *** V_insert: Table FULL ***
+## SHORT == int             *** S_morecore: Out of Memory ***
+#
+## ======================================================================

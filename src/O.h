@@ -29,6 +29,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
+#include <assert.h>
 
 /* this seems to be needed with the -ansi option to suppress warnings */
 int fileno( FILE * );
@@ -39,8 +40,8 @@ int fileno( FILE * );
 #define U_Object        4
 #define A_Object        5
 
-typedef unsigned short  SHORT;
-#define MAXSHORT        0177777
+typedef int             SHORT;
+#define MAXSHORT        017777777777
 
 typedef struct {
     SHORT           R_a;

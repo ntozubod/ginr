@@ -23,8 +23,6 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <assert.h>
-
 #include "O.h"
 
 SHORT *s_rena = 0;

@@ -1,0 +1,263 @@
+I N R -- V 2.1.0b, modified Jan 28 2022
+Copyright (C) 1988 J Howard Johnson
+Distributed under GPLv3 (see COPYING)
+
+
+
+Digit --------------   DFA MIN States: 3      Trans: 3      Tapes: 1  Strg: 1 K
+Copy1 --------------   DFA MIN States: 5      Trans: 5      Tapes: 2  Strg: 3 K
+Copy2 --------------   DFA MIN States: 8      Trans: 9      Tapes: 2  Strg: 2 K
+Copy3 --------------   DFA MIN States: 11     Trans: 13     Tapes: 2  Strg: 2 K
+Copy4 --------------   DFA MIN States: 14     Trans: 17     Tapes: 2  Strg: 2 K
+Copy5 --------------   DFA MIN States: 17     Trans: 21     Tapes: 2  Strg: 2 K
+Copy6 --------------   DFA MIN States: 20     Trans: 25     Tapes: 2  Strg: 2 K
+Copy7 --------------   DFA MIN States: 23     Trans: 29     Tapes: 2  Strg: 2 K
+Copy_Mark ----------   DFA MIN States: 4      Trans: 3      Tapes: 2  Strg: 3 K
+ ==================================================
+Ascii --------------   DFA MIN States: 38     Trans: 44     Tapes: 2  Strg: 3 K
+Extra_6 ------------   DFA MIN States: 22     Trans: 27     Tapes: 2  Strg: 2 K
+Bits_11 ------------   DFA MIN States: 50     Trans: 60     Tapes: 2  Strg: 3 K
+Bits_16 ------------   DFA MIN States: 63     Trans: 78     Tapes: 2  Strg: 3 K
+Bits_21 ------------   DFA MIN States: 76     Trans: 96     Tapes: 2  Strg: 4 K
+Ascii_sseq ---------  *SSEQMIN States: 40     Trans: 46     Tapes: 2  Strg: 3 K
+Bits_11_sseq -------  *SSEQMIN States: 52     Trans: 62     Tapes: 2  Strg: 3 K
+Bits_16_sseq -------  *SSEQMIN States: 65     Trans: 80     Tapes: 2  Strg: 4 K
+Bits_21_sseq -------  *SSEQMIN States: 78     Trans: 98     Tapes: 2  Strg: 4 K
+Utf8b --------------   DFA MIN States: 124    Trans: 158    Tapes: 2  Strg: 6 K
+Utf8b_sseq ---------  *SSEQMIN States: 177    Trans: 211    Tapes: 2  Strg: 7 K
+Domain -------------   DFA MIN States: 27     Trans: 47     Tapes: 1  Strg: 2 K
+Utf8 ---------------   DFA MIN States: 134    Trans: 167    Tapes: 2  Strg: 5 K
+Utf8I --------------   DFA MIN States: 134    Trans: 167    Tapes: 2  Strg: 5 K
+Utf8_sseq ----------  *SSEQMIN States: 188    Trans: 221    Tapes: 2  Strg: 7 K
+Utf8I_sseq ---------  *SSEQMIN States: 151    Trans: 184    Tapes: 2  Strg: 7 K
+ ==================================================
+B04 ----------------   DFA MIN States: 9      Trans: 11     Tapes: 2  Strg: 2 K
+B04I ---------------   DFA MIN States: 9      Trans: 11     Tapes: 2  Strg: 2 K
+Utf8_B04 -----------   DFA MIN States: 101    Trans: 149    Tapes: 2  Strg: 4 K
+Utf8_B04I ----------   DFA MIN States: 101    Trans: 149    Tapes: 2  Strg: 4 K
+Utf8_B04_sseq ------  *SSEQMIN States: 136    Trans: 184    Tapes: 2  Strg: 7 K
+Utf8_B04I_sseq -----  *SSEQMIN States: 109    Trans: 157    Tapes: 2  Strg: 6 K
+ ==================================================
+B08 ----------------   DFA MIN States: 17     Trans: 23     Tapes: 2  Strg: 2 K
+B08I ---------------   DFA MIN States: 17     Trans: 23     Tapes: 2  Strg: 2 K
+Utf8_B08 -----------   DFA MIN States: 86     Trans: 151    Tapes: 2  Strg: 6 K
+Utf8_B08I ----------   DFA MIN States: 86     Trans: 151    Tapes: 2  Strg: 4 K
+    0 0 0 0 
+    0 0 0 1 
+    0 0 0 2 
+    0 0 0 3 
+    0 0 1 0 
+    0 0 1 1 
+    0 0 1 2 
+    0 0 1 3 
+    0 0 2 0 
+    0 0 2 1 
+    0 0 2 2 
+    0 0 2 3 
+    0 0 3 0 
+    0 0 3 1 
+    0 0 3 2 
+    0 0 3 3 
+    0 1 0 0 
+    0 1 0 1 
+    0 1 0 2 
+    0 1 0 3 
+    0 1 1 0 
+    0 1 1 1 
+    0 1 1 2 
+    0 1 1 3 
+    0 1 2 0 
+    0 1 2 1 
+    0 1 2 2 
+    0 1 2 3 
+    0 1 3 0 
+    0 1 3 1 
+    0 1 3 2 
+    0 1 3 3 
+    0 2 0 0 
+    0 2 0 1 
+    0 2 0 2 
+    0 2 0 3 
+    0 2 1 0 
+    0 2 1 1 
+    0 2 1 2 
+    0 2 1 3 
+    0 2 2 0 
+    0 2 2 1 
+    0 2 2 2 
+    0 2 2 3 
+    0 2 3 0 
+    0 2 3 1 
+    0 2 3 2 
+    0 2 3 3 
+    0 3 0 0 
+    0 3 0 1 
+    0 3 0 2 
+    0 3 0 3 
+    0 3 1 0 
+    0 3 1 1 
+    0 3 1 2 
+    0 3 1 3 
+    0 3 2 0 
+    0 3 2 1 
+    0 3 2 2 
+    0 3 2 3 
+    0 3 3 0 
+    0 3 3 1 
+    0 3 3 2 
+    0 3 3 3 
+    1 0 0 0 
+    1 0 0 1 
+    1 0 0 2 
+    1 0 0 3 
+    1 0 1 0 
+    1 0 1 1 
+    1 0 1 2 
+    1 0 1 3 
+    1 0 2 0 
+    1 0 2 1 
+    1 0 2 2 
+    1 0 2 3 
+    1 0 3 0 
+    1 0 3 1 
+    1 0 3 2 
+    1 0 3 3 
+    1 1 0 0 
+    1 1 0 1 
+    1 1 0 2 
+    1 1 0 3 
+    1 1 1 0 
+    1 1 1 1 
+    1 1 1 2 
+    1 1 1 3 
+    1 1 2 0 
+    1 1 2 1 
+    1 1 2 2 
+    1 1 2 3 
+    1 1 3 0 
+    1 1 3 1 
+    1 1 3 2 
+    1 1 3 3 
+    1 2 0 0 
+    1 2 0 1 
+    1 2 0 2 
+    1 2 0 3 
+    1 2 1 0 
+    1 2 1 1 
+    1 2 1 2 
+    1 2 1 3 
+    1 2 2 0 
+    1 2 2 1 
+    1 2 2 2 
+    1 2 2 3 
+    1 2 3 0 
+    1 2 3 1 
+    1 2 3 2 
+    1 2 3 3 
+    1 3 0 0 
+    1 3 0 1 
+    1 3 0 2 
+    1 3 0 3 
+    1 3 1 0 
+    1 3 1 1 
+    1 3 1 2 
+    1 3 1 3 
+    1 3 2 0 
+    1 3 2 1 
+    1 3 2 2 
+    1 3 2 3 
+    1 3 3 0 
+    1 3 3 1 
+    1 3 3 2 
+    1 3 3 3 
+    3 0 0 2 2 0 0 0 
+    3 0 0 2 2 0 0 1 
+    3 0 0 2 2 0 0 2 
+    3 0 0 2 2 0 0 3 
+    3 0 0 2 2 0 1 0 
+    3 0 0 2 2 0 1 1 
+    3 0 0 2 2 0 1 2 
+    3 0 0 2 2 0 1 3 
+    3 0 0 2 2 0 2 0 
+    3 0 0 2 2 0 2 1 
+    3 0 0 2 2 0 2 2 
+    3 0 0 2 2 0 2 3 
+    3 0 0 2 2 0 3 0 
+    3 0 0 2 2 0 3 1 
+    3 0 0 2 2 0 3 2 
+    3 0 0 2 2 0 3 3 
+    3 0 0 2 2 1 0 0 
+    3 0 0 2 2 1 0 1 
+    3 0 0 2 2 1 0 2 
+    3 0 0 2 2 1 0 3 
+    3 0 0 2 2 1 1 0 
+    3 0 0 2 2 1 1 1 
+    3 0 0 2 2 1 1 2 
+    3 0 0 2 2 1 1 3 
+    3 0 0 2 2 1 2 0 
+    3 0 0 2 2 1 2 1 
+    3 0 0 2 2 1 2 2 
+    3 0 0 2 2 1 2 3 
+    3 0 0 2 2 1 3 0 
+    3 0 0 2 2 1 3 1 
+    3 0 0 2 2 1 3 2 
+    3 0 0 2 2 1 3 3 
+    3 0 0 2 2 2 0 0 
+    3 0 0 2 2 2 0 1 
+    3 0 0 2 2 2 0 2 
+    3 0 0 2 2 2 0 3 
+    3 0 0 2 2 2 1 0 
+    3 0 0 2 2 2 1 1 
+    3 0 0 2 2 2 1 2 
+    3 0 0 2 2 2 1 3 
+    3 0 0 2 2 2 2 0 
+    3 0 0 2 2 2 2 1 
+    3 0 0 2 2 2 2 2 
+    3 0 0 2 2 2 2 3 
+    3 0 0 2 2 2 3 0 
+    3 0 0 2 2 2 3 1 
+    3 0 0 2 2 2 3 2 
+    3 0 0 2 2 2 3 3 
+    3 0 0 2 2 3 0 0 
+    3 0 0 2 2 3 0 1 
+    3 0 0 2 2 3 0 2 
+    3 0 0 2 2 3 0 3 
+    3 0 0 2 2 3 1 0 
+    3 0 0 2 2 3 1 1 
+    3 0 0 2 2 3 1 2 
+    3 0 0 2 2 3 1 3 
+    3 0 0 2 2 3 2 0 
+    3 0 0 2 2 3 2 1 
+    3 0 0 2 2 3 2 2 
+    3 0 0 2 2 3 2 3 
+    3 0 0 2 2 3 3 0 
+    3 0 0 2 2 3 3 1 
+Enum terminated
+Utf8_B08_sseq ------  *SSEQMIN States: 207    Trans: 302    Tapes: 2  Strg: 11 K
+Utf8_B08I_sseq -----  *SSEQMIN States: 141    Trans: 225    Tapes: 2  Strg: 7 K
+ ==================================================
+B16 ----------------   DFA MIN States: 33     Trans: 47     Tapes: 2  Strg: 5 K
+B16I ---------------   DFA MIN States: 33     Trans: 47     Tapes: 2  Strg: 4 K
+Utf8_B16 -----------   DFA MIN States: 119    Trans: 233    Tapes: 2  Strg: 7 K
+Utf8_B16I ----------   DFA MIN States: 119    Trans: 233    Tapes: 2  Strg: 7 K
+Utf8_B16_sseq ------  *SSEQMIN States: 224    Trans: 389    Tapes: 2  Strg: 11 K
+Utf8_B16I_sseq -----  *SSEQMIN States: 199    Trans: 358    Tapes: 2  Strg: 11 K
+ ==================================================
+    0 0 0 0 3 6 
+    0 0 0 1 a 5 
+    0 0 6 9 6 5 
+    0 a 5 9 6 5 
+43 states in subsequential transducer
+58 states in subsequential transducer
+31 states in subsequential transducer
+22 states in subsequential transducer
+30 states in subsequential transducer
+17 states in subsequential transducer
+18 states in subsequential transducer
+42 states in subsequential transducer
+12 states in subsequential transducer
+15 states in subsequential transducer
+23 states in subsequential transducer
+9 states in subsequential transducer
+ ==================================================
+Byte_B16 -----------   DFA MIN States: 275    Trans: 529    Tapes: 2  Strg: 25 K
