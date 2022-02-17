@@ -2,11 +2,11 @@ HFILES	= O.h local.h
 CFILES 	= stamp.c Acrea.c Aopen.c Aload.c Atrim.c Alameq.c Alamcm.c Aclos.c \
 Asubs.c Amin.c Abasic.c Aenum.c Acompose.c Ajoin.c Aretape.c Apowers.c \
 Alenmin.c Asseq.c AGMsseq.c ALMsseq.c Aclsseq.c Astems.c T.c V.c R.c U.c S.c \
-util.c Lex.c Colon.c
+util.c Lex.c Colon.c Aunicode.c
 OFILES 	= stamp.o Acrea.o Aopen.o Aload.o Atrim.o Alameq.o Alamcm.o Aclos.o \
 Asubs.o Amin.o Abasic.o Aenum.o Acompose.o Ajoin.o Aretape.o Apowers.o \
 Alenmin.o Asseq.o AGMsseq.o ALMsseq.o Aclsseq.o Astems.o T.o V.o R.o U.o S.o \
-util.o Lex.o Colon.o y.tab.o
+util.o Lex.o Colon.o y.tab.o Aunicode.o
 SOURCE 	= Makefile $(HFILES) $(CFILES) Parse.y
 
 .c.o:

@@ -1,0 +1,79 @@
+
+## Read in sequence of nibbles
+#
+INP = :slurp_nibbles c.md;
+#
+
+Nibble_hi = {
+    `[0`, `[1`, `[2`, `[3`, `[4`, `[5`, `[6`, `[7`,
+    `[8`, `[9`, `[A`, `[B`, `[C`, `[D`, `[E`, `[F`  };
+
+Nibble_lo = {
+    `0]`, `1]`, `2]`, `3]`, `4]`, `5]`, `6]`, `7]`,
+    `8]`, `9]`, `A]`, `B]`, `C]`, `D]`, `E]`, `F]`  };
+
+Nibble = Nibble_hi | Nibble_lo;
+Nibbles = Nibble*;
+Copy_Nibbles = Nibbles $ (0,0);
+
+#
+## Quote block marked with greater than, 5 spaces ... and newline
+#
+
+QBL_Constraint = Nibble+  -  Nibbles "\n"  Nibbles;
+QBL_block = ">     "  Copy_Nibbles "\n"   @@ QBL_Constraint;
+
+#
+## Inline block marked with single backticks
+## Inline block marked with double backticks
+#
+
+SBT_Constraint = Nibble+  -  Nibbles "`"  Nibbles;
+DBT_Constraint = Nibble+  -  Nibbles "``" Nibbles;
+SBT_block = "`"  Copy_Nibbles "`"   @@ SBT_Constraint;
+DBT_block = "``" Copy_Nibbles "``"  @@ DBT_Constraint;
+
+#
+## Inline block marked with single dollar signs
+## Inline block marked with double dollar signs
+#
+
+SDS_Constraint = Nibble+  -  Nibbles "$"  Nibbles;
+DDS_Constraint = Nibble+  -  Nibbles "$$" Nibbles;
+SDS_block = "$"  Copy_Nibbles "$"   @@ SDS_Constraint;
+DDS_block = "$$" Copy_Nibbles "$$"  @@ DDS_Constraint;
+
+#
+## Text with no bare backticks, dollar signs or verbatim quotes
+#
+
+Background = Nibbles  -  Nibbles { "`", "$", ">     " } Nibbles;
+
+#
+## Assemble the pieces
+#
+
+QBL = QBL_block  $ (0,0);
+SBT = SBT_block  $ (0,0);
+DBT = DBT_block  $ (0,0);
+BRK = Background $ (0,0);
+
+SDS = [ "[[[" ] SDS_block [ "]]]" ];
+DDS = [ "[[[" ] DDS_block [ "]]]" ];
+
+
+Blocks = { QBL, SBT, DBT, SDS, DDS };
+Process = ( BRK Blocks )* BRK;
+
+# Ending = { "`", "``", "$", "$$" }?;
+Ending = ^;
+
+WRK = INP Ending @ Process;
+
+#
+## Select shortest output
+## Write out as sequence of nibbles
+#
+OUT = WRK :gen_min;
+OUT :spit_nibbles trans.md;
+

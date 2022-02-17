@@ -48,6 +48,8 @@ char * pad20( char *s )
 int ch = ' ';
 char    token[512];
 int in_string = 0;
+int in_dstring = 0;
+int dstring_ch = -1;
 
 char *copyof( char *str )
 {
@@ -57,6 +59,7 @@ char *copyof( char *str )
 int yylex()
 {
     int li, d, lflag, in_comment;
+
     fflush( fpout );
     if ( in_string ) {
         ch = getc( fpin );
@@ -97,6 +100,50 @@ int yylex()
         if ( ch == EOF ) Error( "End of file in string" );
         yylval.up = copyof( T_name( TT, ch + 2 ) );
         return( NAME );
+    } else if ( in_dstring && dstring_ch > 0 ) {
+        yylval.up = copyof( T_name( TT, ( dstring_ch & 0xf ) + 2 + 256 + 16 ));
+        dstring_ch = -1;
+        return( NAME );
+    } else if ( in_dstring ) {
+        ch = getc( fpin );
+        if ( ch == '"' ) {
+            ch = getc( fpin );
+            if ( ch != '"' ) {
+                in_dstring = 0;
+                return( RPAREN );
+            }
+        }
+        if ( ch == '\\' ) {
+            ch = getc( fpin );
+            switch( ch ) {
+            case 'n':
+                ch = '\n';
+                break;
+            case 't':
+                ch = '\t';
+                break;
+            case '_':
+                ch = ' ';
+                break;
+            case 'x':
+                d = getc( fpin );
+                if ( d >= '0' && d <= '9' ) d = d - '0';
+                else if ( d >= 'a' && d <= 'f' ) d = d - 'a' + 10;
+                else if ( d >= 'A' && d <= 'F' ) d = d - 'A' + 10;
+                else Error( "Unexpected Hex digit" );
+                ch = d << 4;
+                d = getc( fpin );
+                if ( d >= '0' && d <= '9' ) d = d - '0';
+                else if ( d >= 'a' && d <= 'f' ) d = d - 'a' + 10;
+                else if ( d >= 'A' && d <= 'F' ) d = d - 'A' + 10;
+                else Error( "Unexpected Hex digit" );
+                ch += d;
+            }
+        }
+        if ( ch == EOF ) Error( "End of file in string" );
+        dstring_ch = ch & 0xff;
+        yylval.up = copyof( T_name( TT, ( dstring_ch >> 4 ) + 2 + 256 ) );
+        return( NAME );
     }
     in_comment = 0;
     while( ch == ' ' || ch == '\t' || ch == '\n' || ch == '#'
@@ -113,7 +160,9 @@ int yylex()
     switch( d ) {
     case '!':
         return( EXCLAM );
-    /*  case '"':   not used    */
+    case '"':
+        in_dstring = 1;
+        return( LPAREN );
     /*  case '#':   COMMENT     */
     case '$':
         return( DOLLAR );
@@ -175,7 +224,6 @@ int yylex()
         return( RBRACE );
         /*  case '~':   not used    */
 
-    case '"':
     case '<':
     case '>':
     case '~':
@@ -318,7 +366,7 @@ int main( int argc, char *argv[] )
     int ti, result;
     char tstr[3];
     char file_in[50], file_out[50], rpt_out[50];
-    char hexmap[17] = "0123456789abcdef";
+    char hexmap[17] = "0123456789ABCDEF";
 
     fpin  = stdin;
     fpout = stdout;
@@ -390,10 +438,24 @@ fprintf( fpout, "\n" );
         else {
             tstr[ 0 ] = hexmap[( ti >> 4 ) & 0xf ];
             tstr[ 1 ] = hexmap[  ti        & 0xf ];
-            tstr[ 2 ] = 0;
+            tstr[ 2 ] = '\0';
         }
         result = T_insert( TT, tstr );
         assert( result == ti + 2 );
+    }
+    for( ti = 0; ti < 16; ti++ ) {
+        tstr[ 0 ] = '[';
+        tstr[ 1 ] = hexmap[ ti ];
+        tstr[ 2 ] = '\0';
+        result = T_insert( TT, tstr );
+        assert( result == ti + 2 + 256 );
+    }
+    for( ti = 0; ti < 16; ti++ ) {
+        tstr[ 0 ] = hexmap[ ti ];
+        tstr[ 1 ] = ']';
+        tstr[ 2 ] = '\0';
+        result = T_insert( TT, tstr );
+        assert( result == ti + 2 + 256 + 16 );
     }
 
     TAlist = T_create();

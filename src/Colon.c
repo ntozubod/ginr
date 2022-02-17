@@ -98,6 +98,18 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
         fprintf( fpout, "\n" );
         A = A_prsseq( A, (char *) NULL, TT );
         fprintf( fpout, "\n" );
+    } else if ( !strcmp("spit_octets",op) ) {
+        fprintf( fpout, "\n" );
+        A = A_spit_octets( A, (char *) NULL, TT );
+        fprintf( fpout, "\n" );
+    } else if ( !strcmp("spit_nibbles",op) ) {
+        fprintf( fpout, "\n" );
+        A = A_spit_nibbles( A, (char *) NULL, TT );
+        fprintf( fpout, "\n" );
+    } else if ( !strcmp("spit_utf8",op) ) {
+        fprintf( fpout, "\n" );
+        A = A_spit_utf8( A, (char *) NULL, TT );
+        fprintf( fpout, "\n" );
     } else if ( !strcmp("acomp",op) ) {
         if ( A_report ) fprintf( fpout, "(acomp)\n" );
         Atemp = A_star( A_alph( A_copy( A ) ) );
@@ -171,6 +183,9 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
     } else if ( !strcmp("lenmin",op) ) {
         A = A_lenmin( A );
         disp_flag = 2;
+    } else if ( !strcmp("gen_min",op) ) {
+        A = A_gen_min( A );
+        disp_flag = 2;
     } else if ( !strcmp("min",op) ) {
         A = A_min( A );
         disp_flag = 1;
@@ -239,6 +254,12 @@ A_OBJECT do_ann_a( A_OBJECT A, char *op, char *arg )
         A = A_store( A, arg, TT );
     else if ( !strcmp("prsseq",op) )
         A = A_prsseq( A, arg, TT );
+    else if ( !strcmp("spit_octets",op) )
+        A = A_spit_octets( A, arg, TT );
+    else if ( !strcmp("spit_nibbles",op) )
+        A = A_spit_nibbles( A, arg, TT );
+    else if ( !strcmp("spit_utf8",op) )
+        A = A_spit_utf8( A, arg, TT );
     else if ( !strcmp("stems",op) )
         A_prstems( A, TT, tonum(arg) );
     else if ( !strcmp("surgery",op) ) {
@@ -270,6 +291,15 @@ A_OBJECT do_nn_a( char *op, char *arg )
         disp_flag = 1;
     } else if ( !strcmp("readwords",op) ) {
         A = A_lwds( arg, TT );
+        disp_flag = 1;
+    } else if ( !strcmp("slurp_octets",op) ) {
+        A = A_slurp_octets( arg, TT );
+        disp_flag = 1;
+    } else if ( !strcmp("slurp_nibbles",op) ) {
+        A = A_slurp_nibbles( arg, TT );
+        disp_flag = 1;
+    } else if ( !strcmp("slurp_utf8",op) ) {
+        A = A_slurp_utf8( arg, TT );
         disp_flag = 1;
     } else if ( !strcmp("save",op) ) {
         if ( (i = T_member( TAlist, arg )) >= 0 )

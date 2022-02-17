@@ -1,25 +1,20 @@
 Introduction
 ============
 
-(Extracted from latex source of a [white paper](doc/intro_1988/inr_intro.pdf)
-written in 1988 as documentation for INR.)
-
 INR is a program that constructs finite state automata and transducers
 from generalized rational expressions. Although originally developed
-to support research into approximate string matching, it has proved useful
-for a number of other purposes.
+with to support research into approximate string matching [@Johnson83]
+it has proved useful for a number of other purposes.
 
-The program operates in a traditional read/evaluate/print mode; that is,
+The program operates in a traditional read/evaluate/print mode, that is,
 it repeatedly reads an expression from the input stream, computes the
 automaton required, and displays a result. For example, if we wish to
-find the minimized automaton over the alphabet <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}"> that recognizes
-words that contain at least one "*a*" and at least one "*b*". This can
+find the minimized automaton over the alphabet $\{a,b\}$ that recognizes
+words that contain at least one "$a$" and at least one "$b$". This can
 be described using the extended regular expression indicating the
-intersection of words containing *a* and words containing *b*:
-
-> <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}^*a\{a,b\}^* \wedge \{a,b\}^*b\{a,b\}^*.">
-
-This expression can be presented to INR in the following form:
+intersection of words containing $a$ and words containing $b$:
+$$\{a,b\}^*a\{a,b\}^* \wedge \{a,b\}^*b\{a,b\}^*.$$ This expression can
+be presented to INR in the following form:
 
 >     {a,b}* a {a,b}* & {a,b}* b {a,b}*;
 
@@ -48,7 +43,7 @@ so that
 
 >     3 a 4
 
-indicates a transition from state `3` to state `4` which reads an *a*.
+indicates a transition from state `3` to state `2` which reads an $a$.
 The start state is denoted by the special state name `(START)` and final
 states are indicated by a transition on end-marker (`-|`) to the dummy
 state `(FINAL)`. In the above example
@@ -87,18 +82,16 @@ terminating when it reaches a preset limit.
 
 Another interactive use for INR involves testing whether two regular
 sets are the same. For example consider the set of all words over the
-alphabet <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}^*"> that are not either all *a*'s or all *b*'s. This
-can be denoted using the extended regular expression:
-
-> <img src="https://render.githubusercontent.com/render/math?math=\{a,b\}^* - ( \{a\}^* \cup \{b\}^* )">
-
-and indicated to INR as:
+alphabet $\{a,b\}^*$ that are not either all $a$'s or all $b$'s. This
+can be denoted using the extended regular expression
+$$\{a,b\}^* - ( \{a\}^* \cup \{b\}^* ).$$ This can be indicated to INR
+as:
 
 >     {a,b}* - ( a* | b* );
 
 To check that these are the same sets, we can compute the symmetric
-difference of the two regular languages and verify that it is empty.
-The symmetric difference (exclusive or) operator for INR is the symbol `!`.
+difference of the two regular languages and verify that is empty. The
+symmetric difference (exclusive or) operator for INR is the symbol `!`.
 
 >     ( {a,b}* a {a,b}* & {a,b}* b {a,b}* )
 >       ! ( {a,b}* - ( a* | b* ) );
@@ -136,7 +129,7 @@ itself (if that name has not been used as a transition label).
 INR is very often run in a non-interactive (batch) mode using variables
 to build up larger and larger automata followed by a `:pr` or a `:save`
 to store the result into a file. For large automata this is the
-preferred approach since INR provides no mechanism for recalling past
+preferred approach since INR provides no mechanisn for recalling past
 expressions or for editing them.
 
 Lexical Conventions
@@ -151,7 +144,7 @@ comments.
 *Symbols* are made up of any non-empty sequence of characters from the
 set of upper and lower case letters, digits, and the following special
 characters `.` and `_`. To specify a symbol not satisfying this
-restriction, simply put back-quote (grave accent) characters (`` ` ``) before
+restriction, simply put back-quote (grave accent) characters (') before
 and after it. The string that results after the back-quotes are stripped
 off then constitute the symbol. If the desired symbol contains
 back-quotes they can be escaped with a preceding backslash.
@@ -212,7 +205,7 @@ common in the formal language theory literature and continued here to
 avoid pedantry and cumbersome notational problems. A string containing
 one letter is ambiguously written as the letter and a set containing one
 element is ambiguously written as its element. With this understanding
-`a` <img src="https://render.githubusercontent.com/render/math?math=\equiv"> `{a}` <img src="https://render.githubusercontent.com/render/math?math=\equiv"> `{'a'}`.
+`a` $\equiv$ `{a}` $\equiv$ `{'a'}`.
 
 Token
 -----
@@ -253,9 +246,10 @@ distinguishing symbols. Thus `a b c` indicates a string with three
 one-letter tokens whereas `abc` indicates a single token.
 
 Since one-letter tokens are very useful to denote the printable
-characters of the ASCII character set an alternative notation is provided
-to indicate strings of one-letter tokens. Any such string can be written
-without blanks but preceded and followed by single forward quotes ('):
+characters of the ASCII (or EBCDIC) character set an alternative
+notation is provided to indicate strings of one-letter tokens. Any such
+string can be written without blanks but preceded and followed by single
+forward quotes ('):
 
 `a b c;`\
 or `'abc';`
@@ -281,9 +275,10 @@ Empty String
 ------------
 
 The empty string is indicated by `^`. This symbol is used because of its
-vague similariy to the Greek letter <img src="https://render.githubusercontent.com/render/math?math=\Lambda"> that is often used for
-this purpose.  Alternative representations is `()` (empty parentheses)
-or `''` (empty forward quotes).
+vague similariy to the Greek letter $\Lambda$ that is often used for
+this purpose. Note that in EBCDIC this character has a graphic
+representation of $\not c$. Alternative representations is `()` (empty
+parentheses) or `''` (empty forward quotes).
 
 `^;`\
 or `();`\
@@ -374,7 +369,7 @@ their constituent tokens.
 Kleene Plus and Star
 --------------------
 
-The concatenation closure operators (Kleene + and Kleene <img src="https://render.githubusercontent.com/render/math?math=*">) are
+The concatenation closure operators (Kleene $+$ and Kleene $*$) are
 represented by the corresponding unary postfix operator.
 
 `(a b)+;`\
@@ -422,8 +417,8 @@ The operators `+`, `*`, and `?` are computed from left to right.
 Concatenation Power
 -------------------
 
-To express the concatenation of a set with itself exactly *k* times the
-expression may be followed by a `:` and the value *k*. Thus `R1 :2` is
+To express the concatenation of a set with itself exactly $k$ times the
+expression may be followed by a `:` and the value $k$. Thus `R1 :2` is
 the same as `R1 R1` and `R1 :3` the same as `R1 R1 R1`.
 
 `{a,b} :2;`
@@ -434,18 +429,18 @@ the same as `R1 R1` and `R1 :3` the same as `R1 R1 R1`.
     2 b 3
     3 -| (FINAL)
 
-To express the concatenation of a set with itself *k* or fewer times the
-notation `R1? :`*k* can be used. To express the concatenation of a set
-with itself more than *k* times the set difference can be used:
-`R1* - (R1? :`*k*`)`.
+To express the concatenation of a set with itself $k$ or fewer times the
+notation `R1? :`$k$ can be used. To express the concatenation of a set
+with itself more than $k$ times the set difference can be used:
+`R1* - (R1? :`$k$`)`.
 
 Concatenation Quotient
 ----------------------
 
 If concatenation is interpreted as a multiplication of strings so that
-`'abc'` <img src="https://render.githubusercontent.com/render/math?math=\cdot"> `'def'` <img src="https://render.githubusercontent.com/render/math?math=="> `'abcdef'` we can define a right quotient
-operator <img src="https://render.githubusercontent.com/render/math?math=/"> as `'abcdef'` / `'def'` <img src="https://render.githubusercontent.com/render/math?math=="> `'abc'` and a left quotient
-operator <img src="https://render.githubusercontent.com/render/math?math=\backslash"> as `'abc'` <img src="https://render.githubusercontent.com/render/math?math=\backslash"> `'abcdef'` <img src="https://render.githubusercontent.com/render/math?math=="> `'def'`.
+`'abc'` $\cdot$ `'def'` $=$ `'abcdef'` we can define a right quotient
+operator $/$ as `'abcdef'` / `'def'` $=$ `'abc'` and a left quotient
+operator $\backslash$ as `'abc'` $\backslash$ `'abcdef'` $=$ `'def'`.
 The (left or right) quotient of sets is defined as the union of their
 elementwise quotients.
 
@@ -491,7 +486,7 @@ Symmetric Difference (Exclusive Or)
 
 The symmetric difference of two languages is the set of words that are
 in one of the languages but not the other and will be indicated by the
-`!` operator. Thus <img src="https://render.githubusercontent.com/render/math?math=R_1 ! R_2 \equiv (R_1-R_2) \cup (R_2-R_1)">.
+`!` operator. Thus $R_1 ! R_2 \equiv (R_1-R_2) \cup (R_2-R_1)$.
 
 `{a,b}* ! {a,c}*;`\
 or `a* ( b {a,b}* | c {a,c}* );`
@@ -519,7 +514,7 @@ words `'ab'` and `'cd'` is the set
 `{'abcd','acbd','acdb','cabd','cadb','cdab'}`. The shuffle of two sets
 of words is the union of the shuffles of all pairs of words such that
 one word is taken from each set. The shuffle operator is indicated by
-the symbol `!!` which mildly suggests the symbol <img src="https://render.githubusercontent.com/render/math?math=\amalg"> that is often
+the symbol `!!` which mildly suggests the symbol $\amalg$ that is often
 used for this purpose.
 
 `'ab' !! 'cd';`\
@@ -644,8 +639,8 @@ Stretching
 ----------
 
 An operation that is sometimes useful involves replacing each letter in
-the word by a sequence of *k* of that letter. This can be done using the
-`$` operator followed by a string of *k* zeros.
+the word by a sequence of $k$ of that letter. This can be done using the
+`$` operator followed by a string of $k$ zeros.
 
 `'abc' $ 0 0;`\
 or `'aabbcc';`
@@ -664,7 +659,7 @@ Priorities of Operators
 Within a pair of matching parentheses or braces the expression is
 computed in the following order:
 
-1.  Kleene +, Kleene <img src="https://render.githubusercontent.com/render/math?math=*"> and Optional operators are evaluated from
+1.  Kleene $+$, Kleene $*$ and Optional operators are evaluated from
     left to right on their single argument.
 
 2.  Concatenations
@@ -734,7 +729,7 @@ non-determinism using the idea of a characterizing language.
 
 Before defining a characterizing language we will mark the alphabets
 with either a 0 or a 1 to indicate whether they are to be read from tape
-0 or tape 1. Thus *a* will occur in the forms <img src="https://render.githubusercontent.com/render/math?math=a_0"> and <img src="https://render.githubusercontent.com/render/math?math=a_1">. We can
+0 or tape 1. Thus $a$ will occur in the forms $a_0$ and $a_1$. We can
 then define languages over this extended alphabet. From each language we
 can then obtain a relation by projecting out the tape 0 letters and the
 tape 1 letters as the two components of the ordered pair. A language
@@ -749,8 +744,8 @@ uncomputable. Thus a convenient way of describing finite transductions
 is by means of some regular characterizing language. Then the usual
 optimizations and transformations which apply to regular languages can
 then be applied without changing the implied transduction. This is
-exactly what INR does. Instead of <img src="https://render.githubusercontent.com/render/math?math=a_0"> and <img src="https://render.githubusercontent.com/render/math?math=a_1">, INR uses the notation
-`0.a` and `1.a`.
+exactly what INR does. Instead of $a_0$ and $a_1$, INR uses the notation
+`\=0.a` and `\=1.a`.
 
 Regular languages are defined in other ways than by their automata
 however. For example regular expressions, especially when extended to
@@ -771,7 +766,7 @@ define characterizing languages by using marking the letters with
 numbers 0, 1, or 2. Again there will always be a regular characterizing
 language, and similar closure properties. The process can, of course, be
 continued to relations of any degree. INR currently restricts the degree
-to 10: `0.a`, `1.a`, <img src="https://render.githubusercontent.com/render/math?math=\ldots">, `9.a`.
+to 10: `\=0.a`, `\=1.a`, $\ldots$, `\=9.a`.
 
 Finite transductions are also called rational relations or rational
 transductions since they are closed under the rational operations:
@@ -786,14 +781,14 @@ Token
 To indicate that a token is associated with a particular tape, precede
 it by the tape number and a period.
 
-`1.abc;`\
+`\=1.abc;`\
 or `` `1.abc`; ``
 
     (START) 1.abc 2
     2 -| (FINAL)
 
-Note that `` 1.`abc` `` will not work because the lexical scanner
-parses this as `` 1.` `` followed by `abc` followed by an unmatched
+Note that `` \=1.`abc` `` will not work because the lexical scanner
+parses this as `` \=1.` `` followed by `abc` followed by an unmatched
 `` ` ``.
 
 Variable
@@ -810,7 +805,7 @@ from tape zero to some other tape. To define a string on tape 1, there
 are four basic techniques depending on the situation.
 
 1.  Build the string from tokens which specify the tape. Then `'abc'` on
-    tape 1 becomes `1.a 1.b 1.c`.
+    tape 1 becomes `\=1.a 1.b 1.c`.
 
 2.  Use (parenthesis/comma) tuple notation. Then `'abc'` on tape 1
     becomes `( ^, 'abc' )` or simply `(,'abc')`.
@@ -821,7 +816,7 @@ are four basic techniques depending on the situation.
 4.  Use the tape renumbering operator `$`. Then `'abc'` on tape 1 is
     `( 'abc' $ 1 )`.
 
-`1.a 1.b 1.c;`\
+`\=1.a 1.b 1.c;`\
 or `(,'abc');`\
 or `['abc'];`\
 or `('abc' $1);`\
@@ -833,7 +828,7 @@ or `('abc' $1);`\
 
 To indicate a string on tape 2 a similar technique can be used:
 
-`2.a 2.b 2.c;`\
+`\=2.a 2.b 2.c;`\
 or `(,,'abc');`\
 or `[['abc']];`\
 or `('abc' $2);`\
@@ -876,7 +871,7 @@ Thus, as far as the characterizing languages are concerned, the comma
 operator functions as a concatenation following a tape shift.
 
 `( a*, b* );`\
-or `0.a* 1.b*;`
+or `\=0.a* 1.b*;`
 
     (START) -| (FINAL)
     (START) 0.a (START)
@@ -892,7 +887,7 @@ incremented by one.
 
 `a* [b*];`\
 or `( a*, b* );`\
-or `0.a* 1.b*;`
+or `\=0.a* 1.b*;`
 
     (START) -| (FINAL)
     (START) 0.a (START)
@@ -902,7 +897,7 @@ or `0.a* 1.b*;`
 
 `[b*] a*;`\
 or `(, b* ) a*;`\
-or `1.b* 0.a*;`
+or `\=1.b* 0.a*;`
 
     (START) -| (FINAL)
     (START) 1.b (START)
@@ -1081,8 +1076,8 @@ or `(a,b) :2;`
 Composition Power
 -----------------
 
-The *k*-fold composition of a binary rational relation is denoted by
-`:(`*k*`)`. That is, the number is written in parentheses.
+The $k$-fold composition of a binary rational relation is denoted by
+`:(`$k$`)`. That is, the number is written in parentheses.
 
 `(a,'aa')* :(2);`\
 or `(a,'aa')* @ (a,'aa')*;`\
@@ -1101,10 +1096,10 @@ Extending Or (ElseOR)
 Often it is desirable to extend one function by a second function, that
 is, extend the domain to include that covered by the second function
 without disturbing the values assigned by the first function within its
-domain. This operator is denoted by the symbol `||`. Thus if *f* and *g*
-are functions then *f* `||` *g* will agree with *f* whenever the
-argument is in <img src="https://render.githubusercontent.com/render/math?math=dom f">. Otherwise it will agree with *g*. Note that
-`R || S` is simply a shorter form of `R | ( (S$0)-R$0) @@ S )`
+domain. This operator is denoted by the symbol `||`. Thus if $f$ and $g$
+are functions then $f$ `||` $g$ will agree with $f$ whenever the
+argument is in $dom f$. Otherwise it will agree with $g$. Note that
+`R || S` is simply a shorter form of `R | ( (S$0)-(R$0) @@ S )`
 
 `(a,c) || (a,b)*;`\
 or `^ | (a,c) | (a,b)(a,b)+;`
@@ -1143,9 +1138,9 @@ when it does. This is performed by the `:sseq` operator.
     8 0.-| 2
     8 0.a 7
 
-Note that `(START)`, `3` and `8` are read states since they must
-read exactly one character (or end-marker) from tape zero. States `2`,
-`5`, `6` and `7` are write states. They can only write and the
+Note that `(START)`, `\=3` and `\=8` are read states since they must
+read exactly one character (or end-marker) from tape zero. States `\=2`,
+`\=5`, `\=6` and `\=7` are write states. They can only write and the
 choice is determined. Note also that explicit end-markers are
 introduced. The existence of explicit end-markers can confuse some of
 the operations that use the characterizing language idea. End-markers
@@ -1173,19 +1168,33 @@ deterministic automata and produces as a result a not necessarily
 minimized deterministic automaton. For debugging and education purposes,
 the coercing operator can be explicitly used:
 
-> **:nfa** Sort and unduplicate transitions.
+> :nfa
 >
-> **:trim** Remove states that are unreachable. (Reduce)
+> :   Sort and unduplicate transitions.
 >
-> **:lameq** Remove lambda equivalent states.
+> :trim
 >
-> **:lamcm** Combine lambda implied states.
+> :   Remove states that are unreachable. (Reduce)
 >
-> **:closed** Form lambda closure.
+> :lameq
 >
-> **:dfa** Form deterministic machine. (Subsets Construction)
+> :   Remove lambda equivalent states.
 >
-> **:min** Minimize the DFA.
+> :lamcm
+>
+> :   Combine lambda implied states.
+>
+> :closed
+>
+> :   Form lambda closure.
+>
+> :dfa
+>
+> :   Form deterministic machine. (Subsets Construction)
+>
+> :min
+>
+> :   Minimize the DFA.
 
 Thus `<expression> :trim;` will print the trim (reduced) automaton
 corresponding to the expression. Note that coercing is one way and that
@@ -1196,17 +1205,29 @@ Displaying Operators
 
 The following operators cause some form of printing:
 
-> **:pr** Print in readable format.
+> :pr
 >
-> **:save** Save in condensed format.
+> :   Print in readable format.
 >
-> **:report** Write a one line report.
+> :save
 >
-> **:enum** Enumerate words.
+> :   Save in condensed format.
 >
-> **:card** Count number of words and print.
+> :report
 >
-> **:length** Print length of shortest word.
+> :   Write a one line report.
+>
+> :enum
+>
+> :   Enumerate words.
+>
+> :card
+>
+> :   Count number of words and print.
+>
+> :length
+>
+> :   Print length of shortest word.
 
 The operation `:pr` may be followed by a filename in which case the
 automaton is printed into that file. The operation `:save` must be
@@ -1266,23 +1287,41 @@ Command Statement
 A number of commands that cause certain actions to be performed are
 provided.
 
-> **:alph;** Display token symbol table.
+> :alph;
 >
-> **:free;** Display status of free lists.
+> :   Display token symbol table.
 >
-> **:list;** Display variable symbol table.
+> :free;
 >
-> **:noreport;** Turn off (verbose) debug tracing.
+> :   Display status of free lists.
 >
-> **:pr;** Save all variables in files with the same names.
+> :list;
 >
-> **:quit;** Terminate session.
+> :   Display variable symbol table.
 >
-> **:report;** Turn on (verbose) debug tracing.
+> :noreport;
 >
-> **:save;** Save all variables in files (condensed) with the same names.
+> :   Turn off (verbose) debug tracing.
 >
-> **:time;** Display time since last :time call (VAX only).
+> :pr;
+>
+> :   Save all variables in files with the same names.
+>
+> :quit;
+>
+> :   Terminate session.
+>
+> :report;
+>
+> :   Turn on (verbose) debug tracing.
+>
+> :save;
+>
+> :   Save all variables in files (condensed) with the same names.
+>
+> :time;
+>
+> :   Display time since last :time call (VAX only).
 
 Internals
 =========

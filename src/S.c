@@ -399,6 +399,7 @@ char *Scopy( char *p )
 
 long Ssize( char *p )
 {
+    assert( p != NULL );
     return( ( sizeof(S_ft) << p[-3] ) - 4 );
 }
 
