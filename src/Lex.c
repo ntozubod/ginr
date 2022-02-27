@@ -28,7 +28,7 @@
 
 A_OBJECT    A, Atemp;
 T_OBJECT    TAlist;
-A_OBJECT    Alist[100];
+A_OBJECT    Alist[1000];
 T_OBJECT    TT;
 
 char * pad20( char *s )

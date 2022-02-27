@@ -297,7 +297,7 @@ A_OBJECT    do_nn_a( char *, char * );
 /* Lex.c */
 extern A_OBJECT A;
 extern A_OBJECT Atemp;
-extern A_OBJECT Alist[100];
+extern A_OBJECT Alist[1000];
 extern T_OBJECT TAlist;
 extern T_OBJECT TT;
 extern char Notice[];
