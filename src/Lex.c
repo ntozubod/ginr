@@ -27,9 +27,9 @@
 #include "y.tab.h"
 
 A_OBJECT    A, Atemp;
-T_OBJECT    TAlist;
+Tn_OBJECT   TAlist;
 A_OBJECT    Alist[1000];
-T_OBJECT    TT;
+Tn_OBJECT   TT;
 
 char * pad20( char *s )
 {
@@ -98,10 +98,12 @@ int yylex()
             }
         }
         if ( ch == EOF ) Error( "End of file in string" );
-        yylval.up = copyof( T_name( TT, ch + 2 ) );
+        yylval.up = P_create( Tn_length( TT, ch + 2 ), Tn_name( TT, ch + 2 ) );
         return( NAME );
     } else if ( in_dstring && dstring_ch > 0 ) {
-        yylval.up = copyof( T_name( TT, ( dstring_ch & 0xf ) + 2 + 256 + 16 ));
+        yylval.up = P_create(
+            Tn_length( TT, ( dstring_ch & 0xf ) + 2 + 256 + 16 ),
+            Tn_name( TT, ( dstring_ch & 0xf ) + 2 + 256 + 16 ) );
         dstring_ch = -1;
         return( NAME );
     } else if ( in_dstring ) {
@@ -142,7 +144,9 @@ int yylex()
         }
         if ( ch == EOF ) Error( "End of file in string" );
         dstring_ch = ch & 0xff;
-        yylval.up = copyof( T_name( TT, ( dstring_ch >> 4 ) + 2 + 256 ) );
+        yylval.up = P_create(
+            Tn_length( TT, ( dstring_ch >> 4 ) + 2 + 256 ),
+            Tn_name( TT, ( dstring_ch >> 4 ) + 2 + 256 ) );
         return( NAME );
     }
     in_comment = 0;
@@ -354,7 +358,7 @@ int yylex()
         }
     }
     token[ li ] = 0;
-    yylval.up = copyof( token );
+    yylval.up = P_create( li, token );
     return( NAME );
 }
 
@@ -425,41 +429,34 @@ fprintf( fpout, "\n" );
         fprintf( fpout, "\n\n\n" );
     }
 
-    TT = T_create();
-    result = T_insert( TT, "^^" );
+    TT = Tn_create();
+    result = Tn_insert( TT, "^^", 2 );
     assert( result == 0 );
-    result = T_insert( TT, "-|" );
+    result = Tn_insert( TT, "-|", 2 );
     assert( result == 1 );
     for( ti = 0; ti < 256; ti++ ) {
-        if ( ( ti >= 0x20 && ti < 0x7f ) || ti == '\t' || ti == '\n' ) {
-            tstr[ 0 ] = ti;
-            tstr[ 1 ] = 0;
-        }
-        else {
-            tstr[ 0 ] = hexmap[( ti >> 4 ) & 0xf ];
-            tstr[ 1 ] = hexmap[  ti        & 0xf ];
-            tstr[ 2 ] = '\0';
-        }
-        result = T_insert( TT, tstr );
+        tstr[ 0 ] = ti;
+        tstr[ 1 ] = '\0';
+        result = Tn_insert( TT, tstr, 1 );
         assert( result == ti + 2 );
     }
     for( ti = 0; ti < 16; ti++ ) {
-        tstr[ 0 ] = '[';
-        tstr[ 1 ] = hexmap[ ti ];
+        tstr[ 0 ] = hexmap[ ti ];
+        tstr[ 1 ] = '_';
         tstr[ 2 ] = '\0';
-        result = T_insert( TT, tstr );
+        result = Tn_insert( TT, tstr, 2 );
         assert( result == ti + 2 + 256 );
     }
     for( ti = 0; ti < 16; ti++ ) {
-        tstr[ 0 ] = hexmap[ ti ];
-        tstr[ 1 ] = ']';
+        tstr[ 0 ] = '_';
+        tstr[ 1 ] = hexmap[ ti ];
         tstr[ 2 ] = '\0';
-        result = T_insert( TT, tstr );
+        result = Tn_insert( TT, tstr, 2 );
         assert( result == ti + 2 + 256 + 16 );
     }
 
-    TAlist = T_create();
-    result = T_insert( TAlist, "_Last_" );
+    TAlist = Tn_create();
+    result = Tn_insert( TAlist, "_Last_", 6 );
     assert( result == 0 );
     Alist[ 0 ] = A_create();
 
@@ -467,11 +464,11 @@ fprintf( fpout, "\n" );
     PROMT
     if ( yyparse() != 0 )
         Error( "yyparse returned unexpectedly" );
-    T_destroy( TT );
-    T_destroy( TAlist );
+    Tn_destroy( TT );
+    Tn_destroy( TAlist );
     if ( A_report ) {
         fprintf( fpout, "\n" );
-        T_stats();
+        Tn_stats();
         V_stats();
         R_stats();
         U_stats();

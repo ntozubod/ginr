@@ -1,5 +1,20 @@
 # INR Changelog
 
+## 2.1.0c3 (2022-03-04)
+
+#### src
+
+The implementation of P-string usage is continued.
+All of the communication between Lex.c and Parse.y has been modified to use
+P-strings.
+
+NB: The usage anything that prints out the content of a string will display
+unprintable characters for unprintable input.
+This is a feature or a bug depending on how you look at it.
+
+NULL bytes are now properly detected in Lex.c and passed to Parse.y.
+Further down the processing pipeline, they might not be treated correctly.
+
 ## 2.1.0c2 (2022-03-04)
 
 #### src
