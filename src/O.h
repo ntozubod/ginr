@@ -39,6 +39,8 @@ int fileno( FILE * );
 #define R_Object        3
 #define U_Object        4
 #define A_Object        5
+#define Tn_Object       6
+#define P_Object        7
 
 typedef int             SHORT;
 #define MAXSHORT        017777777777
@@ -54,6 +56,7 @@ typedef struct {
     SHORT           A_c;
 }       A_row;
 
+/*
 typedef struct T_desc {
     int             Type;
     int             T_n;
@@ -62,6 +65,18 @@ typedef struct T_desc {
     char **         T_name;
     SHORT *         T_hash;
 } *     T_OBJECT;
+*/
+
+typedef struct Tn_desc {
+    int             Type;
+    int             Tn_n;
+    int             Tn_lname;
+    int             Tn_lhash;
+    int             Tn_lstor;
+    int   *         Tn_idxs;
+    SHORT *         Tn_hash;
+    char  *         Tn_stor;
+} *     Tn_OBJECT;
 
 typedef struct V_desc {
     int             Type;
@@ -103,6 +118,12 @@ typedef struct A_desc {
     A_row *         A_t;
 } *     A_OBJECT;
 
+typedef struct P_desc {
+    int             Type;
+    int             P_length;
+    char *          P_cstr;
+} *     P_OBJECT;
+
 #define OPEN            0
 #define NFA             1
 #define NFA_TRIM        2
@@ -143,6 +164,7 @@ int         *i_alloc( int );
 void        pr_time_diff();
 
 /* T.c */
+/*
 T_OBJECT    T_create();
 void        T_destroy( T_OBJECT );
 int         T_member( T_OBJECT, char * );
@@ -150,6 +172,33 @@ T_OBJECT    T_grow( T_OBJECT, int );
 int         T_insert( T_OBJECT, char * );
 char *      T_name( T_OBJECT, int );
 void        T_stats();
+*/
+
+#define     T_OBJECT       Tn_OBJECT
+#define     T_create()     Tn_create()
+#define     T_destroy(a)   Tn_destroy(a)
+#define     T_member(a,b)  Tn_member(a,b,strlen(b))
+#define     T_insert(a,b)  Tn_insert(a,b,strlen(b))
+#define     T_name(a,b)    Tn_name(a,b)
+#define     T_stats()      Tn_stats()
+#define     T_n            Tn_n
+
+/* Tn.c */
+Tn_OBJECT   Tn_create();
+void        Tn_destroy( Tn_OBJECT );
+int         Tn_member( Tn_OBJECT, char *, int );
+Tn_OBJECT   Tn_grow( Tn_OBJECT, int );
+int         Tn_insert( Tn_OBJECT, char *, int );
+char *      Tn_name( Tn_OBJECT, int );
+int         Tn_length( Tn_OBJECT, int );
+P_OBJECT    Tn_Pstr( Tn_OBJECT, int );
+void        Tn_stats();
+
+/* P.c */
+P_OBJECT    P_create( int, char * );
+void        P_destroy( P_OBJECT );
+int         P_length( P_OBJECT );
+char *      P_cstr( P_OBJECT );
 
 /* V.c */
 SHORT *     veccpy( SHORT *, SHORT * );

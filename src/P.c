@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 1987, J Howard Johnson, University of Waterloo.
+ * Copyright (c) 1985, J Howard Johnson, University of Waterloo.
+ * Copyright (c) 2022, J Howard Johnson
  *
  * This software was developed while I was a student and, later, professor
  * at the University of Waterloo.  It has only minimal enhancements and bug
@@ -23,9 +24,32 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Name and modification date of the current version
- */
+#include "O.h"
 
-char Version[] = "2.1.0c2";
-char Date[] = "Mar 4 2022";
+P_OBJECT P_create( int length, char *cstr )
+{
+    P_OBJECT P;
+    P = (P_OBJECT) Salloc( sizeof(struct P_desc) );
+    P-> Type = P_Object;
+    P-> P_length = length;
+    P-> P_cstr = Salloc( length + 1 );
+    copymem( length, cstr, P-> P_cstr );
+    P-> P_cstr[ length ] = '\0';
+    return( P );
+}
+
+void P_destroy( P_OBJECT P )
+{
+    Sfree( (char *) P-> P_cstr );
+    Sfree( (char *) P );
+}
+
+int P_length( P_OBJECT P )
+{
+    return( P-> P_length );
+}
+
+char *P_cstr( P_OBJECT P )
+{
+    return( P-> P_cstr );
+}
