@@ -1,5 +1,22 @@
 # INR Changelog
 
+## 2.1.0c4 (2022-03-06)
+
+#### src
+
+An updated version of A_save and A_load_save is provided based on a
+productive discussion with Valkyrie at the end of February.
+This is a mixed text / binary format that is particularly easy to parse and
+accurately represents the content of an INR automaton.
+
+A_save is now called when :save is invoked and :read / :load will accept it
+as a new format it will read.
+
+#### doc
+
+Documentation of the new :save format is provided.
+See: [New Save Format](doc/save_format/README.md)
+
 ## 2.1.0c3 (2022-03-04)
 
 #### src
