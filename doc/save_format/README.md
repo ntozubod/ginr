@@ -4,8 +4,9 @@
 
 INR from early on had two different file formats for automata:
 
-1. The :pr format was intended to by quite readable and present automata
-as they were usually considered as a collection of transitions.
+1. The :pr format was intended to by quite readable and to present automata
+as they were usually considered as a collection of transitions,
+each made up of a 'from state', a 'transition label', and a 'to state'.
 The emphasis was on readability and this is the format displayed when INR
 is used interactively.
 
@@ -20,30 +21,44 @@ disk space (at the time a huge amount).
 At the present time, the small size requirement is mostly gone because
 of very efficient compression strategies and very large external storage
 devices.
-However, interoperability is extremely important now even between platforms.
-What is reading the file may be written in a different language and run on
-a different operating system.
+However, interoperability is now extremely important and this can even
+include portability between platforms (different computer languages or
+operating systems).
 
 Thus the :save format is now being moved forward to fill this role.
+It is still a binary format and is subject to corruption as a result of
+automatic conversions.
+For example, it currently requires the use of the newline character as
+a line terminator and this requirement cannot be relaxed without a change
+to the specification.
+
+The :pr format will be more resilient to these types of conversions and
+other formats may be introduced.
 
 ## Specification
+
+#### Two line types
 
 The :save format has two types of lines of variable length ending with the
 newline character ('\x0A'):
 
-1. The first line is a header line that contains a 'magic number', and
-warns of the number of tapes in the automaton and the number of rows.
+1. The first line is a header line that contains five fields:
+a 'magic number', the number of tapes in the automaton, as well as the
+number of transitions, the number of states, and the size of the alphabet.
 This is to facilitate the pre-allocation of arrays in the receiving
 environment.
 
 2. Each remaining line contains information about one transition including
-the from state, the to state, the tape number, and the transition label.
+the 'from state', the 'to state', the 'tape number', and the
+'transition label'.
 
 Each line contains a number of fields separated by the tab character
 ('\x09').
 
 No extra tabs, blanks, or new lines are allowed with one exception to be
 explained.
+
+#### Three field types
 
 There are three types of fields:
 
@@ -60,6 +75,8 @@ values is the third type of field.
 Since this field can contain any of `blank`, `tab`, `newline`, or
 `null byte` and can contain any valid or invalid UTF-8 text, the length of
 the field is signaled by a numeric preceding field.
+This is the noted exeption to extra tabs, blanks, or new lines.
+Anything can occur in this field.
 
 #### The format
 
@@ -70,6 +87,16 @@ Field one contains the 'magic number' `INR210`.
 Field two has the number of tapes.
 
 Field three has the number of rows.
+
+Field four has the number of states.
+This is actually one greater than the largest state number used but in INR
+this will usually be the same thing.
+
+Field five has the size of the alphabet.
+This is actually one greater than the high water mark of the label number 
+used when the pre-allocated token symbol table is used.
+It contains the 'magic values' 0 and 1, followed by 256 reserved values to
+represent the possible octets.
 
 ##### Transition Line
 
@@ -106,15 +133,22 @@ length specified in field four.
     3 c 4
     4 -| (FINAL)
 
-`'abc' :min :save ttt;`
+`'abc' :dfamin :save ttt;`
 
-    INR210	1	4
+    INR210	1	4	5	102
     0	2	0	1	a
     2	3	0	1	b
     3	4	0	1	c
     4	1	0	0	
 
-Note here that `:min` is needed here to ensure that minimization is done.
+Note here that `:dfamin` is needed here to ensure that minimization is done.
+Just as `:pr` doesn't force minimization, `:save` also will not.
+The old version of INR did force minimization.
+This is a change.
+
+Note also that the high water mark for the alphabet occurs with the label `c`
+('\x63` == 99).
+The value of 102 is 99 plus 3.
 
 `'abc' :update;`
 
@@ -127,7 +161,7 @@ Note here that `:min` is needed here to ensure that minimization is done.
 
 `'abc' :update :save uuu;`
 
-    INR210	1	6
+    INR210	1	6	7	102
     0	2	0	1	a
     2	3	-1	0	
     4	5	-1	0	
@@ -135,149 +169,24 @@ Note here that `:min` is needed here to ensure that minimization is done.
     6	1	0	0	
     5	6	0	1	c
 
-## Parsing the save format in C
+The precise files [`ttt`](ttt) and [`uuu`](uuu) are included in this
+directory for reference.
 
-In order to show how easy the new save format is to parse the following
-is the core of the code that INR uses:
+## Reference Implementations
 
-        c = getc( fp );
-    
-    /* Magic Number */
-    
-        if ( c != 'I' ) { goto FAIL_FORMAT; }  c = getc( fp );
-        if ( c != 'N' ) { goto FAIL_FORMAT; }  c = getc( fp );
-        if ( c != 'R' ) { goto FAIL_FORMAT; }  c = getc( fp );
-        if ( c != '2' ) { goto FAIL_FORMAT; }  c = getc( fp );
-        if ( c != '1' ) { goto FAIL_FORMAT; }  c = getc( fp );
-        if ( c != '0' ) { goto FAIL_FORMAT; }  c = getc( fp );
-        if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* Number of tapes */
-    
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            number_tapes = c - '0'; c = getc( fp );
-    
-        while ( c != '\t' ) {
-            if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            number_tapes = number_tapes * 10  +  ( c - '0' );
-                c = getc( fp );
-            if ( number_tapes >= MAXSHORT ) { goto FAIL_FORMAT; }
-        }
-        A-> A_nT = number_tapes;
-        if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* Number of rows */
-    
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            number_rows = c - '0'; c = getc( fp );
-    
-        while ( c != '\n' ) {
-            if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            number_rows = number_rows * 10  +  ( c - '0' );
-                c = getc( fp );
-            if ( number_rows >= MAXSHORT ) { goto FAIL_FORMAT; }
-        }
-        if ( c != '\n' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* Get a row */
-    
-    NEXT_ROW:
-    
-    /* From state */
-    
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            from_state = c - '0'; c = getc( fp );
-    
-        while ( c != '\t' ) {
-            if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            from_state = from_state * 10  +  ( c - '0' );
-                c = getc( fp );
-            if ( from_state >= MAXSHORT ) { goto FAIL_FORMAT; }
-        }
-        if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* To state */
-    
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            to_state = c - '0'; c = getc( fp );
-    
-        while ( c != '\t' ) {
-            if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            to_state = to_state * 10  +  ( c - '0' );
-                c = getc( fp );
-            if ( to_state >= MAXSHORT ) { goto FAIL_FORMAT; }
-        }
-        if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* Tape number */
-    
-        if ( c == '-' ) {
-            c = getc( fp );
-            if ( c != '1' ) { goto FAIL_FORMAT; } c = getc( fp );
-            tape_no = (-1);
-        } else {
-            if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-                tape_no = c - '0'; c = getc( fp );
-    
-            while ( c != '\t' ) {
-                if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-                tape_no = tape_no * 10  +  ( c - '0' );
-                    c = getc( fp );
-                if ( tape_no >= MAXSHORT ) { goto FAIL_FORMAT; }
-            }
-        }
-        if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* Token length */
-    
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            length = c - '0'; c = getc( fp );
-    
-        while ( c != '\t' ) {
-            if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
-            length = length * 10  +  ( c - '0' );
-                c = getc( fp );
-            if ( length >= MAXSHORT ) { goto FAIL_FORMAT; }
-        }
-        if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* Get a token */
-    
-        if ( length + 1 >= Ssize( buffer ) ) {
-            buffer = Srealloc( buffer, length + 1 );
-        }
-    
-        i = 0;
-        while ( i < length ) {
-            buffer[ i++ ] = c;
-            c = getc( fp );
-            if ( c == EOF ) { goto FAIL_FORMAT; }
-        }
-        buffer[ i ] = '\0';
-        if ( c != '\n' ) { goto FAIL_FORMAT; } c = getc( fp );
-    
-    /* Process a line here */
-    
-        if ( tape_no == -1 ) {
-            A = A_add( A, from_state, 0, to_state );
-            if ( length != 0 ) { goto FAIL_FORMAT; }
-        } else if ( length == 0 ) {
-            label = 1 * number_tapes + tape_no;
-            A = A_add( A, from_state, label, to_state );
-        } else {
-            index = Tn_insert( Tn_Sigma, buffer, length );
-            label = index * number_tapes + tape_no;
-            A = A_add( A, from_state, label, to_state );
-        }
-    
-        if ( c != EOF ) { goto NEXT_ROW; }
-    
-    /* Done: package up result */
-    
-        Sfree( buffer );
-        return ( A );
-    
-    FAIL_FORMAT:
+Since this format needs to be read by code written in different languages,
+it is useful to see examples that are closer in spirit to the target.
+By far the easiest to understand are implementations that simulate a finite
+state automaton that processes input one character at a time.
+There are relatively few corner cases to deal with.
 
-Parsing input can be very tedious in low level languages.
-Nonetheless, the translation to code is quite direct.
+An example of this is the implementation used by INR itself:
+[`src/Asave.c`](../../src/Asave.c)
+
+Since I want to use Perl for testing there will be an idiomatic Perl
+version based on line and field parsing with the requisite corner cases.
+
+Am INR transduction will also be provided that handles the format with a
+bound limitation imposed on the binary field length.
+Having this unbounded leads to a constraint that cannot be checked by a
+finite state machine.

@@ -1,5 +1,19 @@
 # INR Changelog
 
+## 2.1.0c5 (2022-03-08)
+
+#### src
+
+The :save format is updated to have two more fields in the header
+to contain the number of states and a bound on the size of the alphabet.
+
+The code for loading from the save file is made more defensive against
+corruption by checking for more types of errors.
+
+#### doc
+
+The documentation is updated to reflect these changes.
+
 ## 2.1.0c4 (2022-03-06)
 
 #### src

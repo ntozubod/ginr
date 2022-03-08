@@ -80,9 +80,9 @@ as a C string of length 2.
 More preloading is done to handle high and low order nibble values:
 indexes 258 to 273 represent the 16 possible high order nibble values and
 indexes 274 to 289 represent the 16 possible low order nibble values.
-Their string representation of high nibbles are a hex digit preceded by
-`[`.
-Low nibbles are represented by a hex digit followed by `]`.
+Their string representation of high nibbles are a hex digit followed by
+`_`.
+Low nibbles are represented by a hex digit preceded by `_`.
 
 For approach number 3, no preloading is done.
 The internal index is assigned as each character is encountered.
@@ -111,12 +111,12 @@ as before
 
 `"abc";`
 
-    (START) [6 2
-    2 1] 3
-    3 [6 4
-    4 2] 5
-    5 [6 6
-    6 3] 7
+    (START) 6_ 2
+    2 _1 3
+    3 6_ 4
+    4 _2 5
+    5 6_ 6
+    6 _3 7
     7 -| (FINAL)
 
 with new high / low nibbles
@@ -139,22 +139,22 @@ as before
 
 `"ἀπὸ";`
 
-    (START) [E 2
-    2 1] 3
-    3 [B 4
-    4 C] 5
-    5 [8 6
-    6 0] 7
-    7 [C 8
-    8 F] 9
-    9 [8 10
-    10 0] 11
-    11 [E 12
-    12 1] 13
-    13 [B 14
-    14 D] 15
-    15 [B 16
-    16 8] 17
+    (START) E_ 2
+    2 _1 3
+    3 B_ 4
+    4 _C 5
+    5 8_ 6
+    6 _0 7
+    7 C_ 8
+    8 _F 9
+    9 8_ 10
+    10 _0 11
+    11 E_ 12
+    12 _1 13
+    13 B_ 14
+    14 _D 15
+    15 B_ 16
+    16 _8 17
     17 -| (FINAL)
 
 a little longer
@@ -191,7 +191,7 @@ broken apart
 
 ## Changes to Aload.c:
 
-`:lwds` will admit all octets as does Lex.c.
+`:readwords` will admit all octets as does Lex.c.
 Only approach 1 is currently supported.
 
 ## New code in Aunicode.c:

@@ -26,6 +26,9 @@
 
 #include "O.h"
 
+int error_code = 0;
+#define fail(x) { error_code = x; goto FAIL_FORMAT; }
+
 A_OBJECT A_save( A_OBJECT A, char *file, Tn_OBJECT Tn_Sigma )
 {
     int t, tape_number, label_length, tt, i;
@@ -45,7 +48,8 @@ A_OBJECT A_save( A_OBJECT A, char *file, Tn_OBJECT Tn_Sigma )
         Warning( "Cannot open file" );
         return( A );
     }
-    fprintf( fp, "INR210\t%d\t%d\n", A-> A_nT, A-> A_nrows );
+    fprintf( fp, "INR210\t%d\t%d\t%d\t%d\n",
+        A-> A_nT, A-> A_nrows, A-> A_nQ, A-> A_nS );
     pz = A-> A_t + A-> A_nrows;
     for( p = A-> A_t; p < pz; p++ ) {
         t = p-> A_b;
@@ -87,8 +91,8 @@ A_OBJECT A_save( A_OBJECT A, char *file, Tn_OBJECT Tn_Sigma )
 
 A_OBJECT A_load_save( char *file, Tn_OBJECT Tn_Sigma )
 {
-    int c, number_tapes, number_rows;
-    int from_state, to_state, tape_no, length, label;
+    int c, number_tapes, number_rows, number_states, number_symbols;
+    int from_state, to_state, row_no, tape_no, length, label;
     int i, index;
     char *buffer;
     FILE *fp;
@@ -113,102 +117,133 @@ A_OBJECT A_load_save( char *file, Tn_OBJECT Tn_Sigma )
 
 /* Magic Number */
 
-    if ( c != 'I' ) { goto FAIL_FORMAT; }  c = getc( fp );
-    if ( c != 'N' ) { goto FAIL_FORMAT; }  c = getc( fp );
-    if ( c != 'R' ) { goto FAIL_FORMAT; }  c = getc( fp );
-    if ( c != '2' ) { goto FAIL_FORMAT; }  c = getc( fp );
-    if ( c != '1' ) { goto FAIL_FORMAT; }  c = getc( fp );
-    if ( c != '0' ) { goto FAIL_FORMAT; }  c = getc( fp );
-    if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != 'I' ) { fail(1); }  c = getc( fp );
+    if ( c != 'N' ) { fail(2); }  c = getc( fp );
+    if ( c != 'R' ) { fail(3); }  c = getc( fp );
+    if ( c != '2' ) { fail(4); }  c = getc( fp );
+    if ( c != '1' ) { fail(5); }  c = getc( fp );
+    if ( c != '0' ) { fail(6); }  c = getc( fp );
+    if ( c != '\t' ) { fail(7); } c = getc( fp );
 
 /* Number of tapes */
 
-    if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+    if ( c < '0' || c > '9' ) { fail(8); }
         number_tapes = c - '0'; c = getc( fp );
 
     while ( c != '\t' ) {
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+        if ( c < '0' || c > '9' ) { fail(9); }
         number_tapes = number_tapes * 10  +  ( c - '0' );
             c = getc( fp );
-        if ( number_tapes >= MAXSHORT ) { goto FAIL_FORMAT; }
+        if ( number_tapes >= MAXSHORT ) { fail(10); }
     }
     A-> A_nT = number_tapes;
-    if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != '\t' ) { fail(11); } c = getc( fp );
 
 /* Number of rows */
 
-    if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+    if ( c < '0' || c > '9' ) { fail(12); }
         number_rows = c - '0'; c = getc( fp );
 
-    while ( c != '\n' ) {
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+    while ( c != '\t' ) {
+        if ( c < '0' || c > '9' ) { fail(13); }
         number_rows = number_rows * 10  +  ( c - '0' );
             c = getc( fp );
-        if ( number_rows >= MAXSHORT ) { goto FAIL_FORMAT; }
+        if ( number_rows >= MAXSHORT ) { fail(14); }
     }
-    if ( c != '\n' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != '\t' ) { fail(15); } c = getc( fp );
 
-/* Get a row */
+/* Number of states */
+
+    if ( c < '0' || c > '9' ) { fail(16); }
+        number_states = c - '0'; c = getc( fp );
+
+    while ( c != '\t' ) {
+        if ( c < '0' || c > '9' ) { fail(17); }
+        number_states = number_states * 10  +  ( c - '0' );
+            c = getc( fp );
+        if ( number_states >= MAXSHORT ) { fail(18); }
+    }
+    if ( c != '\t' ) { fail(19); } c = getc( fp );
+
+/* Bound on number of letters in alphabet */
+
+    if ( c < '0' || c > '9' ) { fail(20); }
+        number_symbols = c - '0'; c = getc( fp );
+
+    while ( c != '\n' ) {
+        if ( c < '0' || c > '9' ) { fail(21); }
+        number_symbols = number_symbols * 10  +  ( c - '0' );
+            c = getc( fp );
+        if ( number_symbols >= MAXSHORT ) { fail(22); }
+    }
+    if ( c != '\n' ) { fail(23); } c = getc( fp );
+
+    row_no = -1;
 
 NEXT_ROW:
 
+    if ( ++row_no >= number_rows ) { fail(24); }
+
 /* From state */
 
-    if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+    if ( c < '0' || c > '9' ) { fail(25); }
         from_state = c - '0'; c = getc( fp );
 
     while ( c != '\t' ) {
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+        if ( c < '0' || c > '9' ) { fail(26); }
         from_state = from_state * 10  +  ( c - '0' );
             c = getc( fp );
-        if ( from_state >= MAXSHORT ) { goto FAIL_FORMAT; }
+        if ( from_state >= MAXSHORT ) { fail(27); }
     }
-    if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != '\t' ) { fail(28); } c = getc( fp );
+    if ( from_state >= number_states ) { fail(29); }
 
 /* To state */
 
-    if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+    if ( c < '0' || c > '9' ) { fail(30); }
         to_state = c - '0'; c = getc( fp );
 
     while ( c != '\t' ) {
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+        if ( c < '0' || c > '9' ) { fail(31); }
         to_state = to_state * 10  +  ( c - '0' );
             c = getc( fp );
-        if ( to_state >= MAXSHORT ) { goto FAIL_FORMAT; }
+        if ( to_state >= MAXSHORT ) { fail(32); }
     }
-    if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != '\t' ) { fail(33); } c = getc( fp );
+    if ( to_state >= number_states ) { fail(34); }
 
 /* Tape number */
 
     if ( c == '-' ) {
         c = getc( fp );
-        if ( c != '1' ) { goto FAIL_FORMAT; } c = getc( fp );
+        if ( c != '1' ) { fail(35); } c = getc( fp );
         tape_no = (-1);
     } else {
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+        if ( c < '0' || c > '9' ) { fail(36); }
             tape_no = c - '0'; c = getc( fp );
 
         while ( c != '\t' ) {
-            if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+            if ( c < '0' || c > '9' ) { fail(37); }
             tape_no = tape_no * 10  +  ( c - '0' );
                 c = getc( fp );
-            if ( tape_no >= MAXSHORT ) { goto FAIL_FORMAT; }
+            if ( tape_no >= MAXSHORT ) { fail(38); }
         }
     }
-    if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != '\t' ) { fail(39); } c = getc( fp );
+    if ( tape_no >= number_tapes ) { fail(40); }
 
 /* Token length */
 
-    if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+    if ( c < '0' || c > '9' ) { fail(41); }
         length = c - '0'; c = getc( fp );
 
     while ( c != '\t' ) {
-        if ( c < '0' || c > '9' ) { goto FAIL_FORMAT; }
+        if ( c < '0' || c > '9' ) { fail(42); }
         length = length * 10  +  ( c - '0' );
             c = getc( fp );
-        if ( length >= MAXSHORT ) { goto FAIL_FORMAT; }
+        if ( length >= MAXSHORT ) { fail(43); }
     }
-    if ( c != '\t' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != '\t' ) { fail(44); } c = getc( fp );
 
 /* Get a token */
 
@@ -220,21 +255,26 @@ NEXT_ROW:
     while ( i < length ) {
         buffer[ i++ ] = c;
         c = getc( fp );
-        if ( c == EOF ) { goto FAIL_FORMAT; }
+        if ( c == EOF ) { fail(45); }
     }
     buffer[ i ] = '\0';
-    if ( c != '\n' ) { goto FAIL_FORMAT; } c = getc( fp );
+    if ( c != '\n' ) { fail(46); } c = getc( fp );
 
 /* Process a line here */
 
     if ( tape_no == -1 ) {
         A = A_add( A, from_state, 0, to_state );
-        if ( length != 0 ) { goto FAIL_FORMAT; }
+        if ( length != 0 ) { fail(47); }
     } else if ( length == 0 ) {
-        label = 1 * number_tapes + tape_no;
+        if ( to_state == 1 ) {
+            label = 1;
+        } else {
+            label = 1 * number_tapes + tape_no;
+        }
         A = A_add( A, from_state, label, to_state );
     } else {
         index = Tn_insert( Tn_Sigma, buffer, length );
+        if ( index >= number_symbols ) { fail(48); }
         label = index * number_tapes + tape_no;
         A = A_add( A, from_state, label, to_state );
     }
@@ -248,6 +288,8 @@ NEXT_ROW:
 
 FAIL_FORMAT:
 
+    fprintf( fpout, "A_load_save: Error code = %d\n", error_code );
+    Error( "Illegal save format" );
     Sfree( buffer );
     A_destroy( A );
     return ( 0 );
