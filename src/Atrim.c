@@ -32,6 +32,43 @@ static A_OBJECT         GAt;
 static SHORT            *t_stk, *t_low;
 static int              t_cnt;
 
+/*
+ * A_trim does a deep recursion that reaches a depth of the maximum path
+ * length from the start state. Each frame has 2 SHORTs and a pointer
+ * (12 bytes).
+ *
+ * SHORT state
+ * SHORT dfn
+ * A_row * p
+ *
+ * t_stk SHORT ptr
+ * t_low SHORT ptr
+ * A_p ptr     array
+ *
+ * Stack: with SHORT having 4 bytes now 4 + 4 + 8 = 16
+ * Heap:  2 SHORTs and a ptr  = 16 * A_nQ
+ * total cost 4 * 4 + 8 * 2 = 32 * A_nQ
+
+ * two stacks:
+ * 
+ *  rec_stk_idx   recursion stack -- replacing C stack
+ *  cmp_stk_idx   component stack -- replacing old t_stk
+
+ * dfn[ rec_stk_idx ]
+ * state[ rec_stk_idx ]
+ * p[ rec_stk_idx ]
+
+ * comp[ cmp_stk_idx ]  replaces *t_stk
+
+ * low[ <state>  ] contains lowest dfn for component containing <state>
+
+ * =================================================
+ * The old recursive implementation to be replaced:
+ * =================================================
+ */
+
+#ifdef USE_RECURSIVE_TRIM
+
 SHORT A_tr_DFS( SHORT state )
 {
     SHORT           dfn;
@@ -51,6 +88,82 @@ SHORT A_tr_DFS( SHORT state )
             t_low[ next = *--t_stk ] = DELETED;
     return( state );
 }
+
+#else
+
+SHORT A_tr_DFS( SHORT l_state )
+{
+    SHORT *state   = s_alloc( GAt-> A_nQ );
+    SHORT *dfn     = s_alloc( GAt-> A_nQ );
+    A_row **p      = (A_row **) Salloc( GAt-> A_nQ * sizeof(A_row *) );
+    SHORT *comp    = t_stk;
+    SHORT *low     = t_low;
+
+    SHORT l_dfn;
+    A_row *l_p;
+    SHORT l_next;
+    SHORT return_val;
+
+    int rec_stk_idx = 0;
+    int cmp_stk_idx = 0;
+
+A_tr_DFS_call_label:
+    state[ rec_stk_idx ] = l_state;
+    l_dfn = t_cnt++;
+    dfn[ rec_stk_idx ] = l_dfn;
+    low[ l_state ] = l_dfn;
+    comp[ cmp_stk_idx++ ] = l_state;
+
+    l_p = GAt-> A_p[ l_state + 1 ];
+    p[ rec_stk_idx ] = l_p;
+
+A_tr_DFS_p_loop_label:
+    l_p = --p[ rec_stk_idx ];
+    l_state = state[ rec_stk_idx ];
+    if ( l_p < GAt-> A_p[ l_state ] )
+        goto A_tr_DFS_exit_p_loop_label;
+
+    l_next = l_p-> A_c;
+    if ( low[ l_next ] == UNMARK ) {
+        l_state = l_next;
+        ++rec_stk_idx;
+        goto A_tr_DFS_call_label;
+    } else goto A_tr_DFS_skip;
+
+A_tr_DFS_return_label:
+    --rec_stk_idx;
+    l_next = return_val;
+
+A_tr_DFS_skip:
+    l_state = state[ rec_stk_idx ];
+    if ( low[ l_next ] < low[ l_state ] ) {
+        low[ l_state ] = low[ l_next ];
+    }
+    goto A_tr_DFS_p_loop_label;
+
+A_tr_DFS_exit_p_loop_label:
+    l_state = state[ rec_stk_idx ];
+    l_dfn = dfn[ rec_stk_idx ];
+    if ( low[ l_state ] == l_dfn ) {
+        for( l_next = MAXSHORT; l_next != l_state; ) {
+            l_next = comp[ --cmp_stk_idx ];
+            low[ l_next ] = DELETED;
+        }
+    }
+
+    l_state = state[ rec_stk_idx ];
+    return_val = l_state;
+
+    if ( rec_stk_idx > 0 )
+        goto A_tr_DFS_return_label;
+
+    Sfree( (char *) state );
+    Sfree( (char *) dfn );
+    Sfree( (char *) p );
+    return( return_val );
+}
+
+#endif
 
 A_OBJECT A_trim( A_OBJECT A )
 {

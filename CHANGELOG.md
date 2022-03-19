@@ -1,5 +1,39 @@
 # INR Changelog
 
+## 2.1.0c7 (2022-03-19)
+
+This work was actually done in February and has been waiting for the
+:save and :pr updates to be made.
+It seems to be working fine although as with all of the new code written in
+the last couple of months, lots of testing remains to be done.
+
+#### src
+
+##### Atrim.c
+
+Code re-factoring of Atrim.c to replace a deep recursion by iteration.
+This version uses goto statments in as structured a way as possible to
+mirror the execution path of the recursive form.
+
+##### Acompose.c
+
+Improved version of Acompose.c to have a better time/space tradeoff.
+Many lambda transitions can be created as a result of matches being processed.
+Formerly these were removed at the end of processing using the routine
+A_lamcm.
+These take up a lot of space and can result in an exhaustion of memory
+before completion.
+Since they are easy to detect before being generated, they can be removed
+pre-emptively in many cases.
+
+Since the naive solution results in the space explosion then causes a lot
+of repeated computation, a memoization capability is added to cache the
+results.
+Since the lambda transitions occur in chains, memoizing only some of the
+values yields almost all of the time savings without all of the space cost.
+The current memoization is tuned to remember every alternate lambda transition
+in each chain.
+
 ## 2.1.0c6 (2022-03-18)
 
 #### src
