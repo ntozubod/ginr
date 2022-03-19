@@ -1,5 +1,134 @@
 # INR Changelog
 
+## 2.1.0c6 (2022-03-18)
+
+#### src
+
+##### T2.c
+
+The main change in this commit is to the handling of interal vs external
+forms for all tokens (or alphabet symbols).
+The internal form is a sequence of one or more octets having any of the
+256 possible values.
+This was done originally for the purpose of handling the :save format where
+all such octet sequences are acceptable (and needed for some applications).
+
+NB: There are currently two exceptions to this behaviour that have to do with
+the symbols `` `^^` `` and `` `-|` `` which currently have their legacy
+meanings of empty work and end-marker.
+This is now considered a bug and will be removed at some future date although
+it is not presently clear what the best approach would be.
+
+The external form is a sequence of octets that is intended to be printable
+(i.e., can be displayed as for :pr).
+This format is peppered with back-slash escapes such as `` `\x00` `` as
+well as the older `` `\n` `` and `` `\_` `` escapes from the INR in the
+past.
+The definition of this format is flux but currently treats any
+sub-sequence of octets that is a valid UTF-8 encoding (defined below)
+as printable and does no escaping.
+Any octets that are not a part of a valid UTF-8 sequence are escaped as
+described above.
+
+In order to centralize and manage the two forms, a new data type is
+introduced named `T2`.
+This is a double symbol table that is formed from two instances of `Tn`
+and are automatically synchronized as needed.
+
+##### :pr format
+
+The :pr format is as before except that the new external forms are used
+for the transition labels.
+
+Because this is centralized, this change is propagated to :enum and :prsseq
+as well as a few more obscure places in the code.
+
+##### More than 10 tapes
+
+There has been a restriction in INR to allowing only tapes numbered from
+`0` to `9`.
+This restriction has only ever been for input and output.
+It has now been removed.
+All places where tape numbers can be allowed can have any non-negative
+tape number.
+
+##### Handling of `.` in tokens
+
+Because `.` is used as part of the syntax of indicating tape number, there
+needs to be a way to say that the `.` is just a period sometimes.
+This is done using a new back-slash escape so that `` `0\.0` `` is now
+the token with three octets `0.0` as its internal representation and
+the escaped form as its external representation.
+
+There was a bug that the lexical scanner and parser did not co-operate
+properly to preserve the needed distinction.
+This has been repaired with the introducion of a new data type `Q.c` and
+the introduction of a new non-terminal to the parser.
+
+##### More accurate parsing of UTF-8
+
+In a places in INR it is useful to recognize sub-sequences of octets that
+are are valid UTF-8.
+There are different levels of strictness that can be applied but the following
+seems to be appropriate:
+
+Any code point between `0` and `10FFFF` is allowed (the full range of code
+point values) except for the range `D800` to `DFFF` that is invalid because
+of the definition of UTF-16.
+
+Only the shortest sequence of octets is allowed for UTF-8 (as specified)
+so that, for example, `C080` is not a synonym of `00` but is treated as
+ill-formed.
+
+The reasons for these choices is to facilitate a style of programming that
+is safe (in a cyber-security sense).
+
+If loose UTF-8 is needed later, it might be considered separately.
+
+##### Use of UTF-8 parsing
+
+This code needs to be centralized but is currently separately implemented in
+two places:
+
+(1) In :slurp_utf8 for reading / checking UTF-8 input.
+
+(2) In T2 where the external form is computed from the internal form.
+
+##### INR processing using nibbles
+
+Although breaking of octets into smaller pieces is expected to be useful for
+a number of applications, the features added to support nibbles has been
+removed.
+
+The only remnant are the undocumented routines :slurp_nibbles and
+:spit_nibbles.
+These will remain for now although changed and deprecated as an alternative
+approach is being planned.
+
+The use of `"` in the expression language is no longer valid and its use
+has returned to indicating an error.
+
+#### doc
+
+##### pr_format
+
+Documentation of the :pr format.
+
+##### unicode_support
+
+This is updated to reflect the above changes.
+
+corrections of unicode docs
+
+documentation of pr format
+
+#### samples
+
+The example provided has been converted from using nibbles to using octets.
+The changes were easy because of the former design of nibble support.
+The former example no longer works as it was because `"` is no longer
+handled in the lexical analyser.
+
 ## 2.1.0c5 (2022-03-08)
 
 #### src

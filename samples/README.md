@@ -17,7 +17,7 @@ Some of these involve the use of Markdown since although it is relatively
 straight-forward to describe and use, corner cases pop up that can be
 challenging.
 
-[md_eqn_nibbles](md_eqn_nibbles)
+[md_eqn](md_eqn)
 
 > In this example, an attempt to identify the equations delimited by dollar
 signs in a Markdown text is complicated by the fact that dollar signs

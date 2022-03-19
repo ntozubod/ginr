@@ -34,39 +34,27 @@ was performed.
 
 These are the goals of providing Unicode UTF-8 support.
 
-In this sample, we will use :slurp_nibbles and :spit_nibbles to read the
+In this sample, we will use :slurp_octets and :spit_octets to read the
 needed text file in and output the result.
-The new double quoted string expressions will be used to create nibble
-sequences for matching purposes.
 Finally, a new function :gen_min will be used to select the single string
 that is the shortest with minimum in lexicographic ordering used to break
 ties.
 
 These features all work together to allow for a solution to the problem
-although the :slurp_octets, :spit_octets or the :slurp_utf8, :spit_utf8
-routines could also be used.
+although the :slurp_utf8, :spit_utf8 routines could also be used.
 
 The approach is to:
 
 1. Slurp the contents of the raw file `c.md` as produced by pandoc.
-   :slurp_nibbles will break each octet seen into a high octet and a low
-   octet.
-   These octets are distinguished to avoid spurious matching at a later
-   stge.
 
-2. Define the finite alphabet of possibilities: 16 high octets plus 16
-   low octets yields an alphabet size of 32.
-   Note that the :slurp_octets approach would require an alphabet of size
-   256 and :slurp_utf8 would require other accomodations.
-   Nibble contains the alphabet and Nibbles is an automaton that matches
-   a possibly non-zero sequence of nibbles.
-   The implicit constraint of alternation of nibble type can be ignored
-   here.
-   Copy_nibbles is a transducer that copies any nibble sequence exactly.
+2. Define the finite alphabet of possibilities.
+   An easy way of getting the needed alphabet is to compute it from the
+   input.
+   Copy_octets is a transducer that copies any octet sequence exactly.
 
 3. The three kinds of code blocks are defined as a transducer that copies
-   everything between a start sequence of nibbles defined by double quoted
-   string and a corresponding end sequence of nibbles.
+   everything between a start sequence of octets defined by quoted
+   string and a corresponding end sequence of octets.
    Furthermore, a constraint is applied to ensure that the code block does
    not contain an earlier termination marker.
    INR does not have a shortest match operator but this is more direct
@@ -92,14 +80,9 @@ The approach is to:
    to be modified to throw in a matching end marker to allow the parse.
    Otherwise, our transducer to be fine as is.
 
-9. Apply the complete transducer to the input nibble sequence.
+9. Apply the complete transducer to the input octet sequence.
    From the way this is constructed above, the output should be unique.
    However, with more complex cases, a single output must be chosen using
    :gen_min.
 
-10. Write the result out using :spit_nibbles.
-
-Notice that the only place where we actually had to look at the format of
-the nibbles was in the definition of the alphabet.
-A pending change is to make this a builtin function.
-Such builtins will also be defined for :slurp_octets and :slurp_utf8.
+10. Write the result out using :spit_octets.

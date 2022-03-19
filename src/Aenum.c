@@ -26,7 +26,7 @@
 #include "O.h"
 
 static A_OBJECT         GAe;
-static T_OBJECT         GTe;
+static T2_OBJECT        GTe;
 static SHORT            *e_vec;
 static int              *c_vec;
 static int              e_lev;
@@ -46,30 +46,13 @@ int A_en_DFS( SHORT state )
             else for( i = 0; i < e_lev; i++ ) {
                     ++en_cnt;
                     if ( GAe-> A_nT == 1 ) {
-                        en_str = T_name( GTe, (int) e_vec[i] );
-                        if ( *en_str == '\n' )
-                            en_str = "\\n";
-                        else if ( *en_str == '\t' )
-                            en_str = "\\t";
-                        else if ( *en_str == ' ' )
-                            en_str = "\\_";
-                        else if ( *en_str == '\\' )
-                            en_str = "\\\\";
+                        en_str = T2_name_pr( GTe, (int) e_vec[i] );
                         fprintf( fpout, "%s ", en_str );
                     } else {
-                        en_str = T_name( GTe, (int) e_vec[i]
-                                         / GAe-> A_nT );
-                        if ( *en_str == '\n' )
-                            en_str = "\\n";
-                        else if ( *en_str == '\t' )
-                            en_str = "\\t";
-                        else if ( *en_str == ' ' )
-                            en_str = "\\_";
-                        else if ( *en_str == '\\' )
-                            en_str = "\\\\";
+                        en_str = T2_name_pr( GTe,
+                            (int) e_vec[i] / GAe-> A_nT );
                         fprintf( fpout, "%1d.%s ",
-                                 e_vec[i] % GAe-> A_nT,
-                                 en_str );
+                            e_vec[i] % GAe-> A_nT, en_str );
                     }
                 }
             fprintf( fpout, "\n" );
@@ -83,7 +66,7 @@ int A_en_DFS( SHORT state )
     return( 0 );
 }
 
-A_OBJECT A_enum( A_OBJECT A, T_OBJECT T, int max )
+A_OBJECT A_enum( A_OBJECT A, T2_OBJECT T2, int max )
 {
     A_OBJECT Ar, Am;
 
@@ -94,7 +77,7 @@ A_OBJECT A_enum( A_OBJECT A, T_OBJECT T, int max )
     en_max = max;
     e_vec = s_alloc( en_max );
     e_lev = 0;
-    GTe = T;
+    GTe = T2;
     en_cnt = 0;
 
     while( Ar-> A_nrows > 0 ) {

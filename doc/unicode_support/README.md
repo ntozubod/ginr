@@ -28,7 +28,7 @@ UTF-16 also has this property as long as alignment on 16-bit short word
 is preserved.
 
 Thus, INR works with octet sequences.
-For now, three strategies have been partially implemented:
+For now, three strategies can be imagined:
 
 1. There are only 256 separate octet values providing a feasible, though
 large alphabet for INR processing.
@@ -41,10 +41,7 @@ application.
 2. An obvious solution to this state explosion just mentioned is to split
 each 8-bit octet into two 4-bit hex digits (nibbles).
 Such an alphabet has 16 values.
-However, to avoid breaking the desirable synchronization property it is
-likely advantageous to distinguish high order nibbles from low order
-nibbles.
-The alphabet now has 32 values.
+This or other decompositions of octets may be considered in the future.
 
 3. Yet another approach considers that for any application only a small number
 of code points may actually be used.
@@ -77,12 +74,7 @@ All of the printable characters have string value as before and
 unprintable characters are represented by a two digit hexadecimal number
 as a C string of length 2.
 
-More preloading is done to handle high and low order nibble values:
-indexes 258 to 273 represent the 16 possible high order nibble values and
-indexes 274 to 289 represent the 16 possible low order nibble values.
-Their string representation of high nibbles are a hex digit followed by
-`_`.
-Low nibbles are represented by a hex digit preceded by `_`.
+Approach number 2 is not explicitly handled, for now.
 
 For approach number 3, no preloading is done.
 The internal index is assigned as each character is encountered.
@@ -95,8 +87,6 @@ Assign distinct print strings in symbol table to each code point.
 
 Modify `''` strings to admit all octets in the input (from only printable).
 Modify `` ` ` `` tokens to admit all octets in the input (from only printable).
-Create new `""` strings to map octets in the input to a pair of nibbles: high
-and low.
 
 Some examples should clarify all of the above discussion:
 
@@ -108,18 +98,6 @@ Some examples should clarify all of the above discussion:
     4 -| (FINAL)
 
 as before
-
-`"abc";`
-
-    (START) 6_ 2
-    2 _1 3
-    3 6_ 4
-    4 _2 5
-    5 6_ 6
-    6 _3 7
-    7 -| (FINAL)
-
-with new high / low nibbles
 
 `` `abc`;``
 
@@ -137,38 +115,16 @@ as before
 
 as before
 
-`"ἀπὸ";`
-
-    (START) E_ 2
-    2 _1 3
-    3 B_ 4
-    4 _C 5
-    5 8_ 6
-    6 _0 7
-    7 C_ 8
-    8 _F 9
-    9 8_ 10
-    10 _0 11
-    11 E_ 12
-    12 _1 13
-    13 B_ 14
-    14 _D 15
-    15 B_ 16
-    16 _8 17
-    17 -| (FINAL)
-
-a little longer
-
 `'ἀπὸ';`
 
-    (START) E1 2
-    2 BC 3
-    3 80 4
-    4 CF 5
-    5 80 6
-    6 E1 7
-    7 BD 8
-    8 B8 9
+    (START) \xE1 2
+    2 \xBC 3
+    3 \x80 4
+    4 \xCF 5
+    5 \x80 6
+    6 \xE1 7
+    7 \xBD 8
+    8 \xB8 9
     9 -| (FINAL)
 
 octet form
@@ -179,6 +135,7 @@ octet form
     2 -| (FINAL)
 
 unsurprising
+
 
 ``( `ἀ` `π` `ὸ` );``
 
@@ -221,12 +178,6 @@ Note that the DFA should match exactly one string.
 At present, this function has undefined behaviour if more that one string
 occurs.
 
-### `:slurp_nibbles`, `:spit_nibbles`
-
-Without repeating all the details, these two routines are used in a
-similar fashion except that nibbles are read in or written out
-respectively.
-
 ### `:slurp_utf8`, `:spit_utf8`
 
 Again these two routines repeat the pattern, except that the input is
@@ -259,8 +210,8 @@ string.
 For a lexicographic order to work, the alphabet must be ordered.
 For this purpose, the integer value stored in the token symbol table is
 used.
-This will have the effect that octet and nibble-based automata will have
-a natural binary ordering.
+This will have the effect that octet automata will have a natural binary
+ordering.
 Because of a nice property of UTF-8 encoding, this will also correspond to
 code point order (not true of UTF-16 by the way).
 
@@ -269,5 +220,5 @@ first encountered, and the result might seem less predictable.
 
 ## Sample code
 
-Samples contains a programming task using the nibble based approach.
-See [md_eqn_nibbles](../../samples/md_eqn_nibbles)
+Samples contains a programming task using the octet based approach.
+See [md_eqn](../../samples/md_eqn)

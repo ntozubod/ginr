@@ -25,7 +25,7 @@
 
 #include "O.h"
 
-A_OBJECT A_retape( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
+A_OBJECT A_retape( A_OBJECT A1, A_OBJECT A2, T2_OBJECT T2 )
 {
     int i;
     A_row *p;
@@ -53,7 +53,7 @@ A_OBJECT A_retape( A_OBJECT A1, A_OBJECT A2, T_OBJECT T )
         for( p = A2-> A_t; p < A2-> A_t + A2-> A_nrows - 1; p++ ) {
             sigma = p-> A_b / A2-> A_nT;
             tape = p-> A_b - sigma * A2-> A_nT;
-            chp = T_name( T, sigma );
+            chp = T2_name( T2, sigma );
             sigma = chp[0] - '0';
             if ( chp[1] || sigma < 0 || sigma > 9 )
                 Error( "A_retape: Second argument" );

@@ -38,6 +38,17 @@ P_OBJECT P_create( int length, char *cstr )
     return( P );
 }
 
+P_OBJECT P_fromQ( Q_OBJECT Q )
+{
+    P_OBJECT P;
+    P = (P_OBJECT) Salloc( sizeof(struct P_desc) );
+    P-> Type = P_Object;
+    P-> P_length = P-> P_length;
+    P-> P_cstr = P-> P_cstr;
+    Sfree( (char *) Q );
+    return( P );
+}
+
 void P_destroy( P_OBJECT P )
 {
     Sfree( (char *) P-> P_cstr );

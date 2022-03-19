@@ -26,17 +26,17 @@
 
 #include "O.h"
 
-int error_code = 0;
+static int error_code = 0;
 #define fail(x) { error_code = x; goto FAIL_FORMAT; }
 
-A_OBJECT A_save( A_OBJECT A, char *file, Tn_OBJECT Tn_Sigma )
+A_OBJECT A_save( A_OBJECT A, char *file, T2_OBJECT T2_Sigma )
 {
     int t, tape_number, label_length, tt, i;
     char *label_name;
     A_row *p, *pz;
     FILE *fp;
 
-    if ( A == NULL || Tn_Sigma == NULL ) return( A );
+    if ( A == NULL || T2_Sigma == NULL ) return( A );
     if ( file != NULL ) {
         if ( strcmp( file, "devnull" ) == 0 ) return( A );
         else fp = fopen( file, "w" );
@@ -63,8 +63,8 @@ A_OBJECT A_save( A_OBJECT A, char *file, Tn_OBJECT Tn_Sigma )
             label_name = "";
         } else if ( A-> A_nT == 1 ) {
             tape_number = 0;
-            label_length = Tn_length( Tn_Sigma, t );
-            label_name = Tn_name( Tn_Sigma, t );
+            label_length = T2_length( T2_Sigma, t );
+            label_name = T2_name( T2_Sigma, t );
         } else {
             tape_number = t % A-> A_nT;
             tt = t / A-> A_nT;
@@ -72,8 +72,8 @@ A_OBJECT A_save( A_OBJECT A, char *file, Tn_OBJECT Tn_Sigma )
                 label_length = 0;
                 label_name = "";
             } else {
-                label_length = Tn_length( Tn_Sigma, tt );
-                label_name = Tn_name( Tn_Sigma, tt );
+                label_length = T2_length( T2_Sigma, tt );
+                label_name = T2_name( T2_Sigma, tt );
             }
         }
         fprintf( fp, "%d\t%d\t%d\t%d\t",
@@ -89,7 +89,7 @@ A_OBJECT A_save( A_OBJECT A, char *file, Tn_OBJECT Tn_Sigma )
     return( A );
 }
 
-A_OBJECT A_load_save( char *file, Tn_OBJECT Tn_Sigma )
+A_OBJECT A_load_save( char *file, T2_OBJECT T2_Sigma )
 {
     int c, number_tapes, number_rows, number_states, number_symbols;
     int from_state, to_state, row_no, tape_no, length, label;
@@ -108,9 +108,9 @@ A_OBJECT A_load_save( char *file, Tn_OBJECT Tn_Sigma )
         return( NULL );
     }
     A = A_create();
-    if ( Tn_Sigma == NULL
-        || Tn_insert( Tn_Sigma, "^^", 2 ) != 0
-        || Tn_insert( Tn_Sigma, "-|", 2 ) != 1 )
+    if ( T2_Sigma == NULL
+        || T2_insert( T2_Sigma, "^^", 2 ) != 0
+        || T2_insert( T2_Sigma, "-|", 2 ) != 1 )
             Error( "A_load: BOTCH 1" );
 
     c = getc( fp );
@@ -273,7 +273,7 @@ NEXT_ROW:
         }
         A = A_add( A, from_state, label, to_state );
     } else {
-        index = Tn_insert( Tn_Sigma, buffer, length );
+        index = T2_insert( T2_Sigma, buffer, length );
         if ( index >= number_symbols ) { fail(48); }
         label = index * number_tapes + tape_no;
         A = A_add( A, from_state, label, to_state );

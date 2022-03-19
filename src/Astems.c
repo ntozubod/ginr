@@ -140,10 +140,9 @@ SHORT ** A_stems( A_OBJECT A, int tape )
     return( st_ptr );
 }
 
-void A_prstems( A_OBJECT A, T_OBJECT T, int tape )
+void A_prstems( A_OBJECT A, T2_OBJECT T2, int tape )
 {
-    int     q, i, ch;
-    char *  s;
+    int q, i, ch;
 
     if ( A == NULL ) Error( "A_prstems: No OBJECT" );
 
@@ -154,11 +153,7 @@ void A_prstems( A_OBJECT A, T_OBJECT T, int tape )
         else printf( "%9d  ", q );
         for( i = 0; st_ptr[q][i] < MAXSHORT; i++ ) {
             ch = st_ptr[q][i];
-            s = T_name( T, ch );
-            if ( s[0] == '\n' ) s = "\\n";
-            else if ( s[0] == '\t' ) s = "\\t";
-            else if ( s[0] == ' '  ) s = "\\_";
-            printf( " %s", s );
+            printf( " %s", T2_name_pr( T2, ch ) );
         }
         printf( "\n" );
     }

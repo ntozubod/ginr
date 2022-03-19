@@ -34,13 +34,14 @@
 /* this seems to be needed with the -ansi option to suppress warnings */
 int fileno( FILE * );
 
-#define T_Object        1
+#define Tn_Object       1
 #define V_Object        2
 #define R_Object        3
 #define U_Object        4
 #define A_Object        5
-#define Tn_Object       6
-#define P_Object        7
+#define P_Object        6
+#define Q_Object        7
+#define T2_Object       8
 
 typedef int             SHORT;
 #define MAXSHORT        017777777777
@@ -56,17 +57,6 @@ typedef struct {
     SHORT           A_c;
 }       A_row;
 
-/*
-typedef struct T_desc {
-    int             Type;
-    int             T_n;
-    int             T_lname;
-    int             T_lhash;
-    char **         T_name;
-    SHORT *         T_hash;
-} *     T_OBJECT;
-*/
-
 typedef struct Tn_desc {
     int             Type;
     int             Tn_n;
@@ -77,6 +67,12 @@ typedef struct Tn_desc {
     SHORT *         Tn_hash;
     char  *         Tn_stor;
 } *     Tn_OBJECT;
+
+typedef struct T2_desc {
+    int             Type;
+    Tn_OBJECT       T2_int;
+    Tn_OBJECT       T2_ext;
+} *     T2_OBJECT;
 
 typedef struct V_desc {
     int             Type;
@@ -124,6 +120,13 @@ typedef struct P_desc {
     char *          P_cstr;
 } *     P_OBJECT;
 
+typedef struct Q_desc {
+    int             Type;
+    int             Q_tapeno;
+    int             Q_length;
+    char *          Q_cstr;
+} *     Q_OBJECT;
+
 #define OPEN            0
 #define NFA             1
 #define NFA_TRIM        2
@@ -163,26 +166,6 @@ SHORT       *s_alloc( int );
 int         *i_alloc( int );
 void        pr_time_diff();
 
-/* T.c */
-/*
-T_OBJECT    T_create();
-void        T_destroy( T_OBJECT );
-int         T_member( T_OBJECT, char * );
-T_OBJECT    T_grow( T_OBJECT, int );
-int         T_insert( T_OBJECT, char * );
-char *      T_name( T_OBJECT, int );
-void        T_stats();
-*/
-
-#define     T_OBJECT       Tn_OBJECT
-#define     T_create()     Tn_create()
-#define     T_destroy(a)   Tn_destroy(a)
-#define     T_member(a,b)  Tn_member(a,b,strlen(b))
-#define     T_insert(a,b)  Tn_insert(a,b,strlen(b))
-#define     T_name(a,b)    Tn_name(a,b)
-#define     T_stats()      Tn_stats()
-#define     T_n            Tn_n
-
 /* Tn.c */
 Tn_OBJECT   Tn_create();
 void        Tn_destroy( Tn_OBJECT );
@@ -194,11 +177,34 @@ int         Tn_length( Tn_OBJECT, int );
 P_OBJECT    Tn_Pstr( Tn_OBJECT, int );
 void        Tn_stats();
 
+/* T2.c */
+T2_OBJECT   T2_create();
+void        T2_destroy( T2_OBJECT );
+int         T2_member( T2_OBJECT, char *, int );
+int         T2_insert( T2_OBJECT, char *, int );
+char *      T2_name( T2_OBJECT, int );
+int         T2_length( T2_OBJECT, int );
+P_OBJECT    T2_Pstr( T2_OBJECT, int );
+char *      T2_name_pr( T2_OBJECT, int );
+int         T2_length_pr( T2_OBJECT, int );
+P_OBJECT    T2_Pstr_pr( T2_OBJECT, int );
+void        T2_stats();
+void        T2_sync( T2_OBJECT );
+
 /* P.c */
 P_OBJECT    P_create( int, char * );
+P_OBJECT    P_fromQ( Q_OBJECT );
 void        P_destroy( P_OBJECT );
 int         P_length( P_OBJECT );
 char *      P_cstr( P_OBJECT );
+
+/* Q.c */
+Q_OBJECT    Q_create( int, int, char * );
+Q_OBJECT    Q_fromP( P_OBJECT );
+void        Q_destroy( Q_OBJECT );
+int         Q_tapeno( Q_OBJECT );
+int         Q_length( Q_OBJECT );
+char *      Q_cstr( Q_OBJECT );
 
 /* V.c */
 SHORT *     veccpy( SHORT *, SHORT * );
@@ -251,14 +257,17 @@ A_OBJECT    A_rename( A_OBJECT, SHORT * );
 A_OBJECT    A_mkdense( A_OBJECT );
 
 /* Aload.c */
-A_OBJECT    A_load( char *, Tn_OBJECT );
-A_OBJECT    A_store( A_OBJECT, char *, T_OBJECT );
-A_OBJECT    A_lwds( char *, T_OBJECT );
-A_OBJECT    A_prsseq( A_OBJECT, char *, T_OBJECT );
+A_OBJECT    A_load( char *, T2_OBJECT );
+A_OBJECT    A_lwds( char *, T2_OBJECT );
+A_OBJECT    A_prsseq( A_OBJECT, char *, T2_OBJECT );
+
+/* Apr.c */
+A_OBJECT    A_pr( A_OBJECT, char *, T2_OBJECT );
+A_OBJECT    A_load_pr( char *, T2_OBJECT );
 
 /* Asave.c */
-A_OBJECT    A_save( A_OBJECT, char *, Tn_OBJECT );
-A_OBJECT    A_load_save( char *, Tn_OBJECT );
+A_OBJECT    A_save( A_OBJECT, char *, T2_OBJECT );
+A_OBJECT    A_load_save( char *, T2_OBJECT );
 
 /* Atrim.c */
 A_OBJECT    A_trim( A_OBJECT );
@@ -298,7 +307,7 @@ A_OBJECT    A_rev( A_OBJECT );
 A_OBJECT    A_shuffle( A_OBJECT, A_OBJECT );
 
 /* Aenum.c */
-A_OBJECT    A_enum( A_OBJECT, T_OBJECT, int );
+A_OBJECT    A_enum( A_OBJECT, T2_OBJECT, int );
 int         A_card( A_OBJECT );
 A_OBJECT    A_pref( A_OBJECT );
 A_OBJECT    A_suff( A_OBJECT );
@@ -310,7 +319,7 @@ A_OBJECT    A_compose( A_OBJECT, A_OBJECT );
 A_OBJECT    A_join( A_OBJECT, A_OBJECT );
 
 /* Aretape.c */
-A_OBJECT    A_retape( A_OBJECT, A_OBJECT, T_OBJECT );
+A_OBJECT    A_retape( A_OBJECT, A_OBJECT, T2_OBJECT );
 A_OBJECT    A_comma( A_OBJECT, A_OBJECT );
 
 /* Apowers.c */
@@ -325,7 +334,7 @@ int         A_minlen( A_OBJECT );
 /* Astems.c */
 void        A_st_free();
 SHORT **    A_stems( A_OBJECT, int );
-void        A_prstems( A_OBJECT, T_OBJECT, int );
+void        A_prstems( A_OBJECT, T2_OBJECT, int );
 
 /* Asseq.c */
 A_OBJECT    A_sseq( A_OBJECT );
@@ -350,8 +359,10 @@ A_OBJECT    do_nn_a( char *, char * );
 extern A_OBJECT A;
 extern A_OBJECT Atemp;
 extern A_OBJECT Alist[1000];
-extern T_OBJECT TAlist;
-extern T_OBJECT TT;
+extern Tn_OBJECT TAlist;
+
+extern T2_OBJECT TT2;
+
 extern char Notice[];
 char *      pad20( char * );
 int         yylex();
@@ -362,10 +373,10 @@ int         tonum( char * );
 int         yyparse( void );
 
 /* Aunicode.c */
-A_OBJECT    A_slurp_octets( char *, T_OBJECT );
-A_OBJECT    A_slurp_nibbles( char *, T_OBJECT );
-A_OBJECT    A_slurp_utf8( char *, T_OBJECT );
-A_OBJECT    A_spit_octets( A_OBJECT, char *, T_OBJECT );
-A_OBJECT    A_spit_nibbles( A_OBJECT, char *, T_OBJECT );
-A_OBJECT    A_spit_utf8( A_OBJECT, char *, T_OBJECT );
+A_OBJECT    A_slurp_octets( char *, T2_OBJECT );
+A_OBJECT    A_slurp_nibbles( char *, T2_OBJECT );
+A_OBJECT    A_slurp_utf8( char *, T2_OBJECT );
+A_OBJECT    A_spit_octets( A_OBJECT, char *, T2_OBJECT );
+A_OBJECT    A_spit_nibbles( A_OBJECT, char *, T2_OBJECT );
+A_OBJECT    A_spit_utf8( A_OBJECT, char *, T2_OBJECT );
 A_OBJECT    A_gen_min( A_OBJECT );

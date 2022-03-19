@@ -208,7 +208,7 @@ idone:
         j = fvec[ i ];
         printf( "%5d ", j );
         for( tt = 0; fr_coeff[j][tt] != MAXSHORT; tt++ )
-        printf( "%s ", T_name( TT, fr_coeff[j][tt] ) );
+        printf( "%s ", T2_name_pr( TT2, fr_coeff[j][tt] ) );
         printf( "\n" );
         }
         */
@@ -282,7 +282,7 @@ idone:
                 j = vec[ i ];
                 printf( "%5d ", j );
                 for( tt = 0; to_coeff[j][tt] != MAXSHORT; tt++ )
-                printf( "%s ", T_name( TT, to_coeff[j][tt] ) );
+                printf( "%s ", T2_name_pr( TT2, to_coeff[j][tt] ) );
                 printf( "\n" );
                 }
                 */
@@ -403,11 +403,11 @@ done:
                                         fprintf( fpout, "coeffs are\n" );
                                         for( k = 0; to_coeff[p->A_c][k] < MAXSHORT; k++ )
                                             fprintf( fpout, "%s ",
-                                                     T_name( TT, to_coeff[p->A_c][k] ) );
+                                                     T2_name_pr( TT2, to_coeff[p->A_c][k] ) );
                                         fprintf( fpout, "\n" );
                                         for( k = 0; save_coeff[k] < MAXSHORT; k++ )
                                             fprintf( fpout, "%s ",
-                                                     T_name( TT, save_coeff[k] ) );
+                                                     T2_name_pr( TT2, save_coeff[k] ) );
                                         fprintf( fpout, "\n" );
                                         Error( "A_sseq: Relation not single-valued (3)" );
 

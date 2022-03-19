@@ -1,0 +1,57 @@
+I N R -- V 2.1.0c6, modified Mar 18 2022
+Copyright (C) 1988 J Howard Johnson
+Distributed under GPLv3 (see COPYING)
+
+
+
+# Read in sequence of octets
+
+INP ----------------   NFA     States: 40741  Trans: 40740  Tapes: 1  Strg: 1025 K
+
+Octet --------------   DFA MIN States: 3      Trans: 97     Tapes: 1  Strg: 5 K
+Octets -------------   DFA MIN States: 2      Trans: 97     Tapes: 1  Strg: 7 K
+Copy_Octets --------   DFA MIN States: 98     Trans: 193    Tapes: 2  Strg: 13 K
+
+# Quote block marked with greater than, 5 spaces ... and newline
+
+QBL_Constraint -----   DFA MIN States: 3      Trans: 191    Tapes: 1  Strg: 7 K
+QBL_block ----------   DFA MIN States: 105    Trans: 293    Tapes: 2  Strg: 13 K
+
+# Inline block marked with single backticks
+# Inline block marked with double backticks
+
+SBT_Constraint -----   DFA MIN States: 3      Trans: 191    Tapes: 1  Strg: 7 K
+DBT_Constraint -----   DFA MIN States: 4      Trans: 289    Tapes: 1  Strg: 7 K
+SBT_block ----------   DFA MIN States: 100    Trans: 288    Tapes: 2  Strg: 13 K
+DBT_block ----------   DFA MIN States: 105    Trans: 390    Tapes: 2  Strg: 13 K
+
+# Inline block marked with single dollar signs
+# Inline block marked with double dollar signs
+
+SDS_Constraint -----   DFA MIN States: 3      Trans: 191    Tapes: 1  Strg: 7 K
+DDS_Constraint -----   DFA MIN States: 4      Trans: 289    Tapes: 1  Strg: 7 K
+SDS_block ----------   DFA MIN States: 100    Trans: 288    Tapes: 2  Strg: 13 K
+DDS_block ----------   DFA MIN States: 105    Trans: 390    Tapes: 2  Strg: 13 K
+
+# Text with no bare backticks, dollar signs or verbatim quotes
+
+Background ---------   DFA MIN States: 7      Trans: 569    Tapes: 1  Strg: 11 K
+
+# Assemble the pieces
+
+QBL ----------------   DFA MIN States: 112    Trans: 300    Tapes: 2  Strg: 13 K
+SBT ----------------   DFA MIN States: 102    Trans: 290    Tapes: 2  Strg: 13 K
+DBT ----------------   DFA MIN States: 112    Trans: 492    Tapes: 2  Strg: 21 K
+BRK ----------------   DFA MIN States: 105    Trans: 667    Tapes: 2  Strg: 25 K
+SDS ----------------   DFA MIN States: 106    Trans: 294    Tapes: 2  Strg: 9 K
+DDS ----------------   DFA MIN States: 111    Trans: 396    Tapes: 2  Strg: 13 K
+Blocks -------------   DFA MIN States: 521    Trans: 1758   Tapes: 2  Strg: 41 K
+Process ------------   DFA MIN States: 1803   Trans: 12100  Tapes: 2  Strg: 273 K
+ Ending = { '`', '``', '$', '$$' }?;
+Ending -------------   DFA MIN States: 2      Trans: 1      Tapes: 1  Strg: 1 K
+WRK ----------------   DFA MIN States: 40941  Trans: 40940  Tapes: 1  Strg: 1025 K
+
+# Select shortest output
+# Write out as sequence of octets
+
+OUT ----------------   DFA MIN States: 40941  Trans: 40940  Tapes: 1  Strg: 1025 K

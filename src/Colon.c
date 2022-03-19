@@ -32,8 +32,8 @@ int do_n_i( char *op )
     int i;
     if ( !strcmp("alph",op) ) {
         fprintf( fpout, "\n" );
-        for( i = 2; i < TT-> T_n; i++ ) {
-            fprintf( fpout, "%s", T_name( TT, i ) );
+        for( i = 2; i < TT2-> T2_int-> Tn_n; i++ ) {
+            fprintf( fpout, "%s", T2_name( TT2, i ) );
             fprintf( fpout, " " );
         }
         fprintf( fpout, "\n" );
@@ -44,24 +44,24 @@ int do_n_i( char *op )
         fprintf( fpout, "\n" );
     } else if ( !strcmp("list",op) ) {
         fprintf( fpout, "\n" );
-        for( i = 0; i < TAlist-> T_n; i++ ) {
+        for( i = 0; i < TAlist-> Tn_n; i++ ) {
             fprintf( fpout, "%s  ", pad20(
-                         T_name( TAlist, i ) ) );
+                         Tn_name( TAlist, i ) ) );
             (void) A_rept( Alist[ i ] );
         }
         fprintf( fpout, "\n" );
     } else if ( !strcmp("noreport",op) ) A_report = 0;
     else if ( !strcmp("pr",op) ) {
-        for( i = 1; i < TAlist-> T_n; i++ )
+        for( i = 1; i < TAlist-> Tn_n; i++ )
             if ( Alist[ i ]-> A_nrows > 0 )
-                (void) A_store( Alist[ i ],
-                                T_name( TAlist, i ), TT );
+                (void) A_pr( Alist[ i ],
+                                Tn_name( TAlist, i ), TT2 );
     } else if ( !strcmp("report",op) ) A_report = 1;
     else if ( !strcmp("save",op) ) {
-        for( i = 1; i < TAlist-> T_n; i++ )
+        for( i = 1; i < TAlist-> Tn_n; i++ )
             if ( Alist[ i ]-> A_nrows > 0 )
                 Alist[ i ] = A_save( Alist[ i ],
-                                     T_name( TAlist, i ), TT );
+                                Tn_name( TAlist, i ), TT2 );
     } else if ( !strcmp("time",op) ) pr_time_diff();
     else if( !strcmp("help",op) )
 
@@ -92,23 +92,23 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
     if ( !strcmp("pr",op) ) {
         (void) A_rept( A );
         fprintf( fpout, "\n" );
-        A = A_store( A, (char *) NULL, TT );
+        A = A_pr( A, (char *) NULL, TT2 );
         fprintf( fpout, "\n" );
     } else if ( !strcmp("prsseq",op) ) {
         fprintf( fpout, "\n" );
-        A = A_prsseq( A, (char *) NULL, TT );
+        A = A_prsseq( A, (char *) NULL, TT2 );
         fprintf( fpout, "\n" );
     } else if ( !strcmp("spit_octets",op) ) {
         fprintf( fpout, "\n" );
-        A = A_spit_octets( A, (char *) NULL, TT );
+        A = A_spit_octets( A, (char *) NULL, TT2 );
         fprintf( fpout, "\n" );
     } else if ( !strcmp("spit_nibbles",op) ) {
         fprintf( fpout, "\n" );
-        A = A_spit_nibbles( A, (char *) NULL, TT );
+        A = A_spit_nibbles( A, (char *) NULL, TT2 );
         fprintf( fpout, "\n" );
     } else if ( !strcmp("spit_utf8",op) ) {
         fprintf( fpout, "\n" );
-        A = A_spit_utf8( A, (char *) NULL, TT );
+        A = A_spit_utf8( A, (char *) NULL, TT2 );
         fprintf( fpout, "\n" );
     } else if ( !strcmp("acomp",op) ) {
         if ( A_report ) fprintf( fpout, "(acomp)\n" );
@@ -135,16 +135,16 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
         disp_flag = 2;
     } else if ( !strcmp("comp",op) ) {
         if ( A_report ) fprintf( fpout, "(comp)\n" );
-        if ( (i = T_member( TAlist, "SIGMA" )) >= 0 ) {
+        if ( (i = Tn_member( TAlist, "_Sigma_", 7 )) >= 0 ) {
             Atemp = A_star( A_alph( A_copy( Alist[i] ) ) );
             A = A_differ( Atemp, A );
         } else  fprintf( fpout,
-                             "Error in comp: SIGMA not defined\n" );
+                             "Error in comp: _Sigma_ not defined\n" );
         disp_flag = 2;
     } else if ( !strcmp("deecho",op) ) {
         A = A_deecho( A,
-                      T_insert(TT,"ECHO") * A-> A_nT + 1,
-                      T_insert(TT,"NOECHO") * A-> A_nT + 1 );
+                      T2_insert(TT2,"_Echo_",6) * A-> A_nT + 1,
+                      T2_insert(TT2,"_Noecho_",8) * A-> A_nT + 1 );
         disp_flag = 2;
     } else if ( !strcmp("dfa",op) ) {
         A = A_subs( A );
@@ -153,7 +153,7 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
         A = A_min( A );
         disp_flag = 1;
     } else if ( !strcmp("enum",op) ) {
-        A = A_enum( A, TT, 1000 );
+        A = A_enum( A, TT2, 1000 );
     } else if ( !strcmp("limit",op) ) {
         if ( A_report ) fprintf( fpout, "(limit)\n" );
         if ( A-> A_nT != 2 )
@@ -162,13 +162,13 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
         Atemp = A_differ(
                     A_retape(
                         A_copy( A ),
-                        A_letter( 0, T_insert( TT, "1" ) ),
-                        TT
+                        A_letter( 0, T2_insert( TT2, "1", 1 ) ),
+                        TT2
                     ),
                     A_retape(
                         A_copy( A ),
-                        A_letter( 0, T_insert( TT, "0" ) ),
-                        TT
+                        A_letter( 0, T2_insert( TT2, "0", 1 ) ),
+                        TT2
                     )
                 );
 
@@ -220,7 +220,7 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
         A = A_GMsseq( A );
         disp_flag = 2;
     } else if ( !strcmp("stems",op) ) {
-        A_prstems( A, TT, 0 );
+        A_prstems( A, TT2, 0 );
     } else if ( !strcmp("suff",op) ) {
         if ( A_report ) fprintf( fpout, "(suff)\n" );
         A = A_suff( A );
@@ -246,22 +246,22 @@ A_OBJECT do_ann_a( A_OBJECT A, char *op, char *arg )
 {
     int num;
     disp_flag = 0;
-    if ( !strcmp("enum",op) && (num = tonum(arg)) >= 0)
-        A = A_enum( A, TT, num );
-    else if ( !strcmp("save",op) )
-        A = A_save( A, arg, TT );
+    if ( !strcmp("enum",op) && (num = tonum(arg)) >= 0) {
+        A = A_enum( A, TT2, num );
+    } else if ( !strcmp("save",op) )
+        A = A_save( A, arg, TT2 );
     else if ( !strcmp("pr",op) )
-        A = A_store( A, arg, TT );
+        A = A_pr( A, arg, TT2 );
     else if ( !strcmp("prsseq",op) )
-        A = A_prsseq( A, arg, TT );
+        A = A_prsseq( A, arg, TT2 );
     else if ( !strcmp("spit_octets",op) )
-        A = A_spit_octets( A, arg, TT );
+        A = A_spit_octets( A, arg, TT2 );
     else if ( !strcmp("spit_nibbles",op) )
-        A = A_spit_nibbles( A, arg, TT );
+        A = A_spit_nibbles( A, arg, TT2 );
     else if ( !strcmp("spit_utf8",op) )
-        A = A_spit_utf8( A, arg, TT );
+        A = A_spit_utf8( A, arg, TT2 );
     else if ( !strcmp("stems",op) )
-        A_prstems( A, TT, tonum(arg) );
+        A_prstems( A, TT2, tonum(arg) );
     else if ( !strcmp("surgery",op) ) {
         num = tonum(arg);
         if ( num < 2 || num >= A-> A_nrows )
@@ -269,7 +269,7 @@ A_OBJECT do_ann_a( A_OBJECT A, char *op, char *arg )
         else {
             A = A_open( A );
             A = A_add( A, num,
-                       T_insert(TT,"INCISION") * A-> A_nT,
+                       T2_insert(TT2,"_Incision_", 10) * A-> A_nT,
                        num );
         }
     } else Warning( "Unknown function" );
@@ -283,31 +283,31 @@ A_OBJECT do_nn_a( char *op, char *arg )
     disp_flag = 0;
     A = NULL;
     if ( !strcmp("get",op) ) {
-        if ( (i = T_member( TAlist, arg )) >= 0 )
+        if ( (i = Tn_member( TAlist, arg, strlen( arg ) )) >= 0 )
             A = A_copy( Alist[i] );
         disp_flag = 1;
     } else if ( !strcmp("read",op) || !strcmp("load",op) ) {
-        A = A_load( arg, TT );
+        A = A_load( arg, TT2 );
         disp_flag = 1;
     } else if ( !strcmp("readwords",op) ) {
-        A = A_lwds( arg, TT );
+        A = A_lwds( arg, TT2 );
         disp_flag = 1;
     } else if ( !strcmp("slurp_octets",op) ) {
-        A = A_slurp_octets( arg, TT );
+        A = A_slurp_octets( arg, TT2);
         disp_flag = 1;
     } else if ( !strcmp("slurp_nibbles",op) ) {
-        A = A_slurp_nibbles( arg, TT );
+        A = A_slurp_nibbles( arg, TT2 );
         disp_flag = 1;
     } else if ( !strcmp("slurp_utf8",op) ) {
-        A = A_slurp_utf8( arg, TT );
+        A = A_slurp_utf8( arg, TT2 );
         disp_flag = 1;
     } else if ( !strcmp("save",op) ) {
-        if ( (i = T_member( TAlist, arg )) >= 0 )
-            A = A_save( A_copy( Alist[i] ), arg, TT );
+        if ( (i = Tn_member( TAlist, arg, strlen( arg ) )) >= 0 )
+            A = A_save( A_copy( Alist[i] ), arg, TT2 );
         else fprintf( fpout, "Warning: %s undefined\n", arg );
     } else if ( !strcmp("pr",op) ) {
-        if ( (i = T_member( TAlist, arg )) >= 0 )
-            A = A_store( Alist[i], arg, TT );
+        if ( (i = Tn_member( TAlist, arg, strlen( arg ) )) >= 0 )
+            A = A_pr( Alist[i], arg, TT2 );
         else fprintf( fpout, "Warning: %s undefined\n", arg );
     } else if ( !strcmp("help",op) ) {
         if ( !strcmp("ops",arg) )
@@ -343,7 +343,7 @@ Transformation Operators               Displaying Operators\n\
 :acomp      Active complement          :card       Print cardinality\n\
 :alph       Active alphabet            :enum       Enumerate language\n\
 :clsseq     Subsequential closure      :length     Display min word length\n\
-:comp       Complement w.r.t. SIGMA*   :pr         Display automaton\n\
+:comp       Complement w.r.t. _Sigma_* :pr         Display automaton\n\
 :lenmin     Words of min length        :prsseq     Subsequential display\n\
 :pref       Set of prefixes            :report     Display report line\n\
 :rev        Reverse                    :stems #    Print tape # stems\n\
