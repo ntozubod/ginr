@@ -6,7 +6,7 @@ presented as use cases.
 
 These can be quite challenging to understand but this is usually because the
 problems are combinatorial in nature ultimately.
-Quite often a verbal description ia also difficult to understand.
+Quite often a verbal description is also difficult to understand.
 
 In each of these a description of the problem addressed with a sense of why
 this is not easily solved in other ways followed by a description of how
@@ -19,7 +19,7 @@ challenging.
 
 [md_eqn](md_eqn)
 
-> In this example, an attempt to identify the equations delimited by dollar
+In this example, an attempt to identify the equations delimited by dollar
 signs in a Markdown text is complicated by the fact that dollar signs
 also occur in code blocks.
 This is actually the result of *pandoc* processing in the `doc` directory

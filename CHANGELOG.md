@@ -1,5 +1,79 @@
 # INR Changelog
 
+## 2.1.0c8 (2022-04-11)
+
+This commit attempts to close off changes to provide basic support for
+Unicode using the UTF-8 transfer format.
+The main changes involve allowing the full repertoire of 256 octets to be
+read in, written out and used to form tokens in automata.
+
+The octet sequences that consitute valid UTF-8 encodings are treated as
+special only to the extent that they are displayed unescaped when using :pr,
+:enum or :prsseq to show automata.
+Some changes had to be made internally to allow the full octet range
+everywhere and now the only 'magic tokens' are `^^` and `-|`.
+In particular, null character and control characters are allowed in strings
+as well as all of the possible octets that can occur in UTF-8.
+
+#### src
+
+##### Acompose.c
+
+The change made to compose in the last commit is necessary and proven to
+be worth while.
+However, I am considering a more complete overhaul of Acompose.c that will
+subsume these changes.
+As well, for a core component like this, thorough testing is required.
+
+The changes to Atrim.c are mainly syntactic and, by now, well exercised.
+There is also a conditional compile define USE_RECURSIVE_TRIM that can be
+selected at compile time to revert the behaviour to the older version.
+
+##### Aunicode.c
+
+All mentions of nibbles are removed.
+This functionality will be re-introduced later as part of a new
+abstraction (B).
+
+Add functions to check for valid UTF-8 and identify printable Unicode
+code points.
+The first of these is moved from T2.c and a bug fixed.
+The second is A_unicode_printable takes an integer argument signaling the
+unicode codepoint concerned.
+It returns 1 if the string is printable and 0 if not so that :pr (and friends)
+should escape it.
+
+The algorithm used is extemely basic.
+A code point is considered unprintable if:
+
+(1) the code point is one of the 66 non-characters.
+
+(2) the code point is in the character class C as identified in the unicode.org
+file UnicodeData.txt.
+These are the code points identified as *control characters*.
+Among them are the code points between U+0000 to U+001F and between U+007F and
+U+008F.
+There are others.
+
+(2) the code point is in the character class Z as identified in the unicode.org
+file UnicodeData.txt.
+These are the code points identified as *spacing characters* that are
+displayed as white space.
+Examples include U+0020 and U+00A0 (non-breaking space).
+There are others.
+
+The version of UnicodeData.txt is that of early 2022 (version 14).
+
+Note that unassigned code-points are considered printable (for now).
+This preserved a bit of compatibility if this file is not updated.
+
+##### T2.c
+
+Use the A_unicode_printable routine to determine whether the external
+representation of a unicode will use raw or escaped octets (for readability).
+The semantics of the two formats is identical. However, this approach makes
+the :pr format a little more useful in some cases.
+
 ## 2.1.0c7 (2022-03-19)
 
 This work was actually done in February and has been waiting for the

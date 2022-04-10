@@ -102,10 +102,6 @@ A_OBJECT do_an_a( A_OBJECT A, char *op )
         fprintf( fpout, "\n" );
         A = A_spit_octets( A, (char *) NULL, TT2 );
         fprintf( fpout, "\n" );
-    } else if ( !strcmp("spit_nibbles",op) ) {
-        fprintf( fpout, "\n" );
-        A = A_spit_nibbles( A, (char *) NULL, TT2 );
-        fprintf( fpout, "\n" );
     } else if ( !strcmp("spit_utf8",op) ) {
         fprintf( fpout, "\n" );
         A = A_spit_utf8( A, (char *) NULL, TT2 );
@@ -256,8 +252,6 @@ A_OBJECT do_ann_a( A_OBJECT A, char *op, char *arg )
         A = A_prsseq( A, arg, TT2 );
     else if ( !strcmp("spit_octets",op) )
         A = A_spit_octets( A, arg, TT2 );
-    else if ( !strcmp("spit_nibbles",op) )
-        A = A_spit_nibbles( A, arg, TT2 );
     else if ( !strcmp("spit_utf8",op) )
         A = A_spit_utf8( A, arg, TT2 );
     else if ( !strcmp("stems",op) )
@@ -294,9 +288,6 @@ A_OBJECT do_nn_a( char *op, char *arg )
         disp_flag = 1;
     } else if ( !strcmp("slurp_octets",op) ) {
         A = A_slurp_octets( arg, TT2);
-        disp_flag = 1;
-    } else if ( !strcmp("slurp_nibbles",op) ) {
-        A = A_slurp_nibbles( arg, TT2 );
         disp_flag = 1;
     } else if ( !strcmp("slurp_utf8",op) ) {
         A = A_slurp_utf8( arg, TT2 );

@@ -374,9 +374,9 @@ int         yyparse( void );
 
 /* Aunicode.c */
 A_OBJECT    A_slurp_octets( char *, T2_OBJECT );
-A_OBJECT    A_slurp_nibbles( char *, T2_OBJECT );
 A_OBJECT    A_slurp_utf8( char *, T2_OBJECT );
 A_OBJECT    A_spit_octets( A_OBJECT, char *, T2_OBJECT );
-A_OBJECT    A_spit_nibbles( A_OBJECT, char *, T2_OBJECT );
 A_OBJECT    A_spit_utf8( A_OBJECT, char *, T2_OBJECT );
 A_OBJECT    A_gen_min( A_OBJECT );
+int         A_valid_utf8_at( char *, int, int, int * );
+int         A_unicode_printable( int );
