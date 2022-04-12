@@ -31,7 +31,7 @@
     P_OBJECT P;
     Q_OBJECT Q;
     char *t;
-    int l, i_var, tapeno, i_tok;
+    int l, i_var, tapeno, i_tok, i_aut;
 
 #define PROMT   if(isatty(fileno(fpin))&&isatty(fileno(fpout)))printf("--* ");
 
@@ -100,7 +100,14 @@ reg_0 SEMI
     }
     if ( (i = Tn_member( TAlist, P_cstr( $1 ), P_length( $1 ) )) >= 0 )
         A_destroy( Alist[ i ] );
-    Alist[ Tn_insert( TAlist, P_cstr( $1 ), P_length( $1 ) ) ] = A;
+
+    i_aut = Tn_insert( TAlist, P_cstr( $1 ), P_length( $1 ) );
+    if ( i_aut >= Ssize( (char *) Alist ) / sizeof( A_OBJECT ) ) {
+        Alist = (A_OBJECT *)
+            Srealloc( (char *) Alist, 2 * i_aut * sizeof( A_OBJECT ) );
+    }
+    Alist[ i_aut ] = A;
+
     if ( T2_member( TT2, P_cstr( $1 ), P_length( $1 ) ) >= 0 )
         fprintf( fpout,
                  "Warning: %s is also a token\n", P_cstr( $1 ) );
@@ -120,7 +127,14 @@ reg_0 SEMI
     (void) A_rept( A );
     if ( (i = Tn_member( TAlist, P_cstr($1), P_length( $1 ) )) >= 0 )
         A_destroy( Alist[ i ] );
-    Alist[ Tn_insert( TAlist, P_cstr($1), P_length( $1 ) ) ] = A;
+
+    i_aut = Tn_insert( TAlist, P_cstr( $1 ), P_length( $1 ) );
+    if ( i_aut >= Ssize( (char *) Alist ) / sizeof( A_OBJECT ) ) {
+        Alist = (A_OBJECT *)
+            Srealloc( (char *) Alist, 2 * i_aut * sizeof( A_OBJECT ) );
+    }
+    Alist[ i_aut ] = A;
+
     if ( T2_member( TT2, P_cstr($1), P_length( $1 ) ) >= 0 )
         fprintf( fpout,
                  "Warning: %s is also a token\n", P_cstr($1) );

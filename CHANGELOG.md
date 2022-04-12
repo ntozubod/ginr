@@ -1,5 +1,17 @@
 # INR Changelog
 
+## 2.1.0d (2022-04-12)
+
+This is a stable point.
+Basic Unicode / UTF-8 support is consolidated.
+The main branch will be fast forward commited to this point.
+
+#### src
+
+The bug with the temporary patch in 2.1.0c1 (2022-02-27) has now been fixed.
+Changes to O.h, Lex.c, and Parse.y to allocate and re-allocate as necessary
+the Alist array.
+
 ## 2.1.0c8 (2022-04-11)
 
 This commit attempts to close off changes to provide basic support for
