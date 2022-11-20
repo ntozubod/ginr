@@ -33,7 +33,7 @@ A_OBJECT A_slurp_octets( char *file, T2_OBJECT T2_Sigma )
     int c;
     SHORT state, next_state;
 
-    if ( file != NULL ) fp = fopen( file, "r" );
+    if ( file != NULL ) fp = fopen( file, FOPEN_READ );
     if ( fp == NULL ) {
         Warning( "File does not exist" );
         return( NULL );
@@ -65,7 +65,7 @@ A_OBJECT A_slurp_utf8( char *file, T2_OBJECT T2_Sigma )
     int i, c1, c2, c3, c4, cp, type;
     char ts[ 5 ];
 
-    if ( file != NULL ) fp = fopen( file, "r" );
+    if ( file != NULL ) fp = fopen( file, FOPEN_READ );
     if ( fp == NULL ) {
         Warning( "File does not exist" );
         return( NULL );
@@ -163,7 +163,7 @@ A_OBJECT A_spit_octets( A_OBJECT A, char *file, T2_OBJECT T2_Sigma )
     FILE *fp;
     int i, s1, c1;
 
-    if ( file != NULL ) fp = fopen( file, "w" );
+    if ( file != NULL ) fp = fopen( file, FOPEN_WRITE );
     if ( fp == NULL ) {
         Warning( "Can't open file for write" );
         return( NULL );
@@ -193,7 +193,7 @@ A_OBJECT A_spit_utf8( A_OBJECT A, char *file, T2_OBJECT T2_Sigma )
     int j, length;
     char *cstr;
 
-    if ( file != NULL ) fp = fopen( file, "w" );
+    if ( file != NULL ) fp = fopen( file, FOPEN_WRITE );
     if ( fp == NULL ) {
         Warning( "Can't open file for write" );
         return( NULL );

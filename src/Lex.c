@@ -335,12 +335,12 @@ int main( int argc, char *argv[] )
 
     if( argc > 2 ) {
         strcpy( file_out, argv[2] ) ;
-        fpout = fopen( file_out, "w" );
+        fpout = fopen( file_out, FOPEN_WRITE );
     }
 
     if( argc > 1 ) {
         strcpy( file_in, argv[1] ) ;
-        fpin = fopen( file_in, "r" );
+        fpin = fopen( file_in, FOPEN_READ );
     }
 
     if (fpin == 0 || fpout == 0 ) {

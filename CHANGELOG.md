@@ -1,5 +1,11 @@
 # INR Changelog
 
+## 2.1.0e (2022-11-20)
+
+Patch to force fopen to use "rb" and "wb" when opening files.
+This can be deselected with the #ifdef define NO_FOPEN_BINARY either in the
+source or as a compilation option.
+
 ## 2.1.0d (2022-04-12)
 
 This is a stable point.

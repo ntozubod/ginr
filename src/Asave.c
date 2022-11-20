@@ -39,7 +39,7 @@ A_OBJECT A_save( A_OBJECT A, char *file, T2_OBJECT T2_Sigma )
     if ( A == NULL || T2_Sigma == NULL ) return( A );
     if ( file != NULL ) {
         if ( strcmp( file, "devnull" ) == 0 ) return( A );
-        else fp = fopen( file, "w" );
+        else fp = fopen( file, FOPEN_WRITE );
     } else {
         fp = fpout;
         if ( fp == NULL ) fp = stdin;
@@ -100,7 +100,7 @@ A_OBJECT A_load_save( char *file, T2_OBJECT T2_Sigma )
 
     buffer = Salloc( 100 );
 
-    if ( file != NULL )             fp = fopen( file, "r" );
+    if ( file != NULL )             fp = fopen( file, FOPEN_READ );
     else if ( fpin != NULL )        fp = fpin;
     else                            fp = stdin;
     if ( fp == NULL ) {

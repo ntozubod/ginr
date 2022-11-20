@@ -34,6 +34,14 @@
 /* this seems to be needed with the -ansi option to suppress warnings */
 int fileno( FILE * );
 
+#ifdef  NO_FOPEN_BINARY
+#define FOPEN_READ      "r"
+#define FOPEN_WRITE     "w"
+#else
+#define FOPEN_READ      "rb"
+#define FOPEN_WRITE     "wb"
+#endif
+
 #define Tn_Object       1
 #define V_Object        2
 #define R_Object        3
