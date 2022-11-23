@@ -1,5 +1,11 @@
 # INR Changelog
 
+## 2.1.0f (2022-11-23)
+
+Patch to replace usage of bcopy by copymem.
+This can be deselected with the #ifdef define USE_BCOPY either in the
+source or as a compilation option.
+
 ## 2.1.0e (2022-11-20)
 
 Patch to force fopen to use "rb" and "wb" when opening files.

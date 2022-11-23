@@ -23,12 +23,15 @@
  *   along with INR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <strings.h>
 #include "O.h"
 
 /*
  *     Copy a block of memory
  */
+
+#ifdef USE_BCOPY
+
+#include <strings.h>
 
 void copymem( long n, char *from, char *to )
 {
@@ -46,6 +49,17 @@ void copymem( long n, char *from, char *to )
         while ( --n >= 0 ) *--to = *--from;
     }
 }
+
+#else
+
+/* copymem guarantes correct handling of the overlap case. */
+
+void copymem( long n, char *from, char *to )
+{
+    memmove( to, from, n );
+}
+
+#endif
 
 void scribble( char *p, char *q )
 {
