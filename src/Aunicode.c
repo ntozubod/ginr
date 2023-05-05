@@ -327,7 +327,8 @@ int A_valid_utf8_at( char *s, int i, int l, int *cp_ref ) {
 
 int A_unicode_printable( int cp ) {
 /* Exclude all control, spacing, and non-characters */
-    if ( (  0x0000 <= cp && cp <    0x0021 )
+    if ( ( cp == ' ' || cp == '\\' || cp == '.' )
+      || (  0x0000 <= cp && cp <    0x0021 )
       || (  0x007F <= cp && cp <    0x00A1 )
       || (  0x00AD <= cp && cp <    0x00AE )
       || (  0x0600 <= cp && cp <    0x0606 )

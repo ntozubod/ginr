@@ -1,5 +1,14 @@
 # INR Changelog
 
+## 2.1.0g (2023-05-05)
+
+Patch to address some backslashes in tokens causing an assertion failure
+in T2.c.
+The problem is caused by a failure in maintaining distinct print string forms
+for the new P-string string format that accomodate unprintable characters
+and malformed unicode within tokens.
+These need to be properly escaped in the print string form.
+
 ## 2.1.0f (2022-11-23)
 
 Patch to replace usage of bcopy by copymem.
